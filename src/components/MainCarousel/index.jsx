@@ -14,23 +14,11 @@ const cardBackStyles = {
   style2: { image: Style2CardBack },
 };
 
-const data = [
-  { id: 1, bgColor: "#F54748", title: "Slide 1" },
-  { id: 2, bgColor: "#7952B3", title: "Slide 2" },
-  { id: 3, bgColor: "#1597BB", title: "Slide 3" },
-  { id: 4, bgColor: "#F54748", title: "Slide 1" },
-  { id: 5, bgColor: "#7952B3", title: "Slide 2" },
-  { id: 6, bgColor: "#1597BB", title: "Slide 3" },
-  { id: 7, bgColor: "#F54748", title: "Slide 1" },
-  { id: 8, bgColor: "#7952B3", title: "Slide 2" },
-  { id: 9, bgColor: "#1597BB", title: "Slide 3" },
-  { id: 10, bgColor: "#F54748", title: "Slide 1" },
-  { id: 11, bgColor: "#7952B3", title: "Slide 2" },
-  { id: 12, bgColor: "#1597BB", title: "Slide 3" },
-  { id: 13, bgColor: "#F54748", title: "Slide 1" },
-  { id: 14, bgColor: "#7952B3", title: "Slide 2" },
-  { id: 15, bgColor: "#1597BB", title: "Slide 3" },
-];
+const data = Array.from({ length: 40 }, (_, i) => ({
+  id: i + 1,
+  bgColor: "#F54748",
+  title: `Slide ${i + 1}`,
+}));
 const MainCarousel = ({
   getActiveSlide,
   handleOpenPopup,
@@ -70,7 +58,7 @@ const MainCarousel = ({
   const onTouchMove = (e) => {
     if (isSwipeLocked) return;
     setTouchEnd(e.targetTouches[0].clientX);
-    console.log(1)
+    console.log(1);
   };
 
   const onTouchEnd = () => {
