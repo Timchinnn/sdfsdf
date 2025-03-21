@@ -1,11 +1,11 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "http://109.73.206.80:3000/api/:splat"
+  to = "http://147.45.244.129:3000/api/:splat"
   status = 200
   force = true
 [[redirects]]
  from = "/img/*"
- to = "http://109.73.206.80:3000/img/:splat"
+ to = "http://147.45.244.129:3000/img/:splat"
  status = 200
  force = true
