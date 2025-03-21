@@ -1,11 +1,11 @@
-
+toml
 [[redirects]]
   from = "/api/*"
-  to = "http://147.45.244.129:3000/api/:splat"
+  to = "https://zoomayor.io/api/:splat"
   status = 200
   force = true
 [[redirects]]
  from = "/img/*"
- to = "http://147.45.244.129:3000/img/:splat"
+ to = "https://zoomayor.io/img/:splat"
  status = 200
  force = true
