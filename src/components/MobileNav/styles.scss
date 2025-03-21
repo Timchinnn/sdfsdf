@@ -1,0 +1,85 @@
+
+// mobile
+
+.mobile-nav {
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    padding: 25px 32px 20px 32px;
+    border-radius: 16px 16px 0px 0px;
+    background: #fff;
+    max-width: 576px;
+}
+
+.mobile-menu {
+    &__icon {
+        margin: 0 auto;
+        width: 24px;
+        height: 24px;
+        position: relative;
+        // &::after {
+        //     content: '';
+        //     display: block;
+        //     position: absolute;
+        //     top: 50%;
+        //     width: 10px;
+        //     height: 10px;
+        //     left: 50%;
+        //     transform: translate(-50%, -50%);
+        //     box-shadow: 0px 4px 12px rgba(109, 172, 29, 0.32);
+        // }
+        img {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        &_white {
+            &-active {
+                display: none !important;
+            }
+        }
+        &_dark {
+            &-active {
+                display: none !important;
+            }
+        }
+    }
+    &__title {
+        text-align: center;
+        margin-top: 6px;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        color: #CCD1D9;
+        letter-spacing: 0.4px;
+    }
+    &__card {
+        &.active {
+            .mobile-menu__title {
+                color: #71B21D;
+            }
+            .mobile-menu__icon_white {
+                .mobile-menu__icon_white-default {
+                    display: none !important;
+                }
+                .mobile-menu__icon_white-active {
+                    display: block !important;
+                }
+            }
+            .mobile-menu__icon_dark {
+                .mobile-menu__icon_dark-default {
+                    display: none !important;
+                }
+                .mobile-menu__icon_dark-active {
+                    display: block !important;
+                }
+            }
+        }
+    }
+}
