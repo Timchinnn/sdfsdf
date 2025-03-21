@@ -1,0 +1,130 @@
+
+// friends
+
+.friends {
+    &-referal {
+        margin-top: 8px;
+        &__url {
+            width: 100%;
+            position: relative;
+            margin-top: 14px;
+            input {
+                display: block;
+                width: 100%;
+                padding: 18px 15px;
+                font-size: 17px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                color: #656D77;
+                border-radius: 12px;
+                background: rgba($color: #fff, $alpha: 0.5);
+                backdrop-filter: blur(16px);
+                padding-right: 50px;
+            }
+        }
+        &__copy {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 16px;
+            svg {
+                display: block;
+                path {
+                    transition: all .4s ease;
+                }
+            }
+            &:active {
+                path {
+                    fill: $accent;
+                }
+            }
+        }
+        &__btn {
+            width: 100%;
+            text-align: center;
+            margin-top: 8px;
+            padding: 18px 0px;
+            background: $accent;
+            border-radius: 12px;
+            box-shadow: 0px 8px 16px -8px rgba(113, 178, 29, 0.24);
+            font-size: 16px;
+            color: #F5F7FA;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+    }
+    &-block {
+        margin-top: 24px;
+        &__head {
+            padding: 0px 24px;
+            &-more {
+                font-size: 15px;
+                font-style: normal;
+                color: #AAB2BD;
+                font-weight: 400;
+                line-height: normal;
+            }
+        }
+    }
+    &-list {
+        margin-top: 16px;
+        &__item {
+            margin-bottom: 8px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        &__image {
+            width: 72px;
+            height: 100px;
+            overflow: hidden;
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-right: 24px;
+            box-shadow: 0px 56px 32px -8px rgba(170, 178, 189, 0.16);
+            img {
+                @extend %cover-image;
+            }
+        }
+        &__content {
+            padding-top: 8px;
+        }
+        &__title {
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            letter-spacing: 0.68px;
+        }
+        &__date {
+            margin-top: 4px;
+            color: #AAB2BD;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+    }
+    &-params {
+        margin-top: 12px;
+        gap: 8px;
+        &__item {
+            padding: 5px 8px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-style: normal;
+            color: #656D77;
+            font-weight: 500;
+            line-height: normal;
+            letter-spacing: 0.6px;
+            background: #E6E9ED;
+            img {
+                display: block;
+                flex-shrink: 0;
+                margin-right: 8px;
+            }
+        }
+    }
+}

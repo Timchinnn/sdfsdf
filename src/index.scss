@@ -1,0 +1,15 @@
+@import './assets/vendor/normalize';
+@import './assets/vendor/fonts';
+@import './assets/vendor/vars';
+@import './assets/vendor/config';
+@import './assets/vendor/ui';
+
+// pages
+@import './pages/MainPage/styles';
+@import './pages/CityPage/styles';
+@import './pages/PeoplePage/styles';
+@import './pages/FriendsPage/styles';
+@import './pages/ShopPage/styles';
+@import './pages/TasksPage/styles';
+@import './pages/SetsPage/styles';
+@import './pages/BonusPage/styles';

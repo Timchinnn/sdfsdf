@@ -1,0 +1,55 @@
+
+// bonus
+
+.bonus {
+    &-wrap {
+        margin-top: 8px;
+    }
+    &-promo {
+        &__code {
+            margin-top: 14px;
+            &-input {
+                input {
+                    display: block;
+                    width: 100%;
+                    padding: 18px 15px;
+                    border-radius: 12px;
+                    background: rgba($color: #fff, $alpha: 0.5);
+                    font-size: 17px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    backdrop-filter: blur(16px);
+                    &::placeholder {
+                        color: #AAB2BD;
+                    }
+                }
+            }
+            &-btn {
+                padding: 18px 0px;
+                text-align: center;
+                display: block;
+                width: 100%;
+                margin-top: 8px;
+                border-radius: 12px;
+                color: #F5F7FA;
+                background: #71B21D;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+                box-shadow: 0px 8px 16px -8px rgba(113, 178, 29, 0.24);
+            }
+        }
+    }
+    &-more {
+        margin-top: 24px;
+        .friends-list__code {
+            margin-top: 4px;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+    }
+}

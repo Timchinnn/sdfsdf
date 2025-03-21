@@ -1,0 +1,61 @@
+
+// tasks
+
+.tasks {
+    &-block {
+        margin-top: 24px;
+    }
+    &-head {
+        padding: 0px 24px;
+    }
+    &-list {
+        margin-top: 16px;
+        &__item {
+            margin-bottom: 8px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        &__image {
+            width: 72px;
+            height: 100px;
+            overflow: hidden;
+            flex-shrink: 0;
+            margin-right: 24px;
+            border-radius: 4px;
+            box-shadow: 0px 56px 32px -8px rgba(170, 178, 189, 0.16);
+            img {
+                @extend %cover-image;
+            }
+        }
+        &__title {
+            font-size: 17px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            letter-spacing: 0.68px;
+        }
+        &__btn {
+            margin-top: 32px;
+            width: 100%;
+            text-align: center;
+            padding: 18px 0px;
+            border-radius: 12px;
+            border: 1px solid rgba(113, 178, 29, 0.24);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            color: #71B21D;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            svg {
+                display: block;
+            }
+            &_done {
+                background: #71B21D;
+            }
+        }
+    }
+}
