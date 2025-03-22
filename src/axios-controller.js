@@ -1,8 +1,6 @@
 import axios from "axios";
 const instance = axios.create({
   baseURL:
-    process.env.NODE_ENV === "production"
-      ? "https://zoomayor.io/api" // Для продакшена
-      : "/api", // Для разработки
+    process.env.NODE_ENV === "production" ? "https://zoomayor.io/api" : "/api",
 });
 export default instance;
