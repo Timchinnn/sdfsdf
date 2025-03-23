@@ -1,3 +1,4 @@
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -7,10 +8,10 @@
   to = "https://api.zoomayor.io/api/:splat"
   status = 200
   force = true
-  headers = {Access-Control-Allow-Origin = "*"}
+  headers = {Access-Control-Allow-Origin = "https://zoomayor.io", Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS", Access-Control-Allow-Headers = "Origin, X-Requested-With, Content-Type, Accept"}
 [[redirects]]
   from = "/img/*"
   to = "https://api.zoomayor.io/img/:splat"
   status = 200
   force = true
-  headers = {Access-Control-Allow-Origin = "*"}
+  headers = {Access-Control-Allow-Origin = "https://zoomayor.io", Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS", Access-Control-Allow-Headers = "Origin, X-Requested-With, Content-Type, Accept"}
