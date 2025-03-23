@@ -1,7 +1,6 @@
 import axios from "axios";
 const instance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production" ? "https://zoomayor.io/api" : "/api",
+  baseURL: process.env.REACT_APP_API_URL || "https://zoomayor.io/api",
   headers: {
     "Content-Type": "application/json",
   },

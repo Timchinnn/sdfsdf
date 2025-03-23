@@ -7,7 +7,7 @@
   to = "https://zoomayor.io/api/:splat"
   status = 200
   force = true
-  headers = {Cache-Control = "public, max-age=0, must-revalidate"}
+  headers = {Access-Control-Allow-Origin = "*", Cache-Control = "public, max-age=0, must-revalidate"}
 [[redirects]]
   from = "/img/*"
   to = "https://zoomayor.io/img/:splat"
