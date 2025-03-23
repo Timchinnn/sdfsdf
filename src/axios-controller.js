@@ -3,7 +3,10 @@ const instance = axios.create({
   baseURL: "https://zoomayor.io/api",
   timeout: 5000,
   validateStatus: function (status) {
-    return status >= 200 && status < 500; // Обрабатываем все статусы кроме 5xx
+    return status >= 200 && status < 500;
+  },
+  headers: {
+    "Content-Type": "application/json",
   },
 });
 // Add request interceptor
