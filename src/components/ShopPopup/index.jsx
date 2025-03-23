@@ -11,13 +11,7 @@ import CoinIcon from "assets/img/coin-icon.svg";
 
 const ShopPopup = (props) => {
   const popupRef = useRef(null);
-  const [showImage, setShowImage] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowImage(true);
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, []);
+
   const { setActivePopup, onButtonClick } = props; // Добавляем onButtonClick в props
   console.log(props);
 
