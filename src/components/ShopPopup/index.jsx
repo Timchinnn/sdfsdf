@@ -80,22 +80,19 @@ const ShopPopup = (props) => {
               alt=""
               className="shop-card__Img"
             /> */}
-
-            {showImage && (
-              <img
-                src={
-                  props.selectedPhoto
-                    ? props.selectedPhoto.id === "set" ||
-                      props.selectedPhoto.id === "energy" ||
-                      props.selectedPhoto.id === "money" ||
-                      props.selectedPhoto.image === QuestionMarkImg
-                      ? props.selectedPhoto.image
-                      : `https://api.zoomayor.io${props.selectedPhoto.image}`
-                    : DefaultImg
-                }
-                alt={props.selectedPhoto?.title || ""}
-              />
-            )}
+            <img
+              src={
+                props.selectedPhoto
+                  ? props.selectedPhoto.id === "set" ||
+                    props.selectedPhoto.id === "energy" ||
+                    props.selectedPhoto.id === "money" ||
+                    props.selectedPhoto.image === QuestionMarkImg
+                    ? props.selectedPhoto.image
+                    : `${props.selectedPhoto.image}`
+                  : DefaultImg
+              }
+              alt={props.selectedPhoto?.title || ""}
+            />
           </div>
           <div className="shop-popup__content">
             {props.selectedPhoto &&
