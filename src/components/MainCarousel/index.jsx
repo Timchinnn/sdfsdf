@@ -315,9 +315,13 @@ const MainCarousel = ({
                         src={
                           getStyles(i).isBackCard
                             ? getCardBackImage()
-                            : openedCards[i]?.image ||
-                              selectedPhotos[item.id]?.image ||
-                              cardBackStyles.default.image
+                            : openedCards[i]?.image
+                            ? `https://api.zoomayor.io${openedCards[i].image}`
+                            : selectedPhotos[item.id]?.image
+                            ? `https://api.zoomayor.io${
+                                selectedPhotos[item.id].image
+                              }`
+                            : cardBackStyles.default.image
                         }
                         alt=""
                       />
