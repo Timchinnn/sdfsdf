@@ -1,7 +1,9 @@
 import axios from "axios";
-
 const instance = axios.create({
-  baseURL: "api.zoomayor.io/api",
+  baseURL: "https://api.zoomayor.io/api",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
-
 export default instance;
