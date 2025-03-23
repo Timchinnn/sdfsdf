@@ -13,4 +13,14 @@ const instance = axios.create({
     "Content-Type": "application/json",
   },
 });
+// Add response interceptor for better error handling
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 404) {
+      console.error("Resource not found:", error.config.url);
+    }
+    return Promise.reject(error);
+  }
+);
 export default instance;
