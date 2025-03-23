@@ -45,24 +45,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": {
-    "/api": {
-      "target": "https://zoomayor.io",
-      "secure": true,
-      "changeOrigin": true,
-      "headers": {
-        "Connection": "keep-alive"
-      }
-    },
-    "/img": {
-      "target": "https://zoomayor.io",
-      "secure": true,
-      "changeOrigin": true,
-      "headers": {
-        "Connection": "keep-alive"
-      }
-    }
-  },
   "devDependencies": {
     "sass": "^1.72.0"
   }
