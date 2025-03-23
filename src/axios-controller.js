@@ -10,7 +10,11 @@ const instance = axios.create({
   },
   transformResponse: [
     (data) => {
-      return JSON.parse(data);
+      try {
+        return JSON.parse(data);
+      } catch (e) {
+        return data; // Возвращаем исходные данные если парсинг не удался
+      }
     },
   ],
 });
