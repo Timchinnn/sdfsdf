@@ -45,6 +45,7 @@
       "last 1 safari version"
     ]
   },
+  "proxy": "http://147.45.244.129:3000",
   "devDependencies": {
     "sass": "^1.72.0"
   }
