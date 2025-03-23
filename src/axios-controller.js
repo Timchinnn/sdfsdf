@@ -6,5 +6,8 @@ const instance = axios.create({
       : "http://localhost:3000/api",
   withCredentials: true,
   timeout: 5000,
+  httpsAgent: new (require("https").Agent)({
+    rejectUnauthorized: false, // Временное решение для разработки
+  }),
 });
 export default instance;
