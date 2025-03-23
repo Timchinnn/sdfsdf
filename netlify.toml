@@ -7,8 +7,10 @@
   to = "https://147.45.244.129:3000/api/:splat"
   status = 200
   force = true
+  headers = {Connection = "keep-alive"}
 [[redirects]]
   from = "/img/*"
   to = "https://147.45.244.129:3000/img/:splat"
   status = 200
   force = true
+  headers = {Connection = "keep-alive"}

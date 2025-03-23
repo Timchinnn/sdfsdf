@@ -7,7 +7,8 @@ const instance = axios.create({
   withCredentials: true,
   timeout: 5000,
   httpsAgent: new (require("https").Agent)({
-    rejectUnauthorized: false, // Временное решение для разработки
+    rejectUnauthorized: false, // Only for development/testing
+    secureProtocol: "TLSv1_2_method",
   }),
 });
 export default instance;

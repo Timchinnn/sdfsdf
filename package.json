@@ -49,12 +49,20 @@
     "/api": {
       "target": "https://147.45.244.129:3000",
       "secure": false,
-      "changeOrigin": true
+      "changeOrigin": true,
+      "protocolRewrite": "https",
+      "headers": {
+        "Connection": "keep-alive"
+      }
     },
     "/img": {
       "target": "https://147.45.244.129:3000",
       "secure": false,
-      "changeOrigin": true
+      "changeOrigin": true,
+      "protocolRewrite": "https",
+      "headers": {
+        "Connection": "keep-alive"
+      }
     }
   },
   "devDependencies": {
