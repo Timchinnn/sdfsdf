@@ -41,6 +41,9 @@ const ShopPopup = (props) => {
       console.log(QuestionMarkImg);
     }
   }, [props.selectedPhoto]);
+  const imageUrl = props.selectedPhoto?.image
+    ? `https://api.zoomayor.io${props.selectedPhoto.image}`
+    : DefaultImg;
   return (
     <div ref={popupRef} className={`shop-popup ${props.active ? "show" : ""}`}>
       <div className="shop-popup__wrapper">
@@ -88,7 +91,7 @@ const ShopPopup = (props) => {
                     props.selectedPhoto.id === "money" ||
                     props.selectedPhoto.image === QuestionMarkImg
                     ? props.selectedPhoto.image
-                    : `${props.selectedPhoto.image}`
+                    : imageUrl
                   : DefaultImg
               }
               alt={props.selectedPhoto?.title || ""}
