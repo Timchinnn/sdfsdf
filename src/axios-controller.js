@@ -2,9 +2,8 @@ import axios from "axios";
 const instance = axios.create({
   baseURL: "https://zoomayor.io/api",
   timeout: 5000,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
+  validateStatus: function (status) {
+    return status >= 200 && status < 500; // Обрабатываем все статусы кроме 5xx
   },
 });
 // Add request interceptor
@@ -19,14 +18,11 @@ instance.interceptors.request.use(
 );
 // Add response interceptor
 instance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    if (error.response?.status === 404) {
-      console.error("Resource not found");
-    } else if (error.response?.status === 500) {
-      console.error("Server error");
+    if (error.response && error.response.status === 404) {
+      console.warn("Resource not found:", error.config.url);
+      return Promise.resolve({ data: null }); // Возвращаем null вместо ошибки
     }
     return Promise.reject(error);
   }
