@@ -4,11 +4,11 @@
   status = 200
 [[redirects]]
   from = "/api/*"
-  to = "https://zoomayor.io/api/:splat"
+  to = "http://147.45.244.129:3000/api/:splat"
   status = 200
   force = true
 [[redirects]]
   from = "/img/*"
-  to = "https://zoomayor.io/img/:splat"
+  to = "http://147.45.244.129:3000/img/:splat"
   status = 200
   force = true
