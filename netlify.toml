@@ -7,10 +7,10 @@
   to = "https://api.zoomayor.io/api/:splat"
   status = 200
   force = true
-  headers = {Access-Control-Allow-Origin = "*"}
+  headers = {Access-Control-Allow-Origin = "https://zoomayor.io"}
 [[redirects]]
   from = "/img/*"
   to = "https://api.zoomayor.io/img/:splat"
   status = 200
   force = true
-  headers = {Access-Control-Allow-Origin = "*"}
+  headers = {Access-Control-Allow-Origin = "https://zoomayor.io"}
