@@ -38,7 +38,7 @@ const MainCarousel = ({
 
     // Если cardBackStyle уже является полноценным URL (например, "/img/card1.png")
     if (typeof cardBackStyle === "string" && cardBackStyle.startsWith("/img")) {
-      return cardBackStyle;
+      return `https://api.zoomayor.io${cardBackStyle}`;
     }
 
     // Если cardBackStyle является ключом для cardBackStyles, используем его
