@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/img/*"
-  to = "https://api.zoomayor.io/img/:splat"
-  status = 200
-  force = true
