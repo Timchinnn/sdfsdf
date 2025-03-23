@@ -1,3 +1,4 @@
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -5,20 +6,25 @@
   force = true
   conditions = {Scheme = ["https"]}
 [[redirects]]
-  from = "/api/*"
-  to = "https://147.45.244.129:3000/api/:splat"
+  from = "/api/*" 
+  to = "https://zoomayor.io/api/:splat"
   status = 200
   force = true
   headers = {
+    X-Frame-Options = "DENY",
+    X-XSS-Protection = "1; mode=block",
+    X-Content-Type-Options = "nosniff",
+    Referrer-Policy = "strict-origin-when-cross-origin",
     Connection = "keep-alive",
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
   }
 [[redirects]]
   from = "/img/*"
-  to = "https://147.45.244.129:3000/img/:splat"
+  to = "https://zoomayor.io/img/:splat" 
   status = 200
   force = true
   headers = {
+    Cache-Control = "public, max-age=31536000",
     Connection = "keep-alive",
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
   }

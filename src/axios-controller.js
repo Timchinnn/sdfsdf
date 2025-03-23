@@ -1,4 +1,5 @@
 import axios from "axios";
+import https from "https";
 const instance = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
@@ -15,8 +16,11 @@ const instance = axios.create({
   validateStatus: (status) => {
     return status >= 200 && status < 500;
   },
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
 });
-// Add response interceptor for better error handling
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
