@@ -7,4 +7,14 @@ const instance = axios.create({
     Accept: "application/json",
   },
 });
+// Add response interceptor to handle CORS headers
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 403) {
+      console.error("CORS error:", error);
+    }
+    return Promise.reject(error);
+  }
+);
 export default instance;
