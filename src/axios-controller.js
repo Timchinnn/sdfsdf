@@ -22,7 +22,12 @@ instance.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 404) {
       console.warn("Resource not found:", error.config.url);
-      return Promise.resolve({ data: null }); // Возвращаем null вместо ошибки
+      // Возвращаем пустой объект вместо null
+      return Promise.resolve({
+        data: {},
+        status: 404,
+        statusText: "Not Found",
+      });
     }
     return Promise.reject(error);
   }
