@@ -80,6 +80,7 @@ const ShopPopup = (props) => {
               alt=""
               className="shop-card__Img"
             /> */}
+
             <img
               src={
                 props.selectedPhoto
@@ -88,7 +89,7 @@ const ShopPopup = (props) => {
                     props.selectedPhoto.id === "money" ||
                     props.selectedPhoto.image === QuestionMarkImg
                     ? props.selectedPhoto.image
-                    : `${props.selectedPhoto.image}`
+                    : `https://api.zoomayor.io${props.selectedPhoto.image}`
                   : DefaultImg
               }
               alt={props.selectedPhoto?.title || ""}
