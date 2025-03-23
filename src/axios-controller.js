@@ -8,6 +8,11 @@ const instance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  transformResponse: [
+    (data) => {
+      return JSON.parse(data);
+    },
+  ],
 });
 // Add request interceptor
 instance.interceptors.request.use(
