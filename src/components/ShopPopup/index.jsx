@@ -11,7 +11,13 @@ import CoinIcon from "assets/img/coin-icon.svg";
 
 const ShopPopup = (props) => {
   const popupRef = useRef(null);
-
+  const [showImage, setShowImage] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowImage(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
   const { setActivePopup, onButtonClick } = props; // Добавляем onButtonClick в props
   console.log(props);
 
@@ -81,19 +87,21 @@ const ShopPopup = (props) => {
               className="shop-card__Img"
             /> */}
 
-            <img
-              src={
-                props.selectedPhoto
-                  ? props.selectedPhoto.id === "set" ||
-                    props.selectedPhoto.id === "energy" ||
-                    props.selectedPhoto.id === "money" ||
-                    props.selectedPhoto.image === QuestionMarkImg
-                    ? props.selectedPhoto.image
-                    : `https://api.zoomayor.io${props.selectedPhoto.image}`
-                  : DefaultImg
-              }
-              alt={props.selectedPhoto?.title || ""}
-            />
+            {showImage && (
+              <img
+                src={
+                  props.selectedPhoto
+                    ? props.selectedPhoto.id === "set" ||
+                      props.selectedPhoto.id === "energy" ||
+                      props.selectedPhoto.id === "money" ||
+                      props.selectedPhoto.image === QuestionMarkImg
+                      ? props.selectedPhoto.image
+                      : `https://api.zoomayor.io${props.selectedPhoto.image}`
+                    : DefaultImg
+                }
+                alt={props.selectedPhoto?.title || ""}
+              />
+            )}
           </div>
           <div className="shop-popup__content">
             {props.selectedPhoto &&
