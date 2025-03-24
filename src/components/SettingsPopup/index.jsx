@@ -121,7 +121,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   //     document.body.classList.add("dark");
   //   }
   const tg = window.Telegram.WebApp;
-  
+
   return (
     <div
       ref={settingsPopupRef}
@@ -131,11 +131,14 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         {modalStep === 1 && (
           <>
             <div className="modal-settings">
-            <div className="modal-settings__item f-center-jcsb">
+              <div className="modal-settings__item f-center-jcsb">
                 {tg?.initDataUnsafe?.user?.id === 7241281378 && (
                   <>
                     <p className="modal-settings__title">Админ панель</p>
-                    <NavLink to={routeAdmin()} className="modal-settings__select">
+                    <NavLink
+                      to={routeAdmin()}
+                      className="modal-settings__select"
+                    >
                       <span>Перейти</span>
                     </NavLink>
                   </>
@@ -437,7 +440,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                     </div>
                   </div>
                   <img
-                    src={`${cardBack.image}`}
+                    src={`https://api.zoomayor.io${cardBack.image}`}
                     alt={cardBack.name}
                     style={{
                       marginRight: "20px",
