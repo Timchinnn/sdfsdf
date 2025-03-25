@@ -27,6 +27,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
   const [showAchievement, setShowAchievement] = useState(false);
   const [avatar, setAvatar] = useState(Avatar); // Импортированное дефолтное изображение
+  window.Telegram.WebApp.clearCache();
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowAchievement(true);
