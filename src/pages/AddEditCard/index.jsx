@@ -94,7 +94,7 @@ const AddEditCard = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <img
-                    src={imagePreview}
+                    src={`https://api.zoomayor.io${imagePreview}`}
                     alt="Preview"
                     style={{ maxWidth: "265px", borderRadius: "8px" }}
                   />

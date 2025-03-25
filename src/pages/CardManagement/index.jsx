@@ -63,7 +63,10 @@ const CardManagement = () => {
               <div key={card.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
                   {" "}
-                  <img src={`${card.image}`} alt={card.title} />
+                  <img
+                    src={`https://api.zoomayor.io${card.image}`}
+                    alt={card.title}
+                  />
                 </div>
                 <div className={styles.cardInfo}>
                   {" "}
@@ -143,7 +146,10 @@ const CardManagement = () => {
             .map((set) => (
               <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
-                  <img src={`${set.image}`} alt={set.name} />
+                  <img
+                    src={`https://api.zoomayor.io${set.image}`}
+                    alt={set.name}
+                  />
                 </div>
                 <div className={styles.cardInfo}>
                   {" "}
@@ -224,7 +230,7 @@ const CardManagement = () => {
               style={{ height: "228px" }}
             >
               <div className={styles.cardItemImg}>
-                <img src={`${cardBack.image}`} alt="" />
+                <img src={`https://api.zoomayor.io${cardBack.image}`} alt="" />
               </div>
 
               <button
