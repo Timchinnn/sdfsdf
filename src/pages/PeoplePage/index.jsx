@@ -231,7 +231,7 @@ const PeoplePage = () => {
                                     userCards.some(
                                       (userCard) => userCard.id === card.id
                                     )
-                                      ? `${card.image}`
+                                      ? `https://api.zoomayor.io${card.image}`
                                       : QuestionMarkImg
                                   }
                                   alt={card.title}
