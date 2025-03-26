@@ -147,21 +147,18 @@ const CardManagement = () => {
             .map((set) => (
               <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
-                  {cardSets.map((set) => {
-                    const firstCard = cards.find(
-                      (card) => card.id === set.cards?.[0]?.id
-                    );
-                    return (
-                      <img
-                        src={
-                          firstCard
-                            ? `https://api.zoomayor.io${firstCard.image}`
-                            : DefaultImg
-                        }
-                        alt={set.name}
-                      />
-                    );
-                  })}
+                  <img
+                    src={
+                      cards.find((card) => card.id === set.cards?.[0]?.id)
+                        ?.image
+                        ? `https://api.zoomayor.io${
+                            cards.find((card) => card.id === set.cards?.[0]?.id)
+                              .image
+                          }`
+                        : DefaultImg
+                    }
+                    alt={set.name}
+                  />
                 </div>
                 <div className={styles.cardInfo}>
                   {" "}
