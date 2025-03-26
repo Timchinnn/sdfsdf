@@ -146,10 +146,17 @@ const CardManagement = () => {
             .map((set) => (
               <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
-                  <img
-                    src={`https://api.zoomayor.io${set.image}`}
-                    alt={set.name}
-                  />
+                  {cardSets.find((cs) => cs.id === set.id)?.cards?.[0]
+                    ?.image ? (
+                    <img
+                      src={`https://api.zoomayor.io${
+                        cardSets.find((cs) => cs.id === set.id).cards[0].image
+                      }`}
+                      alt={set.name}
+                    />
+                  ) : (
+                    <div className={styles.noImage}>Нет изображения</div>
+                  )}
                 </div>
                 <div className={styles.cardInfo}>
                   {" "}
