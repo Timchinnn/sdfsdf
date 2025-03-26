@@ -169,15 +169,6 @@ const AddEditCard = () => {
               value={hourlyIncome}
               onChange={(e) => setHourlyIncome(e.target.value)}
             />
-            <h2 className={styles.title}>Шанс выпадения (%)</h2>
-            <input
-              className={styles.inputCard}
-              type="number"
-              min="0"
-              max="100"
-              value={chance}
-              onChange={(e) => setChance(e.target.value)}
-            />
           </div>
           <div>
             <h2 className={styles.title}>Описание</h2>
