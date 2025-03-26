@@ -10,7 +10,8 @@ import addimg from "assets/img/addimg.png";
 const AddEditCard = () => {
   const history = useHistory();
   const [chance, setChance] = useState("100");
-  const [cardType, setCardType] = useState("citizen"); // or 'city'
+  const [hourlyIncome, setHourlyIncome] = useState("0"); // Добавляем состояние для hourly_income
+  const [cardType, setCardType] = useState("citizen");
   const [cardSection, setCardSection] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -29,6 +30,8 @@ const AddEditCard = () => {
           setTitle(card.title || "");
           setDescription(card.description || "");
           setChance(card.chance || "100");
+          setHourlyIncome(card.hourly_income || "0");
+
           setPrice(card.price || "");
           setExperience(card.experience || "");
           setCardType(card.type || "citizen");
@@ -60,7 +63,7 @@ const AddEditCard = () => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("chance", chance);
-
+    formData.append("hourly_income", hourlyIncome); // Добавляем hourly_income
     formData.append("price", price);
     formData.append("experience", experience);
     formData.append("type", cardSection);
@@ -149,6 +152,23 @@ const AddEditCard = () => {
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
             />{" "}
+            <h2 className={styles.title}>Шанс выпадения (%)</h2>
+            <input
+              className={styles.inputCard}
+              type="number"
+              min="0"
+              max="100"
+              value={chance}
+              onChange={(e) => setChance(e.target.value)}
+            />
+            <h2 className={styles.title}>Доход в час</h2>
+            <input
+              className={styles.inputCard}
+              type="number"
+              min="0"
+              value={hourlyIncome}
+              onChange={(e) => setHourlyIncome(e.target.value)}
+            />
             <h2 className={styles.title}>Шанс выпадения (%)</h2>
             <input
               className={styles.inputCard}
