@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DefaultImg from "assets/img/default-img.png";
 import styles from "./CardManagement.module.css";
 import routeCardManagement from "./route";
 import { cardsService } from "services/api";
