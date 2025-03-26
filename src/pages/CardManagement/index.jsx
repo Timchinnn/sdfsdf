@@ -148,9 +148,10 @@ const CardManagement = () => {
                 <div className={styles.cardItemImg}>
                   <img
                     src={`https://api.zoomayor.io${
-                      set.cards && set.cards.length > 0
+                      set.image ||
+                      (set.cards && set.cards.length > 0
                         ? set.cards[0].image
-                        : set.image
+                        : "")
                     }`}
                     alt={set.name}
                   />
