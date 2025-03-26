@@ -31,7 +31,13 @@ const CardManagement = () => {
     const fetchCardSets = async () => {
       try {
         const response = await axios.get("/card-sets");
-        setCardSets(response.data);
+        const setsWithCards = await Promise.all(
+          response.data.map(async (set) => {
+            const cardsResponse = await cardSetsService.getSetCards(set.id);
+            return { ...set, cards: cardsResponse.data };
+          })
+        );
+        setCardSets(setsWithCards);
       } catch (error) {
         console.error("Error fetching card sets:", error);
       }
