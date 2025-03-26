@@ -147,7 +147,11 @@ const CardManagement = () => {
               <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
                   <img
-                    src={`https://api.zoomayor.io${set.image}`}
+                    src={`https://api.zoomayor.io${
+                      set.cards && set.cards.length > 0
+                        ? set.cards[0].image
+                        : set.image
+                    }`}
                     alt={set.name}
                   />
                 </div>
