@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import DefaultImg from "assets/img/default-img.png";
 import styles from "./CardManagement.module.css";
 import routeCardManagement from "./route";
 import { cardsService } from "services/api";
@@ -148,11 +147,7 @@ const CardManagement = () => {
               <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
                   <img
-                    src={
-                      set.cards && set.cards.length > 0
-                        ? `https://api.zoomayor.io${set.cards[0].image}`
-                        : DefaultImg
-                    }
+                    src={`https://api.zoomayor.io${set.image}`}
                     alt={set.name}
                   />
                 </div>
