@@ -149,12 +149,8 @@ const CardManagement = () => {
                 <div className={styles.cardItemImg}>
                   <img
                     src={
-                      cards.find((card) => card.id === set.cards?.[0]?.id)
-                        ?.image
-                        ? `https://api.zoomayor.io${
-                            cards.find((card) => card.id === set.cards?.[0]?.id)
-                              .image
-                          }`
+                      set.cards && set.cards.length > 0
+                        ? `https://api.zoomayor.io${set.cards[0].image}`
                         : DefaultImg
                     }
                     alt={set.name}
