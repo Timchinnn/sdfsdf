@@ -113,12 +113,11 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   const MAX_ACCUMULATED_INCOME = 1000000;
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
   const [showIncomePopup, setShowIncomePopup] = useState(() => {
-    const shown = sessionStorage.getItem("incomePopupShown");
-    return shown !== "true";
+    return !localStorage.getItem("incomePopupShown");
   });
   useEffect(() => {
     if (showIncomePopup) {
-      sessionStorage.setItem("incomePopupShown", "true");
+      localStorage.setItem("incomePopupShown", "true");
     }
   }, [showIncomePopup]);
   useEffect(() => {
@@ -155,7 +154,6 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
         setCoins(newCoins);
         setAccumulatedIncome(0);
         setShowIncomePopup(false);
-        sessionStorage.setItem("incomePopupShown", "true");
       })
       .catch((error) => console.error("Ошибка при сборе дохода", error));
   };
@@ -315,89 +313,88 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
           </ul>
         </div>
       </div>
-      {(showIncomePopup || accumulatedIncome >= MAX_ACCUMULATED_INCOME * 0.9) &&
-        accumulatedIncome > 0 && (
+      {showIncomePopup && accumulatedIncome > 0 && (
+        <div
+          className="income-popup"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0, 0, 0, 0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
           <div
-            className="income-popup"
+            className="income-popup__content"
             style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: "rgba(0, 0, 0, 0.6)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 1000,
+              background: "#f5f5f5",
+              borderRadius: "16px",
+              padding: "24px",
+              width: "90%",
+              maxWidth: "320px",
+              textAlign: "center",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             }}
           >
             <div
-              className="income-popup__content"
+              className="income-popup__amount"
               style={{
-                background: "#f5f5f5",
-                borderRadius: "16px",
-                padding: "24px",
-                width: "90%",
-                maxWidth: "320px",
-                textAlign: "center",
-                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                marginBottom: "20px",
               }}
             >
-              <div
-                className="income-popup__amount"
+              <img
+                src={MoneyIcon}
+                alt="coins"
+                className="income-popup__icon"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  marginBottom: "20px",
+                  width: "24px",
+                  height: "24px",
                 }}
-              >
-                <img
-                  src={MoneyIcon}
-                  alt="coins"
-                  className="income-popup__icon"
-                  style={{
-                    width: "24px",
-                    height: "24px",
-                  }}
-                />
-                <p
-                  className="income-popup__text"
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: 500,
-                    color: "#333",
-                  }}
-                >
-                  {Math.floor(accumulatedIncome)} / {MAX_ACCUMULATED_INCOME}
-                </p>
-              </div>
-              <button
-                onClick={handleCollectIncome}
-                className="income-popup__button"
+              />
+              <p
+                className="income-popup__text"
                 style={{
-                  background: "#71B21D",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "12px",
-                  padding: "12px 32px",
-                  fontSize: "16px",
+                  fontSize: "18px",
                   fontWeight: 500,
-                  cursor: "pointer",
-                  width: "100%",
-                  transition: "background-color 0.2s",
-                  opacity: accumulatedIncome === 0 ? 0.6 : 1,
-                  pointerEvents: accumulatedIncome === 0 ? "none" : "auto",
+                  color: "#333",
                 }}
-                disabled={accumulatedIncome === 0}
               >
-                Забрать
-              </button>
+                {Math.floor(accumulatedIncome)} / {MAX_ACCUMULATED_INCOME}
+              </p>
             </div>
+            <button
+              onClick={handleCollectIncome}
+              className="income-popup__button"
+              style={{
+                background: "#71B21D",
+                color: "white",
+                border: "none",
+                borderRadius: "12px",
+                padding: "12px 32px",
+                fontSize: "16px",
+                fontWeight: 500,
+                cursor: "pointer",
+                width: "100%",
+                transition: "background-color 0.2s",
+                opacity: accumulatedIncome === 0 ? 0.6 : 1,
+                pointerEvents: accumulatedIncome === 0 ? "none" : "auto",
+              }}
+              disabled={accumulatedIncome === 0}
+            >
+              Забрать
+            </button>
           </div>
-        )}
+        </div>
+      )}
       <div className="main-section__bg">
         <svg
           width="375"
