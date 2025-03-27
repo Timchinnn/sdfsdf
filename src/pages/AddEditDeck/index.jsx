@@ -49,9 +49,10 @@ const AddEditDeck = () => {
         try {
           const response = await cardSetsService.getSetRewards(id);
           const data = response.data;
+
+          // Устанавливаем базовые данные набора
           setName(data.title || "");
           setDescription(data.description || "");
-
           // Инициализируем активные вознаграждения
           const activeRewardsState = {
             coins: false,
@@ -59,7 +60,7 @@ const AddEditDeck = () => {
             card: false,
             experience: false,
           };
-          // Создаем новый массив rewards с начальной структурой
+          // Создаем новый массив rewards с начальными значениями
           const newRewards = [
             { type: "experience", value: 0 },
             { type: "hourly_income", value: 0 },
@@ -67,22 +68,17 @@ const AddEditDeck = () => {
             { type: "card", value: "" },
           ];
           // Обновляем значения из полученных данных
-          if (data.rewards) {
+          if (data.rewards && Array.isArray(data.rewards)) {
             data.rewards.forEach((reward) => {
               // Отмечаем тип награды как активный
               activeRewardsState[reward.type] = true;
+
               // Обновляем значение в массиве наград
               const existingReward = newRewards.find(
                 (r) => r.type === reward.type
               );
               if (existingReward) {
-                if (reward.type === "card") {
-                  // Находим карту по ID и устанавливаем её название
-                  const card = cards.find((c) => c.id === reward.value);
-                  existingReward.value = card ? card.title : reward.value;
-                } else {
-                  existingReward.value = reward.value;
-                }
+                existingReward.value = reward.value;
               }
             });
           }
@@ -90,12 +86,12 @@ const AddEditDeck = () => {
           setActiveRewards(activeRewardsState);
           setRewards(newRewards);
         } catch (error) {
-          console.error("Ошибка при получении наград набора:", error);
+          console.error("Ошибка при получении данных набора:", error);
         }
       }
     };
     fetchSetData();
-  }, [id, cards]);
+  }, [id]);
   // Обновляем при загрузке существующих карт
   useEffect(() => {
     setCardsInSet(new Set(existingCards.map((card) => card.id)));
