@@ -168,36 +168,17 @@ const PeoplePage = () => {
                     <div className="info-popup">
                       <div className="info-popup__content">
                         <p style={{ marginRight: "19px" }}>
-                          {set.description}
-                          <div style={{ marginTop: "10px" }}>
-                            {set.rewards &&
-                              set.rewards.map((reward, index) => (
-                                <div
-                                  key={index}
-                                  style={{ marginBottom: "5px", color: "#333" }}
-                                >
-                                  {reward.type === "experience" &&
-                                    `Опыт: ${reward.value}`}
-                                  {reward.type === "coins" &&
-                                    `Монеты: ${reward.value}`}
-                                  {reward.type === "hourly_income" &&
-                                    `Доход в час: ${reward.value}`}
-                                  {reward.type === "card" &&
-                                    `Карта: ${reward.value}`}
-                                </div>
-                              ))}
-                          </div>
+                          Информация о {set.name}
                         </p>
                         <button
                           className="info-popup__close"
-                          onClick={() => setShowInfo({})}
+                          onClick={() => setShowInfo(false)}
                         >
                           <p>✕</p>
                         </button>
                       </div>
                     </div>
                   )}
-
                   <div className="city-list__more f-center">
                     <div className="city-list__count">
                       {cardSetData[set.id]
