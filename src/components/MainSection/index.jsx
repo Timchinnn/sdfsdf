@@ -113,13 +113,15 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   const MAX_ACCUMULATED_INCOME = 1000000;
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
   const [showIncomePopup, setShowIncomePopup] = useState(() => {
-    return !sessionStorage.getItem("incomePopupShown");
+    const hasBeenShown = sessionStorage.getItem("incomePopupShown");
+    const hasAccumulatedIncome = accumulatedIncome > 0;
+    return !hasBeenShown && hasAccumulatedIncome;
   });
   useEffect(() => {
-    if (showIncomePopup) {
+    if (showIncomePopup && accumulatedIncome > 0) {
       sessionStorage.setItem("incomePopupShown", "true");
     }
-  }, [showIncomePopup]);
+  }, [showIncomePopup, accumulatedIncome]);
   useEffect(() => {
     if (telegramId) {
       axios
