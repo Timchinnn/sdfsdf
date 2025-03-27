@@ -112,9 +112,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   }, []);
   const MAX_ACCUMULATED_INCOME = 1000000;
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
-  const [showIncomePopup, setShowIncomePopup] = useState(() => {
-    return !sessionStorage.getItem("incomePopupShown");
-  });
+  const [showIncomePopup, setShowIncomePopup] = useState(true); // Изменено на true
   useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");
@@ -126,6 +124,8 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
         .get(`/api/user/${telegramId}/accumulated-income`)
         .then((response) => {
           setAccumulatedIncome(response.data.accumulatedIncome);
+          // Показываем попап только если есть накопленный доход
+          setShowIncomePopup(response.data.accumulatedIncome > 0);
         })
         .catch((error) =>
           console.error("Ошибка при получении накопленного дохода", error)
