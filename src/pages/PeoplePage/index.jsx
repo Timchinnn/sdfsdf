@@ -173,12 +173,28 @@ const PeoplePage = () => {
                           Информация о {set.name}
                         </p>
                         {set.rewards &&
-                          set.rewards.map((reward, index) => (
-                            <div key={index} style={{ marginBottom: "10px" }}>
-                              <p>Тип награды: {reward.type}</p>
-                              <p>Значение: {reward.value}</p>
-                            </div>
-                          ))}
+                          set.rewards
+                            .filter(
+                              (reward) =>
+                                reward.value !== 0 && reward.value !== ""
+                            )
+                            .map((reward, index) => (
+                              <div key={index} style={{ marginBottom: "10px" }}>
+                                <p>
+                                  Тип награды:{" "}
+                                  {reward.type === "experience"
+                                    ? "Опыт"
+                                    : reward.type === "hourly_income"
+                                    ? "Доход в час"
+                                    : reward.type === "coins"
+                                    ? "Монеты"
+                                    : reward.type === "card"
+                                    ? "Карта"
+                                    : reward.type}
+                                </p>
+                                <p>Значение: {reward.value}</p>
+                              </div>
+                            ))}
                         <button
                           className="info-popup__close"
                           onClick={() => setShowInfo(false)}
