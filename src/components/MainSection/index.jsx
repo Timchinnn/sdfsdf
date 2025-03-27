@@ -113,11 +113,11 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   const MAX_ACCUMULATED_INCOME = 1000000;
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
   const [showIncomePopup, setShowIncomePopup] = useState(() => {
-    return !localStorage.getItem("incomePopupShown");
+    return !sessionStorage.getItem("incomePopupShown");
   });
   useEffect(() => {
     if (showIncomePopup) {
-      localStorage.setItem("incomePopupShown", "true");
+      sessionStorage.setItem("incomePopupShown", "true");
     }
   }, [showIncomePopup]);
   useEffect(() => {
