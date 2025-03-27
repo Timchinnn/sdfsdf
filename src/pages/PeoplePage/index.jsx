@@ -168,7 +168,25 @@ const PeoplePage = () => {
                     <div className="info-popup">
                       <div className="info-popup__content">
                         <p style={{ marginRight: "19px" }}>
-                          Информация о {set.name}
+                          {set.description}
+                          <div style={{ marginTop: "10px" }}>
+                            {set.rewards &&
+                              set.rewards.map((reward, index) => (
+                                <div
+                                  key={index}
+                                  style={{ marginBottom: "5px" }}
+                                >
+                                  {reward.type === "experience" &&
+                                    `Опыт: ${reward.value}`}
+                                  {reward.type === "coins" &&
+                                    `Монеты: ${reward.value}`}
+                                  {reward.type === "hourly_income" &&
+                                    `Доход в час: ${reward.value}`}
+                                  {reward.type === "card" &&
+                                    `Карта: ${reward.value}`}
+                                </div>
+                              ))}
+                          </div>
                         </p>
                         <button
                           className="info-popup__close"
