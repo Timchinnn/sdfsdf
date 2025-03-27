@@ -317,9 +317,9 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
       </div>
       {(showIncomePopup || accumulatedIncome >= MAX_ACCUMULATED_INCOME * 0.9) &&
         accumulatedIncome > 0 && (
-          <div className="income-popup">
-            style=
-            {{
+          <div
+            className="income-popup"
+            style={{
               position: "fixed",
               top: 0,
               left: 0,
@@ -331,7 +331,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
               justifyContent: "center",
               zIndex: 1000,
             }}
-            >
+          >
             <div
               className="income-popup__content"
               style={{
