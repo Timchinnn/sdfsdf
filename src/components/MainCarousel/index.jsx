@@ -123,16 +123,22 @@ const MainCarousel = ({
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0) {
+      // Создаем массив карт с учетом их шансов
       const weightedPhotos = photos.reduce((acc, photo) => {
-        const copies = Math.floor(photo.chance);
+        // Используем шанс напрямую - чем больше шанс, тем больше копий карты
+        const copies = Math.floor(photo.chance || 100);
         return acc.concat(Array(copies).fill(photo));
       }, []);
+      // Перемешиваем массив
       const shuffled = [...weightedPhotos].sort(() => Math.random() - 0.5);
+
+      // Выбираем карты для каждого слота
       const newSelectedPhotos = data.reduce((acc, item) => {
         const randomIndex = Math.floor(Math.random() * shuffled.length);
         acc[item.id] = shuffled[randomIndex];
         return acc;
       }, {});
+
       setSelectedPhotos(newSelectedPhotos);
     }
   }, [photos]);
