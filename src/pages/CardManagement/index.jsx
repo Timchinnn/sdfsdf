@@ -45,17 +45,54 @@ const CardManagement = () => {
     fetchCardSets();
   }, []);
   useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const response = await cardsService.getAllCards();
-        console.log(response.data);
-        setCards(response.data);
-      } catch (error) {
-        console.error("Error fetching cards:", error);
+    const fetchSetData = async () => {
+      if (id) {
+        try {
+          const response = await cardSetsService.getSetRewards(id);
+          const data = response.data;
+
+          // Устанавливаем базовые данные набора
+          setName(data.title || "");
+          setDescription(data.description || "");
+          // Инициализируем активные вознаграждения
+          const activeRewardsState = {
+            coins: false,
+            hourly_income: false,
+            card: false,
+            experience: false,
+          };
+          // Создаем новый массив rewards с начальными значениями
+          const newRewards = [
+            { type: "experience", value: 0 },
+            { type: "hourly_income", value: 0 },
+            { type: "coins", value: 0 },
+            { type: "card", value: "" },
+          ];
+          // Обновляем значения из полученных данных
+          if (data.rewards && Array.isArray(data.rewards)) {
+            data.rewards.forEach((reward) => {
+              // Отмечаем тип награды как активный
+              activeRewardsState[reward.type] = true;
+
+              // Обновляем значение в массиве наград
+              const existingReward = newRewards.find(
+                (r) => r.type === reward.type
+              );
+              if (existingReward) {
+                existingReward.value = reward.value;
+              }
+            });
+          }
+          // Устанавливаем состояния
+          setActiveRewards(activeRewardsState);
+          setRewards(newRewards);
+        } catch (error) {
+          console.error("Ошибка при получении данных набора:", error);
+        }
       }
     };
-    fetchCards();
-  }, []);
+    fetchSetData();
+  }, [id]);
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
