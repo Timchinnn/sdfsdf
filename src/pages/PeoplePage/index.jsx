@@ -174,7 +174,7 @@ const PeoplePage = () => {
                               set.rewards.map((reward, index) => (
                                 <div
                                   key={index}
-                                  style={{ marginBottom: "5px" }}
+                                  style={{ marginBottom: "5px", color: "#333" }}
                                 >
                                   {reward.type === "experience" &&
                                     `Опыт: ${reward.value}`}
@@ -190,13 +190,14 @@ const PeoplePage = () => {
                         </p>
                         <button
                           className="info-popup__close"
-                          onClick={() => setShowInfo(false)}
+                          onClick={() => setShowInfo({})}
                         >
                           <p>✕</p>
                         </button>
                       </div>
                     </div>
                   )}
+
                   <div className="city-list__more f-center">
                     <div className="city-list__count">
                       {cardSetData[set.id]
