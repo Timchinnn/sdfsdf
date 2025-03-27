@@ -33,6 +33,8 @@ const PeoplePage = () => {
         const telegram_id = tg.initDataUnsafe?.user?.id;
         for (const set of response.data) {
           const cardsResponse = await cardSetsService.getSetCards(set.id);
+          const rewardsResponse = await cardSetsService.getSetRewards(set.id);
+          set.rewards = rewardsResponse.data.rewards;
           setData[set.id] = cardsResponse.data;
           console.log(cardsResponse.data);
           // Check completion status for each set
@@ -170,6 +172,13 @@ const PeoplePage = () => {
                         <p style={{ marginRight: "19px" }}>
                           Информация о {set.name}
                         </p>
+                        {set.rewards &&
+                          set.rewards.map((reward, index) => (
+                            <div key={index} style={{ marginBottom: "10px" }}>
+                              <p>Тип награды: {reward.type}</p>
+                              <p>Значение: {reward.value}</p>
+                            </div>
+                          ))}
                         <button
                           className="info-popup__close"
                           onClick={() => setShowInfo(false)}
