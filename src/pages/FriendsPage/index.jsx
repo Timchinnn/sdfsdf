@@ -62,8 +62,7 @@ const FriendsPage = () => {
             <div className="section-content">
               <h2 className="section-content__title">Реферальная система</h2>
               <p className="section-content__text">
-                Краткое описание, буквально в 2-3 строки, как и зачем приглашать
-                друзей
+                копируйте ссылку и отправьте другу
               </p>
             </div>
             <div className="friends-referal__url">
