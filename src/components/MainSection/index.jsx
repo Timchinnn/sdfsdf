@@ -18,7 +18,7 @@ import axios from "axios";
 const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
   const telegramId = tg ? tg.id : null;
-  console.log(sessionStorage.getItem("incomePopupShown"));
+  // console.log(sessionStorage.getItem("incomePopupShown"));
   const [coins, setCoins] = useState(propCoins || 0);
   const [hourlyIncome, setHourlyIncome] = useState(propHourlyIncome || 0);
   const [activePopup, setActivePopup] = useState(false);
