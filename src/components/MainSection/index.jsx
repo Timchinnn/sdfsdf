@@ -113,12 +113,6 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   }, []);
   const MAX_ACCUMULATED_INCOME = 1000000;
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
-  const getAccumulatedIncomeFromStorage = () => {
-    return parseFloat(sessionStorage.getItem("accumulatedIncome")) || 0;
-  };
-  const setAccumulatedIncomeToStorage = (value) => {
-    sessionStorage.setItem("accumulatedIncome", value.toString());
-  };
   const [showIncomePopup, setShowIncomePopup] = useState(() => {
     return !sessionStorage.getItem("incomePopupShown");
   });
@@ -139,15 +133,14 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
           );
           if (typeof response.data.accumulatedIncome === "number") {
             setAccumulatedIncome(response.data.accumulatedIncome);
-            setAccumulatedIncomeToStorage(response.data.accumulatedIncome);
           } else {
             console.error("Ошибка: accumulatedIncome не является числом");
-            setAccumulatedIncome(getAccumulatedIncomeFromStorage());
+            setAccumulatedIncome(0);
           }
         })
         .catch((error) => {
           console.error("Ошибка при получении накопленного дохода", error);
-          setAccumulatedIncome(getAccumulatedIncomeFromStorage());
+          setAccumulatedIncome(0);
         });
     }
   }, [telegramId]);
@@ -158,11 +151,9 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
         let addition =
           typeof hourlyIncome === "number" ? hourlyIncome / 3600 : 0; // начисление каждую секунду
         let nextValue = prev + addition;
-        if (nextValue > MAX_ACCUMULATED_INCOME) {
-          nextValue = MAX_ACCUMULATED_INCOME;
-        }
-        setAccumulatedIncomeToStorage(nextValue);
-        return nextValue;
+        return nextValue > MAX_ACCUMULATED_INCOME
+          ? MAX_ACCUMULATED_INCOME
+          : nextValue;
       });
     }, 1000);
     return () => clearInterval(interval);
