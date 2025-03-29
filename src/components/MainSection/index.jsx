@@ -149,8 +149,8 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   }, [hourlyIncome]);
   // Обработчик сбора дохода через API
   const handleCollectIncome = () => {
-    axios
-      .put(`/api/user/${telegramId}/collect-income`)
+    userInitService
+      .collectIncome(telegramId)
       .then((response) => {
         const { newCoins } = response.data;
         setCoins(newCoins);
