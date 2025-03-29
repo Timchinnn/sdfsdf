@@ -113,7 +113,10 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   const MAX_ACCUMULATED_INCOME = 1000000;
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
   const [showIncomePopup, setShowIncomePopup] = useState(() => {
-    return !sessionStorage.getItem("incomePopupShown");
+    // Проверяем, было ли окно уже показано в этой сессии
+    const shown = sessionStorage.getItem("incomePopupShown");
+    // Показываем окно только если есть накопленный доход и окно еще не показывалось
+    return !shown && accumulatedIncome > 0;
   });
   useEffect(() => {
     if (showIncomePopup) {
@@ -122,10 +125,13 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   }, [showIncomePopup]);
   useEffect(() => {
     if (telegramId) {
+      // Получаем начальное значение накопленного дохода
       axios
         .get(`/api/user/${telegramId}/accumulated-income`)
         .then((response) => {
           setAccumulatedIncome(response.data.accumulatedIncome);
+          // Показываем окно если есть накопленный доход
+          setShowIncomePopup(response.data.accumulatedIncome > 0);
         })
         .catch((error) =>
           console.error("Ошибка при получении накопленного дохода", error)
@@ -385,10 +391,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
                 cursor: "pointer",
                 width: "100%",
                 transition: "background-color 0.2s",
-                opacity: accumulatedIncome === 0 ? 0.6 : 1,
-                pointerEvents: accumulatedIncome === 0 ? "none" : "auto",
               }}
-              disabled={accumulatedIncome === 0}
             >
               Забрать
             </button>
