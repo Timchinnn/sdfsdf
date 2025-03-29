@@ -123,21 +123,33 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   }, [showIncomePopup]);
   useEffect(() => {
     if (telegramId) {
+      console.log("Fetching accumulated income...");
       axios
         .get(`/api/user/${telegramId}/accumulated-income`)
         .then((response) => {
-          setAccumulatedIncome(response.data.accumulatedIncome);
+          console.log(
+            "Accumulated income received:",
+            response.data.accumulatedIncome
+          );
+          if (typeof response.data.accumulatedIncome === "number") {
+            setAccumulatedIncome(response.data.accumulatedIncome);
+          } else {
+            console.error("Ошибка: accumulatedIncome не является числом");
+            setAccumulatedIncome(0);
+          }
         })
-        .catch((error) =>
-          console.error("Ошибка при получении накопленного дохода", error)
-        );
+        .catch((error) => {
+          console.error("Ошибка при получении накопленного дохода", error);
+          setAccumulatedIncome(0);
+        });
     }
   }, [telegramId]);
   // Каждую секунду прибавляем локально (с учетом ограничения)
   useEffect(() => {
     const interval = setInterval(() => {
       setAccumulatedIncome((prev) => {
-        let addition = hourlyIncome / 3600; // начисление каждую секунду
+        let addition =
+          typeof hourlyIncome === "number" ? hourlyIncome / 3600 : 0; // начисление каждую секунду
         let nextValue = prev + addition;
         return nextValue > MAX_ACCUMULATED_INCOME
           ? MAX_ACCUMULATED_INCOME
