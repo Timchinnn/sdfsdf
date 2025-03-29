@@ -123,7 +123,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   useEffect(() => {
     if (telegramId) {
       axios
-        .get(`/api/user/${telegramId}/accumulated-income`)
+        .get(`/user/${telegramId}/accumulated-income`)
         .then((response) => {
           const income = parseFloat(response.data.accumulatedIncome) || 0;
           setAccumulatedIncome(income);
@@ -150,7 +150,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   // Обработчик сбора дохода через API
   const handleCollectIncome = () => {
     axios
-      .put(`/api/user/${telegramId}/collect-income`)
+      .put(`/user/${telegramId}/collect-income`)
       .then((response) => {
         const { newCoins } = response.data;
         setCoins(newCoins);
