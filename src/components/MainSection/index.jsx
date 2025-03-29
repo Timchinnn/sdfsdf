@@ -18,7 +18,6 @@ import axios from "axios";
 const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
   const telegramId = tg ? tg.id : null;
-  // console.log(sessionStorage.getItem("incomePopupShown"));
   const [coins, setCoins] = useState(propCoins || 0);
   const [hourlyIncome, setHourlyIncome] = useState(propHourlyIncome || 0);
   const [activePopup, setActivePopup] = useState(false);
@@ -123,33 +122,29 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   }, [showIncomePopup]);
   useEffect(() => {
     if (telegramId) {
-      console.log("Fetching accumulated income...");
-      axios
-        .get(`/api/user/${telegramId}/accumulated-income`)
-        .then((response) => {
-          console.log(
-            "Accumulated income received:",
-            response.data.accumulatedIncome
+      const fetchAccumulatedIncome = async () => {
+        try {
+          const response = await axios.get(
+            `/api/user/${telegramId}/accumulated-income`
           );
-          if (typeof response.data.accumulatedIncome === "number") {
+          if (
+            response.data &&
+            typeof response.data.accumulatedIncome === "number"
+          ) {
             setAccumulatedIncome(response.data.accumulatedIncome);
-          } else {
-            console.error("Ошибка: accumulatedIncome не является числом");
-            setAccumulatedIncome(0);
           }
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error("Ошибка при получении накопленного дохода", error);
-          setAccumulatedIncome(0);
-        });
+        }
+      };
+      fetchAccumulatedIncome();
     }
   }, [telegramId]);
   // Каждую секунду прибавляем локально (с учетом ограничения)
   useEffect(() => {
     const interval = setInterval(() => {
       setAccumulatedIncome((prev) => {
-        let addition =
-          typeof hourlyIncome === "number" ? hourlyIncome / 3600 : 0; // начисление каждую секунду
+        let addition = hourlyIncome / 3600; // начисление каждую секунду
         let nextValue = prev + addition;
         return nextValue > MAX_ACCUMULATED_INCOME
           ? MAX_ACCUMULATED_INCOME
