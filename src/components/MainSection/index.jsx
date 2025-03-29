@@ -112,14 +112,9 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   }, []);
   const MAX_ACCUMULATED_INCOME = 1000000;
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
-  const [showIncomePopup, setShowIncomePopup] = useState(true); // Изменено на true
-  useEffect(() => {
-    console.log("Popup state:", {
-      showIncomePopup,
-      accumulatedIncome,
-      telegramId,
-    });
-  }, [showIncomePopup, accumulatedIncome, telegramId]);
+  const [showIncomePopup, setShowIncomePopup] = useState(() => {
+    return !sessionStorage.getItem("incomePopupShown");
+  });
   useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");
@@ -133,11 +128,10 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
           setAccumulatedIncome(response.data.accumulatedIncome);
           // Показываем попап только если есть накопленный доход
           setShowIncomePopup(response.data.accumulatedIncome > 0);
-          console.log("Accumulated income:", response.data.accumulatedIncome); // Добавляем лог
         })
-        .catch((error) => {
-          console.error("Ошибка при получении накопленного дохода:", error);
-        });
+        .catch((error) =>
+          console.error("Ошибка при получении накопленного дохода", error)
+        );
     }
   }, [telegramId]);
   // Каждую секунду прибавляем локально (с учетом ограничения)
@@ -185,7 +179,6 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
           const hourlyIncomeResponse = await userInitService.getHourlyIncome(
             telegram_id
           );
-          console.log("Hourly income response:", hourlyIncomeResponse); // Добавляем лог
           if (
             hourlyIncomeResponse.data &&
             hourlyIncomeResponse.data.hourly_income
@@ -193,7 +186,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
             setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
           }
         } catch (error) {
-          console.error("Error fetching user data:", error);
+          console.error("Error fetching");
         }
       }
     };
