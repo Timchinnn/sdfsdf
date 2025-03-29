@@ -114,6 +114,13 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
   const [showIncomePopup, setShowIncomePopup] = useState(true); // Изменено на true
   useEffect(() => {
+    console.log("Popup state:", {
+      showIncomePopup,
+      accumulatedIncome,
+      telegramId,
+    });
+  }, [showIncomePopup, accumulatedIncome, telegramId]);
+  useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");
     }
