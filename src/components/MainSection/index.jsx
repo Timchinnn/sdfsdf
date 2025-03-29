@@ -122,11 +122,23 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   }, [showIncomePopup]);
   useEffect(() => {
     if (telegramId) {
+      // Получаем время последнего сбора из localStorage
+      const lastCollection = localStorage.getItem("lastIncomeCollection");
+      const lastCollectionTime = lastCollection
+        ? new Date(lastCollection)
+        : new Date();
+
       axios
         .get(`/api/user/${telegramId}/accumulated-income`)
         .then((response) => {
           const income = parseFloat(response.data.accumulatedIncome) || 0;
           setAccumulatedIncome(income);
+
+          // Сохраняем время последнего сбора
+          localStorage.setItem(
+            "lastIncomeCollection",
+            lastCollectionTime.toISOString()
+          );
         })
         .catch((error) => {
           console.error("Ошибка при получении накопленного дохода", error);
@@ -156,6 +168,8 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
         setCoins(newCoins);
         setAccumulatedIncome(0);
         setShowIncomePopup(false);
+        // Обновляем время последнего сбора
+        localStorage.setItem("lastIncomeCollection", new Date().toISOString());
       })
       .catch((error) => console.error("Ошибка при сборе дохода", error));
   };
