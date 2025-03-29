@@ -122,22 +122,16 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   }, [showIncomePopup]);
   useEffect(() => {
     if (telegramId) {
-      const fetchAccumulatedIncome = async () => {
-        try {
-          const response = await axios.get(
-            `/api/user/${telegramId}/accumulated-income`
-          );
-          if (
-            response.data &&
-            typeof response.data.accumulatedIncome === "number"
-          ) {
-            setAccumulatedIncome(response.data.accumulatedIncome);
-          }
-        } catch (error) {
+      axios
+        .get(`/api/user/${telegramId}/accumulated-income`)
+        .then((response) => {
+          const income = parseFloat(response.data.accumulatedIncome) || 0;
+          setAccumulatedIncome(income);
+        })
+        .catch((error) => {
           console.error("Ошибка при получении накопленного дохода", error);
-        }
-      };
-      fetchAccumulatedIncome();
+          setAccumulatedIncome(0);
+        });
     }
   }, [telegramId]);
   // Каждую секунду прибавляем локально (с учетом ограничения)
