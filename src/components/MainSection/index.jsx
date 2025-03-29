@@ -123,7 +123,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   useEffect(() => {
     if (telegramId) {
       axios
-        .get(`/user/${telegramId}/accumulated-income`)
+        .get(`/api/user/${telegramId}/accumulated-income`)
         .then((response) => {
           const income = parseFloat(response.data.accumulatedIncome) || 0;
           setAccumulatedIncome(income);
