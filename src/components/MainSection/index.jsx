@@ -126,8 +126,6 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
         .get(`/api/user/${telegramId}/accumulated-income`)
         .then((response) => {
           setAccumulatedIncome(response.data.accumulatedIncome);
-          // Показываем попап только если есть накопленный доход
-          setShowIncomePopup(response.data.accumulatedIncome > 0);
         })
         .catch((error) =>
           console.error("Ошибка при получении накопленного дохода", error)
