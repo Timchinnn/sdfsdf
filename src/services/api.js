@@ -53,7 +53,7 @@ export const userInitService = {
   getAccumulatedIncome: (telegram_id) =>
     axios.get(`/user/${telegram_id}/accumulated-income`),
   collectIncome: (telegram_id) =>
-    axios.put(`/api/user/${telegram_id}/collect-income`),
+    axios.put(`/user/${telegram_id}/collect-income`),
 };
 export const cardsService = {
   getAllCards: () => axios.get("/cards"),
