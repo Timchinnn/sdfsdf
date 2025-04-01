@@ -204,7 +204,7 @@ const MainCarousel = ({
     setIsSwipeLocked(true); // Lock swiping when card is flipped
     setTimeout(() => {
       setIsSwipeLocked(false); // Unlock swiping after 15 seconds
-    }, 7900);
+    }, 11900);
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;
 
