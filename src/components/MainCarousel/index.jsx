@@ -211,6 +211,7 @@ const MainCarousel = ({
     setIsButtonLocked(true); // Блокируем кнопку
     setTimeout(() => {
       setIsSwipeLocked(false); // Unlock swiping after 15 seconds
+      setIsButtonLocked(false); // Разблокируем кнопку
     }, 11930);
 
     const tg = window.Telegram.WebApp;
@@ -249,7 +250,6 @@ const MainCarousel = ({
     } catch (error) {
       console.error("Error in handleImageClick:", error);
     }
-    setIsButtonLocked(false); // Разблокируем кнопку
   };
 
   return (
