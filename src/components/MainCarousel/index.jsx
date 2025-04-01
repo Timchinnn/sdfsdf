@@ -145,6 +145,7 @@ const MainCarousel = ({
     }
   }, [photos]);
   const nextSlide = () => {
+    console.log(isButtonLocked);
     if (isButtonLocked) return; // Проверяем блокировку
     setActiveSlide((prev) => (prev + 1) % data.length);
   };
@@ -204,6 +205,8 @@ const MainCarousel = ({
 
   const [isFlipped, setIsFlipped] = useState(false);
   const handleImageClick = async (index) => {
+    console.log(isButtonLocked);
+
     setIsSwipeLocked(true); // Lock swiping when card is flipped
     setIsButtonLocked(true); // Блокируем кнопку
     setTimeout(() => {
