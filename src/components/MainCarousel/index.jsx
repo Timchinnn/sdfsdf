@@ -212,7 +212,7 @@ const MainCarousel = ({
     setTimeout(() => {
       setIsSwipeLocked(false); // Unlock swiping after 15 seconds
       setIsButtonLocked(false); // Разблокируем кнопку
-    }, 11930);
+    }, 11900);
 
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;
