@@ -25,6 +25,8 @@ const MainCarousel = ({
   shouldUpdate,
   onUpdateComplete,
 }) => {
+  const [isButtonLocked, setIsButtonLocked] = useState(false);
+
   const [openedCards, setOpenedCards] = useState({});
   const cardBackStyle = useSelector((state) => state.cardBack);
   const [touchStart, setTouchStart] = useState(null);
@@ -143,6 +145,7 @@ const MainCarousel = ({
     }
   }, [photos]);
   const nextSlide = () => {
+    if (isButtonLocked) return; // Проверяем блокировку
     setActiveSlide((prev) => (prev + 1) % data.length);
   };
   useEffect(() => {
@@ -202,9 +205,12 @@ const MainCarousel = ({
   const [isFlipped, setIsFlipped] = useState(false);
   const handleImageClick = async (index) => {
     setIsSwipeLocked(true); // Lock swiping when card is flipped
+    setIsButtonLocked(true); // Блокируем кнопку
     setTimeout(() => {
       setIsSwipeLocked(false); // Unlock swiping after 15 seconds
     }, 11930);
+    setIsButtonLocked(false); // Разблокируем кнопку
+
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;
 
