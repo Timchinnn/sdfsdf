@@ -205,7 +205,7 @@ const MainCarousel = ({
 
   const [isFlipped, setIsFlipped] = useState(false);
   const handleImageClick = async (index) => {
-    console.log(`2${isButtonLocked}`);
+    console.log(`23${isButtonLocked}`);
 
     setIsSwipeLocked(true); // Lock swiping when card is flipped
     setIsButtonLocked(true); // Блокируем кнопку
