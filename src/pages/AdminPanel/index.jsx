@@ -14,6 +14,7 @@ const AdminPanel = () => {
       alert("Неверный пароль");
     }
   };
+  console.log(1);
   if (!isAuthenticated) {
     return (
       <div className={styles.contents}>
