@@ -60,7 +60,7 @@ const MainCarousel = ({
   const onTouchMove = (e) => {
     if (isSwipeLocked) return;
     setTouchEnd(e.targetTouches[0].clientX);
-    console.log(1);
+    // console.log(1);
   };
 
   const onTouchEnd = () => {
@@ -76,7 +76,7 @@ const MainCarousel = ({
       setActiveSlide((prev) => (prev - 1 + data.length) % data.length);
     }
   };
-  console.log(cardBackStyle);
+  // console.log(cardBackStyle);
   const [photos, setPhotos] = useState([]); // Добавить состояние для хранения всех фото
   const [selectedPhotos, setSelectedPhotos] = useState({}); // Объект для хранения фото для каждой карточки
   const [energy, setEnergy] = useState(100); // Initial energy state
@@ -145,7 +145,7 @@ const MainCarousel = ({
     }
   }, [photos]);
   const nextSlide = () => {
-    console.log(`1${isButtonLocked}`);
+    // console.log(`1${isButtonLocked}`);
     if (isButtonLocked) return; // Проверяем блокировку
     setActiveSlide((prev) => (prev + 1) % data.length);
   };
@@ -205,7 +205,7 @@ const MainCarousel = ({
 
   const [isFlipped, setIsFlipped] = useState(false);
   const handleImageClick = async (index) => {
-    console.log(`23${isButtonLocked}`);
+    // console.log(`23${isButtonLocked}`);
 
     setIsSwipeLocked(true); // Lock swiping when card is flipped
     setIsButtonLocked(true); // Блокируем кнопку
