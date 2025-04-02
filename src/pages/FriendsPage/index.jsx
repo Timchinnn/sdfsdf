@@ -41,10 +41,9 @@ const FriendsPage = () => {
   }, []);
 
   const copyToClipboard = () => {
-    const referalUrl = `t.me/zoooparkweb_bot?start=`;
-
+    const referralUrl = `t.me/zoooparkweb_bot?start=${referralCode}`;
     navigator.clipboard
-      .writeText(referalUrl)
+      .writeText(referralUrl)
       .then(() => {
         console.log("Success copy");
       })
