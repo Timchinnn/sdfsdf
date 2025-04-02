@@ -57,17 +57,7 @@ const AppContent = () => {
             path={routeAddEditCardBackPage()}
             component={AddEditCardBack}
           />
-          <Route
-            exact
-            path={routeAdminPage()}
-            render={(props) => {
-              const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
-              if (tg?.id === 467518658) {
-                return <AdminPanel {...props} />;
-              }
-              return <Redirect to="/" />;
-            }}
-          />
+          <Route exact path={routeAdminPage()} component={AdminPanel} />
           <Route
             exact
             path={routeCardManagementPage()}
