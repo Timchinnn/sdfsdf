@@ -55,10 +55,6 @@ const AddEditCard = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (!file.type.startsWith("image/")) {
-        alert("Пожалуйста, загрузите изображение");
-        return;
-      }
       setSelectedImage(file);
       const imageUrl = URL.createObjectURL(file);
       setImagePreview(imageUrl);
@@ -75,29 +71,19 @@ const AddEditCard = () => {
     formData.append("experience", experience);
     formData.append("type", cardSection);
     if (selectedImage) {
-      // Проверяем тип файла
-      if (!selectedImage.type.startsWith("image/")) {
-        alert("Пожалуйста, загрузите изображение");
-        return;
-      }
       formData.append("image", selectedImage);
     }
+
     try {
       if (id) {
         // Обновление существующей карточки
-        const response = await axios.put(`/cards/${id}`, formData);
-        if (response.status === 200) {
-          alert("Карточка успешно обновлена");
-          history.push("/cardmanagement");
-        }
+        await axios.put(`/cards/${id}`, formData);
       } else {
         // Создание новой карточки
-        const response = await axios.post("/cards", formData);
-        if (response.status === 200) {
-          alert("Карточка успешно создана");
-          history.push("/cardmanagement");
-        }
+        await axios.post("/cards", formData);
       }
+      // Редирект на страницу управления картами
+      history.push("/cardmanagement");
     } catch (error) {
       console.error("Error:", error);
     }
@@ -115,9 +101,10 @@ const AddEditCard = () => {
                 >
                   <img
                     src={
-                      imagePreview.startsWith("blob")
-                        ? imagePreview
-                        : `https://api.zoomayor.io${imagePreview}`
+                      typeof imagePreview === "string" &&
+                      imagePreview.startsWith("/img")
+                        ? `https://api.zoomayor.io${imagePreview}`
+                        : imagePreview
                     }
                     alt="Preview"
                     style={{ maxWidth: "265px", borderRadius: "8px" }}
