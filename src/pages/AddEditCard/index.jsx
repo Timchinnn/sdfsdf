@@ -43,7 +43,6 @@ const AddEditCard = () => {
     };
     fetchCardData();
   }, [id]);
-  выаыв;
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [cardResponse, setCardResponse] = useState(null);
