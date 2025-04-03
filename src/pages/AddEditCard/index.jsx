@@ -91,18 +91,15 @@ const AddEditCard = () => {
       <div className={styles.mainContent}>
         <div className={styles.content}>
           <div>
-            {imagePreview ? (
-              <div className={styles.imagePreview}>
+                          <div className={styles.imagePreview}>
                 <div
                   onClick={() => document.getElementById("fileInput").click()}
                   style={{ cursor: "pointer" }}
                 >
                   <img
-                    src={
-                      imagePreview.startsWith("/img")
-                        ? `https://api.zoomayor.io${imagePreview}`
-                        : imagePreview
-                    }
+                    src={imagePreview.startsWith('/img') 
+                      ? `https://api.zoomayor.io${imagePreview}`
+                      : imagePreview}
                     alt="Preview"
                     style={{ maxWidth: "265px", borderRadius: "8px" }}
                   />
