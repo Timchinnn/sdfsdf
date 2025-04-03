@@ -55,8 +55,10 @@ const AddEditCard = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedImage(file);
-      setImagePreview(URL.createObjectURL(file));
+      if (file) {
+        setSelectedImage(file);
+        setImagePreview(URL.createObjectURL(file));
+      }
     }
   };
   console.log(selectedImage);
@@ -104,7 +106,6 @@ const AddEditCard = () => {
                         ? `https://api.zoomayor.io${imagePreview}`
                         : imagePreview
                     }
-                    src={`https://api.zoomayor.io${imagePreview}`}
                     alt="Preview"
                     style={{ maxWidth: "265px", borderRadius: "8px" }}
                   />
