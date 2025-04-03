@@ -118,7 +118,7 @@ const AddEditCard = () => {
                   <div className={styles.whiteBox}>
                     <div className={styles.whiteBoxImg}>
                       <img src={addimg} alt="#" />
-                      <p>Добавьте изображение</p>
+                      <p>Добавьте изображение.</p>
                     </div>
                   </div>
                 </label>
