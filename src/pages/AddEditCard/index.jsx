@@ -55,10 +55,13 @@ const AddEditCard = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file) {
-        setSelectedImage(file);
-        setImagePreview(URL.createObjectURL(file));
+      if (!file.type.startsWith("image/")) {
+        alert("Пожалуйста, загрузите изображение");
+        return;
       }
+      setSelectedImage(file);
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
     }
   };
   console.log(selectedImage);
@@ -72,19 +75,29 @@ const AddEditCard = () => {
     formData.append("experience", experience);
     formData.append("type", cardSection);
     if (selectedImage) {
+      // Проверяем тип файла
+      if (!selectedImage.type.startsWith("image/")) {
+        alert("Пожалуйста, загрузите изображение");
+        return;
+      }
       formData.append("image", selectedImage);
     }
-
     try {
       if (id) {
         // Обновление существующей карточки
-        await axios.put(`/cards/${id}`, formData);
+        const response = await axios.put(`/cards/${id}`, formData);
+        if (response.status === 200) {
+          alert("Карточка успешно обновлена");
+          history.push("/cardmanagement");
+        }
       } else {
         // Создание новой карточки
-        await axios.post("/cards", formData);
+        const response = await axios.post("/cards", formData);
+        if (response.status === 200) {
+          alert("Карточка успешно создана");
+          history.push("/cardmanagement");
+        }
       }
-      // Редирект на страницу управления картами
-      history.push("/cardmanagement");
     } catch (error) {
       console.error("Error:", error);
     }
@@ -102,15 +115,14 @@ const AddEditCard = () => {
                 >
                   <img
                     src={
-                      imagePreview.startsWith("/img")
-                        ? `https://api.zoomayor.io${imagePreview}`
-                        : imagePreview
+                      imagePreview.startsWith("blob")
+                        ? imagePreview
+                        : `https://api.zoomayor.io${imagePreview}`
                     }
                     alt="Preview"
                     style={{ maxWidth: "265px", borderRadius: "8px" }}
                   />
                 </div>
-
                 <input
                   id="fileInput"
                   type="file"
