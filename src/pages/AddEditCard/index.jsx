@@ -19,7 +19,7 @@ const AddEditCard = () => {
   const [experience, setExperience] = useState("");
   // const [image, setImage] = useState(null);
   const { id } = useParams(); // Добавить импорт useParams из react-router-dom
-  console.log(1);
+  console.log(2);
   useEffect(() => {
     const fetchCardData = async () => {
       if (id) {
