@@ -54,8 +54,10 @@ const AddEditCard = () => {
   }, [id, cardResponse]);
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    setSelectedImage(file);
-    setImagePreview(URL.createObjectURL(file));
+    if (file) {
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
   };
   console.log(selectedImage);
   const handleSubmit = async () => {
@@ -97,7 +99,11 @@ const AddEditCard = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <img
-                    src={`https://api.zoomayor.io${imagePreview}`}
+                    src={
+                      imagePreview.startsWith("/img")
+                        ? `https://api.zoomayor.io${imagePreview}`
+                        : imagePreview
+                    }
                     alt="Preview"
                     style={{ maxWidth: "265px", borderRadius: "8px" }}
                   />
