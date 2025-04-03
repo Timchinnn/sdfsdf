@@ -19,7 +19,7 @@ const AddEditCard = () => {
   const [experience, setExperience] = useState("");
   // const [image, setImage] = useState(null);
   const { id } = useParams(); // Добавить импорт useParams из react-router-dom
-  console.log(2);
+  console.log(id);
   useEffect(() => {
     const fetchCardData = async () => {
       if (id) {
@@ -43,6 +43,7 @@ const AddEditCard = () => {
     };
     fetchCardData();
   }, [id]);
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [cardResponse, setCardResponse] = useState(null);
@@ -91,19 +92,24 @@ const AddEditCard = () => {
       <div className={styles.mainContent}>
         <div className={styles.content}>
           <div>
-                          <div className={styles.imagePreview}>
+            {imagePreview ? (
+              <div className={styles.imagePreview}>
                 <div
                   onClick={() => document.getElementById("fileInput").click()}
                   style={{ cursor: "pointer" }}
                 >
                   <img
-                    src={imagePreview.startsWith('/img') 
-                      ? `https://api.zoomayor.io${imagePreview}`
-                      : imagePreview}
+                    src={
+                      imagePreview.startsWith("/img")
+                        ? `https://api.zoomayor.io${imagePreview}`
+                        : imagePreview
+                    }
+                    src={`https://api.zoomayor.io${imagePreview}`}
                     alt="Preview"
                     style={{ maxWidth: "265px", borderRadius: "8px" }}
                   />
                 </div>
+
                 <input
                   id="fileInput"
                   type="file"
@@ -118,7 +124,7 @@ const AddEditCard = () => {
                   <div className={styles.whiteBox}>
                     <div className={styles.whiteBoxImg}>
                       <img src={addimg} alt="#" />
-                      <p>Добавьте изображение.</p>
+                      <p>Добавьте изображение</p>
                     </div>
                   </div>
                 </label>
