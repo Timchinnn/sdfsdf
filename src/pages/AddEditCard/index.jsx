@@ -71,6 +71,7 @@ const AddEditCard = () => {
     formData.append("type", cardSection);
     if (selectedImage) {
       formData.append("image", selectedImage);
+      console.log(selectedImage);
     }
 
     try {
