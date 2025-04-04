@@ -69,6 +69,8 @@ const AddEditCard = () => {
     formData.append("price", price);
     formData.append("experience", experience);
     formData.append("type", cardSection);
+    console.log(`1${selectedImage}`);
+
     if (selectedImage) {
       formData.append("image", selectedImage);
       console.log(selectedImage);
