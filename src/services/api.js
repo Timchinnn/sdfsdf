@@ -60,6 +60,8 @@ export const cardsService = {
   getCardsByType: (type) => axios.get(`/cards/${type}`),
   getCard: (id) => axios.get(`/cards/${id}`),
   deleteCard: (id) => axios.delete(`/cards/${id}`),
+  updateCard: (id, formData) => axios.put(`/cards/${id}`, formData),
+  createCard: (formData) => axios.post("/cards", formData),
 };
 export const cardBackService = {
   getAllCardBacks: () => axios.get("/card-backs"),
