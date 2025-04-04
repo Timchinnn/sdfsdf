@@ -49,8 +49,9 @@ const AddEditCard = () => {
   const [cardResponse, setCardResponse] = useState(null);
   useEffect(() => {
     if (id && cardResponse?.data?.image) {
-      setImagePreview(`https://api.zoomayor.io${cardResponse.data.image}`);
-      setSelectedImage(null); // Reset selected image when loading existing image
+      const imageUrl = `https://api.zoomayor.io${cardResponse.data.image}`;
+      setImagePreview(imageUrl);
+      setSelectedImage(null);
     }
   }, [id, cardResponse]);
   const handleImageUpload = (e) => {
@@ -59,6 +60,8 @@ const AddEditCard = () => {
       setSelectedImage(file);
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
+      // Очищаем предыдущий URL для предотвращения утечек памяти
+      return () => URL.revokeObjectURL(previewUrl);
     }
   };
   console.log(selectedImage);
