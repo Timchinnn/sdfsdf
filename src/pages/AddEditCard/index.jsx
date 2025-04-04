@@ -49,14 +49,16 @@ const AddEditCard = () => {
   const [cardResponse, setCardResponse] = useState(null);
   useEffect(() => {
     if (id && cardResponse?.data?.image) {
-      setImagePreview(cardResponse.data.image);
+      setImagePreview(`https://api.zoomayor.io${cardResponse.data.image}`);
+      setSelectedImage(null); // Reset selected image when loading existing image
     }
   }, [id, cardResponse]);
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       setSelectedImage(file);
-      setImagePreview(URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
     }
   };
   console.log(selectedImage);
@@ -65,20 +67,26 @@ const AddEditCard = () => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("chance", chance);
-    formData.append("hourly_income", hourlyIncome);
+    formData.append("hourly_income", hourlyIncome); // Добавляем hourly_income
     formData.append("price", price);
     formData.append("experience", experience);
-    formData.append("type", cardType); // Изменено с cardSection на cardType
-    formData.append("section", cardSection);
+    formData.append("type", cardSection);
+    console.log(`1${selectedImage}`);
+
     if (selectedImage) {
-      formData.append("image", selectedImage, selectedImage.name);
+      formData.append("image", selectedImage);
+      console.log(selectedImage);
     }
+
     try {
       if (id) {
+        // Обновление существующей карточки
         await cardsService.updateCard(id, formData);
       } else {
+        // Создание новой карточки
         await cardsService.createCard(formData);
       }
+      // Редирект на страницу управления картами
       history.push("/cardmanagement");
     } catch (error) {
       console.error("Error:", error);
