@@ -65,26 +65,20 @@ const AddEditCard = () => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("chance", chance);
-    formData.append("hourly_income", hourlyIncome); // Добавляем hourly_income
+    formData.append("hourly_income", hourlyIncome);
     formData.append("price", price);
     formData.append("experience", experience);
-    formData.append("type", cardSection);
-    console.log(`1${selectedImage}`);
-
+    formData.append("type", cardType); // Изменено с cardSection на cardType
+    formData.append("section", cardSection);
     if (selectedImage) {
-      formData.append("image", selectedImage);
-      console.log(selectedImage);
+      formData.append("image", selectedImage, selectedImage.name);
     }
-
     try {
       if (id) {
-        // Обновление существующей карточки
         await cardsService.updateCard(id, formData);
       } else {
-        // Создание новой карточки
         await cardsService.createCard(formData);
       }
-      // Редирект на страницу управления картами
       history.push("/cardmanagement");
     } catch (error) {
       console.error("Error:", error);
