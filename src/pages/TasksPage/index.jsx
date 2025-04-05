@@ -54,7 +54,11 @@ const TasksPage = () => {
                 <div className="tasks-list__card block-style">
                   <div className="tasks-list__wrap f-center">
                     <div className="tasks-list__image">
-                      <img src={DefaultImgTG} alt="" />
+                      <img
+                        src={DefaultImgTG}
+                        alt=""
+                        style={{ height: "73%" }}
+                      />
                     </div>
                     <div className="tasks-list__content">
                       <h3 className="tasks-list__title">
@@ -87,7 +91,7 @@ const TasksPage = () => {
                 <div className="tasks-list__card block-style">
                   <div className="tasks-list__wrap f-center">
                     <div className="tasks-list__image">
-                      <img src={DefaultImg} alt="" />
+                      <img src={DefaultImg} alt="" style={{ height: "73%" }} />
                     </div>
                     <div className="tasks-list__content">
                       <h3 className="tasks-list__title">
