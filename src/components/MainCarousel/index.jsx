@@ -123,31 +123,30 @@ const MainCarousel = ({
   }, []);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
-  useEffect(() => {
-    if (photos.length > 0) {
-      const newSelectedPhotos = data.reduce((acc, item) => {
-        let totalChance = 0;
-        // Сначала вычисляем общую сумму шансов
-        photos.forEach((card) => {
-          totalChance += Math.max(1, Math.min(card.chance || 1, 100));
-        });
-        // Генерируем случайное число от 0 до суммы всех шансов
-        let randomNum = Math.random() * totalChance;
-        let currentSum = 0;
-        // Проходим по картам, суммируя их шансы, пока не достигнем случайного числа
-        for (const card of photos) {
-          currentSum += Math.max(1, Math.min(card.chance || 1, 100));
-          if (randomNum <= currentSum) {
-            acc[item.id] = card;
-            break;
-          }
+  if (photos.length > 0) {
+    const newSelectedPhotos = data.reduce((acc, item) => {
+      let totalWeight = 0;
+      // Вычисляем общий вес на основе шансов
+      photos.forEach((card) => {
+        const chance = Math.max(1, Math.min(card.chance || 1, 100));
+        totalWeight += chance;
+      });
+      // Генерируем случайное число от 0 до суммы всех весов
+      let randomNum = Math.random() * totalWeight;
+      let currentWeight = 0;
+      // Выбираем карту на основе весов
+      for (const card of photos) {
+        const chance = Math.max(1, Math.min(card.chance || 1, 100));
+        currentWeight += chance;
+        if (randomNum <= currentWeight) {
+          acc[item.id] = card;
+          break;
         }
-
-        return acc;
-      }, {});
-      setSelectedPhotos(newSelectedPhotos);
-    }
-  }, [photos]);
+      }
+      return acc;
+    }, {});
+    setSelectedPhotos(newSelectedPhotos);
+  }
   const nextSlide = () => {
     // console.log(`1${isButtonLocked}`);
     if (isButtonLocked) return; // Проверяем блокировку
