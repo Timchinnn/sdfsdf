@@ -9,14 +9,25 @@ import StarIcon from "assets/img/star-icon.svg";
 import MobileNav from "components/MobileNav";
 const TasksPage = () => {
   const [AdController, setAdController] = useState(null);
+  const [ads, setAds] = useState([]); // Добавляем состояние для рекламы
   useEffect(() => {
-    // Initialize AdsGram SDK
+    // Загружаем рекламу при монтировании компонента
+    const fetchAds = async () => {
+      try {
+        const response = await axios.get("/api/ads");
+        setAds(response.data);
+      } catch (error) {
+        console.error("Error fetching ads:", error);
+      }
+    };
+    fetchAds();
+    // Инициализация SDK рекламы
     const script = document.createElement("script");
     script.src = "https://sad.adsgram.ai/js/sad.min.js";
     script.async = true;
     script.onload = () => {
       const controller = window.Adsgram.init({
-        blockId: "9521", // Replace with your actual block ID
+        blockId: "9521",
       });
       setAdController(controller);
     };
@@ -30,8 +41,6 @@ const TasksPage = () => {
     try {
       const result = await AdController.show();
       if (result.done) {
-        // User watched the ad till the end
-        // Add reward logic here
         console.log("Ad completed, give reward");
       }
     } catch (error) {
@@ -88,28 +97,37 @@ const TasksPage = () => {
                   </button>
                 </div>
               </li>
-              <li className="tasks-list__item">
-                <div className="tasks-list__card block-style">
-                  <div className="tasks-list__wrap f-center">
-                    <div className="tasks-list__image">
-                      <img src={DefaultImg} alt="" style={{ height: "73%" }} />
+              {ads.map((ad) => (
+                <li key={ad.id} className="tasks-list__item">
+                  <div className="tasks-list__card block-style">
+                    <div className="tasks-list__wrap f-center">
+                      <div className="tasks-list__image">
+                        <img
+                          src={
+                            ad.image_url
+                              ? `https://api.zoomayor.io${ad.image_url}`
+                              : DefaultImg
+                          }
+                          alt=""
+                          style={{ height: "73%" }}
+                        />
+                      </div>
+                      <div className="tasks-list__content">
+                        <h3 className="tasks-list__title">{ad.title}</h3>
+                        <p>{ad.description}</p>
+                      </div>
                     </div>
-                    <div className="tasks-list__content">
-                      <h3 className="tasks-list__title">
-                        Посмотрите рекламу чтобы получить награду
-                      </h3>
-                    </div>
+                    <button
+                      type="button"
+                      className="tasks-list__btn"
+                      style={{ marginTop: "0" }}
+                      onClick={showRewardedAd}
+                    >
+                      Смотреть
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className="tasks-list__btn"
-                    style={{ marginTop: "0" }}
-                    onClick={showRewardedAd}
-                  >
-                    Смотреть
-                  </button>
-                </div>
-              </li>
+                </li>
+              ))}
               {/* <li className="tasks-list__item">
                 <div className="tasks-list__card block-style">
                   <div className="tasks-list__wrap f-center">
