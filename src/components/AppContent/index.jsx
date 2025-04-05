@@ -20,6 +20,9 @@ import AddEditDeck, {
   routeAddEditDeck as routeAddEditDeckPage,
 } from "pages/AddEditDeck";
 import AdminPanel, { routeAdmin as routeAdminPage } from "pages/AdminPanel";
+import AdsManagement, {
+  routeAdsManagement as routeAdsManagementPage,
+} from "pages/AdsManagement";
 import CardManagement, {
   routeCardManagement as routeCardManagementPage,
 } from "pages/CardManagement";
@@ -58,6 +61,11 @@ const AppContent = () => {
             component={AddEditCardBack}
           />
           <Route exact path={routeAdminPage()} component={AdminPanel} />
+          <Route
+            exact
+            path={routeAdsManagementPage()}
+            component={AdsManagement}
+          />
           <Route
             exact
             path={routeCardManagementPage()}
