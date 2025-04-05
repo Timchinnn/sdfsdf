@@ -168,10 +168,22 @@ const MainCarousel = ({
       setOpenedCards({});
       setTimeout(() => {
         if (photos.length > 0) {
-          const shuffled = [...photos].sort(() => Math.random() - 0.5);
+          // Используем функцию weightedRandom для каждой карты
           const newSelectedPhotos = data.reduce((acc, item) => {
-            const randomIndex = Math.floor(Math.random() * shuffled.length);
-            acc[item.id] = shuffled[randomIndex];
+            const totalWeight = photos.reduce(
+              (sum, photo) => sum + (photo.chance || 1),
+              0
+            );
+            const random = Math.random() * totalWeight;
+            let cumulativeWeight = 0;
+
+            for (const photo of photos) {
+              cumulativeWeight += photo.chance || 1;
+              if (random <= cumulativeWeight) {
+                acc[item.id] = photo;
+                break;
+              }
+            }
             return acc;
           }, {});
           setSelectedPhotos(newSelectedPhotos);
