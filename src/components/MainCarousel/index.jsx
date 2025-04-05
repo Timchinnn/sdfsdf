@@ -125,25 +125,32 @@ const MainCarousel = ({
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0) {
-      console.log(photos);
-      const weightedPhotos = photos.reduce((acc, photo) => {
-        console.log(typeof photo.chance);
+      // Нормализуем вероятности
+      const normalizedPhotos = photos.map((photo) => ({
+        ...photo,
+        chance: Math.min(Math.max(photo.chance || 1, 1), 100),
+      }));
+      // Функция взвешенного выбора
+      const weightedRandomSelect = (items) => {
+        const total = items.reduce((sum, item) => sum + item.chance, 0);
+        const random = Math.random() * total;
+        let current = 0;
 
-        const normalizedChance = Math.min(Math.max(photo.chance || 1, 1), 100);
-        const copies = Math.ceil(normalizedChance);
-        return acc.concat(Array(copies).fill(photo));
-      }, []);
-      const shuffled = [...weightedPhotos].sort(() => Math.random() - 0.5);
+        for (const item of items) {
+          current += item.chance;
+          if (random <= current) return item;
+        }
 
+        return items[0]; // fallback
+      };
+      // Создаем новый объект выбранных карт
       const newSelectedPhotos = data.reduce((acc, item) => {
-        const randomIndex = Math.floor(Math.random() * shuffled.length);
-        acc[item.id] = shuffled[randomIndex];
+        acc[item.id] = weightedRandomSelect(normalizedPhotos);
         return acc;
       }, {});
-
       setSelectedPhotos(newSelectedPhotos);
     }
-  }, [photos]);
+  }, [photos, data]);
   const nextSlide = () => {
     // console.log(`1${isButtonLocked}`);
     if (isButtonLocked) return; // Проверяем блокировку
