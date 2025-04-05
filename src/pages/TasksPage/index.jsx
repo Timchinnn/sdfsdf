@@ -79,6 +79,7 @@ const TasksPage = () => {
                   <button
                     type="button"
                     className="tasks-list__btn"
+                    style={{ marginTop: "0" }}
                     onClick={() =>
                       window.open("https://t.me/zoomayor", "_blank")
                     }
@@ -102,6 +103,7 @@ const TasksPage = () => {
                   <button
                     type="button"
                     className="tasks-list__btn"
+                    style={{ marginTop: "0" }}
                     onClick={showRewardedAd}
                   >
                     Смотреть
