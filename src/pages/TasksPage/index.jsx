@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import routeTasks from "./routes";
 import MainSection from "components/MainSection";
-import DefaultImg from "assets/img/unnamed.png";
+import DefaultImg from "assets/img/default-img.png";
+import DefaultImgTG from "assets/img/unnamed.png";
+
 import CoinIcon from "assets/img/coin-icon.svg";
 import StarIcon from "assets/img/star-icon.svg";
 import MobileNav from "components/MobileNav";
@@ -52,7 +54,7 @@ const TasksPage = () => {
                 <div className="tasks-list__card block-style">
                   <div className="tasks-list__wrap f-center">
                     <div className="tasks-list__image">
-                      <img src={DefaultImg} alt="" />
+                      <img src={DefaultImgTG} alt="" />
                     </div>
                     <div className="tasks-list__content">
                       <h3 className="tasks-list__title">
