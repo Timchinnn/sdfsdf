@@ -125,25 +125,21 @@ const MainCarousel = ({
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0) {
-      // Нормализуем вероятности
-      const normalizedPhotos = photos.map((photo) => ({
-        ...photo,
-        chance: Math.min(Math.max(photo.chance || 1, 1), 100),
-      }));
-      // Функция взвешенного выбора
-      const weightedRandomSelect = (items) => {
-        const total = items.reduce((sum, item) => sum + item.chance, 0);
-        const random = Math.random() * total;
-        let current = 0;
+      const weightedRandom = (items) => {
+        const totalWeight = items.reduce(
+          (sum, item) => sum + (item.chance || 1),
+          0
+        );
+        let random = Math.random() * totalWeight;
+
         for (const item of items) {
-          current += item.chance;
-          if (random <= current) return item;
+          random -= item.chance || 1;
+          if (random <= 0) return item;
         }
-        return items[0]; // fallback
+        return items[0];
       };
-      // Создаем новый объект выбранных карт
       const newSelectedPhotos = data.reduce((acc, item) => {
-        acc[item.id] = weightedRandomSelect(normalizedPhotos);
+        acc[item.id] = weightedRandom(photos);
         return acc;
       }, {});
       setSelectedPhotos(newSelectedPhotos);
