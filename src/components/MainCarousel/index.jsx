@@ -125,16 +125,11 @@ const MainCarousel = ({
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0) {
-      // Считаем общую сумму шансов
-      const totalChance = photos.reduce((acc, card) => {
-        return acc + Math.min(Math.max(card.chance || 1, 1), 100);
-      }, 0);
-      // Выбираем карты для каждого слота с учетом их весов
       const newSelectedPhotos = data.reduce((acc, item) => {
-        const randomValue = Math.random() * totalChance; // Генерируем случайное число
+        const randomValue = Math.random(); // Генерируем случайное число от 0 до 1
         let cumulativeChance = 0; // Сумма шансов
         for (const card of photos) {
-          const chance = Math.min(Math.max(card.chance || 1, 1), 100); // Нормализуем шанс
+          const chance = Math.min(Math.max(card.chance || 1, 1), 100) / 100; // Нормализуем шанс от 0 до 1
           cumulativeChance += chance; // Увеличиваем сумму шансов
           // Если случайное число меньше или равно сумме шансов, выбираем карту
           if (randomValue <= cumulativeChance) {
