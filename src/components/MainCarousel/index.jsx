@@ -125,25 +125,27 @@ const MainCarousel = ({
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0) {
-      console.log(photos);
-      // Создаем массив карт с учетом их шансов
-      const weightedPhotos = photos.reduce((acc, photo) => {
+      // Создаем массив карт с весами на основе их шансов
+      const weightedCards = photos.reduce((acc, card) => {
         // Нормализуем шанс от 1 до 100
-        const normalizedChance = Math.min(Math.max(photo.chance || 1, 1), 100);
-        // Создаем количество копий пропорционально шансу (1 = 1 копия, 100 = 100 копий)
-        const copies = Math.ceil(normalizedChance);
-        return acc.concat(Array(copies).fill(photo));
-      }, []);
-      // Перемешиваем массив
-      const shuffled = [...weightedPhotos].sort(() => Math.random() - 0.5);
+        const chance = Math.min(Math.max(card.chance || 1, 1), 100);
 
-      // Выбираем карты для каждого слота
+        // Добавляем карту в массив количество раз пропорционально ее шансу
+        // Карты с шансом 1 добавляются 1 раз
+        // Карты с шансом 100 добавляются 100 раз
+        const copies = Math.ceil(chance);
+        const cardCopies = Array(copies).fill(card);
+        return acc.concat(cardCopies);
+      }, []);
+      // Перемешиваем массив взвешенных карт
+      const shuffled = [...weightedCards].sort(() => Math.random() - 0.5);
+      // Выбираем карты для каждого слота с учетом их весов
       const newSelectedPhotos = data.reduce((acc, item) => {
+        // Выбираем случайную карту из взвешенного массива
         const randomIndex = Math.floor(Math.random() * shuffled.length);
         acc[item.id] = shuffled[randomIndex];
         return acc;
       }, {});
-
       setSelectedPhotos(newSelectedPhotos);
     }
   }, [photos]);
