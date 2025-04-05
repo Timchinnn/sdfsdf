@@ -135,12 +135,10 @@ const MainCarousel = ({
         const total = items.reduce((sum, item) => sum + item.chance, 0);
         const random = Math.random() * total;
         let current = 0;
-
         for (const item of items) {
           current += item.chance;
           if (random <= current) return item;
         }
-
         return items[0]; // fallback
       };
       // Создаем новый объект выбранных карт
