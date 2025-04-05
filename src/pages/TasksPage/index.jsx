@@ -95,7 +95,7 @@ const TasksPage = () => {
                   </div>
                 </div>
               </li>
-              <li className="tasks-list__item">
+              {/* <li className="tasks-list__item">
                 <div className="tasks-list__card block-style">
                   <div className="tasks-list__wrap f-center">
                     <div className="tasks-list__image">
@@ -135,7 +135,7 @@ const TasksPage = () => {
                     </svg>
                   </button>
                 </div>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
