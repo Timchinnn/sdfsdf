@@ -126,20 +126,26 @@ const MainCarousel = ({
   useEffect(() => {
     if (photos.length > 0) {
       const newSelectedPhotos = data.reduce((acc, item) => {
-        const randomValue = Math.random(); // Генерируем случайное число от 0 до 1
-        let cumulativeChance = 0; // Сумма шансов
+        let totalChance = 0;
+        // Сначала вычисляем общую сумму шансов
+        photos.forEach((card) => {
+          totalChance += Math.max(1, Math.min(card.chance || 1, 100));
+        });
+        // Генерируем случайное число от 0 до суммы всех шансов
+        let randomNum = Math.random() * totalChance;
+        let currentSum = 0;
+        // Проходим по картам, суммируя их шансы, пока не достигнем случайного числа
         for (const card of photos) {
-          const chance = Math.min(Math.max(card.chance || 1, 1), 100) / 100; // Нормализуем шанс от 0 до 1
-          cumulativeChance += chance; // Увеличиваем сумму шансов
-          // Если случайное число меньше или равно сумме шансов, выбираем карту
-          if (randomValue <= cumulativeChance) {
-            acc[item.id] = card; // Сохраняем выбранную карту
-            break; // Выходим из цикла
+          currentSum += Math.max(1, Math.min(card.chance || 1, 100));
+          if (randomNum <= currentSum) {
+            acc[item.id] = card;
+            break;
           }
         }
-        return acc; // Возвращаем накопленный объект
+
+        return acc;
       }, {});
-      setSelectedPhotos(newSelectedPhotos); // Обновляем состояние выбранных карт
+      setSelectedPhotos(newSelectedPhotos);
     }
   }, [photos]);
   const nextSlide = () => {
