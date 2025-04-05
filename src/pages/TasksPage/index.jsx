@@ -1,14 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import routeTasks from "./routes";
 import MainSection from "components/MainSection";
-
 import DefaultImg from "assets/img/default-img.png";
 import CoinIcon from "assets/img/coin-icon.svg";
 import StarIcon from "assets/img/star-icon.svg";
-
 import MobileNav from "components/MobileNav";
-
 const TasksPage = () => {
+  const [AdController, setAdController] = useState(null);
+  useEffect(() => {
+    // Initialize AdsGram SDK
+    const script = document.createElement("script");
+    script.src = "https://sad.adsgram.ai/js/sad.min.js";
+    script.async = true;
+    script.onload = () => {
+      const controller = window.Adsgram.init({
+        blockId: "9521", // Replace with your actual block ID
+      });
+      setAdController(controller);
+    };
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+  const showRewardedAd = async () => {
+    if (!AdController) return;
+    try {
+      const result = await AdController.show();
+      if (result.done) {
+        // User watched the ad till the end
+        // Add reward logic here
+        console.log("Ad completed, give reward");
+      }
+    } catch (error) {
+      console.error("Error showing ad:", error);
+    }
+  };
   return (
     <section className="tasks">
       <div className="container">
@@ -46,6 +73,20 @@ const TasksPage = () => {
                   <button type="button" className="tasks-list__btn">
                     Начать
                   </button>
+                </div>
+              </li>
+              <li className="tasks-list__item">
+                <div className="tasks-list__card block-style">
+                  <div className="tasks-list__wrap f-center">
+                    <div className="tasks-list__image">
+                      <img src={DefaultImg} alt="" onClick={showRewardedAd} />
+                    </div>
+                    <div className="tasks-list__content">
+                      <h3 className="tasks-list__title">
+                        Посмотрите рекламу чтобы получить награду
+                      </h3>
+                    </div>
+                  </div>
                 </div>
               </li>
               <li className="tasks-list__item">
