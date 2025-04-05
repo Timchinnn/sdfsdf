@@ -124,21 +124,26 @@ const MainCarousel = ({
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
-    if (cards.length > 0) {
-      const weightedcards = cards.reduce((acc, card) => {
-        const normalizedChance = Math.min(Math.max(card.chance || 1, 1), 100);
+    if (photos.length > 0) {
+      console.log(photos);
+      const weightedPhotos = photos.reduce((acc, photo) => {
+        console.log(typeof photo.chance);
+
+        const normalizedChance = Math.min(Math.max(photo.chance || 1, 1), 100);
         const copies = Math.ceil(normalizedChance);
-        return acc.concat(Array(copies).fill(card));
+        return acc.concat(Array(copies).fill(photo));
       }, []);
-      const shuffled = [...weightedcards].sort(() => Math.random() - 0.5);
-      const newSelectedcards = data.reduce((acc, item) => {
+      const shuffled = [...weightedPhotos].sort(() => Math.random() - 0.5);
+
+      const newSelectedPhotos = data.reduce((acc, item) => {
         const randomIndex = Math.floor(Math.random() * shuffled.length);
         acc[item.id] = shuffled[randomIndex];
         return acc;
       }, {});
-      setSelectedcards(newSelectedcards);
+
+      setSelectedPhotos(newSelectedPhotos);
     }
-  }, [cards]);
+  }, [photos]);
   const nextSlide = () => {
     // console.log(`1${isButtonLocked}`);
     if (isButtonLocked) return; // Проверяем блокировку
