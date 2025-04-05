@@ -103,7 +103,10 @@ const TasksPage = () => {
                 <li key={ad.id} className="tasks-list__item">
                   <div className="tasks-list__card block-style">
                     <div className="tasks-list__wrap f-center">
-                      <div className="tasks-list__image">
+                      <div
+                        className="tasks-list__image"
+                        style={{ display: "flex", alignItems: "center" }}
+                      >
                         <img
                           src={
                             ad.image_url
