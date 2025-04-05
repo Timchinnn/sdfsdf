@@ -125,10 +125,13 @@ const MainCarousel = ({
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0) {
+      console.log(photos);
       // Создаем массив карт с учетом их шансов
       const weightedPhotos = photos.reduce((acc, photo) => {
-        // Используем шанс напрямую - чем больше шанс, тем больше копий карты
-        const copies = Math.floor(photo.chance || 100);
+        // Нормализуем шанс от 1 до 100
+        const normalizedChance = Math.min(Math.max(photo.chance || 1, 1), 100);
+        // Создаем количество копий пропорционально шансу (1 = 1 копия, 100 = 100 копий)
+        const copies = Math.ceil(normalizedChance);
         return acc.concat(Array(copies).fill(photo));
       }, []);
       // Перемешиваем массив
