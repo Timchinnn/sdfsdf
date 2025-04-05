@@ -87,7 +87,7 @@ const TasksPage = () => {
                 <div className="tasks-list__card block-style">
                   <div className="tasks-list__wrap f-center">
                     <div className="tasks-list__image">
-                      <img src={DefaultImg} alt="" onClick={showRewardedAd} />
+                      <img src={DefaultImg} alt="" />
                     </div>
                     <div className="tasks-list__content">
                       <h3 className="tasks-list__title">
@@ -95,6 +95,13 @@ const TasksPage = () => {
                       </h3>
                     </div>
                   </div>
+                  <button
+                    type="button"
+                    className="tasks-list__btn"
+                    onClick={showRewardedAd}
+                  >
+                    Смотреть
+                  </button>
                 </div>
               </li>
               {/* <li className="tasks-list__item">
