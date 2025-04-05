@@ -130,8 +130,8 @@ const MainCarousel = ({
       const weightedPhotos = photos.reduce((acc, photo) => {
         // Нормализуем шанс от 1 до 100
         const normalizedChance = Math.min(Math.max(photo.chance || 1, 1), 100);
-        // Создаем количество копий обратно пропорционально шансу (100 = 1 копия, 1 = 100 копий)
-        const copies = Math.ceil(101 - normalizedChance);
+        // Создаем количество копий пропорционально шансу (1 = 1 копия, 100 = 100 копий)
+        const copies = Math.ceil(normalizedChance);
         return acc.concat(Array(copies).fill(photo));
       }, []);
       // Перемешиваем массив
