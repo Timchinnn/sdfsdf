@@ -127,20 +127,19 @@ const MainCarousel = ({
     if (photos.length > 0) {
       // Создаем массив карт с учетом их шансов
       const weightedPhotos = photos.reduce((acc, photo) => {
-        // Инвертируем шанс: 100 - chance, чтобы больший шанс давал меньше копий
-        const copies = Math.floor(100 - (photo.chance || 0));
+        // Используем шанс напрямую - чем больше шанс, тем больше копий
+        const copies = Math.floor(photo.chance || 0);
         return acc.concat(Array(copies).fill(photo));
       }, []);
+
       // Перемешиваем массив
       const shuffled = [...weightedPhotos].sort(() => Math.random() - 0.5);
-
       // Выбираем карты для каждого слота
       const newSelectedPhotos = data.reduce((acc, item) => {
         const randomIndex = Math.floor(Math.random() * shuffled.length);
         acc[item.id] = shuffled[randomIndex];
         return acc;
       }, {});
-
       setSelectedPhotos(newSelectedPhotos);
     }
   }, [photos]);
