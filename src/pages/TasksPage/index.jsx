@@ -70,7 +70,13 @@ const TasksPage = () => {
                       </ul>
                     </div>
                   </div>
-                  <button type="button" className="tasks-list__btn">
+                  <button
+                    type="button"
+                    className="tasks-list__btn"
+                    onClick={() =>
+                      window.open("https://t.me/zoomayor", "_blank")
+                    }
+                  >
                     Начать
                   </button>
                 </div>
