@@ -127,16 +127,28 @@ const MainCarousel = ({
     if (photos.length > 0) {
       // Создаем массив карт с учетом их шансов
       const weightedPhotos = photos.reduce((acc, photo) => {
-        // Используем шанс напрямую - чем больше шанс, тем больше копий
-        const copies = Math.floor(photo.chance || 0);
-        return acc.concat(Array(copies).fill(photo));
+        // Используем шанс напрямую как вес для дублирования карт
+        const weight = Math.max(1, Math.floor(photo.chance || 0));
+        return acc.concat(Array(weight).fill(photo));
       }, []);
-
-      // Перемешиваем массив
-      const shuffled = [...weightedPhotos].sort(() => Math.random() - 0.5);
-      // Выбираем карты для каждого слота
+      // Используем алгоритм Фишера-Йетса для перемешивания
+      const shuffled = [...weightedPhotos];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      // Выбираем карты для каждого слота, избегая повторений
+      const usedIndexes = new Set();
       const newSelectedPhotos = data.reduce((acc, item) => {
-        const randomIndex = Math.floor(Math.random() * shuffled.length);
+        let randomIndex;
+        do {
+          randomIndex = Math.floor(Math.random() * shuffled.length);
+        } while (
+          usedIndexes.has(randomIndex) &&
+          usedIndexes.size < shuffled.length
+        );
+
+        usedIndexes.add(randomIndex);
         acc[item.id] = shuffled[randomIndex];
         return acc;
       }, {});
