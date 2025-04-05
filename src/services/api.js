@@ -108,13 +108,13 @@ export const tasksService = {
 };
 export const adsService = {
   // Получение всех объявлений
-  getAllAds: () => axios.get("/api/ads"),
+  getAllAds: () => axios.get("/ads"),
 
   // Удаление объявления по id
-  deleteAd: (id) => axios.delete(`/api/ads/${id}`),
+  deleteAd: (id) => axios.delete(`/ads/${id}`),
 
   // Создание нового объявления
-  createAd: (formData) => axios.post("/api/ads", formData),
+  createAd: (formData) => axios.post("/ads", formData),
 };
 export const userCardsService = {
   // Получение карточек пользователя
