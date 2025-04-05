@@ -125,36 +125,22 @@ const MainCarousel = ({
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0) {
+      console.log(photos);
+      const weightedPhotos = photos.reduce((acc, photo) => {
+        console.log(typeof photo.chance);
+
+        const normalizedChance = Math.min(Math.max(photo.chance || 1, 1), 100);
+        const copies = Math.ceil(normalizedChance);
+        return acc.concat(Array(copies).fill(photo));
+      }, []);
+      const shuffled = [...weightedPhotos].sort(() => Math.random() - 0.5);
+
       const newSelectedPhotos = data.reduce((acc, item) => {
-        // Generate a random number between 0 and 1
-        const random = Math.random();
-        let cumulativeProbability = 0;
-
-        // Sort cards by chance in descending order
-        const sortedCards = [...photos].sort(
-          (a, b) => (b.chance || 0) - (a.chance || 0)
-        );
-
-        // Calculate total chance sum for normalization
-        const totalChance = sortedCards.reduce(
-          (sum, card) => sum + (card.chance || 1),
-          0
-        );
-
-        // Find the card based on normalized probability
-        for (const card of sortedCards) {
-          // Normalize the chance value and add to cumulative probability
-          cumulativeProbability += (card.chance || 1) / totalChance;
-
-          // If random number falls within this card's probability range, select it
-          if (random <= cumulativeProbability) {
-            acc[item.id] = card;
-            break;
-          }
-        }
-
+        const randomIndex = Math.floor(Math.random() * shuffled.length);
+        acc[item.id] = shuffled[randomIndex];
         return acc;
       }, {});
+
       setSelectedPhotos(newSelectedPhotos);
     }
   }, [photos]);
