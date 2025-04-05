@@ -4,6 +4,7 @@ import MainSection from "components/MainSection";
 import DefaultImg from "assets/img/free-icon-play-button-526510.png";
 import DefaultImgTG from "assets/img/unnamed.png";
 import axios from "../../axios-controller";
+import { adsService } from "../../services/api";
 
 import CoinIcon from "assets/img/coin-icon.svg";
 import StarIcon from "assets/img/star-icon.svg";
@@ -15,7 +16,7 @@ const TasksPage = () => {
     // Загружаем рекламу при монтировании компонента
     const fetchAds = async () => {
       try {
-        const response = await axios.get("/api/ads");
+        const response = await adsService.getAllAds();
         setAds(response.data);
       } catch (error) {
         console.error("Error fetching ads:", error);

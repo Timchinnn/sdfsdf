@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./AdsManagement.module.css";
 import axios from "../../axios-controller";
 import routeAdsManagement from "./route";
+import { adsService } from "../../services/api";
 
 const AdsManagement = () => {
   const [ads, setAds] = useState([]);
@@ -14,7 +15,7 @@ const AdsManagement = () => {
   }, []);
   const fetchAds = async () => {
     try {
-      const response = await axios.get("/api/ads");
+      const response = await adsService.getAllAds();
       setAds(response.data);
     } catch (error) {
       console.error("Error fetching ads:", error);
@@ -33,7 +34,7 @@ const AdsManagement = () => {
       formData.append("image", selectedImage);
     }
     try {
-      await axios.post("/api/ads", formData);
+      await adsService.createAd(formData);
       fetchAds();
       setTitle("");
       setDescription("");
@@ -45,7 +46,7 @@ const AdsManagement = () => {
   };
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/ads/${id}`);
+      await adsService.deleteAd(id);
       fetchAds();
     } catch (error) {
       console.error("Error deleting ad:", error);

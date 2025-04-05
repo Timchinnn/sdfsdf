@@ -106,6 +106,16 @@ export const cardSetsService = {
 export const tasksService = {
   getAllTasks: () => axios.get("/tasks"),
 };
+export const adsService = {
+  // Получение всех объявлений
+  getAllAds: () => axios.get("/api/ads"),
+
+  // Удаление объявления по id
+  deleteAd: (id) => axios.delete(`/api/ads/${id}`),
+
+  // Создание нового объявления
+  createAd: (formData) => axios.post("/api/ads", formData),
+};
 export const userCardsService = {
   // Получение карточек пользователя
   getUserCards: (userId) => axios.get(`/user/${userId}/cards`),
