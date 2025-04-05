@@ -131,21 +131,20 @@ const MainCarousel = ({
       }, 0);
       // Выбираем карты для каждого слота с учетом их весов
       const newSelectedPhotos = data.reduce((acc, item) => {
-        const randomValue = Math.random() * totalChance;
-        let cumulativeChance = 0;
-        let selectedCard = null;
+        const randomValue = Math.random() * totalChance; // Генерируем случайное число
+        let cumulativeChance = 0; // Сумма шансов
         for (const card of photos) {
-          const chance = Math.min(Math.max(card.chance || 1, 1), 100);
-          cumulativeChance += chance;
+          const chance = Math.min(Math.max(card.chance || 1, 1), 100); // Нормализуем шанс
+          cumulativeChance += chance; // Увеличиваем сумму шансов
+          // Если случайное число меньше или равно сумме шансов, выбираем карту
           if (randomValue <= cumulativeChance) {
-            selectedCard = card;
-            break;
+            acc[item.id] = card; // Сохраняем выбранную карту
+            break; // Выходим из цикла
           }
         }
-        acc[item.id] = selectedCard;
-        return acc;
+        return acc; // Возвращаем накопленный объект
       }, {});
-      setSelectedPhotos(newSelectedPhotos);
+      setSelectedPhotos(newSelectedPhotos); // Обновляем состояние выбранных карт
     }
   }, [photos]);
   const nextSlide = () => {
