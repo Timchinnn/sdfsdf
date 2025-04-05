@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import routeTasks from "./routes";
 import MainSection from "components/MainSection";
-import DefaultImg from "assets/img/default-img.png";
+import DefaultImg from "assets/img/unnamed.png";
 import CoinIcon from "assets/img/coin-icon.svg";
 import StarIcon from "assets/img/star-icon.svg";
 import MobileNav from "components/MobileNav";
