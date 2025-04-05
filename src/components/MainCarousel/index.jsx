@@ -127,8 +127,8 @@ const MainCarousel = ({
     if (photos.length > 0) {
       // Создаем массив карт с учетом их шансов
       const weightedPhotos = photos.reduce((acc, photo) => {
-        // Используем шанс напрямую - чем больше шанс, тем больше копий карты
-        const copies = Math.floor(photo.chance || 100);
+        // Инвертируем шанс: 100 - chance, чтобы больший шанс давал меньше копий
+        const copies = Math.floor(100 - (photo.chance || 0));
         return acc.concat(Array(copies).fill(photo));
       }, []);
       // Перемешиваем массив
