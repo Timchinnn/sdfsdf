@@ -126,17 +126,27 @@ const MainCarousel = ({
   useEffect(() => {
     if (photos.length > 0) {
       const weightedRandom = (items) => {
+        // Нормализуем шансы, чтобы они были в диапазоне от 0 до 1
         const totalWeight = items.reduce(
           (sum, item) => sum + (item.chance || 1),
           0
         );
-        let random = Math.random() * totalWeight;
-
-        for (const item of items) {
-          random -= item.chance || 1;
-          if (random <= 0) return item;
+        const normalizedItems = items.map((item) => ({
+          ...item,
+          normalizedChance: (item.chance || 1) / totalWeight,
+        }));
+        // Генерируем случайное число от 0 до 1
+        const random = Math.random();
+        let cumulativeWeight = 0;
+        // Проходим по нормализованным весам, суммируя их
+        for (const item of normalizedItems) {
+          cumulativeWeight += item.normalizedChance;
+          if (random <= cumulativeWeight) {
+            return item;
+          }
         }
-        return items[0];
+
+        return normalizedItems[0];
       };
       const newSelectedPhotos = data.reduce((acc, item) => {
         acc[item.id] = weightedRandom(photos);
