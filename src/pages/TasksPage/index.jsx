@@ -42,29 +42,25 @@ const TasksPage = () => {
     try {
       const result = await AdController.show();
       console.log("Результат показа рекламы:", result);
-
       if (result.done) {
         const tg = window.Telegram.WebApp;
         const telegram_id = tg.initDataUnsafe?.user?.id;
         if (!telegram_id) {
           throw new Error("Telegram ID не найден");
         }
-        // Если reward_url отсутствует, используем альтернативную логику
-        if (!result.reward_url) {
-          console.log("reward_url отсутствует в ответе SDK");
-          const defaultReward = {
-            type: "coins",
-            amount: 188719200,
-          };
-
-          // Отправляем запрос на начисление стандартной награды
-          await processReward(telegram_id, null, defaultReward);
-          console.log("Стандартная награда успешно начислена");
-          return;
+        // Get reward amount from the clicked ad
+        const clickedAd = ads.find((ad) => ad.reward); // Find the ad with reward
+        if (!clickedAd) {
+          throw new Error("Реклама не найдена");
         }
-        // Если есть reward_url, используем его
-        await processReward(telegram_id, result.reward_url);
-        console.log("Награда успешно начислена");
+        // Use the reward from the ad
+        const defaultReward = {
+          type: "coins",
+          amount: clickedAd.reward,
+        };
+        // Send reward to backend
+        await processReward(telegram_id, null, defaultReward);
+        console.log("Награда успешно начислена:", defaultReward.amount);
       }
     } catch (error) {
       console.error("Ошибка при показе рекламы:", error);
