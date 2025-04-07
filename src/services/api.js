@@ -122,10 +122,27 @@ export const processReward = async (telegram_id, reward_url) => {
     if (!telegram_id) {
       throw new Error("Отсутствует обязательный параметр: telegram_id");
     }
+    // Если reward_url отсутствует, используем альтернативную логику
     if (!reward_url) {
-      throw new Error("Отсутствует обязательный параметр: reward_url");
+      console.log("reward_url отсутствует, используем альтернативную логику");
+
+      // Пример альтернативной логики начисления награды
+      const response = await axios.post(
+        `/process-reward/${telegram_id}`,
+        {
+          default_reward: true,
+          reward_type: "coins",
+          reward_amount: 100,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
     }
-    // Делаем запрос к API
+    // Стандартная логика с reward_url
     const response = await axios.post(
       `/process-reward/${telegram_id}`,
       { reward_url },
@@ -135,7 +152,6 @@ export const processReward = async (telegram_id, reward_url) => {
         },
       }
     );
-    // Проверяем статус ответа
     if (response.status !== 200) {
       throw new Error(`Сервер вернул статус: ${response.status}`);
     }

@@ -39,29 +39,38 @@ const TasksPage = () => {
     };
   }, []);
   const showRewardedAd = async () => {
-    if (!AdController) return;
-
+    if (!AdController || !isAdReady) {
+      console.log("Реклама не готова");
+      return;
+    }
     try {
       const result = await AdController.show();
-
+      console.log("Результат показа рекламы:", result); // Добавим для отладки
       if (result.done) {
-        // Получаем telegram_id пользователя
         const tg = window.Telegram.WebApp;
         const telegram_id = tg.initDataUnsafe?.user?.id;
 
         if (!telegram_id) {
-          console.error("Telegram ID не найден");
+          throw new Error("Telegram ID не найден");
+        }
+        // Проверяем наличие reward_url в результате
+        if (!result.reward_url) {
+          console.log("reward_url отсутствует в ответе SDK");
+          // Можно использовать фиксированную награду или другую логику
+          const defaultReward = {
+            type: "coins",
+            amount: 100, // например
+          };
+          // Здесь можно реализовать альтернативную логику начисления награды
           return;
         }
-        try {
-          await processReward(telegram_id, result.reward_url);
-          console.log("Награда успешно начислена");
-        } catch (error) {
-          console.error("Ошибка при обработке награды:", error.message);
-        }
+        await processReward(telegram_id, result.reward_url);
+        // Добавим уведомление об успехе
+        console.log("Награда успешно начислена");
       }
     } catch (error) {
       console.error("Ошибка при показе рекламы:", error);
+      // Можно добавить пользовательское уведомление об ошибке
     }
   };
   return (
