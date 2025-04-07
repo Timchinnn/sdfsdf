@@ -148,9 +148,3 @@ export const peopleService = {
     }
   },
 };
-export const rewardService = {
-  processReward: (telegram_id, reward_url) =>
-    axios.post(`/process-reward/${telegram_id}`, {
-      reward_url: reward_url,
-    }),
-};
