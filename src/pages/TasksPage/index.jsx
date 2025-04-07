@@ -49,18 +49,14 @@ const TasksPage = () => {
           throw new Error("Telegram ID не найден");
         }
 
-        // Получаем ID показанной рекламы из результата
-        const adId = result.adId; // Предполагаем, что AdController возвращает ID показанной рекламы
-
-        // Находим конкретную показанную рекламу по ID
-        const clickedAd = ads.find((ad) => ad.id === adId);
+        // Находим конкретную рекламу по которой был клик
+        const clickedAd = ads.find((ad) => ad.id === result.adId);
         if (!clickedAd) {
           throw new Error("Реклама не найдена");
         }
-        // Используем награду из найденной рекламы
         const defaultReward = {
           type: "coins",
-          amount: clickedAd.reward,
+          amount: clickedAd.reward || 0, // Используем награду конкретной рекламы
         };
         // Отправляем награду на бэкенд
         await processReward(telegram_id, null, defaultReward);
