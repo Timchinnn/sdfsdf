@@ -39,10 +39,6 @@ const TasksPage = () => {
     };
   }, []);
   const showRewardedAd = async () => {
-    if (!AdController || !isAdReady) {
-      console.log("Реклама не готова");
-      return;
-    }
     try {
       const result = await AdController.show();
       console.log("Результат показа рекламы:", result); // Добавим для отладки
