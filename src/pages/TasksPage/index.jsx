@@ -3,9 +3,9 @@ import routeTasks from "./routes";
 import MainSection from "components/MainSection";
 import DefaultImg from "assets/img/free-icon-play-button-526510.png";
 import DefaultImgTG from "assets/img/unnamed.png";
-import axios from "../../axios-controller";
+// import axios from "../../axios-controller";
 import { adsService } from "../../services/api";
-
+import { processReward } from "../../services/api";
 import CoinIcon from "assets/img/coin-icon.svg";
 import StarIcon from "assets/img/star-icon.svg";
 import MobileNav from "components/MobileNav";
@@ -40,25 +40,19 @@ const TasksPage = () => {
   }, []);
   const showRewardedAd = async () => {
     if (!AdController) return;
-
     try {
       const result = await AdController.show();
-
       if (result.done) {
         // Получаем telegram_id пользователя
         const tg = window.Telegram.WebApp;
         const telegram_id = tg.initDataUnsafe?.user?.id;
-
         if (!telegram_id) {
           console.error("Telegram ID not found");
           return;
         }
-        // Отправляем запрос на обработку награды
+        // Используем новую функцию из api.js
         try {
-          const response = await axios.post(`/process-reward/${telegram_id}`, {
-            reward_url: result.reward_url,
-          });
-
+          const response = await processReward(telegram_id, result.reward_url);
           if (response.data.success) {
             console.log("Награда успешно начислена");
           }

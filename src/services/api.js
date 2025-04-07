@@ -116,6 +116,17 @@ export const adsService = {
   // Создание нового объявления
   createAd: (formData) => axios.post("/ads", formData),
 };
+export const processReward = async (telegram_id, reward_url) => {
+  try {
+    const response = await axios.post(`/process-reward/${telegram_id}`, {
+      reward_url: reward_url,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error processing reward:", error);
+    throw error;
+  }
+};
 export const userCardsService = {
   // Получение карточек пользователя
   getUserCards: (userId) => axios.get(`/user/${userId}/cards`),
