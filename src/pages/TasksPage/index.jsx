@@ -39,7 +39,7 @@ const TasksPage = () => {
     };
   }, []);
   const showRewardedAd = async () => {
-    console.log(1);
+    console.log(333);
 
     if (!AdController) return;
     try {
