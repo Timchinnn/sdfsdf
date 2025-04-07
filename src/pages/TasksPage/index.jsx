@@ -3,9 +3,9 @@ import routeTasks from "./routes";
 import MainSection from "components/MainSection";
 import DefaultImg from "assets/img/free-icon-play-button-526510.png";
 import DefaultImgTG from "assets/img/unnamed.png";
-import axios from "../../axios-controller";
+// import axios from "../../axios-controller";
 import { adsService } from "../../services/api";
-
+import { adsService, rewardService } from "../../services/api";
 import CoinIcon from "assets/img/coin-icon.svg";
 import StarIcon from "assets/img/star-icon.svg";
 import MobileNav from "components/MobileNav";
@@ -43,7 +43,11 @@ const TasksPage = () => {
     try {
       const result = await AdController.show();
       if (result.done) {
-        console.log("Ad completed, give reward");
+        const tg = window.Telegram.WebApp;
+        const telegram_id = tg.initDataUnsafe?.user?.id;
+        if (telegram_id) {
+          await rewardService.processReward(telegram_id, result.reward_url);
+        }
       }
     } catch (error) {
       console.error("Error showing ad:", error);
