@@ -38,7 +38,7 @@ const TasksPage = () => {
       document.head.removeChild(script);
     };
   }, []);
-  const showRewardedAd = async () => {
+  const showRewardedAd = async (adId) => {
     try {
       const result = await AdController.show();
       console.log("Результат показа рекламы:", result);
@@ -49,11 +49,11 @@ const TasksPage = () => {
           throw new Error("Telegram ID не найден");
         }
         // Get reward amount from the clicked ad
-        const clickedAd = ads.find((ad) => ad.reward); // Find the ad with reward
+        const clickedAd = ads.find((ad) => ad.id === adId);
         if (!clickedAd) {
           throw new Error("Реклама не найдена");
         }
-        // Use the reward from the ad
+        // Use the reward from the clicked ad
         const defaultReward = {
           type: "coins",
           amount: clickedAd.reward,
@@ -143,7 +143,7 @@ const TasksPage = () => {
                       type="button"
                       className="tasks-list__btn"
                       style={{ marginTop: "0" }}
-                      onClick={showRewardedAd}
+                      onClick={() => showRewardedAd(ad.id)}
                     >
                       Смотреть
                     </button>
