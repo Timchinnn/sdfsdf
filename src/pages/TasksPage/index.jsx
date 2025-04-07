@@ -55,12 +55,9 @@ const TasksPage = () => {
         }
         // Отправляем запрос на обработку награды
         try {
-          const response = await axios.post(
-            `/api/process-reward/${telegram_id}`,
-            {
-              reward_url: result.reward_url,
-            }
-          );
+          const response = await axios.post(`/process-reward/${telegram_id}`, {
+            reward_url: result.reward_url,
+          });
 
           if (response.data.success) {
             console.log("Награда успешно начислена");
