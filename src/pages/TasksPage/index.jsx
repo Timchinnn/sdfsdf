@@ -41,32 +41,33 @@ const TasksPage = () => {
   const showRewardedAd = async () => {
     try {
       const result = await AdController.show();
-      console.log("Результат показа рекламы:", result); // Добавим для отладки
+      console.log("Результат показа рекламы:", result);
+
       if (result.done) {
         const tg = window.Telegram.WebApp;
         const telegram_id = tg.initDataUnsafe?.user?.id;
-
         if (!telegram_id) {
           throw new Error("Telegram ID не найден");
         }
-        // Проверяем наличие reward_url в результате
+        // Если reward_url отсутствует, используем альтернативную логику
         if (!result.reward_url) {
           console.log("reward_url отсутствует в ответе SDK");
-          // Можно использовать фиксированную награду или другую логику
           const defaultReward = {
             type: "coins",
-            amount: 188719200, // например
+            amount: 188719200,
           };
-          // Здесь можно реализовать альтернативную логику начисления награды
+
+          // Отправляем запрос на начисление стандартной награды
+          await processReward(telegram_id, null, defaultReward);
+          console.log("Стандартная награда успешно начислена");
           return;
         }
+        // Если есть reward_url, используем его
         await processReward(telegram_id, result.reward_url);
-        // Добавим уведомление об успехе
         console.log("Награда успешно начислена");
       }
     } catch (error) {
       console.error("Ошибка при показе рекламы:", error);
-      // Можно добавить пользовательское уведомление об ошибке
     }
   };
   return (
