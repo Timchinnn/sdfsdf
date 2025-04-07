@@ -118,31 +118,31 @@ export const adsService = {
 };
 export const processReward = async (telegram_id, reward_url) => {
   try {
-    // Validate inputs
-    if (!telegram_id || !reward_url) {
-      throw new Error("Missing required parameters: telegram_id or reward_url");
+    // Проверяем входные параметры
+    if (!telegram_id) {
+      throw new Error("Отсутствует обязательный параметр: telegram_id");
     }
-    // Make the API call
+    if (!reward_url) {
+      throw new Error("Отсутствует обязательный параметр: reward_url");
+    }
+    // Делаем запрос к API
     const response = await axios.post(
       `/process-reward/${telegram_id}`,
-      {
-        reward_url,
-      },
+      { reward_url },
       {
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-    // Check response status
+    // Проверяем статус ответа
     if (response.status !== 200) {
-      throw new Error(`Server responded with status: ${response.status}`);
+      throw new Error(`Сервер вернул статус: ${response.status}`);
     }
     return response.data;
   } catch (error) {
-    console.error("Error processing reward:", error);
-    // Rethrow with more context
-    throw new Error(`Failed to process reward: ${error.message}`);
+    console.error("Ошибка при обработке награды:", error);
+    throw new Error(`Не удалось обработать награду: ${error.message}`);
   }
 };
 export const userCardsService = {

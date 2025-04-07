@@ -40,28 +40,28 @@ const TasksPage = () => {
   }, []);
   const showRewardedAd = async () => {
     if (!AdController) return;
+
     try {
       const result = await AdController.show();
+
       if (result.done) {
         // Получаем telegram_id пользователя
         const tg = window.Telegram.WebApp;
         const telegram_id = tg.initDataUnsafe?.user?.id;
+
         if (!telegram_id) {
-          console.error("Telegram ID not found");
+          console.error("Telegram ID не найден");
           return;
         }
-        // Используем новую функцию из api.js
         try {
-          const response = await processReward(telegram_id, result.reward_url);
-          if (response.data.success) {
-            console.log("Награда успешно начислена");
-          }
+          await processReward(telegram_id, result.reward_url);
+          console.log("Награда успешно начислена");
         } catch (error) {
-          console.error("Error processing reward:", error);
+          console.error("Ошибка при обработке награды:", error.message);
         }
       }
     } catch (error) {
-      console.error("Error showing ad:", error);
+      console.error("Ошибка при показе рекламы:", error);
     }
   };
   return (
