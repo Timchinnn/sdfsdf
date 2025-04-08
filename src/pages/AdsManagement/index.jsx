@@ -3,7 +3,7 @@ import styles from "./AdsManagement.module.css";
 import axios from "../../axios-controller";
 import routeAdsManagement from "./route";
 import { adsService } from "../../services/api";
-
+import { cardsService } from "../../services/api";
 const AdsManagement = () => {
   const [ads, setAds] = useState([]);
   const [title, setTitle] = useState("");
