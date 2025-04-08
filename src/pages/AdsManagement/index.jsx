@@ -96,7 +96,7 @@ const AdsManagement = () => {
     try {
       await adsService.createAd(formData);
       fetchAds();
-      resetForm();
+      // resetForm();
     } catch (error) {
       console.error("Error creating ad:", error);
     }
