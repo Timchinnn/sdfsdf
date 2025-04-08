@@ -87,3 +87,15 @@
   border: 1px solid #eee;
   border-radius: 4px;
 }
+.rewardsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.rewardItem {
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}

@@ -9,6 +9,8 @@ const AdsManagement = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [rewardType, setRewardType] = useState("coins"); // coins, card, energy, experience
+  const [selectedRewards, setSelectedRewards] = useState([]);
+
   const [rewardValue, setRewardValue] = useState("");
   const [rewardCardId, setRewardCardId] = useState("");
   const [rewardEnergy, setRewardEnergy] = useState("");
@@ -44,16 +46,10 @@ const AdsManagement = () => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("reward_type", rewardType);
-
-    if (rewardType === "coins") {
-      formData.append("reward_value", rewardValue);
-    } else if (rewardType === "card") {
-      formData.append("reward_card_id", rewardCardId);
-    } else if (rewardType === "energy") {
-      formData.append("reward_energy", rewardEnergy);
-    } else if (rewardType === "experience") {
-      formData.append("reward_experience", rewardExperience);
-    }
+    selectedRewards.forEach((reward, index) => {
+      formData.append(`rewards[${index}][type]`, reward.type);
+      formData.append(`rewards[${index}][value]`, reward.value);
+    });
     if (selectedImage) {
       formData.append("image", selectedImage);
     }
@@ -64,6 +60,19 @@ const AdsManagement = () => {
     } catch (error) {
       console.error("Error creating ad:", error);
     }
+  };
+  const handleRewardSelection = (type, value) => {
+    const reward = { type, value };
+    const exists = selectedRewards.some((r) => r.type === type);
+
+    if (exists) {
+      setSelectedRewards(selectedRewards.filter((r) => r.type !== type));
+    } else {
+      setSelectedRewards([...selectedRewards, reward]);
+    }
+  };
+  const isRewardSelected = (type) => {
+    return selectedRewards.some((r) => r.type === type);
   };
   const resetForm = () => {
     setTitle("");
@@ -181,14 +190,21 @@ const AdsManagement = () => {
             <div className={styles.adContent}>
               <h3>{ad.title}</h3>
               <p>{ad.description}</p>
-              <p>Награда: {ad.reward}</p>
-              {ad.image_url && (
-                <img
-                  src={`https://api.zoomayor.io${ad.image_url}`}
-                  alt={ad.title}
-                  className={styles.adImage}
-                />
-              )}
+              <div className={styles.rewardsList}>
+                {ad.rewards &&
+                  ad.rewards.map((reward, index) => (
+                    <p key={index} className={styles.rewardItem}>
+                      {reward.type === "coins" && `${reward.value} монет`}
+                      {reward.type === "card" &&
+                        `Карта: ${
+                          cards.find((c) => c.id === reward.value)?.title ||
+                          reward.value
+                        }`}
+                      {reward.type === "energy" && `${reward.value} энергии`}
+                      {reward.type === "experience" && `${reward.value} опыта`}
+                    </p>
+                  ))}
+              </div>
             </div>
             <button
               onClick={() => handleDelete(ad.id)}
