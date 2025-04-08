@@ -8,14 +8,28 @@ const AdsManagement = () => {
   const [ads, setAds] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [rewardType, setRewardType] = useState("coins"); // coins, card, energy, experience
+  // const [rewardType, setRewardType] = useState("coins"); // coins, card, energy, experience
 
-  const [rewardValue, setRewardValue] = useState("");
-  const [rewardCardId, setRewardCardId] = useState("");
-  const [rewardEnergy, setRewardEnergy] = useState("");
-  const [rewardExperience, setRewardExperience] = useState("");
+  // const [rewardValue, setRewardValue] = useState("");
+  // const [rewardCardId, setRewardCardId] = useState("");
+  // const [rewardEnergy, setRewardEnergy] = useState("");
+  // const [rewardExperience, setRewardExperience] = useState("");
   const [cards, setCards] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  // const [rewards, setRewards] = useState([]);
+
+  const [selectedRewardTypes, setSelectedRewardTypes] = useState({
+    coins: false,
+    card: false,
+    energy: false,
+    experience: false,
+  });
+  const [rewardValues, setRewardValues] = useState({
+    coins: "",
+    card: "",
+    energy: "",
+    experience: "",
+  });
   useEffect(() => {
     fetchAds();
     fetchCards();
@@ -44,17 +58,37 @@ const AdsManagement = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("reward_type", rewardType);
+    // Собираем все выбранные награды
+    const selectedRewards = [];
 
-    if (rewardType === "coins") {
-      formData.append("reward_value", rewardValue);
-    } else if (rewardType === "card") {
-      formData.append("reward_card_id", rewardCardId);
-    } else if (rewardType === "energy") {
-      formData.append("reward_energy", rewardEnergy);
-    } else if (rewardType === "experience") {
-      formData.append("reward_experience", rewardExperience);
+    if (selectedRewardTypes.coins) {
+      selectedRewards.push({
+        type: "coins",
+        value: rewardValues.coins,
+      });
     }
+
+    if (selectedRewardTypes.card) {
+      selectedRewards.push({
+        type: "card",
+        value: rewardValues.card,
+      });
+    }
+
+    if (selectedRewardTypes.energy) {
+      selectedRewards.push({
+        type: "energy",
+        value: rewardValues.energy,
+      });
+    }
+
+    if (selectedRewardTypes.experience) {
+      selectedRewards.push({
+        type: "experience",
+        value: rewardValues.experience,
+      });
+    }
+    formData.append("rewards", JSON.stringify(selectedRewards));
     if (selectedImage) {
       formData.append("image", selectedImage);
     }
@@ -66,16 +100,16 @@ const AdsManagement = () => {
       console.error("Error creating ad:", error);
     }
   };
-  const resetForm = () => {
-    setTitle("");
-    setDescription("");
-    setRewardType("coins");
-    setRewardValue("");
-    setRewardCardId("");
-    setRewardEnergy("");
-    setRewardExperience("");
-    setSelectedImage(null);
-  };
+  // const resetForm = () => {
+  //   setTitle("");
+  //   setDescription("");
+  //   setRewardType("coins");
+  //   setRewardValue("");
+  //   setRewardCardId("");
+  //   setRewardEnergy("");
+  //   setRewardExperience("");
+  //   setSelectedImage(null);
+  // };
   const handleDelete = async (id) => {
     try {
       await adsService.deleteAd(id);
@@ -107,67 +141,112 @@ const AdsManagement = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label>Тип вознаграждения:</label>
-          <select
-            value={rewardType}
-            onChange={(e) => setRewardType(e.target.value)}
-          >
-            <option value="coins">Монеты</option>
-            <option value="card">Карта</option>
-            <option value="energy">Энергия</option>
-            <option value="experience">Опыт</option>
-          </select>
+          <label>Награды:</label>
+          <div className={styles.rewardsContainer}>
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={selectedRewardTypes.coins}
+                onChange={(e) =>
+                  setSelectedRewardTypes({
+                    ...selectedRewardTypes,
+                    coins: e.target.checked,
+                  })
+                }
+              />
+              <label>Монеты:</label>
+              <input
+                type="number"
+                value={rewardValues.coins}
+                onChange={(e) =>
+                  setRewardValues({
+                    ...rewardValues,
+                    coins: e.target.value,
+                  })
+                }
+                disabled={!selectedRewardTypes.coins}
+              />
+            </div>
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={selectedRewardTypes.card}
+                onChange={(e) =>
+                  setSelectedRewardTypes({
+                    ...selectedRewardTypes,
+                    card: e.target.checked,
+                  })
+                }
+              />
+              <label>Карта:</label>
+              <select
+                value={rewardValues.card}
+                onChange={(e) =>
+                  setRewardValues({
+                    ...rewardValues,
+                    card: e.target.value,
+                  })
+                }
+                disabled={!selectedRewardTypes.card}
+              >
+                <option value="">Выберите карту</option>
+                {cards.map((card) => (
+                  <option key={card.id} value={card.id}>
+                    {card.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={selectedRewardTypes.energy}
+                onChange={(e) =>
+                  setSelectedRewardTypes({
+                    ...selectedRewardTypes,
+                    energy: e.target.checked,
+                  })
+                }
+              />
+              <label>Энергия:</label>
+              <input
+                type="number"
+                value={rewardValues.energy}
+                onChange={(e) =>
+                  setRewardValues({
+                    ...rewardValues,
+                    energy: e.target.value,
+                  })
+                }
+                disabled={!selectedRewardTypes.energy}
+              />
+            </div>
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={selectedRewardTypes.experience}
+                onChange={(e) =>
+                  setSelectedRewardTypes({
+                    ...selectedRewardTypes,
+                    experience: e.target.checked,
+                  })
+                }
+              />
+              <label>Опыт:</label>
+              <input
+                type="number"
+                value={rewardValues.experience}
+                onChange={(e) =>
+                  setRewardValues({
+                    ...rewardValues,
+                    experience: e.target.value,
+                  })
+                }
+                disabled={!selectedRewardTypes.experience}
+              />
+            </div>
+          </div>
         </div>
-        {rewardType === "coins" && (
-          <div className={styles.formGroup}>
-            <label>Количество монет:</label>
-            <input
-              type="number"
-              value={rewardValue}
-              onChange={(e) => setRewardValue(e.target.value)}
-              required
-            />
-          </div>
-        )}
-        {rewardType === "card" && (
-          <div className={styles.formGroup}>
-            <label>Выберите карту:</label>
-            <select
-              value={rewardCardId}
-              onChange={(e) => setRewardCardId(e.target.value)}
-              required
-            >
-              <option value="">Выберите карту</option>
-              {cards.map((card) => (
-                <option key={card.id} value={card.id}>
-                  {card.title}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-        {rewardType === "energy" && (
-          <div className={styles.formGroup}>
-            <label>Количество энергии:</label>
-            <input
-              type="number"
-              value={rewardEnergy}
-              onChange={(e) => setRewardEnergy(e.target.value)}
-              required
-            />
-          </div>
-        )}
-        {rewardType === "experience" && (
-          <div className={styles.formGroup}>
-            <label>Количество опыта:</label>
-            <input
-              type="number"
-              value={rewardExperience}
-              onChange={(e) => setRewardExperience(e.target.value)}
-              required
-            />
-          </div>
-        )}
         <div className={styles.formGroup}>
           <label>Изображение:</label>
           <input type="file" accept="image/*" onChange={handleImageUpload} />

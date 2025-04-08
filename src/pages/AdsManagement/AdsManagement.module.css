@@ -87,3 +87,28 @@
   border: 1px solid #eee;
   border-radius: 4px;
 }
+.rewardsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+.rewardItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rewardItem input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+.rewardItem input[type="number"],
+.rewardItem select {
+  width: 150px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.rewardItem label {
+  min-width: 80px;
+}
