@@ -88,7 +88,7 @@ const AdsManagement = () => {
       console.log("Ответ сервера:", response);
 
       await fetchAds();
-      resetForm();
+      // resetForm();
     } catch (error) {
       console.error("Ошибка при создании рекламы:", error);
       alert(
