@@ -59,44 +59,45 @@ const AdsManagement = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    // Собираем все выбранные награды
-    const selectedRewards = [];
-
+    // Добавляем награды в formData
     if (selectedRewardTypes.coins) {
-      selectedRewards.push({
-        type: "coins",
-        value: rewardValues.coins,
-      });
+      formData.append("reward_type", "coins");
+      formData.append("reward_value", rewardValues.coins);
     }
-
     if (selectedRewardTypes.card) {
-      selectedRewards.push({
-        type: "card",
-        value: rewardValues.card,
-      });
+      formData.append("reward_type", "card");
+      formData.append("reward_card_id", rewardValues.card);
     }
-
     if (selectedRewardTypes.energy) {
-      selectedRewards.push({
-        type: "energy",
-        value: rewardValues.energy,
-      });
+      formData.append("reward_type", "energy");
+      formData.append("reward_energy", rewardValues.energy);
     }
-
     if (selectedRewardTypes.experience) {
-      selectedRewards.push({
-        type: "experience",
-        value: rewardValues.experience,
-      });
+      formData.append("reward_type", "experience");
+      formData.append("reward_experience", rewardValues.experience);
     }
-    formData.append("rewards", JSON.stringify(selectedRewards));
     if (selectedImage) {
       formData.append("image", selectedImage);
     }
     try {
       await adsService.createAd(formData);
       fetchAds();
-      // resetForm();
+      // Очищаем форму
+      setTitle("");
+      setDescription("");
+      setSelectedRewardTypes({
+        coins: false,
+        card: false,
+        energy: false,
+        experience: false,
+      });
+      setRewardValues({
+        coins: "",
+        card: "",
+        energy: "",
+        experience: "",
+      });
+      setSelectedImage(null);
     } catch (error) {
       console.error("Error creating ad:", error);
     }
