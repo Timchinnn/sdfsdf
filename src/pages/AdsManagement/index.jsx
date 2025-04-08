@@ -30,6 +30,7 @@ const AdsManagement = () => {
     energy: "",
     experience: "",
   });
+  console.log(8);
   useEffect(() => {
     fetchAds();
     fetchCards();
