@@ -56,69 +56,50 @@ const AdsManagement = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    // Собираем все выбранные награды
+    const selectedRewards = [];
 
-    try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("description", description);
-
-      // Собираем все выбранные награды
-      const selectedRewards = [];
-
-      // Проверяем каждый тип награды и добавляем, если он выбран
-      Object.entries(selectedRewardTypes).forEach(([type, isSelected]) => {
-        if (isSelected && rewardValues[type]) {
-          selectedRewards.push({
-            type: type,
-            value: parseInt(rewardValues[type]),
-          });
-        }
+    if (selectedRewardTypes.coins) {
+      selectedRewards.push({
+        type: "coins",
+        value: rewardValues.coins,
       });
-      // Проверяем, что хотя бы одна награда выбрана
-      if (selectedRewards.length === 0) {
-        alert("Выберите хотя бы одну награду");
-        return;
-      }
-      formData.append("rewards", JSON.stringify(selectedRewards));
+    }
 
-      if (selectedImage) {
-        formData.append("image", selectedImage);
-      }
-      const response = await adsService.createAd(formData);
-      console.log("Ответ сервера:", response);
+    if (selectedRewardTypes.card) {
+      selectedRewards.push({
+        type: "card",
+        value: rewardValues.card,
+      });
+    }
 
-      await fetchAds();
+    if (selectedRewardTypes.energy) {
+      selectedRewards.push({
+        type: "energy",
+        value: rewardValues.energy,
+      });
+    }
+
+    if (selectedRewardTypes.experience) {
+      selectedRewards.push({
+        type: "experience",
+        value: rewardValues.experience,
+      });
+    }
+    formData.append("rewards", JSON.stringify(selectedRewards));
+    if (selectedImage) {
+      formData.append("image", selectedImage);
+    }
+    try {
+      await adsService.createAd(formData);
+      fetchAds();
       // resetForm();
     } catch (error) {
-      console.error("Ошибка при создании рекламы:", error);
-      alert(
-        "Произошла ошибка при создании рекламы: " +
-          (error.message || "Неизвестная ошибка")
-      );
+      console.error("Error creating ad:", error);
     }
-  };
-  const renderRewards = (ad) => {
-    if (!ad.reward_types || !ad.reward_values) return "Нет наград";
-
-    return ad.reward_types
-      .map((type, index) => {
-        const value = ad.reward_values[index];
-        switch (type) {
-          case "coins":
-            return `${value} монет`;
-          case "card":
-            const card = cards.find((c) => c.id === value);
-            return card ? `Карта: ${card.title}` : "Неизвестная карта";
-          case "energy":
-            return `${value} энергии`;
-          case "experience":
-            return `${value} опыта`;
-          default:
-            return "";
-        }
-      })
-      .filter(Boolean)
-      .join(", ");
   };
   // const resetForm = () => {
   //   setTitle("");
@@ -281,7 +262,7 @@ const AdsManagement = () => {
             <div className={styles.adContent}>
               <h3>{ad.title}</h3>
               <p>{ad.description}</p>
-              <p>Награды: {renderRewards(ad)}</p>
+              <p>Награда: {ad.reward}</p>
               {ad.image_url && (
                 <img
                   src={`https://api.zoomayor.io${ad.image_url}`}
