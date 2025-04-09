@@ -112,7 +112,11 @@ export const adsService = {
   testReward: (telegram_id, adId) =>
     axios.post(`/process-reward/${telegram_id}`, { adId }),
 
-  // Удаление объявления по id
+  rewardForAd: (telegram_id, adId) =>
+    axios.post(`/process-reward/${telegram_id}`, {
+      adId,
+      source: "ad_view", // добавляем источник для отслеживания
+    }),
   deleteAd: (id) => axios.delete(`/ads/${id}`),
 
   // Создание нового объявления

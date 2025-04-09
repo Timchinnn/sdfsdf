@@ -42,28 +42,57 @@ const TasksPage = () => {
     try {
       const result = await AdController.show();
       console.log("Результат показа рекламы:", result);
+
       if (result.done) {
         const tg = window.Telegram.WebApp;
         const telegram_id = tg.initDataUnsafe?.user?.id;
+
         if (!telegram_id) {
           throw new Error("Telegram ID не найден");
         }
-        // Get reward amount from the clicked ad
+        // Получаем данные о рекламе
         const clickedAd = ads.find((ad) => ad.id === adId);
         if (!clickedAd) {
           throw new Error("Реклама не найдена");
         }
-        // Use the reward from the clicked ad
-        const defaultReward = {
-          type: "coins",
-          amount: clickedAd.reward,
-        };
-        // Send reward to backend
-        await processReward(telegram_id, null, defaultReward);
-        console.log("Награда успешно начислена:", defaultReward.amount);
+        // Отправляем запрос на начисление наград
+        const response = await adsService.rewardForAd(telegram_id, adId);
+        if (response.data.success) {
+          const rewards = response.data.rewards;
+
+          // Формируем сообщение о наградах
+          let rewardMessage = "Вы получили:";
+          if (rewards.coins) rewardMessage += `\n${rewards.coins} монет`;
+          if (rewards.energy) rewardMessage += `\n${rewards.energy} энергии`;
+          if (rewards.experience)
+            rewardMessage += `\n${rewards.experience} опыта`;
+          if (rewards.cardId) rewardMessage += "\nНовую карту!";
+          // Показываем уведомление через Telegram WebApp
+          tg.showPopup({
+            title: "Награда получена!",
+            message: rewardMessage,
+            buttons: [
+              {
+                type: "ok",
+                text: "Отлично!",
+              },
+            ],
+          });
+        }
       }
     } catch (error) {
       console.error("Ошибка при показе рекламы:", error);
+      // Показываем ошибку пользователю
+      window.Telegram.WebApp.showPopup({
+        title: "Ошибка",
+        message: "Не удалось получить награду",
+        buttons: [
+          {
+            type: "ok",
+            text: "Понятно",
+          },
+        ],
+      });
     }
   };
   return (
@@ -137,6 +166,36 @@ const TasksPage = () => {
                       <div className="tasks-list__content">
                         <h3 className="tasks-list__title">{ad.title}</h3>
                         <p>{ad.description}</p>
+                        <ul className="friends-params f-center">
+                          {ad.reward_value > 0 && (
+                            <li className="friends-params__item f-center">
+                              <img src={CoinIcon} alt="" />
+                              {ad.reward_value}
+                            </li>
+                          )}
+                          {ad.reward_experience > 0 && (
+                            <li className="friends-params__item f-center">
+                              <img src={StarIcon} alt="" />
+                              {ad.reward_experience} EXP
+                            </li>
+                          )}
+                          {ad.reward_energy > 0 && (
+                            <li className="friends-params__item f-center">
+                              <span role="img" aria-label="energy">
+                                ⚡
+                              </span>
+                              {ad.reward_energy}
+                            </li>
+                          )}
+                          {ad.reward_card_id && (
+                            <li className="friends-params__item f-center">
+                              <span role="img" aria-label="card">
+                                🎴
+                              </span>
+                              Карта
+                            </li>
+                          )}
+                        </ul>
                       </div>
                     </div>
                     <button
