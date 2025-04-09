@@ -50,49 +50,39 @@ const TasksPage = () => {
         if (!telegram_id) {
           throw new Error("Telegram ID не найден");
         }
-        try {
-          const response = await adsService.rewardForAd(telegram_id, adId);
-          console.log("Ответ сервера:", response);
-          if (response.data.success) {
-            const rewards = response.data.rewards;
-
-            // Формируем сообщение о наградах
-            let rewardMessage = "Вы получили:";
-            if (rewards.coins) rewardMessage += `\n${rewards.coins} монет`;
-            if (rewards.energy) rewardMessage += `\n${rewards.energy} энергии`;
-            if (rewards.experience)
-              rewardMessage += `\n${rewards.experience} опыта`;
-            if (rewards.cardId) rewardMessage += "\nНовую карту!";
-            tg.showPopup({
-              title: "Награда получена!",
-              message: rewardMessage,
-              buttons: [
-                {
-                  type: "ok",
-                  text: "Отлично!",
-                },
-              ],
-            });
-          }
-        } catch (error) {
-          console.error("Ошибка при начислении награды:", error);
+        // Получаем данные о рекламе
+        const clickedAd = ads.find((ad) => ad.id === adId);
+        if (!clickedAd) {
+          throw new Error("Реклама не найдена");
+        }
+        console.log("Отправляем запрос на начисление наград:", {
+          telegram_id,
+          adId,
+          clickedAd,
+        });
+        // Используем новый метод
+        const response = await adsService.processAdReward(telegram_id, adId);
+        if (response.data.success) {
+          // Показываем уведомление об успехе
           tg.showPopup({
-            title: "Ошибка",
-            message: "Не удалось получить награду. Попробуйте позже.",
+            title: "Награда получена!",
+            message: `Вы получили награду за просмотр рекламы!`,
             buttons: [
               {
                 type: "ok",
-                text: "Понятно",
+                text: "Отлично!",
               },
             ],
           });
         }
       }
     } catch (error) {
-      console.error("Ошибка при показе рекламы:", error);
+      console.error("Подробная ошибка:", error);
+
+      // Показываем ошибку пользователю
       window.Telegram.WebApp.showPopup({
         title: "Ошибка",
-        message: "Не удалось показать рекламу",
+        message: "Не удалось получить награду. Попробуйте позже.",
         buttons: [
           {
             type: "ok",

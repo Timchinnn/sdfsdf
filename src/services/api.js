@@ -112,15 +112,19 @@ export const adsService = {
   testReward: (telegram_id, adId) =>
     axios.post(`/process-reward/${telegram_id}`, { adId }),
 
-  rewardForAd: (telegram_id, adId) =>
-    axios.post(`/process-reward/${telegram_id}`, {
-      adId,
-      source: "ad_view", // добавляем источник для отслеживания
-    }),
+  // rewardForAd: (telegram_id, adId) =>
+  //   axios.post(`/process-reward/${telegram_id}`, {
+  //     adId,
+  //     source: "ad_view", // добавляем источник для отслеживания
+  //   }),
   deleteAd: (id) => axios.delete(`/ads/${id}`),
 
   // Создание нового объявления
   createAd: (formData) => axios.post("/ads", formData),
+  processAdReward: (telegram_id, adId) => {
+    console.log("Отправляем запрос с параметрами:", { telegram_id, adId });
+    return axios.post(`/process-reward/${telegram_id}`, { adId });
+  },
 };
 export const processReward = async (
   telegram_id,
