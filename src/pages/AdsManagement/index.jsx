@@ -121,6 +121,36 @@ const AdsManagement = () => {
       console.error("Error deleting ad:", error);
     }
   };
+  const [testUserId, setTestUserId] = useState("");
+  const [testStatus, setTestStatus] = useState(null);
+  // Функция тестирования награды
+  const testAdReward = async (adId) => {
+    if (!testUserId) {
+      alert("Введите Telegram ID пользователя для тестирования");
+      return;
+    }
+    try {
+      setTestStatus({ loading: true });
+      const response = await adsService.testReward(testUserId, adId);
+
+      if (response.data.success) {
+        const rewards = response.data.rewards;
+        setTestStatus({
+          success: true,
+          message: `Награды начислены:
+            ${rewards.coins ? `\nМонеты: ${rewards.coins}` : ""}
+            ${rewards.cardId ? `\nКарта ID: ${rewards.cardId}` : ""}
+            ${rewards.energy ? `\nЭнергия: ${rewards.energy}` : ""}
+            ${rewards.experience ? `\nОпыт: ${rewards.experience}` : ""}`,
+        });
+      }
+    } catch (error) {
+      setTestStatus({
+        success: false,
+        message: `Ошибка: ${error.response?.data?.error || error.message}`,
+      });
+    }
+  };
   return (
     <div className={styles.container}>
       <h2>Управление рекламой</h2>
@@ -279,6 +309,59 @@ const AdsManagement = () => {
             >
               Удалить
             </button>
+          </div>
+        ))}
+      </div>
+      <div className={styles.adsList}>
+        {ads.map((ad) => (
+          <div key={ad.id} className={styles.adItem}>
+            <div className={styles.adContent}>
+              <h3>{ad.title}</h3>
+              <p>{ad.description}</p>
+              <div className={styles.rewardInfo}>
+                {ad.reward_value && <p>Монеты: {ad.reward_value}</p>}
+                {ad.reward_card_id && <p>Карта ID: {ad.reward_card_id}</p>}
+                {ad.reward_energy && <p>Энергия: {ad.reward_energy}</p>}
+                {ad.reward_experience && <p>Опыт: {ad.reward_experience}</p>}
+              </div>
+              {ad.image_url && (
+                <img
+                  src={`https://api.zoomayor.io${ad.image_url}`}
+                  alt={ad.title}
+                  className={styles.adImage}
+                />
+              )}
+            </div>
+            <div className={styles.testSection}>
+              <input
+                type="text"
+                value={testUserId}
+                onChange={(e) => setTestUserId(e.target.value)}
+                placeholder="Введите Telegram ID"
+                className={styles.testInput}
+              />
+              <button
+                onClick={() => testAdReward(ad.id)}
+                className={styles.testButton}
+              >
+                Тест награды
+              </button>
+              <button
+                onClick={() => handleDelete(ad.id)}
+                className={styles.deleteButton}
+              >
+                Удалить
+              </button>
+            </div>
+            {testStatus && (
+              <div
+                className={`${styles.testStatus} ${
+                  testStatus.success ? styles.success : styles.error
+                }`}
+              >
+                {testStatus.message}
+              </div>
+            )}
           </div>
         ))}
       </div>

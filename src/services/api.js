@@ -109,6 +109,8 @@ export const tasksService = {
 export const adsService = {
   // Получение всех объявлений
   getAllAds: () => axios.get("/ads"),
+  testReward: (telegram_id, adId) =>
+    axios.post(`/process-reward/${telegram_id}`, { adId }),
 
   // Удаление объявления по id
   deleteAd: (id) => axios.delete(`/ads/${id}`),
