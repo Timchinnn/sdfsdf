@@ -332,7 +332,7 @@ const AdsManagement = () => {
                 />
               )}
             </div>
-            <div className={styles.testSection}>
+            {/* <div className={styles.testSection}>
               <input
                 type="text"
                 value={testUserId}
@@ -361,7 +361,7 @@ const AdsManagement = () => {
               >
                 {testStatus.message}
               </div>
-            )}
+            )} */}
           </div>
         ))}
       </div>

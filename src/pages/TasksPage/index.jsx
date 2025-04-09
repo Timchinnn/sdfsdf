@@ -184,14 +184,14 @@ const TasksPage = () => {
                               {ad.reward_energy}
                             </li>
                           )}
-                          {ad.reward_card_id && (
+                          {/* {ad.reward_card_id && (
                             <li className="friends-params__item f-center">
                               <span role="img" aria-label="card">
                                 🎴
                               </span>
                               Карта
                             </li>
-                          )}
+                          )} */}
                         </ul>
                       </div>
                     </div>
