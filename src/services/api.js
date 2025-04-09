@@ -116,14 +116,40 @@ export const adsService = {
   // Создание нового объявления
   createAd: (formData) => axios.post("/ads", formData),
 };
-export const processReward = async (telegram_id, adId) => {
+export const processReward = async (
+  telegram_id,
+  reward_url,
+  default_reward
+) => {
   try {
-    if (!telegram_id || !adId) {
-      throw new Error("Отсутствуют обязательные параметры");
+    if (!telegram_id) {
+      throw new Error("Отсутствует обязательный параметр: telegram_id");
+    }
+    // Если передан default_reward, используем альтернативную логику
+    if (default_reward) {
+      console.log("Используем альтернативную логику начисления награды");
+      const response = await axios.post(
+        `/process-reward/${telegram_id}`,
+        {
+          default_reward: true,
+          reward_type: default_reward.type,
+          reward_amount: default_reward.amount,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    }
+    // Стандартная логика с reward_url
+    if (!reward_url) {
+      throw new Error("Отсутствует reward_url и не передан default_reward");
     }
     const response = await axios.post(
       `/process-reward/${telegram_id}`,
-      { adId },
+      { reward_url },
       {
         headers: {
           "Content-Type": "application/json",
