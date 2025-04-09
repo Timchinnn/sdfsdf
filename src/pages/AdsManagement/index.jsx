@@ -294,7 +294,12 @@ const AdsManagement = () => {
             <div className={styles.adContent}>
               <h3>{ad.title}</h3>
               <p>{ad.description}</p>
-              <p>Награда: {ad.reward}</p>
+              <div className={styles.rewardInfo}>
+                {ad.reward_value && <p>Монеты: {ad.reward_value}</p>}
+                {ad.reward_card_id && <p>Карта ID: {ad.reward_card_id}</p>}
+                {ad.reward_energy && <p>Энергия: {ad.reward_energy}</p>}
+                {ad.reward_experience && <p>Опыт: {ad.reward_experience}</p>}
+              </div>{" "}
               {ad.image_url && (
                 <img
                   src={`https://api.zoomayor.io${ad.image_url}`}
