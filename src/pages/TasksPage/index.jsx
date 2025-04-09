@@ -163,7 +163,15 @@ const TasksPage = () => {
                       <div className="tasks-list__content">
                         <h3 className="tasks-list__title">{ad.title}</h3>
                         <p>{ad.description}</p>
-                        <ul className="friends-params f-center">
+                        <ul
+                          className="friends-params f-center"
+                          style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: "8px",
+                          }}
+                        >
+                          {" "}
                           {ad.reward_value > 0 && (
                             <li className="friends-params__item f-center">
                               <img src={CoinIcon} alt="" />
