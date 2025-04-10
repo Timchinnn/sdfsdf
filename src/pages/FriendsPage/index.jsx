@@ -45,6 +45,8 @@ const FriendsPage = () => {
     navigator.clipboard
       .writeText(referralUrl)
       .then(() => {
+        // Open Telegram with the referral link
+        window.open(`https://${referralUrl}`, "_blank");
         console.log("Success copy");
       })
       .catch((err) => {
@@ -92,7 +94,11 @@ const FriendsPage = () => {
                 </svg>
               </button>
             </div>
-            <button type="button" className="friends-referal__btn">
+            <button
+              type="button"
+              className="friends-referal__btn"
+              onClick={copyToClipboard}
+            >
               Пригласить
             </button>
           </div>
