@@ -41,7 +41,7 @@ const FriendsPage = () => {
   }, []);
 
   const copyToClipboard = () => {
-    const referralUrl = `t.me/zoooparkweb_bot?start=${referralCode}`;
+    const referralUrl = `t.me/ZooMayorbot?start=${referralCode}`;
     navigator.clipboard
       .writeText(referralUrl)
       .then(() => {
