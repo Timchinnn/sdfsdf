@@ -203,6 +203,8 @@ const AddEditDeck = () => {
         await cardSetsService.updateSetRewards(id, {
           title: name,
           description: description,
+          set_type: "citizen", // Add set_type
+
           rewards: activeRewardsList.map((reward) => ({
             type: reward.type,
             value:

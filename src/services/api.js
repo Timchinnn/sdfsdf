@@ -95,6 +95,8 @@ export const cardSetsService = {
     return axios.post("/card-sets", {
       title: data.title,
       description: data.description,
+      set_type: "citizen", // Add set_type
+
       rewards: formattedRewards,
     });
   }, // Получение карт конкретного набора
