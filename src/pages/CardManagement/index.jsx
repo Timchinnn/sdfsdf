@@ -146,8 +146,12 @@ const CardManagement = () => {
         <h2>Наборы карт жители</h2>
         <div className={styles.cardsList}>
           {cardSets
-            .filter((set) =>
-              set.name.toLowerCase().includes(setsSearchQuery.toLowerCase())
+            .filter(
+              (set) =>
+                set.name
+                  .toLowerCase()
+                  .includes(setsSearchQuery.toLowerCase()) &&
+                set.set_type === "citizen"
             )
             .map((set) => (
               <div key={set.id} className={styles.cardItem}>
