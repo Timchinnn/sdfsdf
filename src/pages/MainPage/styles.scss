@@ -352,7 +352,10 @@
       border-radius: 12px;
       pointer-events: none;
       &.active {
-        pointer-events: all;
+        pointer-events: auto;
+      }
+      &.flipped {
+        pointer-events: none;
       }
       &.open {
         pointer-events: none !important ;

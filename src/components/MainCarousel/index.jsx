@@ -228,14 +228,17 @@ const MainCarousel = ({
 
   const [isFlipped, setIsFlipped] = useState(false);
   const handleImageClick = async (index) => {
-    // console.log(`23${isButtonLocked}`);
+    if (isButtonLocked || isFlipped) return; // Проверяем состояние блокировки и переворота
 
-    setIsSwipeLocked(true); // Lock swiping when card is flipped
-    setIsButtonLocked(true); // Блокируем кнопку
+    setIsSwipeLocked(true);
+    setIsButtonLocked(true);
+    setIsFlipped(true);
+
     setTimeout(() => {
-      setIsSwipeLocked(false); // Unlock swiping after 15 seconds
-      setIsButtonLocked(false); // Разблокируем кнопку
-    }, 11900);
+      setIsSwipeLocked(false);
+      setIsButtonLocked(false);
+      setIsFlipped(false);
+    }, 2000);
 
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;
@@ -340,8 +343,8 @@ const MainCarousel = ({
                 <ReactFlipCard
                   flipTrigger="disabled"
                   flipByProp={activeSlide === i && isFlipped}
-                  className="main-slider__card"
-                  onClick={() => handleImageClick(i)}
+                  className={`main-slider__card ${isFlipped ? "flipped" : ""}`}
+                  onClick={() => !isFlipped && handleImageClick(i)}
                   frontComponent={
                     <div className="main-slider__image">
                       <img src={getCardBackImage()} alt="Card back" />
