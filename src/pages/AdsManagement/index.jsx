@@ -66,7 +66,7 @@ const AdsManagement = () => {
         alert("Размер файла не должен превышать 5MB");
         return;
       }
-      setSelectedImage(file.name);
+      setSelectedImage(file);
     }
   };
   const handleSubmit = async (e) => {
