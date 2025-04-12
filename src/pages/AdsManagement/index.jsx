@@ -4,6 +4,7 @@ import axios from "../../axios-controller";
 import routeAdsManagement from "./route";
 import { adsService } from "../../services/api";
 import { cardsService } from "../../services/api";
+import { compose } from "redux";
 const AdsManagement = () => {
   const [ads, setAds] = useState([]);
   const [title, setTitle] = useState("");
@@ -54,6 +55,7 @@ const AdsManagement = () => {
   };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    console.log(file);
     if (file) {
       if (!file.type.startsWith("image/")) {
         alert("Пожалуйста, выберите изображение");
