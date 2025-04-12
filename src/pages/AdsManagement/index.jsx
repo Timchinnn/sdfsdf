@@ -53,7 +53,19 @@ const AdsManagement = () => {
     }
   };
   const handleImageUpload = (e) => {
-    setSelectedImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Пожалуйста, выберите изображение");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        // 5MB
+        alert("Размер файла не должен превышать 5MB");
+        return;
+      }
+      setSelectedImage(file);
+    }
   };
   const handleSubmit = async (e) => {
     console.log(selectedImage);
