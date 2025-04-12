@@ -157,7 +157,7 @@ const TasksPage = () => {
                               : DefaultImg
                           }
                           alt=""
-                          style={{ height: "73%" }}
+                          style={{ height: "73%", borderRadius: "4px" }}
                         />
                       </div>
                       <div className="tasks-list__content">

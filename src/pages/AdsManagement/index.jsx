@@ -320,6 +320,7 @@ const AdsManagement = () => {
                   src={`https://api.zoomayor.io${ad.image_url}`}
                   alt={ad.title}
                   className={styles.adImage}
+                  style={{ width: "72px" }}
                 />
               )}
             </div>
