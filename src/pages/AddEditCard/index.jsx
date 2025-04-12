@@ -74,7 +74,7 @@ const AddEditCard = () => {
     formData.append("price", price);
     formData.append("experience", experience);
     formData.append("type", cardType);
-    console.log(`12${cardType}`);
+    console.log(`123${cardType}`);
 
     if (selectedImage) {
       formData.append("image", selectedImage);
