@@ -56,6 +56,7 @@ const AdsManagement = () => {
     setSelectedImage(e.target.files[0]);
   };
   const handleSubmit = async (e) => {
+    console.log(selectedImage);
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", title);
