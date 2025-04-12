@@ -73,7 +73,7 @@ const AddEditCard = () => {
     formData.append("hourly_income", hourlyIncome); // Добавляем hourly_income
     formData.append("price", price);
     formData.append("experience", experience);
-    formData.append("type", cardSection);
+    formData.append("type", cardType);
     console.log(`1${selectedImage}`);
 
     if (selectedImage) {
