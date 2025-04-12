@@ -95,7 +95,7 @@ export const cardSetsService = {
     return axios.post("/card-sets", {
       title: data.title,
       description: data.description,
-      set_type: "citizen", // Add set_type
+      set_type: data.set_type || "citizen", // Use provided set_type or default to "citizen"
 
       rewards: formattedRewards,
     });
