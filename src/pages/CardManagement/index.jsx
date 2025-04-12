@@ -6,6 +6,7 @@ import { cardBackService, cardSetsService } from "services/api";
 import { NavLink } from "react-router-dom";
 import { routeAddEditCard } from "pages/AddEditCard";
 import { routeAddEditDeck } from "pages/AddEditDeck";
+import { routeAddEditCityDeck } from "pages/AddEditCityDeck";
 import { routeAddEditCardBack } from "pages/AddEditCardBack";
 // import { routeAddEditDeck } from "pages/AddEditCard";
 import axios from "../../axios-controller";
@@ -219,6 +220,98 @@ const CardManagement = () => {
           </div>{" "}
           <div>
             <NavLink to={routeAddEditDeck()} style={{ width: "40%" }}>
+              <button
+                className={styles.addCard}
+                style={{
+                  background: "green",
+                  border: "none",
+                  borderRadius: "4px",
+                  color: "#fff",
+                  cursor: "pointer",
+                  padding: "8px 16px",
+                }}
+              >
+                Добавить набор
+              </button>
+            </NavLink>
+          </div>
+        </div>
+      </div>
+      <div className={styles.mainContent}>
+        <h2>Наборы карт города</h2>
+        <div className={styles.cardsList}>
+          {cardSets
+            .filter(
+              (set) =>
+                set.name
+                  .toLowerCase()
+                  .includes(setsSearchQuery.toLowerCase()) &&
+                set.set_type === "city"
+            )
+            .map((set) => (
+              <div key={set.id} className={styles.cardItem}>
+                <div className={styles.cardItemImg}>
+                  {cardSets.find((cs) => cs.id === set.id)?.cards?.[0]
+                    ?.image ? (
+                    <img
+                      src={`https://api.zoomayor.io${
+                        cardSets.find((cs) => cs.id === set.id).cards[0].image
+                      }`}
+                      alt={set.name}
+                    />
+                  ) : (
+                    <div className={styles.noImage}>Нет изображения</div>
+                  )}
+                </div>
+                <div className={styles.cardInfo}>
+                  <h3>{set.name}</h3>
+                  <p>{set.description}</p>
+                </div>
+                <NavLink to={routeAddEditCityDeck(set.id)}>
+                  <button>Редактировать</button>
+                </NavLink>
+                <button
+                  style={{ background: "red", marginTop: "10px" }}
+                  onClick={async () => {
+                    try {
+                      await cardSetsService.deleteCardSet(set.id);
+                      setCardSets(cardSets.filter((cs) => cs.id !== set.id));
+                    } catch (error) {
+                      console.error("Error deleting card set:", error);
+                    }
+                  }}
+                >
+                  Удалить
+                </button>
+              </div>
+            ))}
+        </div>
+        <div className={styles.settings}>
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              placeholder="Поиск по названию карты"
+              value={setsSearchQuery}
+              onChange={(e) => setSetsSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
+            <button
+              className={styles.searchButton}
+              style={{
+                background: "green",
+                border: "none",
+                borderRadius: "4px",
+                color: "#fff",
+                cursor: "pointer",
+                padding: "8px 16px",
+              }}
+              onClick={() => setSearchQuery(searchQuery)}
+            >
+              Поиск
+            </button>
+          </div>
+          <div>
+            <NavLink to={routeAddEditCityDeck()} style={{ width: "40%" }}>
               <button
                 className={styles.addCard}
                 style={{
