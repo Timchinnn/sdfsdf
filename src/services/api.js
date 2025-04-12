@@ -122,7 +122,12 @@ export const adsService = {
   deleteAd: (id) => axios.delete(`/ads/${id}`),
 
   // Создание нового объявления
-  createAd: (formData) => axios.post("/ads", formData),
+  createAd: (formData) =>
+    axios.post("/ads", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
   processAdReward: (telegram_id, adId) => {
     console.log("Отправляем запрос с параметрами:", { telegram_id, adId });
     return axios.post(`/process-reward/${telegram_id}`, { adId });
