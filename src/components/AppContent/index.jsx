@@ -19,6 +19,9 @@ import AddEditCardBack, {
 import AddEditDeck, {
   routeAddEditDeck as routeAddEditDeckPage,
 } from "pages/AddEditDeck";
+import AddEditCityDeck, {
+  routeAddEditCityDeck as routeAddEditCityDeckPage,
+} from "pages/AddEditCityDeck";
 import AdminPanel, { routeAdmin as routeAdminPage } from "pages/AdminPanel";
 import AdsManagement, {
   routeAdsManagement as routeAdsManagementPage,
@@ -51,6 +54,11 @@ const AppContent = () => {
 
           <Route exact path={routeMainPage()} component={MainPage} />
           <Route exact path={routeAddEditDeckPage()} component={AddEditDeck} />
+          <Route
+            exact
+            path={routeAddEditCityDeckPage()}
+            component={AddEditCityDeck}
+          />
           <Route exact path={routeCityPage()} component={CityPage} />
           <Route exact path={routeFriendsPage()} component={FriendsPage} />
           <Route exact path={routeShopPage()} component={ShopPage} />
