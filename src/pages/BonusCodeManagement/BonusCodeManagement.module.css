@@ -1,0 +1,81 @@
+.container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.generatorSection {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.inputGroup {
+  margin-bottom: 15px;
+}
+.inputGroup label {
+  display: block;
+  margin-bottom: 5px;
+}
+.inputGroup input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.rewardsSection {
+  margin: 20px 0;
+}
+.rewardInputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.generateButton {
+  background: #71b21d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+.generateButton:hover {
+  background: #619f18;
+}
+.generatedCodes {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+.codesList {
+  margin-top: 15px;
+}
+.codeItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+.codeInfo {
+  display: flex;
+  gap: 20px;
+}
+.codeActions {
+  display: flex;
+  gap: 10px;
+}
+.codeActions button {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+.codeActions button:first-child {
+  background: #f0f0f0;
+}
+.codeActions button:last-child {
+  background: #71b21d;
+  color: white;
+}

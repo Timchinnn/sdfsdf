@@ -33,6 +33,9 @@ import TasksPage, { routeTasks as routeTasksPage } from "pages/TasksPage";
 import SetsPage, { routeSets as routeSetsPage } from "pages/SetsPage";
 import BonusPage, { routeBonus as routeBonusPage } from "pages/BonusPage";
 import PeoplePage, { routePeople as routePeoplePage } from "pages/PeoplePage";
+import BonusCodeManagement, {
+  routeBonusCodeManagement as routeBonusCodeManagementPage,
+} from "pages/BonusCodeManagement";
 
 import { useSelector } from "react-redux";
 
@@ -65,6 +68,11 @@ const AppContent = () => {
             component={AddEditCityDeck}
           />
           <Route exact path={routeCityPage()} component={CityPage} />
+          <Route
+            exact
+            path={routeBonusCodeManagementPage()}
+            component={BonusCodeManagement}
+          />
           <Route exact path={routeFriendsPage()} component={FriendsPage} />
           <Route exact path={routeShopPage()} component={ShopPage} />
           <Route exact path={routeAddEditCardPage()} component={AddEditCard} />
