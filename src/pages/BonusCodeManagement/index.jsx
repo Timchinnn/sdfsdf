@@ -27,17 +27,17 @@ const BonusCodeManagement = () => {
     navigator.clipboard.writeText(code);
     alert("Код скопирован в буфер обмена");
   };
-  const saveCode = async (code) => {
-    try {
-      // Здесь будет API запрос для сохранения кода
-      const response = await axios.post("/api/bonus-codes", code);
-      setCodes([...codes, response.data]);
-      alert("Код успешно сохранен");
-    } catch (error) {
-      console.error("Ошибка при сохранении кода:", error);
-      alert("Ошибка при сохранении кода");
-    }
-  };
+  //   const saveCode = async (code) => {
+  //     try {
+  //       // Здесь будет API запрос для сохранения кода
+  //       const response = await axios.post("/api/bonus-codes", code);
+  //       setCodes([...codes, response.data]);
+  //       alert("Код успешно сохранен");
+  //     } catch (error) {
+  //       console.error("Ошибка при сохранении кода:", error);
+  //       alert("Ошибка при сохранении кода");
+  //     }
+  //   };
   return (
     <div className={styles.container}>
       <h2>Управление бонус-кодами</h2>
