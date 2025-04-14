@@ -242,7 +242,7 @@ const MainCarousel = ({
         setIsButtonLocked(false);
         setIsAnimating(false);
         setIsFlipped(false);
-      }, 11900);
+      }, 5900);
     }, ANIMATION_DURATION);
 
     const tg = window.Telegram.WebApp;
