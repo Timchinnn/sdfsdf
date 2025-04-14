@@ -226,7 +226,7 @@ const MainCarousel = ({
 
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const ANIMATION_DURATION = 100;
+  const ANIMATION_DURATION = 500;
   const handleImageClick = async (index) => {
     if (isAnimating) return; // Prevent multiple clicks during animation
 
@@ -242,7 +242,7 @@ const MainCarousel = ({
         setIsButtonLocked(false);
         setIsAnimating(false);
         setIsFlipped(false);
-      }, 3900);
+      }, 1900);
     }, ANIMATION_DURATION);
 
     const tg = window.Telegram.WebApp;
