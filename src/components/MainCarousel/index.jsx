@@ -123,38 +123,38 @@ const MainCarousel = ({
   }, []);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
-  useEffect(() => {
-    if (photos.length > 0) {
-      const weightedRandom = (items) => {
-        // Нормализуем шансы, чтобы они были в диапазоне от 0 до 1
-        const totalWeight = items.reduce(
-          (sum, item) => sum + (item.chance || 1),
-          0
-        );
-        const normalizedItems = items.map((item) => ({
-          ...item,
-          normalizedChance: (item.chance || 1) / totalWeight,
-        }));
-        // Генерируем случайное число от 0 до 1
-        const random = Math.random();
-        let cumulativeWeight = 0;
-        // Проходим по нормализованным весам, суммируя их
-        for (const item of normalizedItems) {
-          cumulativeWeight += item.normalizedChance;
-          if (random <= cumulativeWeight) {
-            return item;
-          }
-        }
+  // useEffect(() => {
+  //   if (photos.length > 0) {
+  //     const weightedRandom = (items) => {
+  //       // Нормализуем шансы, чтобы они были в диапазоне от 0 до 1
+  //       const totalWeight = items.reduce(
+  //         (sum, item) => sum + (item.chance || 1),
+  //         0
+  //       );
+  //       const normalizedItems = items.map((item) => ({
+  //         ...item,
+  //         normalizedChance: (item.chance || 1) / totalWeight,
+  //       }));
+  //       // Генерируем случайное число от 0 до 1
+  //       const random = Math.random();
+  //       let cumulativeWeight = 0;
+  //       // Проходим по нормализованным весам, суммируя их
+  //       for (const item of normalizedItems) {
+  //         cumulativeWeight += item.normalizedChance;
+  //         if (random <= cumulativeWeight) {
+  //           return item;
+  //         }
+  //       }
 
-        return normalizedItems[0];
-      };
-      const newSelectedPhotos = data.reduce((acc, item) => {
-        acc[item.id] = weightedRandom(photos);
-        return acc;
-      }, {});
-      setSelectedPhotos(newSelectedPhotos);
-    }
-  }, [photos, data]);
+  //       return normalizedItems[0];
+  //     };
+  //     const newSelectedPhotos = data.reduce((acc, item) => {
+  //       acc[item.id] = weightedRandom(photos);
+  //       return acc;
+  //     }, {});
+  //     setSelectedPhotos(newSelectedPhotos);
+  //   }
+  // }, [photos, data]);
   const nextSlide = () => {
     // console.log(`1${isButtonLocked}`);
     if (isButtonLocked) return; // Проверяем блокировку
@@ -166,32 +166,42 @@ const MainCarousel = ({
       setIsFlipped(false);
       setActiveIndex(null);
       setOpenedCards({});
-      // setTimeout(() => {
-      //   if (photos.length > 0) {
-      //     // Используем функцию weightedRandom для каждой карты
-      //     const newSelectedPhotos = data.reduce((acc, item) => {
-      //       const totalWeight = photos.reduce(
-      //         (sum, photo) => sum + (photo.chance || 1),
-      //         0
-      //       );
-      //       const random = Math.random() * totalWeight;
-      //       let cumulativeWeight = 0;
+      setTimeout(() => {
+        if (photos.length > 0) {
+          // Используем функцию weightedRandom для каждой карты
+          const weightedRandom = (items) => {
+            // Нормализуем шансы, чтобы они были в диапазоне от 0 до 1
+            const totalWeight = items.reduce(
+              (sum, item) => sum + (item.chance || 1),
+              0
+            );
+            const normalizedItems = items.map((item) => ({
+              ...item,
+              normalizedChance: (item.chance || 1) / totalWeight,
+            }));
+            // Генерируем случайное число от 0 до 1
+            const random = Math.random();
+            let cumulativeWeight = 0;
+            // Проходим по нормализованным весам, суммируя их
+            for (const item of normalizedItems) {
+              cumulativeWeight += item.normalizedChance;
+              if (random <= cumulativeWeight) {
+                return item;
+              }
+            }
 
-      //       for (const photo of photos) {
-      //         cumulativeWeight += photo.chance || 1;
-      //         if (random <= cumulativeWeight) {
-      //           acc[item.id] = photo;
-      //           break;
-      //         }
-      //       }
-      //       return acc;
-      //     }, {});
-      //     setSelectedPhotos(newSelectedPhotos);
-      //   }
-      //   onUpdateComplete();
-      // }, 500);
+            return normalizedItems[0];
+          };
+          const newSelectedPhotos = data.reduce((acc, item) => {
+            acc[item.id] = weightedRandom(photos);
+            return acc;
+          }, {});
+          setSelectedPhotos(newSelectedPhotos);
+        }
+        onUpdateComplete();
+      }, 500);
     }
-  }, [shouldUpdate, photos, onUpdateComplete]);
+  }, [shouldUpdate, photos, onUpdateComplete, data]);
 
   const getStyles = (index) => {
     const currentIndex = activeSlide % data.length;
