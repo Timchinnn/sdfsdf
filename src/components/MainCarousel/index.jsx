@@ -226,7 +226,7 @@ const MainCarousel = ({
 
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const ANIMATION_DURATION = 500;
+  const ANIMATION_DURATION = 100;
   const handleImageClick = async (index) => {
     if (isAnimating) return; // Prevent multiple clicks during animation
 
