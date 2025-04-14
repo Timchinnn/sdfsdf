@@ -232,6 +232,7 @@ const MainCarousel = ({
     setTimeout(() => {
       setIsSwipeLocked(false); // Unlock swiping after 15 seconds
       setIsButtonLocked(false); // Разблокируем кнопку
+      setIsFlipped(false); // Сбрасываем состояние переворота
     }, 11900);
 
     const tg = window.Telegram.WebApp;
