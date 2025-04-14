@@ -223,52 +223,59 @@ const MainCarousel = ({
     }
   };
 
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isFlipped, setIsFlipped] = useState({}); // Changed to object to track per-card flip state
   const handleImageClick = async (index) => {
-    // console.log(23${isButtonLocked});
+    setIsSwipeLocked(true);
+    setIsButtonLocked(true);
 
-    setIsSwipeLocked(true); // Lock swiping when card is flipped
-    setIsButtonLocked(true); // Блокируем кнопку
-    setTimeout(() => {
-      setIsSwipeLocked(false); // Unlock swiping after 15 seconds
-      setIsButtonLocked(false); // Разблокируем кнопку
-    }, 11900);
-
+    // Prevent multiple clicks on same card
+    if (isFlipped[index]) {
+      return;
+    }
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;
-
     if (!telegram_id) {
       console.error("Telegram ID not found");
       return;
     }
+
     if (energy < 10) {
-      return; // Недостаточно энергии
+      return;
     }
-
     try {
-      // Обновляем энергию локально перед запросом
       const newEnergy = Math.max(0, energy - 10);
-
-      // Отправляем запрос на обновление энергии
       await userInitService.updateEnergy(telegram_id, newEnergy);
-
-      // Обновляем локальное состояние только после успешного запроса
       setEnergy(newEnergy);
-      setIsFlipped(true);
+
+      // Update flip state for specific card
+      setIsFlipped((prev) => ({
+        ...prev,
+        [index]: true,
+      }));
       const selectedCard = selectedPhotos[data[index].id];
       setOpenedCards({
         ...openedCards,
         [index]: selectedCard,
       });
+
       await userCardsService.addCardToUser(telegram_id, selectedCard.id);
+
       if (selectedCard.type === "energy_boost") {
         const boostedEnergy = Math.min(newEnergy + 100, 1000);
         await userInitService.updateEnergy(telegram_id, boostedEnergy);
         setEnergy(boostedEnergy);
       }
+
       handleOpenPopup(selectedCard);
+      // Reset states after delay
+      setTimeout(() => {
+        setIsSwipeLocked(false);
+        setIsButtonLocked(false);
+      }, 11900);
     } catch (error) {
       console.error("Error in handleImageClick:", error);
+      setIsSwipeLocked(false);
+      setIsButtonLocked(false);
     }
   };
 
