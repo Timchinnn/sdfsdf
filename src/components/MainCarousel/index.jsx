@@ -156,6 +156,7 @@ const MainCarousel = ({
     // console.log(`1${isButtonLocked}`);
     if (isButtonLocked) return; // Проверяем блокировку
     setActiveSlide((prev) => (prev + 1) % data.length);
+    setIsFlipped(false); // Сбрасываем состояние переворота при переключении
   };
   useEffect(() => {
     if (shouldUpdate) {
@@ -225,43 +226,43 @@ const MainCarousel = ({
 
   const [isFlipped, setIsFlipped] = useState(false);
   const handleImageClick = async (index) => {
-    // console.log(23${isButtonLocked});
+    // Предотвращаем повторные клики во время обработки
+    if (isButtonLocked) return;
 
-    setIsSwipeLocked(true); // Lock swiping when card is flipped
-    setIsButtonLocked(true); // Блокируем кнопку
-    setTimeout(() => {
-      setIsSwipeLocked(false); // Unlock swiping after 15 seconds
-      setIsButtonLocked(false); // Разблокируем кнопку
-      setIsFlipped(false); // Сбрасываем состояние переворота
-    }, 11900);
-
+    setIsSwipeLocked(true);
+    setIsButtonLocked(true);
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;
-
     if (!telegram_id) {
       console.error("Telegram ID not found");
       return;
     }
     if (energy < 10) {
-      return; // Недостаточно энергии
+      setIsSwipeLocked(false);
+      setIsButtonLocked(false);
+      return;
     }
-
     try {
-      // Обновляем энергию локально перед запросом
+      // Обновляем состояние энергии локально сразу
       const newEnergy = Math.max(0, energy - 10);
-
-      // Отправляем запрос на обновление энергии
-      await userInitService.updateEnergy(telegram_id, newEnergy);
-
-      // Обновляем локальное состояние только после успешного запроса
       setEnergy(newEnergy);
+
+      // Переворачиваем карточку до запроса
       setIsFlipped(true);
-      const selectedCard = selectedPhotos[data[index].id];
-      setOpenedCards({
-        ...openedCards,
+
+      // Параллельно выполняем запросы
+      const [energyResponse, selectedCard] = await Promise.all([
+        userInitService.updateEnergy(telegram_id, newEnergy),
+        Promise.resolve(selectedPhotos[data[index].id]),
+      ]);
+      // Обновляем состояние открытых карт
+      setOpenedCards((prev) => ({
+        ...prev,
         [index]: selectedCard,
-      });
+      }));
+      // Добавляем карту пользователю
       await userCardsService.addCardToUser(telegram_id, selectedCard.id);
+      // Обрабатываем бонус энергии
       if (selectedCard.type === "energy_boost") {
         const boostedEnergy = Math.min(newEnergy + 100, 1000);
         await userInitService.updateEnergy(telegram_id, boostedEnergy);
@@ -270,6 +271,13 @@ const MainCarousel = ({
       handleOpenPopup(selectedCard);
     } catch (error) {
       console.error("Error in handleImageClick:", error);
+    } finally {
+      // Устанавливаем таймер на сброс блокировок
+      setTimeout(() => {
+        setIsSwipeLocked(false);
+        setIsButtonLocked(false);
+        setIsFlipped(false);
+      }, 1200); // Уменьшенное время ожидания
     }
   };
 
