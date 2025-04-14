@@ -225,16 +225,25 @@ const MainCarousel = ({
   };
 
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const ANIMATION_DURATION = 500;
   const handleImageClick = async (index) => {
-    // console.log(23${isButtonLocked});
+    if (isAnimating) return; // Prevent multiple clicks during animation
 
-    setIsSwipeLocked(true); // Lock swiping when card is flipped
-    setIsButtonLocked(true); // Блокируем кнопку
+    setIsAnimating(true);
+    setIsSwipeLocked(true);
+    setIsButtonLocked(true);
+
     setTimeout(() => {
-      setIsSwipeLocked(false); // Unlock swiping after 15 seconds
-      setIsButtonLocked(false); // Разблокируем кнопку
-      setIsFlipped(false); // Сбрасываем состояние переворота
-    }, 11900);
+      setIsFlipped(true);
+
+      setTimeout(() => {
+        setIsSwipeLocked(false);
+        setIsButtonLocked(false);
+        setIsAnimating(false);
+        setIsFlipped(false);
+      }, 11900);
+    }, ANIMATION_DURATION);
 
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;
