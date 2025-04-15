@@ -391,7 +391,10 @@ const MainCarousel = ({
                           }}
                         >
                           {Math.floor(remainingTime[i] / 60)}:
-                          {Math.floor((remainingTime[i] % 60) * 1000)}
+                          {String(Math.floor(remainingTime[i] % 60)).padStart(
+                            2,
+                            "0"
+                          )}
                         </div>
                       )}
                     </div>
