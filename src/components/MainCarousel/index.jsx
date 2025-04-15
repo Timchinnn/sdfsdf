@@ -391,7 +391,8 @@ const MainCarousel = ({
                           }}
                         >
                           {remainingTime[i]}s.
-                          {Math.floor((remainingTime[i] % 1) * 1000)}ms
+                          {Math.floor(remainingTime[i] / 60)}:
+                          {Math.floor((remainingTime[i] % 60) * 1000)}
                         </div>
                       )}
                     </div>
