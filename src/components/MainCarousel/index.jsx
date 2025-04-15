@@ -375,7 +375,20 @@ const MainCarousel = ({
                     <div className="main-slider__image">
                       <img src={getCardBackImage()} alt="Card back" />
                       {remainingTime[i] && (
-                        <div className="card-timer">{remainingTime[i]}s</div>
+                        <div
+                          className="card-timer"
+                          style={{
+                            position: "absolute",
+                            top: "10px",
+                            right: "10px",
+                            background: "rgba(0, 0, 0, 0.7)",
+                            color: "white",
+                            padding: "5px 10px",
+                            borderRadius: "4px",
+                          }}
+                        >
+                          {remainingTime[i]}s
+                        </div>
                       )}
                     </div>
                   }
