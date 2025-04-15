@@ -389,6 +389,28 @@ const CardManagement = () => {
           </div>
         </div>
       </div>
+      <div className={styles.mainContent}>
+        <h2>Бонус коды</h2>
+        <div className={styles.settings}>
+          <div>
+            <NavLink to="/bonuscodemanagement" style={{ width: "40%" }}>
+              <button
+                className={styles.addCard}
+                style={{
+                  background: "green",
+                  border: "none",
+                  borderRadius: "4px",
+                  color: "#fff",
+                  cursor: "pointer",
+                  padding: "8px 16px",
+                }}
+              >
+                Управление бонус кодами
+              </button>
+            </NavLink>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
