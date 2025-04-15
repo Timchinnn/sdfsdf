@@ -26,7 +26,8 @@ const MainCarousel = ({
   onUpdateComplete,
 }) => {
   const [isButtonLocked, setIsButtonLocked] = useState(false);
-
+  const [nextOpenTime, setNextOpenTime] = useState({});
+  const [remainingTime, setRemainingTime] = useState({});
   const [openedCards, setOpenedCards] = useState({});
   const cardBackStyle = useSelector((state) => state.cardBack);
   const [touchStart, setTouchStart] = useState(null);
@@ -109,7 +110,22 @@ const MainCarousel = ({
     }, 1000);
     return () => clearInterval(energyInterval);
   }, []);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = Date.now();
+      const newRemainingTime = {};
 
+      Object.entries(nextOpenTime).forEach(([index, time]) => {
+        if (time > now) {
+          const remaining = Math.ceil((time - now) / 1000);
+          newRemainingTime[index] = remaining;
+        }
+      });
+
+      setRemainingTime(newRemainingTime);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [nextOpenTime]);
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
@@ -230,13 +246,18 @@ const MainCarousel = ({
   const handleImageClick = async (index) => {
     if (isAnimating) return; // Prevent multiple clicks during animation
 
+    // Check if card is still locked
+    if (nextOpenTime[index] && Date.now() < nextOpenTime[index]) {
+      return; // Card is still locked
+    }
     setIsAnimating(true);
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
-
+    // Set next open time to 5 seconds from now
+    const nextTime = Date.now() + 5000; // 5 seconds cooldown
+    setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
     setTimeout(() => {
       setIsFlipped(true);
-
       setTimeout(() => {
         setIsSwipeLocked(false);
         setIsButtonLocked(false);
@@ -353,6 +374,9 @@ const MainCarousel = ({
                   frontComponent={
                     <div className="main-slider__image">
                       <img src={getCardBackImage()} alt="Card back" />
+                      {remainingTime[i] && (
+                        <div className="card-timer">{remainingTime[i]}s</div>
+                      )}
                     </div>
                   }
                   backComponent={
