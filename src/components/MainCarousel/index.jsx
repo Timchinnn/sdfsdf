@@ -114,16 +114,19 @@ const MainCarousel = ({
     const timer = setInterval(() => {
       const now = Date.now();
       const newRemainingTime = {};
-
       Object.entries(nextOpenTime).forEach(([index, time]) => {
         if (time > now) {
-          const remaining = Math.ceil((time - now) / 1000);
-          newRemainingTime[index] = remaining;
+          const remaining = time - now;
+          const seconds = Math.floor(remaining / 1000);
+          const milliseconds = remaining % 1000;
+          newRemainingTime[index] = {
+            seconds,
+            milliseconds,
+          };
         }
       });
-
       setRemainingTime(newRemainingTime);
-    }, 1000);
+    }, 10); // Обновляем каждые 10мс для плавности
     return () => clearInterval(timer);
   }, [nextOpenTime]);
   useEffect(() => {
@@ -380,21 +383,23 @@ const MainCarousel = ({
                           style={{
                             position: "absolute",
                             top: "10px",
-                            left: "50%", // Центрирование по горизонтали
-                            transform: "translateX(-50%)", // Центрирование по горизонтали
+                            left: "50%",
+                            transform: "translateX(-50%)",
                             background: "rgba(0, 0, 0, 0.7)",
                             color: "white",
-                            padding: "5px 15px", // Увеличен горизонтальный padding
+                            padding: "5px 15px",
                             borderRadius: "4px",
-                            minWidth: "100px", // Минимальная ширина
-                            textAlign: "center", // Центрирование текста
+                            minWidth: "100px",
+                            textAlign: "center",
                           }}
                         >
-                          {Math.floor(remainingTime[i] / 60)}:
-                          {String(Math.floor(remainingTime[i] % 60)).padStart(
-                            2,
-                            "0"
-                          )}
+                          {String(
+                            Math.floor(remainingTime[i].seconds)
+                          ).padStart(2, "0")}
+                          :
+                          {String(
+                            Math.floor(remainingTime[i].milliseconds)
+                          ).padStart(3, "0")}
                         </div>
                       )}
                     </div>
