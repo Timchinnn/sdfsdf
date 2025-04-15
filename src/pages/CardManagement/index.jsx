@@ -393,7 +393,7 @@ const CardManagement = () => {
         <h2>Бонус коды</h2>
         <div className={styles.settings}>
           <div>
-            <NavLink to="/bonuscodemanagement" style={{ width: "40%" }}>
+            <NavLink to="/bonus-code-management" style={{ width: "40%" }}>
               <button
                 className={styles.addCard}
                 style={{
