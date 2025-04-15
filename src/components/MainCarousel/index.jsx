@@ -380,14 +380,18 @@ const MainCarousel = ({
                           style={{
                             position: "absolute",
                             top: "10px",
-                            right: "10px",
+                            left: "50%", // Центрирование по горизонтали
+                            transform: "translateX(-50%)", // Центрирование по горизонтали
                             background: "rgba(0, 0, 0, 0.7)",
                             color: "white",
-                            padding: "5px 10px",
+                            padding: "5px 15px", // Увеличен горизонтальный padding
                             borderRadius: "4px",
+                            minWidth: "100px", // Минимальная ширина
+                            textAlign: "center", // Центрирование текста
                           }}
                         >
-                          {remainingTime[i]}s
+                          {remainingTime[i]}s.
+                          {Math.floor((remainingTime[i] % 1) * 1000)}ms
                         </div>
                       )}
                     </div>
