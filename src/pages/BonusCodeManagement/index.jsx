@@ -45,6 +45,20 @@ const BonusCodeManagement = () => {
     alert("Код скопирован в буфер обмена");
   };
   // Сохранение кода
+  const handleDelete = async (id) => {
+    try {
+      await bonusCodeService.deleteBonusCode(id);
+      setCodes(codes.filter((code) => code.id !== id));
+      alert("Код успешно удален");
+    } catch (error) {
+      console.error("Ошибка при удалении кода:", error);
+      alert(
+        `Ошибка при удалении кода: ${
+          error.response?.data?.error || error.message
+        }`
+      );
+    }
+  };
   const saveCode = async (code) => {
     console.log("Начало сохранения кода:", code);
 
@@ -199,6 +213,12 @@ const BonusCodeManagement = () => {
                     : "Без срока действия"}
                 </span>
               </div>
+              <button
+                onClick={() => handleDelete(code.id)}
+                className={styles.deleteButton}
+              >
+                Удалить
+              </button>
             </div>
           ))}
         </div>

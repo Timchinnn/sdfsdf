@@ -217,4 +217,5 @@ export const peopleService = {
 export const bonusCodeService = {
   getAllBonusCodes: () => axios.get("/bonus-codes"),
   createBonusCode: (payload) => axios.post("/bonus-codes", payload),
+  deleteBonusCode: (id) => axios.delete(`/bonus-codes/${id}`),
 };
