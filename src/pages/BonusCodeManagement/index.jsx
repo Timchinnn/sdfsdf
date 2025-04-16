@@ -46,46 +46,43 @@ const BonusCodeManagement = () => {
   };
   // Сохранение кода
   const saveCode = async (code) => {
+    console.log("Начало сохранения кода:", code);
+
     try {
-      // Проверяем наличие обязательных полей
-      if (!code.code || !code.name) {
-        throw new Error("Необходимо указать код и название");
-      }
-      // Определяем тип награды и значение
-      let rewardType = null;
-      let rewardValue = null;
-      let rewardCardId = null;
-      if (code.rewards.coins > 0) {
-        rewardType = "coins";
-        rewardValue = code.rewards.coins;
-      } else if (code.rewards.experience > 0) {
-        rewardType = "experience";
-        rewardValue = code.rewards.experience;
-      } else if (code.rewards.energy > 0) {
-        rewardType = "energy";
-        rewardValue = code.rewards.energy;
-      } else if (code.rewards.cardId) {
-        rewardType = "card";
-        rewardCardId = code.rewards.cardId;
-      }
-      if (!rewardType) {
-        throw new Error("Необходимо указать хотя бы одну награду");
-      }
-      const response = await axios.post("/bonus-codes", {
+      // Подготовка данных
+      const payload = {
         code: code.code,
         name: code.name,
-        reward_type: rewardType,
-        reward_value: rewardValue,
-        reward_card_id: rewardCardId,
+        reward_type: null,
+        reward_value: null,
+        reward_card_id: null,
         expires_at: code.expiresAt || null,
-      });
-      setCodes([...codes, response.data]);
+      };
+      // Определение типа награды
+      if (code.rewards.coins > 0) {
+        payload.reward_type = "coins";
+        payload.reward_value = code.rewards.coins;
+      } else if (code.rewards.experience > 0) {
+        payload.reward_type = "experience";
+        payload.reward_value = code.rewards.experience;
+      } else if (code.rewards.energy > 0) {
+        payload.reward_type = "energy";
+        payload.reward_value = code.rewards.energy;
+      } else if (code.rewards.cardId) {
+        payload.reward_type = "card";
+        payload.reward_card_id = code.rewards.cardId;
+      }
+      console.log("Отправляемые данные:", payload);
+      const response = await axios.post("/bonus-codes", payload);
+      console.log("Ответ сервера:", response.data);
+      setCodes((prevCodes) => [...prevCodes, response.data]);
       alert("Код успешно сохранен");
     } catch (error) {
-      console.error("Ошибка при сохранении кода:", error);
+      console.error("Полная ошибка:", error);
       alert(
-        "Ошибка при сохранении кода: " +
-          (error.response?.data?.error || error.message)
+        `Ошибка при сохранении кода: ${
+          error.response?.data?.error || error.message
+        }`
       );
     }
   };
