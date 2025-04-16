@@ -14,6 +14,7 @@ const BonusPage = () => {
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  console.log(error);
   const handleActivateCode = async (e) => {
     e.preventDefault();
     setIsLoading(true);
