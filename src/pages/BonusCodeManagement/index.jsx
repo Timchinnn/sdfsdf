@@ -18,7 +18,7 @@ const BonusCodeManagement = () => {
   useEffect(() => {
     const fetchCodes = async () => {
       try {
-        const response = await axios.get("/api/bonus-codes");
+        const response = await axios.get("/bonus-codes");
         setCodes(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке кодов:", error);
