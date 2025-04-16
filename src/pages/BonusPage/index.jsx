@@ -2,24 +2,59 @@ import React from "react";
 import routeBonus from "./routes";
 import MainSection from "components/MainSection";
 
+import React, { useState } from "react";
+import routeBonus from "./routes";
+import MainSection from "components/MainSection";
+import { bonusCodeService } from "../../services/api";
 import DefaultImg from "assets/img/default-img.png";
 import CoinIcon from "assets/img/coin-icon.svg";
 import StarIcon from "assets/img/star-icon.svg";
-
 import MobileNav from "components/MobileNav";
-
 const BonusPage = () => {
+  const [code, setCode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const handleActivateCode = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    try {
+      const tg = window.Telegram.WebApp;
+      if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
+        throw new Error("Telegram user data not found");
+      }
+      const telegram_id = tg.initDataUnsafe.user.id;
+      const response = await bonusCodeService.activateCode(telegram_id, code);
+      if (response.data.success) {
+        tg.showPopup({
+          title: "Успех!",
+          message: "Бонус код успешно активирован",
+          buttons: [{ type: "ok" }],
+        });
+        setCode("");
+      }
+    } catch (error) {
+      setError(error.response?.data?.error || "Ошибка при активации кода");
+      tg.showPopup({
+        title: "Ошибка",
+        message: error.response?.data?.error || "Ошибка при активации кода",
+        buttons: [{ type: "ok" }],
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <section className="bonus">
       <div className="container">
         <div className="tasks-inner">
           <MainSection />
-          <div
+          {/* <div
             className="block-style"
             style={{ textAlign: "center", padding: "20px", marginTop: "6px" }}
           >
             Скоро
-          </div>
+          </div> */}
           <div className="bonus-wrap">
             <div className="bonus-promo block-style">
               <div className="section-content">
@@ -30,10 +65,22 @@ const BonusPage = () => {
               </div>
               <div className="bonus-promo__code">
                 <div className="bonus-promo__code-input">
-                  <input type="text" name="promo" placeholder="Введите код" />
+                  <input
+                    type="text"
+                    name="promo"
+                    placeholder="Введите код"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    disabled={isLoading}
+                  />
                 </div>
-                <button type="button" className="bonus-promo__code-btn">
-                  Применить
+                <button
+                  type="button"
+                  className="bonus-promo__code-btn"
+                  onClick={handleActivateCode}
+                  disabled={isLoading || !code}
+                >
+                  {isLoading ? "Активация..." : "Применить"}
                 </button>
               </div>
             </div>
