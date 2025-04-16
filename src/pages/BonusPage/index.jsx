@@ -1,7 +1,3 @@
-import React from "react";
-import routeBonus from "./routes";
-import MainSection from "components/MainSection";
-
 import React, { useState } from "react";
 import routeBonus from "./routes";
 import MainSection from "components/MainSection";
