@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "./BonusCodeManagement.module.css";
+import routeBonusCodeManagement from "./routes";
 import axios from "../../axios-controller";
 const BonusCodeManagement = () => {
   const [codes, setCodes] = useState([]);
@@ -164,4 +165,5 @@ const BonusCodeManagement = () => {
     </div>
   );
 };
+export { routeBonusCodeManagement };
 export default BonusCodeManagement;
