@@ -47,22 +47,37 @@ const BonusCodeManagement = () => {
   // Сохранение кода
   const saveCode = async (code) => {
     try {
-      // Determine reward type and value
-      const rewardType = Object.keys(code.rewards).find(
-        (key) =>
-          code.rewards[key] > 0 || (key === "cardId" && code.rewards[key])
-      );
-
-      // Map internal reward types to API reward types
-      const apiRewardType = rewardType === "cardId" ? "card" : rewardType;
-
+      // Проверяем наличие обязательных полей
+      if (!code.code || !code.name) {
+        throw new Error("Необходимо указать код и название");
+      }
+      // Определяем тип награды и значение
+      let rewardType = null;
+      let rewardValue = null;
+      let rewardCardId = null;
+      if (code.rewards.coins > 0) {
+        rewardType = "coins";
+        rewardValue = code.rewards.coins;
+      } else if (code.rewards.experience > 0) {
+        rewardType = "experience";
+        rewardValue = code.rewards.experience;
+      } else if (code.rewards.energy > 0) {
+        rewardType = "energy";
+        rewardValue = code.rewards.energy;
+      } else if (code.rewards.cardId) {
+        rewardType = "card";
+        rewardCardId = code.rewards.cardId;
+      }
+      if (!rewardType) {
+        throw new Error("Необходимо указать хотя бы одну награду");
+      }
       const response = await axios.post("/bonus-codes", {
         code: code.code,
-        reward_type: apiRewardType,
-        reward_value: rewardType === "cardId" ? null : code.rewards[rewardType],
-        reward_card_id: rewardType === "cardId" ? code.rewards.cardId : null,
-        expires_at: code.expiresAt || null,
         name: code.name,
+        reward_type: rewardType,
+        reward_value: rewardValue,
+        reward_card_id: rewardCardId,
+        expires_at: code.expiresAt || null,
       });
       setCodes([...codes, response.data]);
       alert("Код успешно сохранен");
