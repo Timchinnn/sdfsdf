@@ -83,3 +83,30 @@
   background: #71b21d;
   color: white;
 }
+.existingCodes {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+.existingCodes h3 {
+  margin-bottom: 15px;
+}
+.existingCodes .codeItem {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+.existingCodes .codeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.existingCodes .codeInfo span {
+  font-size: 14px;
+}
+.existingCodes .codeInfo span:first-child {
+  font-weight: bold;
+}
+.existingCodes .codeItem:last-child {
+  border-bottom: none;
+}

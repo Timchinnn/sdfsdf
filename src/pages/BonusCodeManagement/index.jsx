@@ -179,6 +179,30 @@ const BonusCodeManagement = () => {
           ))}
         </div>
       </div>
+      <div className={styles.existingCodes}>
+        <h3>Существующие коды</h3>
+        <div className={styles.codesList}>
+          {codes.map((code) => (
+            <div key={code.id} className={styles.codeItem}>
+              <div className={styles.codeInfo}>
+                <span>{code.name || "Без названия"}</span>
+                <span>{code.code}</span>
+                <span>
+                  Статус: {code.is_used ? "Использован" : "Активен"}
+                  {code.used_by && ` (${code.used_by})`}
+                </span>
+                <span>
+                  {code.expires_at
+                    ? `Истекает: ${new Date(
+                        code.expires_at
+                      ).toLocaleDateString()}`
+                    : "Без срока действия"}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
