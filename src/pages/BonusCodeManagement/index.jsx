@@ -49,6 +49,7 @@ const BonusCodeManagement = () => {
     }
   };
   const handleTestCode = async (code, telegram_id = "123456789") => {
+    console.log(1);
     try {
       const response = await axios.post("/api/bonus-codes/activate", {
         code,
