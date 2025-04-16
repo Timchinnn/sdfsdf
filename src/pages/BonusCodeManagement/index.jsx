@@ -188,6 +188,18 @@ const BonusCodeManagement = () => {
                   Копировать
                 </button>
                 <button onClick={() => saveCode(codeData)}>Сохранить</button>
+                <button
+                  onClick={() => {
+                    setGeneratedCodes(
+                      generatedCodes.filter(
+                        (code) => code.code !== codeData.code
+                      )
+                    );
+                  }}
+                  style={{ background: "#dc3545", color: "white" }}
+                >
+                  Удалить
+                </button>
               </div>
             </div>
           ))}
