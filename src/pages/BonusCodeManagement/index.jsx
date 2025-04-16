@@ -47,7 +47,7 @@ const BonusCodeManagement = () => {
   // Сохранение кода
   const saveCode = async (code) => {
     try {
-      const response = await axios.post("/api/bonus-codes", {
+      const response = await axios.post("/bonus-codes", {
         code: code.code,
         reward_type: Object.keys(code.rewards).find(
           (key) => code.rewards[key] > 0
