@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./BonusCodeManagement.module.css";
 import routeBonusCodeManagement from "./route";
-import axios from "../../axios-controller";
+import { bonusCodeService } from "../../services/api";
 const BonusCodeManagement = () => {
   const [codes, setCodes] = useState([]);
   const [generatedCodes, setGeneratedCodes] = useState([]);
@@ -18,7 +18,7 @@ const BonusCodeManagement = () => {
   useEffect(() => {
     const fetchCodes = async () => {
       try {
-        const response = await axios.get("/bonus-codes");
+        const response = await bonusCodeService.getAllBonusCodes();
         setCodes(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке кодов:", error);
@@ -73,7 +73,7 @@ const BonusCodeManagement = () => {
         payload.reward_card_id = code.rewards.cardId;
       }
       console.log("Отправляемые данные:", payload);
-      const response = await axios.post("/bonus-codes", payload);
+      const response = await bonusCodeService.createBonusCode(payload);
       console.log("Ответ сервера:", response.data);
       setCodes((prevCodes) => [...prevCodes, response.data]);
       alert("Код успешно сохранен");
