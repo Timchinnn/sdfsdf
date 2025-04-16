@@ -8,6 +8,7 @@ import StarIcon from "assets/img/star-icon.svg";
 import MobileNav from "components/MobileNav";
 const BonusPage = () => {
   const [code, setCode] = useState("");
+  const tg = window.Telegram?.WebApp;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   console.log(error);
@@ -16,7 +17,6 @@ const BonusPage = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const tg = window.Telegram.WebApp;
       if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
         throw new Error("Telegram user data not found");
       }
