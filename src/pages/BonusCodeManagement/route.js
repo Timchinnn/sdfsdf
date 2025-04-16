@@ -1,3 +1,2 @@
-export default function routeBonusCodeManagement() {
-  return "/bonus-code-management";
-}
+const routeBonusCodeManagement = () => `/bonus-code-management`;
+export default routeBonusCodeManagement;
