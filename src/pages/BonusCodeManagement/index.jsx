@@ -47,22 +47,31 @@ const BonusCodeManagement = () => {
   // Сохранение кода
   const saveCode = async (code) => {
     try {
+      // Determine reward type and value
+      const rewardType = Object.keys(code.rewards).find(
+        (key) =>
+          code.rewards[key] > 0 || (key === "cardId" && code.rewards[key])
+      );
+
+      // Map internal reward types to API reward types
+      const apiRewardType = rewardType === "cardId" ? "card" : rewardType;
+
       const response = await axios.post("/bonus-codes", {
         code: code.code,
-        reward_type: Object.keys(code.rewards).find(
-          (key) => code.rewards[key] > 0
-        ),
-        reward_value:
-          code.rewards[
-            Object.keys(code.rewards).find((key) => code.rewards[key] > 0)
-          ],
-        expires_at: code.expiresAt,
+        reward_type: apiRewardType,
+        reward_value: rewardType === "cardId" ? null : code.rewards[rewardType],
+        reward_card_id: rewardType === "cardId" ? code.rewards.cardId : null,
+        expires_at: code.expiresAt || null,
+        name: code.name,
       });
       setCodes([...codes, response.data]);
       alert("Код успешно сохранен");
     } catch (error) {
       console.error("Ошибка при сохранении кода:", error);
-      alert("Ошибка при сохранении кода");
+      alert(
+        "Ошибка при сохранении кода: " +
+          (error.response?.data?.error || error.message)
+      );
     }
   };
   return (
