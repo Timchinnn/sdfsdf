@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./BonusCodeManagement.module.css";
 import routeBonusCodeManagement from "./route";
+import axios from "../../axios-controller";
 const BonusCodeManagement = () => {
   const [codes, setCodes] = useState([]);
   const [generatedCodes, setGeneratedCodes] = useState([]);
@@ -12,37 +13,61 @@ const BonusCodeManagement = () => {
     cardId: "",
   });
   const [codeName, setCodeName] = useState("");
+  const [expiresAt, setExpiresAt] = useState("");
+  // Загрузка существующих кодов
+  useEffect(() => {
+    const fetchCodes = async () => {
+      try {
+        const response = await axios.get("/api/bonus-codes");
+        setCodes(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке кодов:", error);
+      }
+    };
+    fetchCodes();
+  }, []);
+  // Генерация нового кода
   const generateBonusCode = () => {
     const newCodes = Array(parseInt(codeCount))
       .fill()
       .map(() => ({
         code: Math.random().toString(36).substring(7).toUpperCase(),
-        rewards: { ...rewards },
+        rewards,
         name: codeName,
+        expiresAt,
         createdAt: new Date().toISOString(),
       }));
     setGeneratedCodes([...generatedCodes, ...newCodes]);
   };
+  // Копирование кода в буфер обмена
   const copyToClipboard = (code) => {
     navigator.clipboard.writeText(code);
     alert("Код скопирован в буфер обмена");
   };
+  // Сохранение кода
   const saveCode = async (code) => {
-    console.log(1);
-    //   try {
-    //     // Здесь будет API запрос для сохранения кода
-    //     const response = await axios.post("/api/bonus-codes", code);
-    //     setCodes([...codes, response.data]);
-    //     alert("Код успешно сохранен");
-    //   } catch (error) {
-    //     console.error("Ошибка при сохранении кода:", error);
-    //     alert("Ошибка при сохранении кода");
-    //   }
+    try {
+      const response = await axios.post("/api/bonus-codes", {
+        code: code.code,
+        reward_type: Object.keys(code.rewards).find(
+          (key) => code.rewards[key] > 0
+        ),
+        reward_value:
+          code.rewards[
+            Object.keys(code.rewards).find((key) => code.rewards[key] > 0)
+          ],
+        expires_at: code.expiresAt,
+      });
+      setCodes([...codes, response.data]);
+      alert("Код успешно сохранен");
+    } catch (error) {
+      console.error("Ошибка при сохранении кода:", error);
+      alert("Ошибка при сохранении кода");
+    }
   };
   return (
     <div className={styles.container}>
       <h2>Управление бонус-кодами</h2>
-
       <div className={styles.generatorSection}>
         <h3>Генератор кодов</h3>
         <div className={styles.inputGroup}>
@@ -54,7 +79,6 @@ const BonusCodeManagement = () => {
             placeholder="Введите название кода"
           />
         </div>
-
         <div className={styles.inputGroup}>
           <label>Количество кодов:</label>
           <input
@@ -63,6 +87,14 @@ const BonusCodeManagement = () => {
             onChange={(e) => setCodeCount(e.target.value)}
             min="1"
             max="100"
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label>Срок действия:</label>
+          <input
+            type="datetime-local"
+            value={expiresAt}
+            onChange={(e) => setExpiresAt(e.target.value)}
           />
         </div>
         <div className={styles.rewardsSection}>
