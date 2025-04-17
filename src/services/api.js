@@ -218,4 +218,6 @@ export const bonusCodeService = {
   getAllBonusCodes: () => axios.get("/bonus-codes"),
   createBonusCode: (payload) => axios.post("/bonus-codes", payload),
   deleteBonusCode: (id) => axios.delete(`/bonus-codes/${id}`),
+  activateCode: (telegram_id, code) =>
+    axios.post("/bonus-codes/activate", { telegram_id, code }),
 };
