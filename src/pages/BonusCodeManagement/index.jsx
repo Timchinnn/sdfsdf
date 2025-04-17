@@ -221,24 +221,33 @@ const BonusCodeManagement = () => {
             <div className={styles.rewardItem}>
               <input
                 type="checkbox"
-                checked={rewards.cardId !== ""}
-                onChange={(e) =>
-                  setRewards({
-                    ...rewards,
-                    cardId: e.target.checked ? rewards.cardId || "" : "",
-                  })
-                }
+                checked={selectedRewardTypes.card}
+                onChange={(e) => {
+                  setSelectedRewardTypes({
+                    ...selectedRewardTypes,
+                    card: e.target.checked,
+                  });
+                  if (!e.target.checked) {
+                    setRewardValues({
+                      ...rewardValues,
+                      card: "",
+                    });
+                  }
+                }}
               />
               <label>Карта:</label>
               <select
-                value={rewards.cardId}
+                value={rewardValues.card}
                 onChange={(e) =>
-                  setRewards({ ...rewards, cardId: e.target.value })
+                  setRewardValues({
+                    ...rewardValues,
+                    card: e.target.value,
+                  })
                 }
-                disabled={rewards.cardId === ""}
+                disabled={!selectedRewardTypes.card}
               >
                 <option value="">Выберите карту</option>
-                {availableCards.map((card) => (
+                {cards.map((card) => (
                   <option key={card.id} value={card.id}>
                     {card.title}
                   </option>
