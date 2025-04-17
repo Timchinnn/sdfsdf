@@ -8,10 +8,12 @@ import StarIcon from "assets/img/star-icon.svg";
 import MobileNav from "components/MobileNav";
 const BonusPage = () => {
   const [code, setCode] = useState("");
+  // Состояния для отображения информации о активированном коде и наградах
+  const [activatedCode, setActivatedCode] = useState(null);
+  const [rewardInfo, setRewardInfo] = useState(null);
   const tg = window.Telegram?.WebApp;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  console.log(error);
   const handleActivateCode = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -28,6 +30,9 @@ const BonusPage = () => {
           message: "Бонус код успешно активирован",
           buttons: [{ type: "ok" }],
         });
+        // Сохраняем значения кода и награды для отображения
+        setActivatedCode(code);
+        setRewardInfo(response.data.reward);
         setCode("");
       }
     } catch (error) {
@@ -46,18 +51,12 @@ const BonusPage = () => {
       <div className="container">
         <div className="tasks-inner">
           <MainSection />
-          {/* <div
-            className="block-style"
-            style={{ textAlign: "center", padding: "20px", marginTop: "6px" }}
-          >
-            Скоро
-          </div> */}
           <div className="bonus-wrap">
             <div className="bonus-promo block-style">
               <div className="section-content">
                 <h2 className="section-content__title">Код</h2>
                 <p className="section-content__text">
-                  Краткое описание, буквально в 2-3 строки, где найти код
+                  Краткое описание, где найти код
                 </p>
               </div>
               <div className="bonus-promo__code">
@@ -81,6 +80,33 @@ const BonusPage = () => {
                 </button>
               </div>
             </div>
+            {/* Отображение информации об активированном бонус-коде и наградах */}
+            {activatedCode && rewardInfo && (
+              <div
+                className="activated-code-info block-style"
+                style={{ marginTop: "20px", padding: "20px" }}
+              >
+                <h3>Бонус-код "{activatedCode}" активирован!</h3>
+                <p>Полученные награды:</p>
+                <ul>
+                  {rewardInfo.type && (
+                    <li>
+                      <strong>Тип награды:</strong> {rewardInfo.type}
+                    </li>
+                  )}
+                  {rewardInfo.value !== undefined && (
+                    <li>
+                      <strong>Значение награды:</strong> {rewardInfo.value}
+                    </li>
+                  )}
+                  {rewardInfo.card_id && (
+                    <li>
+                      <strong>Награда - карта:</strong> ID {rewardInfo.card_id}
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )}
             <div className="bonus-more">
               <div className="friends-block__head f-center-jcsb">
                 <h2 className="section-content__title">История</h2>
@@ -171,7 +197,5 @@ const BonusPage = () => {
     </section>
   );
 };
-
 export { routeBonus };
-
 export default BonusPage;
