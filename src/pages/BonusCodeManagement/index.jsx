@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./BonusCodeManagement.module.css";
 import routeBonusCodeManagement from "./route";
-import { bonusCodeService } from "../../services/api";
 import { bonusCodeService, cardsService } from "../../services/api";
 const BonusCodeManagement = () => {
   const [codes, setCodes] = useState([]);
