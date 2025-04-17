@@ -235,7 +235,7 @@ const BonusCodeManagement = () => {
                 onChange={(e) =>
                   setRewards({ ...rewards, cardId: e.target.value })
                 }
-                disabled={rewards.cardId === ""}
+                disabled={!activeRewards.card}
               >
                 <option value="">Выберите карту</option>
                 {availableCards.map((card) => (
