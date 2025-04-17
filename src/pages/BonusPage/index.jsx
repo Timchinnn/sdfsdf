@@ -8,11 +8,25 @@ import StarIcon from "assets/img/star-icon.svg";
 import MobileNav from "components/MobileNav";
 const BonusPage = () => {
   const [code, setCode] = useState("");
+  const [history, setHistory] = useState([]);
   const tg = window.Telegram?.WebApp;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  console.log(error);
+  useEffect(() => {
+    const fetchHistory = async () => {
+      if (tg?.initDataUnsafe?.user?.id) {
+        try {
+          const response = await bonusCodeService.getHistory(
+            tg.initDataUnsafe.user.id
+          );
+          setHistory(response.data);
+        } catch (err) {
+          console.error("Error fetching history:", err);
+        }
+      }
+    };
+    fetchHistory();
+  }, []);
   const handleActivateCode = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -24,6 +38,10 @@ const BonusPage = () => {
       const telegram_id = tg.initDataUnsafe.user.id;
       const response = await bonusCodeService.activateCode(telegram_id, code);
       if (response.data.success) {
+        // Обновляем историю после активации
+        const historyResponse = await bonusCodeService.getHistory(telegram_id);
+        setHistory(historyResponse.data);
+
         tg.showPopup({
           title: "Успех!",
           message: "Бонус код успешно активирован",
@@ -84,85 +102,39 @@ const BonusPage = () => {
             </div>
             <div className="bonus-more">
               <div className="friends-block__head f-center-jcsb">
-                <h2 className="section-content__title">История</h2>
-                <div className="friends-block__head-more">Смотреть всех</div>
+                <h2 className="section-content__title">История активаций</h2>
               </div>
               <ul className="friends-list">
-                <li className="friends-list__item">
-                  <div className="friends-list__card block-style flex">
-                    <div className="friends-list__image">
-                      <img src={DefaultImg} alt="" />
+                {history.map((item) => (
+                  <li key={item.id} className="friends-list__item">
+                    <div className="friends-list__card block-style flex">
+                      <div className="friends-list__content">
+                        <h3 className="friends-list__title">
+                          {item.name || "Бонус код"}
+                        </h3>
+                        <p className="friends-list__code">{item.code}</p>
+                        <ul className="friends-params f-center">
+                          {item.reward_type === "coins" && (
+                            <li className="friends-params__item f-center">
+                              <img src={CoinIcon} alt="" />
+                              {item.reward_value}
+                            </li>
+                          )}
+                          {item.reward_type === "experience" && (
+                            <li className="friends-params__item f-center">
+                              <img src={StarIcon} alt="" />
+                              {item.reward_value} EXP
+                            </li>
+                          )}
+                        </ul>
+                        <p className="friends-list__date">
+                          Активирован:{" "}
+                          {new Date(item.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
                     </div>
-                    <div className="friends-list__content">
-                      <h3 className="friends-list__title">
-                        Ko****ntin Konstant****olsky
-                      </h3>
-                      <p className="friends-list__code">
-                        YHG43-343443-34433-343
-                      </p>
-                      <ul className="friends-params f-center">
-                        <li className="friends-params__item f-center">
-                          <img src={StarIcon} alt="" />
-                          500 EXP
-                        </li>
-                        <li className="friends-params__item f-center">
-                          <img src={CoinIcon} alt="" />
-                          2000
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-                <li className="friends-list__item">
-                  <div className="friends-list__card block-style flex">
-                    <div className="friends-list__image">
-                      <img src={DefaultImg} alt="" />
-                    </div>
-                    <div className="friends-list__content">
-                      <h3 className="friends-list__title">
-                        Ko****ntin Konstant****olsky
-                      </h3>
-                      <p className="friends-list__code">
-                        YHG43-343443-34433-343
-                      </p>
-                      <ul className="friends-params f-center">
-                        <li className="friends-params__item f-center">
-                          <img src={StarIcon} alt="" />
-                          500 EXP
-                        </li>
-                        <li className="friends-params__item f-center">
-                          <img src={CoinIcon} alt="" />
-                          2000
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-                <li className="friends-list__item">
-                  <div className="friends-list__card block-style flex">
-                    <div className="friends-list__image">
-                      <img src={DefaultImg} alt="" />
-                    </div>
-                    <div className="friends-list__content">
-                      <h3 className="friends-list__title">
-                        Ko****ntin Konstant****olsky
-                      </h3>
-                      <p className="friends-list__code">
-                        YHG43-343443-34433-343
-                      </p>
-                      <ul className="friends-params f-center">
-                        <li className="friends-params__item f-center">
-                          <img src={StarIcon} alt="" />
-                          500 EXP
-                        </li>
-                        <li className="friends-params__item f-center">
-                          <img src={CoinIcon} alt="" />
-                          2000
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </li>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
