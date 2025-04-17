@@ -122,3 +122,49 @@
 .deleteButton:hover {
   background: #cc0000;
 }
+.rewardItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.rewardItem input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  outline: none;
+  position: relative;
+}
+.rewardItem input[type="checkbox"]:checked {
+  border-color: green;
+}
+.rewardItem input[type="checkbox"]:checked::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: green;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+.rewardItem label {
+  min-width: 80px;
+}
+.rewardItem input[type="number"],
+.rewardItem input[type="text"] {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 150px;
+}
+.rewardItem input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}

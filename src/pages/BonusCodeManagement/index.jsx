@@ -135,38 +135,99 @@ const BonusCodeManagement = () => {
         <div className={styles.rewardsSection}>
           <h4>Награды</h4>
           <div className={styles.rewardInputs}>
-            <input
-              type="number"
-              placeholder="Монеты"
-              value={rewards.coins}
-              onChange={(e) =>
-                setRewards({ ...rewards, coins: parseInt(e.target.value) })
-              }
-            />
-            <input
-              type="number"
-              placeholder="Опыт"
-              value={rewards.experience}
-              onChange={(e) =>
-                setRewards({ ...rewards, experience: parseInt(e.target.value) })
-              }
-            />
-            <input
-              type="number"
-              placeholder="Энергия"
-              value={rewards.energy}
-              onChange={(e) =>
-                setRewards({ ...rewards, energy: parseInt(e.target.value) })
-              }
-            />
-            <input
-              type="text"
-              placeholder="ID карты"
-              value={rewards.cardId}
-              onChange={(e) =>
-                setRewards({ ...rewards, cardId: e.target.value })
-              }
-            />
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={rewards.coins > 0}
+                onChange={(e) =>
+                  setRewards({
+                    ...rewards,
+                    coins: e.target.checked ? rewards.coins || 100 : 0,
+                  })
+                }
+              />
+              <label>Монеты:</label>
+              <input
+                type="number"
+                placeholder="Монеты"
+                value={rewards.coins}
+                onChange={(e) =>
+                  setRewards({ ...rewards, coins: parseInt(e.target.value) })
+                }
+                disabled={!rewards.coins}
+              />
+            </div>
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={rewards.experience > 0}
+                onChange={(e) =>
+                  setRewards({
+                    ...rewards,
+                    experience: e.target.checked
+                      ? rewards.experience || 100
+                      : 0,
+                  })
+                }
+              />
+              <label>Опыт:</label>
+              <input
+                type="number"
+                placeholder="Опыт"
+                value={rewards.experience}
+                onChange={(e) =>
+                  setRewards({
+                    ...rewards,
+                    experience: parseInt(e.target.value),
+                  })
+                }
+                disabled={!rewards.experience}
+              />
+            </div>
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={rewards.energy > 0}
+                onChange={(e) =>
+                  setRewards({
+                    ...rewards,
+                    energy: e.target.checked ? rewards.energy || 10 : 0,
+                  })
+                }
+              />
+              <label>Энергия:</label>
+              <input
+                type="number"
+                placeholder="Энергия"
+                value={rewards.energy}
+                onChange={(e) =>
+                  setRewards({ ...rewards, energy: parseInt(e.target.value) })
+                }
+                disabled={!rewards.energy}
+              />
+            </div>
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={rewards.cardId !== ""}
+                onChange={(e) =>
+                  setRewards({
+                    ...rewards,
+                    cardId: e.target.checked ? rewards.cardId || "" : "",
+                  })
+                }
+              />
+              <label>ID карты:</label>
+              <input
+                type="text"
+                placeholder="ID карты"
+                value={rewards.cardId}
+                onChange={(e) =>
+                  setRewards({ ...rewards, cardId: e.target.value })
+                }
+                disabled={rewards.cardId === ""}
+              />
+            </div>
           </div>
         </div>
         <button onClick={generateBonusCode} className={styles.generateButton}>
