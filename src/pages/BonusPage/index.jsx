@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import routeBonus from "./routes";
 import MainSection from "components/MainSection";
 import { bonusCodeService } from "../../services/api";
