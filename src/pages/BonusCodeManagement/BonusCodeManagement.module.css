@@ -127,6 +127,8 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+  min-width: 300px; /* Добавлено минимальную ширину */
+  flex-wrap: nowrap; /* Предотвращает перенос элементов */
 }
 .rewardItem input[type="checkbox"] {
   width: 20px;
