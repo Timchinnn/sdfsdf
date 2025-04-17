@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import styles from "./BonusCodeManagement.module.css";
 import routeBonusCodeManagement from "./route";
 import { bonusCodeService } from "../../services/api";
+import { bonusCodeService, cardsService } from "../../services/api";
 const BonusCodeManagement = () => {
   const [codes, setCodes] = useState([]);
   const [generatedCodes, setGeneratedCodes] = useState([]);
   const [codeCount, setCodeCount] = useState(1);
+  const [availableCards, setAvailableCards] = useState([]); // Добавляем состояние для списка карт
   const [rewards, setRewards] = useState({
     coins: 0,
     experience: 0,
@@ -15,6 +17,17 @@ const BonusCodeManagement = () => {
   const [codeName, setCodeName] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
   // Загрузка существующих кодов
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const response = await cardsService.getAllCards();
+        setAvailableCards(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке карт:", error);
+      }
+    };
+    fetchCards();
+  }, []);
   useEffect(() => {
     const fetchCodes = async () => {
       try {
@@ -217,16 +230,21 @@ const BonusCodeManagement = () => {
                   })
                 }
               />
-              <label>ID карты:</label>
-              <input
-                type="text"
-                placeholder="ID карты"
+              <label>Карта:</label>
+              <select
                 value={rewards.cardId}
                 onChange={(e) =>
                   setRewards({ ...rewards, cardId: e.target.value })
                 }
                 disabled={rewards.cardId === ""}
-              />
+              >
+                <option value="">Выберите карту</option>
+                {availableCards.map((card) => (
+                  <option key={card.id} value={card.id}>
+                    {card.title}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
