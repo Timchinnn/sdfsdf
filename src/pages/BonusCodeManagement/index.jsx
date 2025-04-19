@@ -72,7 +72,7 @@ const BonusCodeManagement = () => {
     }
   };
   const saveCode = async (code) => {
-    console.log("Начало сохранения кода:", code);
+    console.log("Начало сохранения кода1:", code);
 
     try {
       // Подготовка данных
