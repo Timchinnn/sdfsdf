@@ -129,7 +129,7 @@ const BonusPage = () => {
                             {rewardsObj.experience > 0 && (
                               <li className="friends-params__item f-center">
                                 <img src={StarIcon} alt="Опыт" />
-                                {rewardsObj.experience} EXP
+                                {rewardsObj.experience}
                               </li>
                             )}
                             {rewardsObj.energy > 0 && (
