@@ -257,7 +257,7 @@ const MainCarousel = ({
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
     // Set next open time to 5 seconds from now
-    const nextTime = Date.now() + 100; // 5 seconds cooldown
+    const nextTime = Date.now() + 200; // 5 seconds cooldown
     setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
     setTimeout(() => {
       setIsFlipped(true);
@@ -266,7 +266,7 @@ const MainCarousel = ({
         setIsButtonLocked(false);
         setIsAnimating(false);
         setIsFlipped(false);
-      }, 1500);
+      }, 2000);
     }, ANIMATION_DURATION);
 
     const tg = window.Telegram.WebApp;
