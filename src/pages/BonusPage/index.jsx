@@ -69,7 +69,7 @@ const BonusPage = () => {
               <div className="section-content">
                 <h2 className="section-content__title">Код</h2>
                 <p className="section-content__text">
-                  Краткое описание, буквально в 2-3 строки, где найти код
+                  Введите код и получите бонус
                 </p>
               </div>
               <div className="bonus-promo__code">
