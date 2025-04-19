@@ -60,7 +60,12 @@ export const cardsService = {
   getCardsByType: (type) => axios.get(`/cards/${type}`),
   getCard: (id) => axios.get(`/cards/${id}`),
   deleteCard: (id) => axios.delete(`/cards/${id}`),
-  updateCard: (id, formData) => axios.put(`/cards/${id}`, formData),
+  updateCard: (id, formData) =>
+    axios.put(`/cards/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
   createCard: (formData) =>
     axios.post("/cards", formData, {
       headers: {
