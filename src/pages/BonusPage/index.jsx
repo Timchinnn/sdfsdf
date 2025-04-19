@@ -137,7 +137,7 @@ const BonusPage = () => {
                                 <span role="img" aria-label="энергия">
                                   🔥
                                 </span>
-                                {rewardsObj.energy} Э
+                                {rewardsObj.energy}
                               </li>
                             )}
                             {rewardsObj.cardId && (
