@@ -71,39 +71,43 @@ const BonusCodeManagement = () => {
       );
     }
   };
-  const saveCode = async (code) => {
-    console.log("Начало сохранения кода1:", code);
-
+  const saveCode = async (codeData) => {
+    console.log("Начало сохранения кода:", codeData);
     try {
       // Подготовка данных
       const payload = {
-        code: code.code,
-        name: code.name,
+        code: codeData.code,
+        name: codeData.name,
         reward_type: null,
         reward_value: null,
         reward_card_id: null,
-        expires_at: code.expiresAt || null,
-        rewards: JSON.stringify(code.rewards),
+        expires_at: codeData.expiresAt || null,
+        rewards: JSON.stringify(codeData.rewards),
       };
-      // Определение типа награды
-      if (code.rewards.coins > 0) {
+      // Определение типа награды (для обратной совместимости, если потребуется)
+      if (codeData.rewards.coins > 0) {
         payload.reward_type = "coins";
-        payload.reward_value = code.rewards.coins;
-      } else if (code.rewards.experience > 0) {
+        payload.reward_value = codeData.rewards.coins;
+      } else if (codeData.rewards.experience > 0) {
         payload.reward_type = "experience";
-        payload.reward_value = code.rewards.experience;
-      } else if (code.rewards.energy > 0) {
+        payload.reward_value = codeData.rewards.experience;
+      } else if (codeData.rewards.energy > 0) {
         payload.reward_type = "energy";
-        payload.reward_value = code.rewards.energy;
-      } else if (code.rewards.cardId) {
+        payload.reward_value = codeData.rewards.energy;
+      } else if (codeData.rewards.cardId) {
         payload.reward_type = "card";
-        payload.reward_card_id = code.rewards.cardId;
+        payload.reward_card_id = codeData.rewards.cardId;
       }
       console.log("Отправляемые данные:", payload);
       const response = await bonusCodeService.createBonusCode(payload);
       console.log("Ответ сервера:", response.data);
+      // Добавляем код в список существующих кодов
       setCodes((prevCodes) => [...prevCodes, response.data]);
       alert("Код успешно сохранен");
+      // Удаляем сохранённый код из списка сгенерированных кодов
+      setGeneratedCodes((prev) =>
+        prev.filter((item) => item.code !== codeData.code)
+      );
     } catch (error) {
       console.error("Полная ошибка:", error);
       alert(
