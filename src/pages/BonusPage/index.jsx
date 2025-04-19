@@ -145,7 +145,7 @@ const BonusPage = () => {
                                 <span role="img" aria-label="карта">
                                   🃏
                                 </span>
-                                Карта #{rewardsObj.cardId}
+                                {/* Карта #{rewardsObj.cardId} */}
                               </li>
                             )}
                           </ul>
