@@ -114,18 +114,41 @@ const BonusPage = () => {
                         </h3>
                         <p className="friends-list__code">{item.code}</p>
                         <ul className="friends-params f-center">
-                          {item.reward_type === "coins" && (
-                            <li className="friends-params__item f-center">
-                              <img src={CoinIcon} alt="" />
-                              {item.reward_value}
-                            </li>
-                          )}
-                          {item.reward_type === "experience" && (
-                            <li className="friends-params__item f-center">
-                              <img src={StarIcon} alt="" />
-                              {item.reward_value} EXP
-                            </li>
-                          )}
+                          {item.rewards &&
+                            (() => {
+                              const rewards =
+                                typeof item.rewards === "string"
+                                  ? JSON.parse(item.rewards)
+                                  : item.rewards;
+                              return (
+                                <>
+                                  {rewards.coins > 0 && (
+                                    <li className="friends-params__item f-center">
+                                      <img src={CoinIcon} alt="Монеты" />
+                                      {rewards.coins}
+                                    </li>
+                                  )}
+                                  {rewards.experience > 0 && (
+                                    <li className="friends-params__item f-center">
+                                      <img src={StarIcon} alt="Опыт" />
+                                      {rewards.experience} EXP
+                                    </li>
+                                  )}
+                                  {rewards.energy > 0 && (
+                                    <li className="friends-params__item f-center">
+                                      <img src={EnergyIcon} alt="Энергия" />
+                                      {rewards.energy}
+                                    </li>
+                                  )}
+                                  {rewards.cardId && (
+                                    <li className="friends-params__item f-center">
+                                      <img src={CardIcon} alt="Карта" />
+                                      Карта #{rewards.cardId}
+                                    </li>
+                                  )}
+                                </>
+                              );
+                            })()}
                         </ul>
                         <p className="friends-list__date">
                           Активирован:{" "}
