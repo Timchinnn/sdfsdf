@@ -117,29 +117,13 @@ const BonusPage = () => {
                           {item.reward_type === "coins" && (
                             <li className="friends-params__item f-center">
                               <img src={CoinIcon} alt="" />
-                              {item.reward_value} монет
+                              {item.reward_value}
                             </li>
                           )}
                           {item.reward_type === "experience" && (
                             <li className="friends-params__item f-center">
                               <img src={StarIcon} alt="" />
                               {item.reward_value} EXP
-                            </li>
-                          )}
-                          {item.reward_type === "energy" && (
-                            <li className="friends-params__item f-center">
-                              <span role="img" aria-label="energy">
-                                ⚡
-                              </span>
-                              {item.reward_value} энергии
-                            </li>
-                          )}
-                          {item.reward_type === "card" && (
-                            <li className="friends-params__item f-center">
-                              <span role="img" aria-label="card">
-                                🎴
-                              </span>
-                              Карта #{item.reward_card_id}
                             </li>
                           )}
                         </ul>
