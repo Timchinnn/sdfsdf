@@ -41,7 +41,6 @@ const BonusPage = () => {
         // Обновляем историю после активации
         const historyResponse = await bonusCodeService.getHistory(telegram_id);
         setHistory(historyResponse.data);
-
         tg.showPopup({
           title: "Успех!",
           message: "Бонус код успешно активирован",
@@ -65,12 +64,6 @@ const BonusPage = () => {
       <div className="container">
         <div className="tasks-inner">
           <MainSection />
-          {/* <div
-            className="block-style"
-            style={{ textAlign: "center", padding: "20px", marginTop: "6px" }}
-          >
-            Скоро
-          </div> */}
           <div className="bonus-wrap">
             <div className="bonus-promo block-style">
               <div className="section-content">
@@ -105,52 +98,66 @@ const BonusPage = () => {
                 <h2 className="section-content__title">История активаций</h2>
               </div>
               <ul className="friends-list">
-                {history.map((item) => (
-                  <li key={item.id} className="friends-list__item">
-                    <div className="friends-list__card block-style flex">
-                      <div className="friends-list__content">
-                        <h3 className="friends-list__title">
-                          {item.name || "Бонус код"}
-                        </h3>
-                        <p className="friends-list__code">{item.code}</p>
-                        <ul className="friends-params f-center">
-                          {item.reward_type === "coins" && (
-                            <li className="friends-params__item f-center">
-                              <img src={CoinIcon} alt="Монеты" />
-                              {item.reward_value}
-                            </li>
-                          )}
-                          {item.reward_type === "experience" && (
-                            <li className="friends-params__item f-center">
-                              <img src={StarIcon} alt="Опыт" />
-                              {item.reward_value} EXP
-                            </li>
-                          )}
-                          {item.reward_type === "energy" && (
-                            <li className="friends-params__item f-center">
-                              <span role="img" aria-label="энергия">
-                                🔥
-                              </span>
-                              {item.reward_value} Э
-                            </li>
-                          )}
-                          {item.reward_type === "card" && (
-                            <li className="friends-params__item f-center">
-                              <span role="img" aria-label="карта">
-                                🃏
-                              </span>
-                              Карта #{item.reward_card_id}
-                            </li>
-                          )}
-                        </ul>
-                        <p className="friends-list__date">
-                          Активирован:{" "}
-                          {new Date(item.created_at).toLocaleDateString()}
-                        </p>
+                {history.map((item) => {
+                  // Пытаемся распарсить поле rewards, если оно заполнено
+                  let rewardsObj = {};
+                  try {
+                    rewardsObj =
+                      item.rewards &&
+                      typeof item.rewards === "string" &&
+                      item.rewards.trim() !== ""
+                        ? JSON.parse(item.rewards)
+                        : item.rewards || {};
+                  } catch (e) {
+                    console.error("Ошибка парсинга rewards:", e);
+                  }
+                  return (
+                    <li key={item.id} className="friends-list__item">
+                      <div className="friends-list__card block-style flex">
+                        <div className="friends-list__content">
+                          <h3 className="friends-list__title">
+                            {item.name || "Бонус код"}
+                          </h3>
+                          <p className="friends-list__code">{item.code}</p>
+                          <ul className="friends-params f-center">
+                            {rewardsObj.coins > 0 && (
+                              <li className="friends-params__item f-center">
+                                <img src={CoinIcon} alt="Монеты" />
+                                {rewardsObj.coins}
+                              </li>
+                            )}
+                            {rewardsObj.experience > 0 && (
+                              <li className="friends-params__item f-center">
+                                <img src={StarIcon} alt="Опыт" />
+                                {rewardsObj.experience} EXP
+                              </li>
+                            )}
+                            {rewardsObj.energy > 0 && (
+                              <li className="friends-params__item f-center">
+                                <span role="img" aria-label="энергия">
+                                  🔥
+                                </span>
+                                {rewardsObj.energy} Э
+                              </li>
+                            )}
+                            {rewardsObj.cardId && (
+                              <li className="friends-params__item f-center">
+                                <span role="img" aria-label="карта">
+                                  🃏
+                                </span>
+                                Карта #{rewardsObj.cardId}
+                              </li>
+                            )}
+                          </ul>
+                          <p className="friends-list__date">
+                            Активирован:{" "}
+                            {new Date(item.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>
@@ -160,7 +167,5 @@ const BonusPage = () => {
     </section>
   );
 };
-
 export { routeBonus };
-
 export default BonusPage;
