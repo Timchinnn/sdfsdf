@@ -116,27 +116,14 @@ const BonusPage = () => {
                         <ul className="friends-params f-center">
                           {item.reward_type === "coins" && (
                             <li className="friends-params__item f-center">
-                              <img src={CoinIcon} alt="coin icon" />
+                              <img src={CoinIcon} alt="" />
                               {item.reward_value}
                             </li>
                           )}
                           {item.reward_type === "experience" && (
                             <li className="friends-params__item f-center">
-                              <img src={StarIcon} alt="exp icon" />
+                              <img src={StarIcon} alt="" />
                               {item.reward_value} EXP
-                            </li>
-                          )}
-                          {item.reward_type === "energy" && (
-                            <li className="friends-params__item f-center">
-                              {/* Если есть иконка для энергии, подключите её, иначе можно вывести текст /}
-              <img src={EnergyIcon || DefaultImg} alt="energy icon" />
-              {item.reward_value} Энергии
-            </li>
-          )}
-          {item.reward_type === "card" && (
-            <li className="friends-params__item f-center">
-              {/ Если у вас можно получить информацию о карте, отобразите её. Здесь просто показывается ID карты */}
-                              <span>Карта: {item.reward_card_id}</span>
                             </li>
                           )}
                         </ul>
