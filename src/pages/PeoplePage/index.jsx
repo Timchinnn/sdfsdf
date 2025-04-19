@@ -25,26 +25,26 @@ const PeoplePage = () => {
     const fetchCardSets = async () => {
       try {
         const response = await cardSetsService.getAllCardSets();
-        setCardSets(response.data);
-
-        // Fetch cards for each set
+        // Фильтруем наборы, оставляя лишь те, в которых set_type === "citizen"
+        const citizenSets = response.data.filter(
+          (set) => set.set_type === "citizen"
+        );
+        setCardSets(citizenSets);
+        // Далее получаем карточки и награды для каждого набора
         const setData = {};
         const tg = window.Telegram.WebApp;
         const telegram_id = tg.initDataUnsafe?.user?.id;
-        for (const set of response.data) {
+        for (const set of citizenSets) {
           const cardsResponse = await cardSetsService.getSetCards(set.id);
           const rewardsResponse = await cardSetsService.getSetRewards(set.id);
           set.rewards = rewardsResponse.data.rewards;
           setData[set.id] = cardsResponse.data;
-          console.log(cardsResponse.data);
-          // Check completion status for each set
           if (telegram_id) {
             try {
               const completionResponse =
                 await cardSetsService.checkSetCompletion(set.id, telegram_id);
-              console.log(completionResponse.data); // Успешный ответ
+              console.log(completionResponse.data);
             } catch (completionError) {
-              // Обработка ошибки, если набор не завершён
               if (
                 completionError.response &&
                 completionError.response.status === 400
@@ -53,8 +53,6 @@ const PeoplePage = () => {
                   "Набор не завершён:",
                   completionError.response.data.error
                 );
-                // Здесь вы можете обновить состояние или показать сообщение пользователю
-                // alert("Набор не завершён. Собрано карт: " + completionError.response.data.error);
               } else {
                 console.error(
                   "Ошибка при проверке завершения набора:",
@@ -65,12 +63,10 @@ const PeoplePage = () => {
           }
         }
         setCardSetData(setData);
-        console.log(setData);
       } catch (error) {
         console.error("Error fetching card sets:", error);
       }
     };
-
     fetchCardSets();
   }, []);
   // Получение карт пользователя

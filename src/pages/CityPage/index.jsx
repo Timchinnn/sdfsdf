@@ -20,12 +20,13 @@ const CityPage = () => {
     const fetchCardSets = async () => {
       try {
         const response = await cardSetsService.getAllCardSets();
+        // Фильтруем наборы, оставляя лишь те, в которых set_type === "city"
         const citySets = response.data.filter((set) => set.set_type === "city");
         setCardSets(citySets);
+        // Далее для каждого набора получаем карточки и награды
         const setData = {};
         const tg = window.Telegram.WebApp;
         const telegram_id = tg.initDataUnsafe?.user?.id;
-
         for (const set of citySets) {
           const cardsResponse = await cardSetsService.getSetCards(set.id);
           const rewardsResponse = await cardSetsService.getSetRewards(set.id);
