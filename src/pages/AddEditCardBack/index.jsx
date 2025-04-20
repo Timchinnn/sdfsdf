@@ -40,7 +40,7 @@ const AddEditCardBack = () => {
       await cardBackService.addCardBack(formData);
       history.push("/cardmanagement");
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Erro1r:", error);
       alert(error.response?.data?.error || "Произошла ошибка при сохранении");
     }
   };
