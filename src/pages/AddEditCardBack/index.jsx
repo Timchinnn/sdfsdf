@@ -12,16 +12,21 @@ const AddEditCardBack = () => {
     setSelectedImage(file);
   };
   const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append("name", name);
-    if (selectedImage) {
-      formData.append("image", selectedImage);
-    }
     try {
+      if (!name.trim()) {
+        throw new Error("Название обязательно");
+      }
+      if (!selectedImage) {
+        throw new Error("Изображение обязательно");
+      }
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("image", selectedImage);
       await cardBackService.addCardBack(formData);
       history.push("/cardmanagement");
     } catch (error) {
       console.error("Error:", error);
+      alert(error.message || "Произошла ошибка при сохранении");
     }
   };
   return (
