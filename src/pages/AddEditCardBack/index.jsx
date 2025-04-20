@@ -76,4 +76,5 @@ const AddEditCardBack = () => {
     </div>
   );
 };
+export { routeAddEditCardBack };
 export default AddEditCardBack;
