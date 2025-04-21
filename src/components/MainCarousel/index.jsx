@@ -145,13 +145,20 @@ const MainCarousel = ({
   useEffect(() => {
     if (photos.length > 0 && !shouldUpdate) {
       const weightedRandom = (items) => {
-        const totalWeight = items.reduce(
-          (sum, item) => sum + (item.chance || 1),
+        // Фильтруем предметы с нулевым шансом выпадения
+        const availableItems = items.filter((item) => (item.chance || 0) > 0);
+
+        // Если нет доступных предметов, возвращаем null
+        if (availableItems.length === 0) {
+          return null;
+        }
+        const totalWeight = availableItems.reduce(
+          (sum, item) => sum + (parseFloat(item.chance) || 0.001),
           0
         );
-        const normalizedItems = items.map((item) => ({
+        const normalizedItems = availableItems.map((item) => ({
           ...item,
-          normalizedChance: (item.chance || 1) / totalWeight,
+          normalizedChance: (parseFloat(item.chance) || 0.001) / totalWeight,
         }));
         const random = Math.random();
         let cumulativeWeight = 0;
@@ -161,11 +168,15 @@ const MainCarousel = ({
             return item;
           }
         }
+        // Если ничего не выбрано, возвращаем первый доступный предмет
         return normalizedItems[0];
       };
 
       const newSelectedPhotos = data.reduce((acc, item) => {
-        acc[item.id] = weightedRandom(photos);
+        const selectedItem = weightedRandom(photos);
+        if (selectedItem) {
+          acc[item.id] = selectedItem;
+        }
         return acc;
       }, {});
       setSelectedPhotos(newSelectedPhotos);
