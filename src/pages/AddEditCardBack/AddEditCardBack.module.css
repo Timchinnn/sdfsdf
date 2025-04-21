@@ -50,3 +50,43 @@ label {
   height: 100vh;
   color: black;
 }
+.cardBacksList {
+  margin-top: 20px;
+  padding: 20px;
+}
+.cardBacksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.cardBackItem {
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cardBackItem img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.cardBackItem p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+.deleteButton {
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.deleteButton:hover {
+  background: #cc0000;
+}

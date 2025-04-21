@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./AddEditCardBack.module.css";
 import routeAddEditCardBack from "./route";
 import { cardBackService } from "services/api";
@@ -7,6 +7,18 @@ const AddEditCardBack = () => {
   const history = useHistory();
   const [name, setName] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [cardBacks, setCardBacks] = useState([]);
+  useEffect(() => {
+    const fetchCardBacks = async () => {
+      try {
+        const response = await cardBackService.getAllCardBacks();
+        setCardBacks(response.data);
+      } catch (error) {
+        console.error("Error fetching card backs:", error);
+      }
+    };
+    fetchCardBacks();
+  }, []);
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setSelectedImage(file);
@@ -19,9 +31,20 @@ const AddEditCardBack = () => {
     }
     try {
       await cardBackService.addCardBack(formData);
-      history.push("/cardmanagement");
+      const response = await cardBackService.getAllCardBacks();
+      setCardBacks(response.data);
+      setName("");
+      setSelectedImage(null);
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+  const handleDelete = async (id) => {
+    try {
+      await cardBackService.deleteCardBack(id);
+      setCardBacks(cardBacks.filter((cb) => cb.id !== id));
+    } catch (error) {
+      console.error("Error deleting card back:", error);
     }
   };
   return (
@@ -43,6 +66,26 @@ const AddEditCardBack = () => {
           <button className={styles.saveButton} onClick={handleSubmit}>
             Сохранить
           </button>
+        </div>
+        <div className={styles.cardBacksList}>
+          <h2>Существующие рубашки</h2>
+          <div className={styles.cardBacksGrid}>
+            {cardBacks.map((cardBack) => (
+              <div key={cardBack.id} className={styles.cardBackItem}>
+                <img
+                  src={`https://api.zoomayor.io${cardBack.image}`}
+                  alt={cardBack.name}
+                />
+                <p>{cardBack.name}</p>
+                <button
+                  onClick={() => handleDelete(cardBack.id)}
+                  className={styles.deleteButton}
+                >
+                  Удалить
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
