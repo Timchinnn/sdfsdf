@@ -85,6 +85,8 @@ export const cardBackService = {
       },
     }),
   deleteCardBack: (id) => axios.delete(`/card-backs/${id}`),
+  getUsersWithCardBack: (cardBackId) =>
+    axios.get(`/card-backs/${cardBackId}/users`),
 };
 export const cardSetsService = {
   addCardToSet: (setId, cardId) =>

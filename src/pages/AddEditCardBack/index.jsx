@@ -41,7 +41,21 @@ const AddEditCardBack = () => {
   };
   const handleDelete = async (id) => {
     try {
+      // Получаем информацию о пользователях с этой рубашкой
+      const usersWithThisCardBack = await cardBackService.getUsersWithCardBack(
+        id
+      );
+
+      // Удаляем рубашку
       await cardBackService.deleteCardBack(id);
+
+      // Для каждого пользователя устанавливаем стоковую рубашку
+      for (const user of usersWithThisCardBack) {
+        await cardBackService.updateUserCardBack(user.telegram_id, {
+          style: "default",
+        });
+      }
+
       setCardBacks(cardBacks.filter((cb) => cb.id !== id));
     } catch (error) {
       console.error("Error deleting card back:", error);
