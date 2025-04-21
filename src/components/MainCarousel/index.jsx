@@ -247,6 +247,9 @@ const MainCarousel = ({
   const [isAnimating, setIsAnimating] = useState(false);
   const ANIMATION_DURATION = 500;
   const handleImageClick = async (index) => {
+    if (energy < 40) {
+      return; // Недостаточно энергии
+    }
     if (isAnimating) return; // Prevent multiple clicks during animation
 
     // Check if card is still locked
@@ -275,9 +278,6 @@ const MainCarousel = ({
     if (!telegram_id) {
       console.error("Telegram ID not found");
       return;
-    }
-    if (energy < 40) {
-      return; // Недостаточно энергии
     }
 
     try {
