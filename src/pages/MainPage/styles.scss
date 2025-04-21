@@ -125,10 +125,11 @@
         height: 100%;
         background: #ffd321;
 
-        &[data-energy="900"] {
+        &[data-energy="true"] {
           background: #ff0000;
           animation: pulsate 1s ease-in-out infinite;
         }
+
         @keyframes pulsate {
           0% {
             opacity: 1;
