@@ -276,13 +276,13 @@ const MainCarousel = ({
       console.error("Telegram ID not found");
       return;
     }
-    if (energy < 10) {
+    if (energy < 40) {
       return; // Недостаточно энергии
     }
 
     try {
       // Обновляем энергию локально перед запросом
-      const newEnergy = Math.max(0, energy - 10);
+      const newEnergy = Math.max(0, energy - 40);
 
       // Отправляем запрос на обновление энергии
       await userInitService.updateEnergy(telegram_id, newEnergy);
@@ -447,7 +447,7 @@ const MainCarousel = ({
           <div className="main-nav__progress">
             <div
               className="main-nav__progress-bar"
-              data-energy={energy === 900 ? "900" : ""}
+              data-energy={energy < 40}
               style={{ width: `${(energy / MAX_ENERGY) * 100}%` }}
             ></div>
           </div>
