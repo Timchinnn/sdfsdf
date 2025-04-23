@@ -170,10 +170,11 @@ const AddEditCard = () => {
               step="0.01"
               value={chance}
               onChange={(e) => {
-                // Заменяем запятую на точку, чтобы корректно парсилось число
-                const value = e.target.value.replace(",", ".");
-                // Проверяем, что значение соответствует числовому формату
-                if (/^\d*\.?\d{0,2}$/.test(value) || value === "") {
+                let value = e.target.value;
+                // Разрешаем ввод только цифр, одной точки или запятой
+                if (/^\d*[.,]?\d{0,2}$/.test(value)) {
+                  // Заменяем запятую на точку для корректного сохранения
+                  value = value.replace(",", ".");
                   setChance(value);
                 }
               }}
