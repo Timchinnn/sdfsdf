@@ -29,7 +29,7 @@ const AddEditCard = () => {
           setCardResponse(response);
           setTitle(card.title || "");
           setDescription(card.description || "");
-          setChance(card.chance !== undefined ? card.chance : "0");
+          setChance(card.chance !== undefined ? String(card.chance) : "0");
           setHourlyIncome(card.hourly_income || "0");
 
           setPrice(card.price || "");
