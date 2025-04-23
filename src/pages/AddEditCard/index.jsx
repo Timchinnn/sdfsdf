@@ -9,7 +9,7 @@ import addimg from "assets/img/addimg.png";
 
 const AddEditCard = () => {
   const history = useHistory();
-  const [chance, setChance] = useState("");
+  const [chance, setChance] = useState("0");
   const [hourlyIncome, setHourlyIncome] = useState("0"); // Добавляем состояние для hourly_income
   const [cardType, setCardType] = useState("citizen");
   const [cardSection, setCardSection] = useState("");
@@ -167,19 +167,19 @@ const AddEditCard = () => {
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
             />{" "}
-            <h2 className={styles.title}>Шанс выпадения (%)</h2>
+            <h2 className={styles.title}>Шанс выпадения</h2>
             <input
               className={styles.inputCard}
               type="number"
               min="0"
-              max="100"
+              max="1"
               step="0.01"
               value={chance}
               onChange={(e) => {
                 const value = e.target.value;
                 if (
                   value === "" ||
-                  (parseFloat(value) >= 0 && parseFloat(value) <= 100)
+                  (parseFloat(value) >= 0 && parseFloat(value) <= 1)
                 ) {
                   setChance(value);
                 }
