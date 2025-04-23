@@ -177,10 +177,10 @@ const AddEditCard = () => {
               value={chance}
               onChange={(e) => {
                 const value = e.target.value;
-                if (
-                  value === "" ||
-                  (parseFloat(value) >= 0 && parseFloat(value) <= 1)
-                ) {
+                // Преобразуем строку в число с плавающей точкой
+                const numValue = parseFloat(value);
+                // Проверяем, что значение является числом и находится в диапазоне от 0 до 1
+                if (!isNaN(numValue) && numValue >= 0 && numValue <= 1) {
                   setChance(value);
                 }
               }}
