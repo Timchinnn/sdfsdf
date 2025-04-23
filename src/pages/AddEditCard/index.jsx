@@ -69,7 +69,8 @@ const AddEditCard = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("chance", chance); // шанс передаётся как есть (например, "0.76" или "89.78")
+    const chanceValue = parseFloat(chance) || 0;
+    formData.append("chance", chanceValue);
     formData.append("hourly_income", hourlyIncome);
     formData.append("price", price);
     formData.append("experience", experience);
@@ -169,8 +170,10 @@ const AddEditCard = () => {
               step="0.01"
               value={chance}
               onChange={(e) => {
-                const value = e.target.value;
-                if (/^\d.?\d$/.test(value) || value === "") {
+                // Заменяем запятую на точку, чтобы корректно парсилось число
+                const value = e.target.value.replace(",", ".");
+                // Проверяем, что значение соответствует числовому формату
+                if (/^\d*\.?\d*$/.test(value) || value === "") {
                   setChance(value);
                 }
               }}
