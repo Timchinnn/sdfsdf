@@ -173,7 +173,7 @@ const AddEditCard = () => {
                 // Заменяем запятую на точку, чтобы корректно парсилось число
                 const value = e.target.value.replace(",", ".");
                 // Проверяем, что значение соответствует числовому формату
-                if (/^\d*\.?\d*$/.test(value) || value === "") {
+                if (/^\d*\.?\d{0,2}$/.test(value) || value === "") {
                   setChance(value);
                 }
               }}
