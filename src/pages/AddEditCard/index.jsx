@@ -165,18 +165,13 @@ const AddEditCard = () => {
               className={styles.inputCard}
               type="number"
               min="0"
-              max="1"
+              max="100"
               step="0.01"
               value={chance}
               onChange={(e) => {
                 const value = e.target.value;
-                // Разрешаем ввод только чисел и точки/запятой
-                if (/^\d*\.?\d*$/.test(value) || value === "") {
-                  // Конвертируем в число и ограничиваем от 0 до 1
-                  const numValue = value === "" ? 0 : parseFloat(value);
-                  if (!isNaN(numValue)) {
-                    setChance(Math.min(Math.max(numValue, 0), 1).toString());
-                  }
+                if (/^\d.?\d$/.test(value) || value === "") {
+                  setChance(value);
                 }
               }}
             />
