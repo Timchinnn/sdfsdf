@@ -9,7 +9,7 @@ import addimg from "assets/img/addimg.png";
 
 const AddEditCard = () => {
   const history = useHistory();
-  const [chance, setChance] = useState("0");
+  const [chance, setChance] = useState("");
   const [hourlyIncome, setHourlyIncome] = useState("0"); // Добавляем состояние для hourly_income
   const [cardType, setCardType] = useState("citizen");
   const [cardSection, setCardSection] = useState("");
@@ -173,8 +173,17 @@ const AddEditCard = () => {
               type="number"
               min="0"
               max="100"
+              step="0.01"
               value={chance}
-              onChange={(e) => setChance(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (
+                  value === "" ||
+                  (parseFloat(value) >= 0 && parseFloat(value) <= 100)
+                ) {
+                  setChance(value);
+                }
+              }}
             />
             <h2 className={styles.title}>Доход в час</h2>
             <input
