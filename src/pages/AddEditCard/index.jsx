@@ -9,7 +9,7 @@ import addimg from "assets/img/addimg.png";
 
 const AddEditCard = () => {
   const history = useHistory();
-  const [chance, setChance] = useState("100");
+  const [chance, setChance] = useState("0");
   const [hourlyIncome, setHourlyIncome] = useState("0"); // Добавляем состояние для hourly_income
   const [cardType, setCardType] = useState("citizen");
   const [cardSection, setCardSection] = useState("");
@@ -29,7 +29,7 @@ const AddEditCard = () => {
           setCardResponse(response);
           setTitle(card.title || "");
           setDescription(card.description || "");
-          setChance(card.chance || "100");
+          setChance(card.chance !== undefined ? card.chance : "0");
           setHourlyIncome(card.hourly_income || "0");
 
           setPrice(card.price || "");
