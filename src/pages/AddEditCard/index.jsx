@@ -177,13 +177,14 @@ const AddEditCard = () => {
               value={chance}
               onChange={(e) => {
                 const value = e.target.value;
-                // Convert to number and ensure it's between 0 and 1
-                const numValue = Math.min(
-                  Math.max(parseFloat(value) || 0, 0),
-                  1
-                );
-                // Format to 2 decimal places
-                setChance(numValue.toFixed(2));
+                // Разрешаем ввод только чисел и точки/запятой
+                if (/^\d*\.?\d*$/.test(value) || value === "") {
+                  // Конвертируем в число и ограничиваем от 0 до 1
+                  const numValue = value === "" ? 0 : parseFloat(value);
+                  if (!isNaN(numValue)) {
+                    setChance(Math.min(Math.max(numValue, 0), 1).toString());
+                  }
+                }
               }}
             />
             <h2 className={styles.title}>Доход в час</h2>
