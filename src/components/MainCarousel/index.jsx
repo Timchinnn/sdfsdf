@@ -146,29 +146,34 @@ const MainCarousel = ({
     if (photos.length > 0 && !shouldUpdate) {
       const weightedRandom = (items) => {
         // Фильтруем предметы с нулевым шансом выпадения
-        const availableItems = items.filter((item) => (item.chance || 0) > 0);
-
+        const availableItems = items.filter((item) => {
+          const chance = parseFloat(item.chance);
+          return !isNaN(chance) && chance > 0;
+        });
         // Если нет доступных предметов, возвращаем null
         if (availableItems.length === 0) {
           return null;
         }
+        // Считаем общий вес с поддержкой дробных чисел
         const totalWeight = availableItems.reduce(
-          (sum, item) => sum + (parseFloat(item.chance) || 0.001),
+          (sum, item) => sum + parseFloat(item.chance || 0.001),
           0
         );
+        // Нормализуем шансы
         const normalizedItems = availableItems.map((item) => ({
           ...item,
-          normalizedChance: (parseFloat(item.chance) || 0.001) / totalWeight,
+          normalizedChance: parseFloat(item.chance || 0.001) / totalWeight,
         }));
+        // Выбираем случайный элемент
         const random = Math.random();
         let cumulativeWeight = 0;
+
         for (const item of normalizedItems) {
           cumulativeWeight += item.normalizedChance;
           if (random <= cumulativeWeight) {
             return item;
           }
         }
-        // Если ничего не выбрано, возвращаем первый доступный предмет
         return normalizedItems[0];
       };
 
