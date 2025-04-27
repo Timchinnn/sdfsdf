@@ -21,6 +21,7 @@ import Style2CardBack from "assets/img/card2.png";
 // import DefaultImg1 from "assets/img/4210629.png";
 import DefaultImg2 from "assets/img/42106291.png";
 import DefaultImg3 from "assets/img/4210629.png";
+import "./styles.scss";
 
 // Отсутствует определение cardBackStyles
 const cardBackStyles = {
