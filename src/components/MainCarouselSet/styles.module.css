@@ -5,13 +5,13 @@
   perspective: 1000px;
   transform-style: preserve-3d;
   position: relative;
-  height: 360px;
-  padding: 0 20px;
+  height: 320px; /* Reduced from 360px */
+  padding: 0 15px; /* Reduced from 20px */
 }
 .slideC {
   position: relative;
-  width: 178px; /* Уменьшил с 200px */
-  height: 320px; /* Уменьшил с 360px */
+  width: 160px; /* Reduced from 178px */
+  height: 280px; /* Reduced from 320px */
   transform-style: preserve-3d;
 }
 .slide {

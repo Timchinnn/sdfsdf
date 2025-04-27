@@ -58,7 +58,6 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
     const currentIndex = activeSlide % data.length;
     const prevIndex = (currentIndex - 1 + data.length) % data.length;
     const nextIndex = (currentIndex + 1) % data.length;
-
     if (index === currentIndex) {
       return {
         opacity: 1,
@@ -69,27 +68,26 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
     } else if (index === prevIndex) {
       return {
         opacity: 0.7,
-        transform: "translateX(-150px) translateZ(-200px) rotateY(35deg)", // Уменьшил X-смещение
+        transform: "translateX(-120px) translateZ(-150px) rotateY(35deg)", // Reduced X offset and Z depth
         zIndex: 2,
         transition: "all 0.5s ease-in-out",
       };
     } else if (index === nextIndex) {
       return {
         opacity: 0.7,
-        transform: "translateX(150px) translateZ(-200px) rotateY(-35deg)", // Уменьшил X-смещение
+        transform: "translateX(120px) translateZ(-150px) rotateY(-35deg)", // Reduced X offset and Z depth
         zIndex: 2,
         transition: "all 0.5s ease-in-out",
       };
     } else {
       return {
         opacity: 0,
-        transform: "translateX(0) translateZ(-400px)",
+        transform: "translateX(0) translateZ(-300px)", // Reduced Z depth
         zIndex: 1,
         transition: "all 0.5s ease-in-out",
       };
     }
   };
-
   const [photos, setPhotos] = useState([]);
   const [selectedPhotos, setSelectedPhotos] = useState({});
 
