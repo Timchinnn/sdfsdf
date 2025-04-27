@@ -205,7 +205,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
             </React.Fragment>
           ))}
         </div>
-        <div className="main-nav__play" onClick={nextSlide}>
+        {/* <div className="main-nav__play" onClick={nextSlide}>
           <img
             src={`${
               cardBackStyles[cardBackStyle || "default"]?.image ||
@@ -213,7 +213,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
             }`}
             alt="Card back style"
           />
-        </div>
+        </div> */}
       </div>
       <div className="main-nav f-center-jcsb">
         <div className="main-nav__offer f-center">
