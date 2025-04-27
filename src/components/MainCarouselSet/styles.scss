@@ -11,6 +11,10 @@
     width: 200px;
     height: 360px;
     margin: 0 auto;
+    @media (max-width: 529px) {
+      width: 160px;
+      height: 280px;
+    }
   }
   .ReactFlipCard__container {
     width: 100%;
@@ -25,6 +29,10 @@
     left: 0;
     border-radius: 12px;
     pointer-events: none;
+    @media (max-width: 529px) {
+      width: 160px;
+      height: 280px;
+    }
     &.active {
       pointer-events: auto;
     }
@@ -38,6 +46,10 @@
     background: #e6e9ed;
     border-radius: 4px;
     overflow: hidden;
+    @media (max-width: 529px) {
+      width: 160px;
+      height: 280px;
+    }
   }
   .main-slider__image {
     width: 100%;
@@ -86,6 +98,11 @@
   &__play {
     svg {
       display: block;
+    }
+    @media (max-width: 529px) {
+      img {
+        width: 20px;
+      }
     }
   }
 }
