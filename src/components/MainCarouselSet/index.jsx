@@ -161,89 +161,91 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
           </defs>
         </svg>
       </div>
-      <div className="main-carousel">
-        <div className="main-nav__play" onClick={prevSlide}>
-          <img
-            src={DefaultImg2}
-            alt=""
-            style={{
-              width: "30px",
-              "@media (max-width: 529px)": {
-                width: "20px",
-              },
-            }}
-          />
-        </div>
-        <div className="slideC">
-          {data.map((item, i) => (
-            <React.Fragment key={item.i}>
-              <div
-                className={`slide ${
-                  activeSlide === item.id - 1 ? "active" : ""
-                } ${activeIndex === i ? "open" : ""}`}
-                style={{
-                  ...getStyles(i),
-                  "@media (max-width: 529px)": {
-                    width: "160px",
-                    height: "280px",
-                  },
-                }}
-              >
-                <ReactFlipCard
-                  flipTrigger={"onClick"}
-                  className="main-slider__card"
-                  onClick={() => handleImageClick(i)}
-                  frontComponent={
-                    <div className="main-slider__image">
-                      <img
-                        src={`${
-                          cardBackStyles[cardBackStyle || "default"].image
-                        }`}
-                        alt=""
-                        style={{
-                          "@media (max-width: 529px)": {
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                          },
-                        }}
-                      />
-                    </div>
-                  }
-                  backComponent={
-                    <div className="main-slider__image">
-                      <img
-                        src={`${
-                          openedCards[i]?.image ||
-                          selectedPhotos[item.id]?.image
-                        }`}
-                        alt={selectedPhotos[item.id]?.title || ""}
-                        style={{
-                          "@media (max-width: 529px)": {
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                          },
-                        }}
-                      />
-                    </div>
-                  }
-                />
-              </div>
-            </React.Fragment>
-          ))}
-        </div>
-        <div className="main-nav__play" onClick={nextSlide}>
-          <img
-            src={DefaultImg3}
-            alt=""
-            style={{
-              width: "30px",
-              "@media (max-width: 529px)": {
-                width: "20px",
-              },
-            }}
-          />
+      <div className="main-carousel-set">
+        <div className="main-carousel">
+          <div className="main-nav__play" onClick={prevSlide}>
+            <img
+              src={DefaultImg2}
+              alt=""
+              style={{
+                width: "30px",
+                "@media (max-width: 529px)": {
+                  width: "20px",
+                },
+              }}
+            />
+          </div>
+          <div className="slideC">
+            {data.map((item, i) => (
+              <React.Fragment key={item.i}>
+                <div
+                  className={`slide ${
+                    activeSlide === item.id - 1 ? "active" : ""
+                  } ${activeIndex === i ? "open" : ""}`}
+                  style={{
+                    ...getStyles(i),
+                    "@media (max-width: 529px)": {
+                      width: "160px",
+                      height: "280px",
+                    },
+                  }}
+                >
+                  <ReactFlipCard
+                    flipTrigger={"onClick"}
+                    className="main-slider__card"
+                    onClick={() => handleImageClick(i)}
+                    frontComponent={
+                      <div className="main-slider__image">
+                        <img
+                          src={`${
+                            cardBackStyles[cardBackStyle || "default"].image
+                          }`}
+                          alt=""
+                          style={{
+                            "@media (max-width: 529px)": {
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            },
+                          }}
+                        />
+                      </div>
+                    }
+                    backComponent={
+                      <div className="main-slider__image">
+                        <img
+                          src={`${
+                            openedCards[i]?.image ||
+                            selectedPhotos[item.id]?.image
+                          }`}
+                          alt={selectedPhotos[item.id]?.title || ""}
+                          style={{
+                            "@media (max-width: 529px)": {
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            },
+                          }}
+                        />
+                      </div>
+                    }
+                  />
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="main-nav__play" onClick={nextSlide}>
+            <img
+              src={DefaultImg3}
+              alt=""
+              style={{
+                width: "30px",
+                "@media (max-width: 529px)": {
+                  width: "20px",
+                },
+              }}
+            />
+          </div>
         </div>
       </div>
       <div className="main-nav f-center-jcsb">
