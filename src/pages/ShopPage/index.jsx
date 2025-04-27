@@ -1,4 +1,3 @@
-jsx;
 import React, { useState, useRef, useEffect } from "react";
 import routeShop from "./routes";
 import MainSection from "components/MainSection";
