@@ -70,19 +70,28 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
     } else if (index === prevIndex) {
       return {
         opacity: 1,
-        transform: "translateX(-200px) translateZ(-500px) rotateY(60deg)",
+        transform:
+          window.innerWidth < 529
+            ? "translateX(-160px) translateZ(-400px) rotateY(60deg)"
+            : "translateX(-200px) translateZ(-500px) rotateY(60deg)",
         zIndex: 9,
       };
     } else if (index === nextIndex) {
       return {
         opacity: 1,
-        transform: "translateX(200px) translateZ(-500px) rotateY(-60deg)",
+        transform:
+          window.innerWidth < 529
+            ? "translateX(160px) translateZ(-400px) rotateY(-60deg)"
+            : "translateX(200px) translateZ(-500px) rotateY(-60deg)",
         zIndex: 9,
       };
     } else {
       return {
         opacity: 0,
-        transform: "translateX(440px) translateZ(-600px) rotateY(-60deg)",
+        transform:
+          window.innerWidth < 529
+            ? "translateX(320px) translateZ(-500px) rotateY(-60deg)"
+            : "translateX(440px) translateZ(-600px) rotateY(-60deg)",
         zIndex: 7,
       };
     }
