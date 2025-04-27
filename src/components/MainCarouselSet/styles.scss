@@ -101,6 +101,8 @@
       @media (max-width: 529px) {
         img {
           width: 20px;
+          display: block !important;
+          opacity: 1 !important;
         }
       }
     }
