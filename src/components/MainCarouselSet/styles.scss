@@ -101,17 +101,10 @@
       @media (max-width: 529px) {
         img {
           width: 20px;
-          display: block !important;
-          opacity: 1 !important;
         }
       }
-      @media (max-width: 419px) {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 1;
-        visibility: visible;
-      }
+      position: relative;
+      z-index: 100;
     }
   }
 }
