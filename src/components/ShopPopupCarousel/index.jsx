@@ -62,7 +62,7 @@ const ShopPopupCarousel = (props) => {
             />
           </svg>
         </button>
-        <div className="shop-popup__inner">
+        <div className="shop-popup__inner" style={{ overflowX: "hidden" }}>
           {/* <div className="shop-popup__image"> */}
           <MainCarouselSet
             getActiveSlide={5}
