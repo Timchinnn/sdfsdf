@@ -58,29 +58,34 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
     const currentIndex = activeSlide % data.length;
     const prevIndex = (currentIndex - 1 + data.length) % data.length;
     const nextIndex = (currentIndex + 1) % data.length;
+
     if (index === currentIndex) {
       return {
         opacity: 1,
         transform: "translateX(0) translateZ(0) rotateY(0deg)",
-        zIndex: 10,
+        zIndex: 3,
+        transition: "all 0.5s ease-in-out",
       };
     } else if (index === prevIndex) {
       return {
-        opacity: 0.6,
-        transform: "translateX(-220px) translateZ(-400px) rotateY(35deg)",
-        zIndex: 9,
+        opacity: 0.7,
+        transform: "translateX(-180px) translateZ(-200px) rotateY(35deg)",
+        zIndex: 2,
+        transition: "all 0.5s ease-in-out",
       };
     } else if (index === nextIndex) {
       return {
-        opacity: 0.6,
-        transform: "translateX(220px) translateZ(-400px) rotateY(-35deg)",
-        zIndex: 9,
+        opacity: 0.7,
+        transform: "translateX(180px) translateZ(-200px) rotateY(-35deg)",
+        zIndex: 2,
+        transition: "all 0.5s ease-in-out",
       };
     } else {
       return {
         opacity: 0,
-        transform: "translateX(0) translateZ(-800px)",
-        zIndex: 8,
+        transform: "translateX(0) translateZ(-400px)",
+        zIndex: 1,
+        transition: "all 0.5s ease-in-out",
       };
     }
   };
