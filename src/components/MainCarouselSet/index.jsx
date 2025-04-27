@@ -123,13 +123,44 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
     <div className="main-control">
       <div className="main-control__bg">
         <svg
-          width="100"
-          height="100"
-          viewBox="0 0 100 100"
+          width="375"
+          height="529"
+          viewBox="0 0 375 529"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="50" cy="50" r="40" fill="#71B21D" fillOpacity="0.24" />
+          <g opacity="0.24" filter="url(#filter0_f_63_9375)">
+            <circle
+              cx="188.04"
+              cy="264.312"
+              r="124.272"
+              transform="rotate(92.6861 188.04 264.312)"
+              fill="#71B21D"
+            />
+          </g>
+          <defs>
+            <filter
+              id="filter0_f_63_9375"
+              x="-76.2341"
+              y="0.037075"
+              width="528.549"
+              height="528.549"
+              filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB"
+            >
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="BackgroundImageFix"
+                result="shape"
+              />
+              <feGaussianBlur
+                stdDeviation="70"
+                result="effect1_foregroundBlur_63_9375"
+              />
+            </filter>
+          </defs>
         </svg>
       </div>
       <div className="main-carousel">
