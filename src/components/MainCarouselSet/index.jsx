@@ -118,8 +118,8 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
     handleOpenPopup(selectedCard);
   };
   return (
-    <div className="main-control">
-      <div className="main-control__bg">
+    <div className="set-control">
+      <div className="set-control__bg">
         <svg
           width="375"
           height="529"
@@ -161,8 +161,8 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
           </defs>
         </svg>
       </div>
-      <div className="main-carousel">
-        <div className="main-nav__play" onClick={prevSlide}>
+      <div className="set-carousel">
+        <div className="set-nav__play" onClick={prevSlide}>
           <img
             src={DefaultImg2}
             alt=""
@@ -174,11 +174,11 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
             }}
           />
         </div>
-        <div className="slideC">
+        <div className="set-slideC">
           {data.map((item, i) => (
             <React.Fragment key={item.i}>
               <div
-                className={`slide ${
+                className={`set-slide ${
                   activeSlide === item.id - 1 ? "active" : ""
                 } ${activeIndex === i ? "open" : ""}`}
                 style={{
@@ -191,10 +191,10 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
               >
                 <ReactFlipCard
                   flipTrigger={"onClick"}
-                  className="main-slider__card"
+                  className="set-slider__card"
                   onClick={() => handleImageClick(i)}
                   frontComponent={
-                    <div className="main-slider__image">
+                    <div className="set-slider__image">
                       <img
                         src={`${
                           cardBackStyles[cardBackStyle || "default"].image
@@ -211,7 +211,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
                     </div>
                   }
                   backComponent={
-                    <div className="main-slider__image">
+                    <div className="set-slider__image">
                       <img
                         src={`${
                           openedCards[i]?.image ||
@@ -233,7 +233,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
             </React.Fragment>
           ))}
         </div>
-        <div className="main-nav__play" onClick={nextSlide}>
+        <div className="set-nav__play" onClick={nextSlide}>
           <img
             src={DefaultImg3}
             alt=""
