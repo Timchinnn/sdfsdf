@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactFlipCard from "reactjs-flip-card";
 // import styles from 'styles.'
-import styles from "./styles.module.css";
 
 // import Avatar from 'assets/img/avatar.png';
 // import CardsIcon from 'assets/img/cards-icon.png';
@@ -162,13 +161,13 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
           </defs>
         </svg>
       </div>
-      <div className={styles.mainCarousel}>
-        <div className={styles.slideC}>
+      <div className="main-carousel">
+        <div className="slideC">
           {data.map((item, i) => (
             <React.Fragment key={item.i}>
               <div
-                className={`${styles.slide} ${
-                  activeSlide === item.id - 1 ? styles.active : ""
+                className={`slide ${
+                  activeSlide === item.id - 1 ? "active" : ""
                 } ${activeIndex === i ? "open" : ""}`}
                 style={{
                   ...getStyles(i),
@@ -199,7 +198,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
                       />
                     </div>
                   }
-                />
+                ></ReactFlipCard>
               </div>
             </React.Fragment>
           ))}
