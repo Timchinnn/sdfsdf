@@ -69,14 +69,14 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
     } else if (index === prevIndex) {
       return {
         opacity: 0.7,
-        transform: "translateX(-180px) translateZ(-200px) rotateY(35deg)",
+        transform: "translateX(-150px) translateZ(-200px) rotateY(35deg)", // Уменьшил X-смещение
         zIndex: 2,
         transition: "all 0.5s ease-in-out",
       };
     } else if (index === nextIndex) {
       return {
         opacity: 0.7,
-        transform: "translateX(180px) translateZ(-200px) rotateY(-35deg)",
+        transform: "translateX(150px) translateZ(-200px) rotateY(-35deg)", // Уменьшил X-смещение
         zIndex: 2,
         transition: "all 0.5s ease-in-out",
       };
