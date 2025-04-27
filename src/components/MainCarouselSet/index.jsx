@@ -166,25 +166,12 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
             src={DefaultImg2}
             alt=""
             style={{
-              width: "40px",
+              width: "30px",
+              "@media (max-width: 529px)": {
+                width: "20px",
+              },
             }}
           />
-          {/* <svg
-            width="24"
-            height="14"
-            viewBox="0 0 24 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Используем тот же path, но с transform="rotate(180)" для кнопки "назад" */}
-          {/* <path
-              transform="rotate(180, 12, 7)"
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M19.583 3.04905C17.683 2.16705 15.0029 1.60004 12 1.60004C8.99712 1.60004 6.31706 2.16702 4.41702 3.04905C2.45202 3.96105 1.6 5.06205 1.6 5.99996C1.6 6.93787 2.45199 8.03895 4.41702 8.95087C5.79302 9.58987 7.57914 10.0639 9.6 10.2759V9.59988C9.6 9.27589 9.795 8.98489 10.094 8.86089C10.393 8.73689 10.737 8.80589 10.966 9.03389L12.566 10.6339C12.878 10.9469 12.878 11.4529 12.566 11.7659L10.966 13.3659C10.737 13.5939 10.393 13.6629 10.094 13.5389C9.795 13.4149 9.6 13.1239 9.6 12.7999V11.8839C7.363 11.6649 5.34298 11.1449 3.744 10.4029C1.65601 9.43288 0 7.9339 0 5.99995C0 4.066 1.65601 2.56699 3.744 1.59701C5.89801 0.597018 8.81792 0 12 0C15.1821 0 18.102 0.596992 20.256 1.59701C22.344 2.56701 24 4.066 24 5.99995C24 7.54496 22.931 8.8139 21.487 9.73396C20.02 10.669 18.0069 11.356 15.7239 11.716C15.2879 11.785 14.8779 11.486 14.8099 11.05C14.7409 10.614 15.0389 10.204 15.4759 10.135C17.613 9.79896 19.3989 9.16698 20.6269 8.38497C21.8779 7.58797 22.3999 6.74197 22.3999 5.99997C22.3999 5.06197 21.548 3.96097 19.583 3.04905Z"
-              fill="#AAB2BD"
-            /> */}
-          {/* </svg> */}
         </div>
         <div className="slideC">
           {data.map((item, i) => (
@@ -195,6 +182,10 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
                 } ${activeIndex === i ? "open" : ""}`}
                 style={{
                   ...getStyles(i),
+                  "@media (max-width: 529px)": {
+                    width: "160px",
+                    height: "280px",
+                  },
                 }}
               >
                 <ReactFlipCard
@@ -208,6 +199,13 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
                           cardBackStyles[cardBackStyle || "default"].image
                         }`}
                         alt=""
+                        style={{
+                          "@media (max-width: 529px)": {
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          },
+                        }}
                       />
                     </div>
                   }
@@ -219,10 +217,17 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
                           selectedPhotos[item.id]?.image
                         }`}
                         alt={selectedPhotos[item.id]?.title || ""}
+                        style={{
+                          "@media (max-width: 529px)": {
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          },
+                        }}
                       />
                     </div>
                   }
-                ></ReactFlipCard>
+                />
               </div>
             </React.Fragment>
           ))}
@@ -232,7 +237,10 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
             src={DefaultImg3}
             alt=""
             style={{
-              width: "40px",
+              width: "30px",
+              "@media (max-width: 529px)": {
+                width: "20px",
+              },
             }}
           />
         </div>
