@@ -56,32 +56,31 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
 
   const getStyles = (index) => {
     const currentIndex = activeSlide % data.length;
-    const prevIndex = (activeSlide - 1 + data.length) % data.length;
-    const nextIndex = (activeSlide + 1) % data.length;
-
+    const prevIndex = (currentIndex - 1 + data.length) % data.length;
+    const nextIndex = (currentIndex + 1) % data.length;
     if (index === currentIndex) {
       return {
         opacity: 1,
-        transform: "translateX(0) translateZ(0px) rotateY(0deg)",
+        transform: "translateX(0) translateZ(0) rotateY(0deg)",
         zIndex: 10,
       };
     } else if (index === prevIndex) {
       return {
-        opacity: 1,
-        transform: "translateX(-200px) translateZ(-500px) rotateY(60deg)",
+        opacity: 0.6,
+        transform: "translateX(-220px) translateZ(-400px) rotateY(35deg)",
         zIndex: 9,
       };
     } else if (index === nextIndex) {
       return {
-        opacity: 1,
-        transform: "translateX(200px) translateZ(-500px) rotateY(-60deg)",
+        opacity: 0.6,
+        transform: "translateX(220px) translateZ(-400px) rotateY(-35deg)",
         zIndex: 9,
       };
     } else {
       return {
         opacity: 0,
-        transform: "translateX(440px) translateZ(-600px) rotateY(-60deg)",
-        zIndex: 7,
+        transform: "translateX(0) translateZ(-800px)",
+        zIndex: 8,
       };
     }
   };
