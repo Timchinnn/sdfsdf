@@ -17,6 +17,8 @@ const AddEditCard = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [experience, setExperience] = useState("");
+  const [energyBoost, setEnergyBoost] = useState("100"); // значение по умолчанию
+
   // const [image, setImage] = useState(null);
   const { id } = useParams(); // Добавить импорт useParams из react-router-dom
   console.log(id);
@@ -75,6 +77,9 @@ const AddEditCard = () => {
     formData.append("price", price);
     formData.append("experience", experience);
     formData.append("type", cardType);
+    if (cardType === "energy_boost") {
+      formData.append("energy", energyBoost);
+    }
     if (selectedImage) {
       formData.append("image", selectedImage);
     }
@@ -216,7 +221,28 @@ const AddEditCard = () => {
                 />
                 Город
               </label>
+              <label>
+                <input
+                  type="radio"
+                  value="energy_boost"
+                  checked={cardType === "energy_boost"}
+                  onChange={(e) => setCardType(e.target.value)}
+                />
+                Энергия
+              </label>
             </div>
+            {cardType === "energy_boost" && (
+              <div>
+                <h2 className={styles.title}>Начислять энергии</h2>
+                <input
+                  className={styles.inputCard}
+                  type="number"
+                  min="0"
+                  value={energyBoost}
+                  onChange={(e) => setEnergyBoost(e.target.value)}
+                />
+              </div>
+            )}
             {/* Add section select based on card type */}
             <div>
               <h2 className={styles.title}>Раздел карты</h2>
