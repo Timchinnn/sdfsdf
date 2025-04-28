@@ -116,6 +116,12 @@ const ShopPopup = (props) => {
                 </h3>
                 <p className="shop-popup__text">
                   {props.selectedPhoto ? props.selectedPhoto.description : ""}
+                  {props.selectedPhoto &&
+                    props.selectedPhoto.type === "energy_boost" && (
+                      <span style={{ marginLeft: "5px" }}>
+                        ⚡ {props.selectedPhoto.energy || 100}
+                      </span>
+                    )}
                 </p>
                 <div className="shop-popup__earn">
                   <div className="main-params__card f-center-center">
