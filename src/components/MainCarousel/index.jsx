@@ -313,7 +313,9 @@ const MainCarousel = ({
       });
       await userCardsService.addCardToUser(telegram_id, selectedCard.id);
       if (selectedCard.type === "energy_boost") {
-        const boostedEnergy = Math.min(newEnergy + 100, 1000);
+        // Используем значение energy из карточки. Если оно не задано, по умолчанию 100.
+        const boostValue = Number(selectedCard.energy) || 100;
+        const boostedEnergy = Math.min(newEnergy + boostValue, 1000);
         await userInitService.updateEnergy(telegram_id, boostedEnergy);
         setEnergy(boostedEnergy);
       }
