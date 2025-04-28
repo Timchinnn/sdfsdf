@@ -33,11 +33,14 @@ const AddEditCard = () => {
           setDescription(card.description || "");
           setChance(card.chance !== undefined ? String(card.chance) : "0");
           setHourlyIncome(card.hourly_income || "0");
-
           setPrice(card.price || "");
           setExperience(card.experience || "");
           setCardType(card.type || "citizen");
           setCardSection(card.section || "");
+          // Если карта типа energy_boost, присваиваем значение энергии из карточки
+          if (card.type === "energy_boost") {
+            setEnergyBoost(card.energy ? String(card.energy) : "100");
+          }
         } catch (error) {
           console.error("Error fetching card:", error);
         }
