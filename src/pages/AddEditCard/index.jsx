@@ -240,9 +240,7 @@ const AddEditCard = () => {
                   min="0"
                   max="1000"
                   value={energyBoost}
-                  onChange={(e) =>
-                    setEnergyBoost(Math.min(1000, e.target.value))
-                  }
+                  onChange={(e) => setEnergyBoost(e.target.value)}
                 />
               </div>
             )}
