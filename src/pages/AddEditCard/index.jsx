@@ -238,8 +238,11 @@ const AddEditCard = () => {
                   className={styles.inputCard}
                   type="number"
                   min="0"
+                  max="1000"
                   value={energyBoost}
-                  onChange={(e) => setEnergyBoost(e.target.value)}
+                  onChange={(e) =>
+                    setEnergyBoost(Math.min(1000, e.target.value))
+                  }
                 />
               </div>
             )}
