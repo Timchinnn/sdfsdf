@@ -65,7 +65,7 @@ const ShopManagement = () => {
               className={styles.searchInput}
             />
           </div>
-          <NavLink to="/add-shop-item" style={{ width: "40%" }}>
+          <NavLink to={routeShirtManagement()} style={{ width: "40%" }}>
             <button className={styles.addButton}>Добавить товар</button>
           </NavLink>
         </div>
@@ -106,7 +106,7 @@ const ShopManagement = () => {
             />
           </div>
 
-          <NavLink to={routeShirtManagement()} style={{ width: "40%" }}>
+          <NavLink to="/add-shop-item" style={{ width: "40%" }}>
             <button className={styles.addButton}>Добавить товар</button>
           </NavLink>
         </div>
