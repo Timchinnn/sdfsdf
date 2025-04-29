@@ -75,3 +75,4 @@ const ShirtManagement = () => {
   );
 };
 export default ShirtManagement;
+export { routeShirtManagement };

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./ShopManagement.module.css";
 import routeShopManagement from "./route";
 import { NavLink } from "react-router-dom";
-import { routeShopManagement } from "pages/ShopManagement";
+import { routeShirtManagement } from "pages/ShirtManagement";
 
 const ShopManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -106,7 +106,7 @@ const ShopManagement = () => {
             />
           </div>
 
-          <NavLink to={routeCardManagement()} style={{ width: "40%" }}>
+          <NavLink to={routeShirtManagement()} style={{ width: "40%" }}>
             <button className={styles.addButton}>Добавить товар</button>
           </NavLink>
         </div>
