@@ -93,6 +93,20 @@ const ShopManagement = () => {
               </div>
             ))}
         </div>
+        <div className={styles.settings}>
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              placeholder="Поиск по названию"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
+          <NavLink to="/add-shop-item" style={{ width: "40%" }}>
+            <button className={styles.addButton}>Добавить товар</button>
+          </NavLink>
+        </div>
       </div>
       <div className={styles.mainContent}>
         <h2>Наборы карт</h2>
@@ -117,6 +131,20 @@ const ShopManagement = () => {
                 </button>
               </div>
             ))}
+        </div>
+        <div className={styles.settings}>
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              placeholder="Поиск по названию"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
+          <NavLink to="/add-shop-item" style={{ width: "40%" }}>
+            <button className={styles.addButton}>Добавить товар</button>
+          </NavLink>
         </div>
       </div>
     </div>
