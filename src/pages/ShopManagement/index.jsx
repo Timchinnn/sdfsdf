@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styles from "./ShopManagement.module.css";
 import routeShopManagement from "./route";
 import { NavLink } from "react-router-dom";
+import { routeShopManagement } from "pages/ShopManagement";
+
 const ShopManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [items] = useState([
@@ -103,7 +105,8 @@ const ShopManagement = () => {
               className={styles.searchInput}
             />
           </div>
-          <NavLink to="/add-shop-item" style={{ width: "40%" }}>
+
+          <NavLink to={routeCardManagement()} style={{ width: "40%" }}>
             <button className={styles.addButton}>Добавить товар</button>
           </NavLink>
         </div>
