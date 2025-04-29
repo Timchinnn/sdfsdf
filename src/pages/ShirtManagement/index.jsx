@@ -59,9 +59,6 @@ const ShirtManagement = () => {
               className={styles.searchInput}
             />
           </div>
-          <NavLink to="/add-shop-item" style={{ width: "40%" }}>
-            <button className={styles.addButton}>Добавить рубашку</button>
-          </NavLink>
         </div>
       </div>
     </div>
