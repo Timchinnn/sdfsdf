@@ -42,6 +42,13 @@ const AdminPanel = () => {
             </div>
           </NavLink>
         </div>
+        <div className={styles.mainContent}>
+          <NavLink to={routeCardManagement()}>
+            <div className={styles.content}>
+              <p>Добавление/редактирование карт жители/город и наборов</p>
+            </div>
+          </NavLink>
+        </div>
       </div>
     </div>
   );
