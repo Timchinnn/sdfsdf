@@ -1,89 +1,67 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ShirtManagement.module.css";
+import { NavLink } from "react-router-dom";
 import { cardBackService } from "services/api";
 import routeShirtManagement from "./route";
+
 const ShirtManagement = () => {
-  const [name, setName] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [shirts, setShirts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [cardBacks, setCardBacks] = useState([]);
   useEffect(() => {
-    const fetchShirts = async () => {
+    const fetchCardBacks = async () => {
       try {
         const response = await cardBackService.getAllCardBacks();
-        setShirts(response.data);
+        setCardBacks(response.data);
       } catch (error) {
-        console.error("Error fetching shirts:", error);
+        console.error("Error fetching card backs:", error);
       }
     };
-    fetchShirts();
+    fetchCardBacks();
   }, []);
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    setSelectedImage(file);
-  };
-  const handleSubmit = async () => {
-    const formData = new FormData();
-    formData.append("name", name);
-    if (selectedImage) {
-      formData.append("image", selectedImage);
-    }
-    try {
-      await cardBackService.addCardBack(formData);
-      const response = await cardBackService.getAllCardBacks();
-      setShirts(response.data);
-      setName("");
-      setSelectedImage(null);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
   const handleDelete = async (id) => {
     try {
       await cardBackService.deleteCardBack(id);
-      setShirts(shirts.filter((shirt) => shirt.id !== id));
+      setCardBacks(cardBacks.filter((cb) => cb.id !== id));
     } catch (error) {
-      console.error("Error deleting shirt:", error);
+      console.error("Error deleting card back:", error);
     }
   };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
-        <div className={styles.content}>
-          <div>
-            <p>Фото</p>
-            <input type="file" accept="image/*" onChange={handleImageUpload} />
-          </div>
-          <div>
-            <p>Название</p>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <button className={styles.saveButton} onClick={handleSubmit}>
-            Сохранить
-          </button>
-        </div>
-        <div className={styles.shirtsList}>
-          <h2>Существующие рубашки</h2>
-          <div className={styles.shirtsGrid}>
-            {shirts.map((shirt) => (
-              <div key={shirt.id} className={styles.shirtItem}>
-                <img
-                  src={`https://api.zoomayor.io${shirt.image}`}
-                  alt={shirt.name}
-                />
-                <p>{shirt.name}</p>
-                <button
-                  onClick={() => handleDelete(shirt.id)}
-                  className={styles.deleteButton}
-                >
-                  Удалить
-                </button>
+        <h2>Рубашки</h2>
+        <div className={styles.cardsList}>
+          {cardBacks
+            .filter((cardBack) =>
+              cardBack.name.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            .map((cardBack) => (
+              <div key={cardBack.id} className={styles.cardItem}>
+                <div className={styles.cardItemImg}>
+                  <img
+                    src={`https://api.zoomayor.io${cardBack.image}`}
+                    alt={cardBack.name}
+                  />
+                </div>
+                <div className={styles.cardInfo}>
+                  <h3>{cardBack.name}</h3>
+                </div>
               </div>
             ))}
+        </div>
+        <div className={styles.settings}>
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              placeholder="Поиск по названию"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
           </div>
+          <NavLink to="/add-shop-item" style={{ width: "40%" }}>
+            <button className={styles.addButton}>Добавить рубашку</button>
+          </NavLink>
         </div>
       </div>
     </div>
