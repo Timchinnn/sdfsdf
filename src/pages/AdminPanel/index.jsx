@@ -43,9 +43,9 @@ const AdminPanel = () => {
           </NavLink>
         </div>
         <div className={styles.mainContent}>
-          <NavLink to={routeCardManagement()}>
+          <NavLink to="/shop-management">
             <div className={styles.content}>
-              <p>Добавление/редактирование карт жители/город и наборов</p>
+              <p>Добавление/редактирование содержимого магазина</p>
             </div>
           </NavLink>
         </div>
