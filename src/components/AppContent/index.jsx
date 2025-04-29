@@ -39,7 +39,9 @@ import BonusCodeManagement, {
 import ShopManagement, {
   routeShopManagement as routeShopManagementPage,
 } from "pages/ShopManagement";
-
+import ShirtManagement, {
+  routeShirtManagement as routeShirtManagementPage,
+} from "pages/ShirtManagement";
 import { useSelector } from "react-redux";
 
 const AppContent = () => {
@@ -97,6 +99,11 @@ const AppContent = () => {
           />
           <Route exact path={routeTasksPage()} component={TasksPage} />
           <Route exact path={routeSetsPage()} component={SetsPage} />
+          <Route
+            exact
+            path={routeShirtManagementPage()}
+            component={ShirtManagement}
+          />
           <Route
             exact
             path={routeShopManagementPage()}
