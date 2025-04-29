@@ -18,6 +18,10 @@ const ShirtManagement = () => {
     };
     fetchCardBacks();
   }, []);
+  const handleOpenPopup = (cardBack) => {
+    // Здесь можно добавить логику для открытия попапа
+    console.log("Opening popup for card:", cardBack);
+  };
   const handleDelete = async (id) => {
     try {
       await cardBackService.deleteCardBack(id);
@@ -45,7 +49,13 @@ const ShirtManagement = () => {
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{cardBack.name}</h3>
-                </div>
+                </div>{" "}
+                <button
+                  className={styles.cardButton}
+                  onClick={() => handleOpenPopup(cardBack)}
+                >
+                  Добавить
+                </button>
               </div>
             ))}
         </div>

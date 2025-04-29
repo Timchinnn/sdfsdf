@@ -87,3 +87,14 @@
 .addButton:hover {
   background: darkgreen;
 }
+.cardButton {
+  align-items: center;
+  background: green;
+  border-radius: 5px;
+  color: #fff;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
