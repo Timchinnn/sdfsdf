@@ -45,7 +45,6 @@ const ShopManagement = () => {
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{item.title}</h3>
-                  <p>Цена: {item.price}</p>
                 </div>
                 <button>Редактировать</button>
                 <button style={{ background: "red", marginTop: "10px" }}>
@@ -86,7 +85,6 @@ const ShopManagement = () => {
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{item.title}</h3>
-                  <p>Цена: {item.price}</p>
                 </div>
                 <button>Редактировать</button>
                 <button style={{ background: "red", marginTop: "10px" }}>
@@ -112,7 +110,6 @@ const ShopManagement = () => {
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{item.title}</h3>
-                  <p>Цена: {item.price}</p>
                 </div>
                 <button>Редактировать</button>
                 <button style={{ background: "red", marginTop: "10px" }}>
