@@ -1,62 +1,79 @@
 .contents {
-  padding: 20px;
+  background: white;
+  width: 100vw;
+  height: 100vh;
+  color: black;
 }
 .mainContent {
-  background: #fff;
-  border-radius: 8px;
   padding: 20px;
+}
+.content {
   margin-bottom: 20px;
-}
-.cardsList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  margin: 20px 0;
-}
-.cardItem {
+  padding: 20px;
   background: #f5f5f5;
   border-radius: 8px;
-  padding: 15px;
-  text-align: center;
 }
-.cardItemImg {
-  width: 100%;
-  height: 200px;
-  margin-bottom: 10px;
-}
-.cardItemImg img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 4px;
-}
-.cardInfo {
-  margin-bottom: 15px;
-}
-.settings {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-}
-.searchContainer {
-  flex: 1;
-  margin-right: 20px;
-}
-.searchInput {
+.content input[type="text"] {
   width: 100%;
   padding: 8px;
+  margin: 8px 0;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
-.addButton {
-  background: #4caf50;
+.content input[type="file"] {
+  margin: 8px 0;
+}
+.saveButton {
+  width: 30%;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
+  background: green;
+  border-radius: 5px;
+  margin-top: 10px;
   border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
   cursor: pointer;
 }
-.addButton:hover {
-  background: #45a049;
+.shirtsList {
+  margin-top: 20px;
+}
+.shirtsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.shirtItem {
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.shirtItem img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.shirtItem p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+.deleteButton {
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+}
+.deleteButton:hover {
+  background: #cc0000;
 }
