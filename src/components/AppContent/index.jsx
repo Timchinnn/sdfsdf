@@ -36,6 +36,9 @@ import PeoplePage, { routePeople as routePeoplePage } from "pages/PeoplePage";
 import BonusCodeManagement, {
   routeBonusCodeManagement as routeBonusCodeManagementPage,
 } from "pages/BonusCodeManagement";
+import ShopManagement, {
+  routeShopManagement as routeShopManagementPage,
+} from "pages/ShopManagement";
 
 import { useSelector } from "react-redux";
 
@@ -94,6 +97,12 @@ const AppContent = () => {
           />
           <Route exact path={routeTasksPage()} component={TasksPage} />
           <Route exact path={routeSetsPage()} component={SetsPage} />
+          <Route
+            exact
+            path={routeShopManagementPage()}
+            component={ShopManagement}
+          />
+
           <Route exact path={routeBonusPage()} component={BonusPage} />
           <Route exact path={routePeoplePage()} component={PeoplePage} />
           <Redirect

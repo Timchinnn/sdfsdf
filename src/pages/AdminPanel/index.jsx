@@ -3,6 +3,7 @@ import styles from "./AdminPanel.module.css";
 import routeAdmin from "./route";
 import { NavLink } from "react-router-dom";
 import { routeCardManagement } from "pages/CardManagement";
+import { routeShopManagement } from "pages/ShopManagement";
 const AdminPanel = () => {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -43,7 +44,7 @@ const AdminPanel = () => {
           </NavLink>
         </div>
         <div className={styles.mainContent}>
-          <NavLink to="/shop-management">
+          <NavLink to={routeShopManagement()}>
             <div className={styles.content}>
               <p>Добавление/редактирование содержимого магазина</p>
             </div>
