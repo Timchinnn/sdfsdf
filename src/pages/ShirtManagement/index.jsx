@@ -46,13 +46,6 @@ const ShirtManagement = () => {
                 <div className={styles.cardInfo}>
                   <h3>{cardBack.name}</h3>
                 </div>
-                <button>Редактировать</button>
-                <button
-                  style={{ background: "red", marginTop: "10px" }}
-                  onClick={() => handleDelete(cardBack.id)}
-                >
-                  Удалить
-                </button>
               </div>
             ))}
         </div>
