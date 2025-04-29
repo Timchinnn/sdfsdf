@@ -60,3 +60,94 @@
   background: red;
   color: white;
 }
+.contents {
+  background: white;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  color: black;
+}
+.mainContent {
+  padding: 14px;
+  background: #dcdcdc;
+  margin: 10px;
+  border-radius: 5px;
+  overflow-y: auto;
+  padding-right: 0;
+}
+.cardsList {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 16px;
+  padding: 16px 0;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.cardsList::-webkit-scrollbar {
+  display: none;
+}
+.cardItem {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 465px;
+  overflow: hidden;
+  text-align: center;
+  width: 178px;
+}
+.cardItemImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cardItemImg img {
+  height: 284px;
+  object-fit: cover;
+  width: 99%;
+  border-radius: 8px;
+}
+.cardInfo {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.cardItem button {
+  align-items: center;
+  background: green;
+  border-radius: 5px;
+  color: #fff;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  width: 100%;
+}
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.searchContainer {
+  width: 50%;
+}
+.searchInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.addButton {
+  background: green;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
