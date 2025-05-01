@@ -54,7 +54,7 @@
   align-items: center;
   justify-content: center;
   margin-top: 8px;
-  padding: 18px;
+  padding: 0 5px;
 }
 .searchContainer {
   display: flex;
@@ -70,11 +70,11 @@
   border: 1px solid #ccc;
   border-radius: 10px !important;
 }
-.initialAddButton {
+.addButton {
   background: green;
   border-radius: 5px;
   color: #fff;
-  width: 300px;
+  width: 200px;
   height: 150px;
   display: flex;
   flex-direction: column;
@@ -83,19 +83,25 @@
   cursor: pointer;
   margin: 20px 0;
 }
-.initialAddButton:hover {
+.addButton:hover {
   background: darkgreen;
 }
-.cardButton {
+.addCardButton {
   background: green;
+  border: none;
   border-radius: 5px;
   color: #fff;
-  height: 32px;
-  width: 100%;
-  margin-top: 10px;
+  height: 40px;
+  width: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.addCardButton:hover {
+  background: darkgreen;
 }
 .inputContainer {
   margin-top: 20px;

@@ -19,20 +19,16 @@ const ShirtManagement = () => {
   const handleSave = () => {
     console.log("Сохранить рубашку с ценой:", cardCost);
     setIsSelectionVisible(false);
-    // Можно добавить вызов API для сохранения выбранной рубашки
   };
   const handleAddShirt = (shirt) => {
     console.log("Добавлена рубашка:", shirt);
-    // Дополнительная логика добавления рубашки, если необходима
+    // Дополнительная логика, например, добавление рубашки в коллекцию
   };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
         {!isSelectionVisible && (
-          <div
-            className={styles.initialAddButton}
-            onClick={handleAddButtonClick}
-          >
+          <div className={styles.addButton} onClick={handleAddButtonClick}>
             <img src={addimg} alt="Добавить рубашку" />
             <p>Добавить рубашку</p>
           </div>
@@ -65,7 +61,7 @@ const ShirtManagement = () => {
                       <h3>{cb.name}</h3>
                     </div>
                     <button
-                      className={styles.cardButton}
+                      className={styles.addCardButton}
                       onClick={() => handleAddShirt(cb)}
                     >
                       Добавить
