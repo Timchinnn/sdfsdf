@@ -12,7 +12,7 @@ const ShopManagement = () => {
   useEffect(() => {
     const fetchShirts = async () => {
       try {
-        const response = await axios.get("/api/shirts");
+        const response = await axios.get("/shirts");
         setShirts(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке рубашек:", error);
@@ -64,7 +64,7 @@ const ShopManagement = () => {
                 style={{ background: "red" }}
                 onClick={() => {
                   axios
-                    .delete(`/api/shirts/${shirt.id}`)
+                    .delete(`/shirts/${shirt.id}`)
                     .then(() => {
                       setShirts(shirts.filter((s) => s.id !== shirt.id));
                     })
