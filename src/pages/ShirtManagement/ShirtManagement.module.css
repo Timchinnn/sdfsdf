@@ -1,118 +1,125 @@
-.contents {
-  background: #fff;
-  width: 100vw;
-  height: 100vh;
-  color: #333;
-  overflow-y: auto;
-}
 .mainContent {
-  background: #dcdcdc;
-  border-radius: 5px;
-  margin: 10px;
-  padding: 14px;
-  height: calc(100vh - 20px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.cardsList {
   display: flex;
   gap: 16px;
   overflow-x: auto;
-  white-space: nowrap;
-  padding: 16px 0;
-  -ms-overflow-style: none;
+  padding: 16px;
   scrollbar-width: none;
-  width: 100%;
+  white-space: nowrap;
+  align-items: center;
 }
-.cardsList::-webkit-scrollbar {
-  display: none;
+.mainContent img {
+  border-style: none;
+  height: 342px;
+  object-fit: cover;
+}
+.mainContent button {
+  align-items: center;
+  background: green;
+  border-radius: 5px;
+  color: #fff;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  width: 100%;
 }
 .cardItem {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   flex: 0 0 auto;
-  width: 178px;
+  flex-direction: column;
   height: 372px;
   overflow: hidden;
   text-align: center;
+  width: 178px;
+}
+.saveButton {
+  align-items: center;
+  background: green;
+  border-radius: 5px;
+  color: #fff;
+  display: flex;
+  height: 45px;
+  justify-content: center;
+  margin-top: 20px;
+  width: 200px;
+}
+.save {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 20px;
+}
+.contents {
+  background: white;
+  width: 100vw;
+  height: 100vh;
+  color: black;
+  overflow-y: auto;
+}
+.content {
+  background: #dcdcdc;
+  border-radius: 5px;
+  margin: 10px;
+  overflow-y: auto;
+  padding: 14px 0 14px 14px;
+  height: 97%;
+  display: flex;
+}
+.cardItem img {
+  height: 284px;
+  object-fit: cover;
+  width: 99%;
+  border-radius: 8px;
 }
 .cardItemImg {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.cardItemImg img {
-  width: 99%;
-  height: 284px;
-  object-fit: cover;
-  border-radius: 8px;
-}
 .cardInfo {
   background: #fff;
   border-radius: 8px;
+  flex-direction: column;
   min-height: 55px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 8px;
 }
-.searchContainer {
+.whiteBox {
+  background-color: #fff;
+  height: 370px;
+  width: 200px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+.whiteBoxImg {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 169px;
+  text-align: center;
+}
+.searchContainer {
+  align-items: center;
+  display: flex;
+  margin: -5px;
   width: 60%;
-  margin: 10px 0;
 }
 .searchInput {
   flex: 1;
   padding: 8px 12px;
-  font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 10px !important;
+  font-size: 14px;
   margin-bottom: 10px;
 }
-.addButton {
-  background: green;
-  border-radius: 5px;
-  color: #fff;
-  width: 200px;
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin: 20px 0;
-}
-.addButton:hover {
-  background: darkgreen;
-}
-.cardButton {
-  background: green;
-  border-radius: 5px;
-  color: #fff;
-  height: 32px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-}
 .inputContainer {
-  margin-top: 20px;
   display: flex;
+  margin-right: 10px;
 }
 .inputContainer input {
-  width: 265px;
-  padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 10px !important;
-}
-.save {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
+  padding: 10px;
+  width: 265px;
 }
