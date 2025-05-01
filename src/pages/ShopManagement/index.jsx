@@ -53,7 +53,7 @@ const ShopManagement = () => {
             <div key={shirt.id} className={styles.cardItem}>
               <div className={styles.cardItemImg}>
                 <img
-                  src={`https://api.zoomayor.io${shirt.imageUrl}`}
+                  src={`https://api.zoomayor.io${shirt.image_url}`}
                   alt={shirt.name}
                 />
               </div>
