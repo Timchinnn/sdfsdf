@@ -42,7 +42,7 @@ const ShirtManagement = () => {
         imageUrl: selectedShirt.image, // название поля imageUrl выбрано для соответствия данным из ответа API
       };
       // Отправляем POST-запрос с JSON-телом.
-      const response = await axios.post("/api/shirts", payload, {
+      const response = await axios.post("/shirts", payload, {
         headers: { "Content-Type": "application/json" },
       });
       console.log("Рубашка успешно добавлена:", response.data);
