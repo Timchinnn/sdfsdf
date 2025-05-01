@@ -8,6 +8,7 @@ const ShirtManagement = () => {
   const [cardBacks, setCardBacks] = useState([]);
   const [isSelectionVisible, setIsSelectionVisible] = useState(false);
   const [cardCost, setCardCost] = useState("");
+  const [selectedShirts, setSelectedShirts] = useState([]);
   useEffect(() => {
     cardBackService
       .getAllCardBacks()
@@ -17,22 +18,53 @@ const ShirtManagement = () => {
   const handleAddButtonClick = () => setIsSelectionVisible(true);
   const handleCancel = () => setIsSelectionVisible(false);
   const handleSave = () => {
-    console.log("Сохранить рубашку с ценой:", cardCost);
+    console.log("Сохраняем рубашку с ценой:", cardCost);
+    // Здесь можно добавить API-вызов для сохранения выбранной рубашки вместе с ценой
     setIsSelectionVisible(false);
   };
   const handleAddShirt = (shirt) => {
-    console.log("Добавлена рубашка:", shirt);
-    // Дополнительная логика, например, добавление рубашки в коллекцию
+    // Если рубашка уже добавлена, не добавляем снова
+    if (!selectedShirts.find((s) => s.id === shirt.id)) {
+      setSelectedShirts([...selectedShirts, shirt]);
+      console.log("Добавлена рубашка:", shirt);
+    }
   };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
-        {!isSelectionVisible && (
+        {/* Если рубашки еще не выбраны, отображается кнопка "Добавить рубашку" */}
+        {!isSelectionVisible && selectedShirts.length === 0 && (
           <div className={styles.addButton} onClick={handleAddButtonClick}>
             <img src={addimg} alt="Добавить рубашку" />
             <p>Добавить рубашку</p>
           </div>
         )}
+        {/* Если выбраны рубашки, отображаем их список */}
+        {selectedShirts.length > 0 && (
+          <>
+            <h2>Добавленные рубашки</h2>
+            <div className={styles.cardsList}>
+              {selectedShirts.map((shirt) => (
+                <div key={shirt.id} className={styles.cardItem}>
+                  <div className={styles.cardItemImg}>
+                    <img
+                      src={`https://api.zoomayor.io${shirt.image}`}
+                      alt={shirt.name}
+                    />
+                  </div>
+                  <div className={styles.cardInfo}>
+                    <h3>{shirt.name}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className={styles.addButton} onClick={handleAddButtonClick}>
+              <img src={addimg} alt="Добавить рубашку" />
+              <p>Добавить еще рубашку</p>
+            </div>
+          </>
+        )}
+        {/* Блок выбора рубашек */}
         {isSelectionVisible && (
           <>
             <div className={styles.searchContainer}>
