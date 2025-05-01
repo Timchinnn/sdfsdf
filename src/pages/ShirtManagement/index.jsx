@@ -52,7 +52,10 @@ const ShirtManagement = () => {
       setSearchQuery("");
     } catch (error) {
       console.error("Ошибка при добавлении рубашки:", error);
-      alert("Ошибка при добавлении рубашки");
+      alert(
+        error.response?.data?.message ||
+          "Рубашка с таким названием уже существует"
+      );
     }
   };
   return (
