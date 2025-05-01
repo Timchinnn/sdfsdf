@@ -3,6 +3,8 @@ import styles from "./AddEditShopCard.module.css";
 import { useParams, useHistory } from "react-router-dom";
 import addimg from "assets/img/addimg.png";
 import axios from "../../axios-controller";
+import routeAddEditShopCard from "./route";
+
 const AddEditShopCard = () => {
   const { id } = useParams();
   const history = useHistory();
@@ -125,3 +127,4 @@ const AddEditShopCard = () => {
   );
 };
 export default AddEditShopCard;
+export { routeAddEditShopCard };
