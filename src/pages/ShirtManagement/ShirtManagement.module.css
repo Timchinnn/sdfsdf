@@ -54,6 +54,7 @@
   align-items: center;
   justify-content: center;
   margin-top: 8px;
+  padding: 18px;
 }
 .searchContainer {
   display: flex;
@@ -84,6 +85,17 @@
 }
 .addButton:hover {
   background: darkgreen;
+}
+.cardButton {
+  background: green;
+  border-radius: 5px;
+  color: #fff;
+  height: 32px;
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .inputContainer {
   margin-top: 20px;

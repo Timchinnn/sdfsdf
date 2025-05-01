@@ -6,7 +6,7 @@ import addimg from "assets/img/addimg.png";
 const ShirtManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [cardBacks, setCardBacks] = useState([]);
-  const [showList, setShowList] = useState(false);
+  const [isSelectionVisible, setIsSelectionVisible] = useState(false);
   const [cardCost, setCardCost] = useState("");
   useEffect(() => {
     cardBackService
@@ -14,23 +14,27 @@ const ShirtManagement = () => {
       .then((response) => setCardBacks(response.data))
       .catch((error) => console.error(error));
   }, []);
-  const handleAddClick = () => setShowList(true);
-  const handleCancel = () => setShowList(false);
+  const handleAddButtonClick = () => setIsSelectionVisible(true);
+  const handleCancel = () => setIsSelectionVisible(false);
   const handleSave = () => {
     console.log("Сохранить рубашку с ценой:", cardCost);
-    setShowList(false);
-    // Здесь можно добавить вызов API для сохранения
+    setIsSelectionVisible(false);
+    // Реализуйте здесь вызов API, если необходимо
+  };
+  const handleAddShirt = (shirt) => {
+    console.log("Добавлена рубашка:", shirt);
+    // Здесь можно добавить дополнительную логику добавления рубашки
   };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
-        {!showList && (
-          <div className={styles.addButton} onClick={handleAddClick}>
+        {!isSelectionVisible && (
+          <div className={styles.addButton} onClick={handleAddButtonClick}>
             <img src={addimg} alt="Добавить рубашку" />
             <p>Добавить рубашку</p>
           </div>
         )}
-        {showList && (
+        {isSelectionVisible && (
           <>
             <div className={styles.searchContainer}>
               <input
@@ -57,6 +61,12 @@ const ShirtManagement = () => {
                     <div className={styles.cardInfo}>
                       <h3>{cb.name}</h3>
                     </div>
+                    <button
+                      className={styles.cardButton}
+                      onClick={() => handleAddShirt(cb)}
+                    >
+                      Добавить
+                    </button>
                   </div>
                 ))}
             </div>
