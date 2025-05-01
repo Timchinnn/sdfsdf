@@ -14,6 +14,7 @@ const ShopManagement = () => {
       try {
         const response = await axios.get("/shirts");
         setShirts(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке рубашек:", error);
       }
