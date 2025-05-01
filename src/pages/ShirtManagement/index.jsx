@@ -6,34 +6,25 @@ import addimg from "assets/img/addimg.png";
 const ShirtManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [cardBacks, setCardBacks] = useState([]);
-  const [showCards, setShowCards] = useState(false);
+  const [isSelectionVisible, setIsSelectionVisible] = useState(false);
   const [cardCost, setCardCost] = useState("");
   useEffect(() => {
-    const fetchCardBacks = async () => {
-      try {
-        const response = await cardBackService.getAllCardBacks();
-        setCardBacks(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchCardBacks();
+    cardBackService
+      .getAllCardBacks()
+      .then((response) => setCardBacks(response.data))
+      .catch((error) => console.error(error));
   }, []);
-  const handleShowCards = () => {
-    setShowCards(true);
-  };
-  const handleHideCards = () => {
-    setShowCards(false);
-  };
+  const handleAddButton = () => setIsSelectionVisible(true);
+  const handleCancel = () => setIsSelectionVisible(false);
   const handleSave = () => {
     console.log("Сохраняем рубашку с ценой:", cardCost);
-    setShowCards(false);
+    setIsSelectionVisible(false);
   };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
-        {!showCards && (
-          <div className={styles.addButton} onClick={handleShowCards}>
+        {!isSelectionVisible && (
+          <div className={styles.addButton} onClick={handleAddButton}>
             <img
               src={addimg}
               alt="Добавить рубашку"
@@ -42,12 +33,12 @@ const ShirtManagement = () => {
             <p>Добавить рубашку</p>
           </div>
         )}
-        {showCards && (
+        {isSelectionVisible && (
           <>
             <div className={styles.searchContainer}>
               <input
                 type="text"
-                placeholder="Поиск по названию"
+                placeholder="Поиск по рубашкам"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={styles.searchInput}
@@ -55,21 +46,19 @@ const ShirtManagement = () => {
             </div>
             <div className={styles.cardsList}>
               {cardBacks
-                .filter((cardBack) =>
-                  cardBack.name
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase())
+                .filter((cb) =>
+                  cb.name.toLowerCase().includes(searchQuery.toLowerCase())
                 )
-                .map((cardBack) => (
-                  <div key={cardBack.id} className={styles.cardItem}>
+                .map((cb) => (
+                  <div key={cb.id} className={styles.cardItem}>
                     <div className={styles.cardItemImg}>
                       <img
-                        src={`https://api.zoomayor.io${cardBack.image}`}
-                        alt={cardBack.name}
+                        src={`https://api.zoomayor.io${cb.image}`}
+                        alt={cb.name}
                       />
                     </div>
                     <div className={styles.cardInfo}>
-                      <h3>{cardBack.name}</h3>
+                      <h3>{cb.name}</h3>
                     </div>
                   </div>
                 ))}
@@ -83,10 +72,10 @@ const ShirtManagement = () => {
               />
             </div>
             <div className={styles.save}>
-              <button onClick={handleSave} className={styles.addButton}>
+              <button className={styles.addButton} onClick={handleSave}>
                 Сохранить изменения
               </button>
-              <button onClick={handleHideCards} className={styles.cardButton}>
+              <button className={styles.cardButton} onClick={handleCancel}>
                 Отмена
               </button>
             </div>
