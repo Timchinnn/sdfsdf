@@ -8,99 +8,95 @@ const ShirtManagement = () => {
   const [cardBacks, setCardBacks] = useState([]);
   const [isSelectionVisible, setIsSelectionVisible] = useState(false);
   const [cardCost, setCardCost] = useState("");
-  const [selectedShirts, setSelectedShirts] = useState([]);
+  const [selectedShirt, setSelectedShirt] = useState(null);
   useEffect(() => {
     cardBackService
       .getAllCardBacks()
       .then((response) => setCardBacks(response.data))
       .catch((error) => console.error(error));
   }, []);
-  const handleAddButtonClick = () => setIsSelectionVisible(true);
-  const handleCancel = () => setIsSelectionVisible(false);
+  const handleAddButtonClick = () => {
+    setIsSelectionVisible(true);
+    setSelectedShirt(null);
+  };
+  const handleCancel = () => {
+    setIsSelectionVisible(false);
+    setSelectedShirt(null);
+  };
   const handleSave = () => {
-    console.log("Сохраняем рубашку с ценой:", cardCost);
-    // Здесь можно добавить API-вызов для сохранения выбранной рубашки вместе с ценой
+    console.log(
+      "Сохранить рубашку с ценой:",
+      cardCost,
+      "выбранная рубашка:",
+      selectedShirt
+    );
     setIsSelectionVisible(false);
   };
-  const handleAddShirt = (shirt) => {
-    // Если рубашка уже добавлена, не добавляем снова
-    if (!selectedShirts.find((s) => s.id === shirt.id)) {
-      setSelectedShirts([...selectedShirts, shirt]);
-      console.log("Добавлена рубашка:", shirt);
-    }
+  const handleSelectShirt = (shirt) => {
+    setSelectedShirt(shirt);
+    setIsSelectionVisible(false);
   };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
-        {/* Если рубашки еще не выбраны, отображается кнопка "Добавить рубашку" */}
-        {!isSelectionVisible && selectedShirts.length === 0 && (
+        {!isSelectionVisible && !selectedShirt && (
           <div className={styles.addButton} onClick={handleAddButtonClick}>
             <img src={addimg} alt="Добавить рубашку" />
             <p>Добавить рубашку</p>
           </div>
         )}
-        {/* Если выбраны рубашки, отображаем их список */}
-        {selectedShirts.length > 0 && (
+        {(isSelectionVisible || selectedShirt) && (
           <>
-            <h2>Добавленные рубашки</h2>
-            <div className={styles.cardsList}>
-              {selectedShirts.map((shirt) => (
-                <div key={shirt.id} className={styles.cardItem}>
-                  <div className={styles.cardItemImg}>
-                    <img
-                      src={`https://api.zoomayor.io${shirt.image}`}
-                      alt={shirt.name}
-                    />
-                  </div>
-                  <div className={styles.cardInfo}>
-                    <h3>{shirt.name}</h3>
-                  </div>
+            {selectedShirt ? (
+              <div className={styles.cardItem}>
+                <div className={styles.cardItemImg}>
+                  <img
+                    src={`https://api.zoomayor.io${selectedShirt.image}`}
+                    alt={selectedShirt.name}
+                  />
                 </div>
-              ))}
-            </div>
-            <div className={styles.addButton} onClick={handleAddButtonClick}>
-              <img src={addimg} alt="Добавить рубашку" />
-              <p>Добавить еще рубашку</p>
-            </div>
-          </>
-        )}
-        {/* Блок выбора рубашек */}
-        {isSelectionVisible && (
-          <>
-            <div className={styles.searchContainer}>
-              <input
-                type="text"
-                placeholder="Поиск рубашек"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={styles.searchInput}
-              />
-            </div>
-            <div className={styles.cardsList}>
-              {cardBacks
-                .filter((cb) =>
-                  cb.name.toLowerCase().includes(searchQuery.toLowerCase())
-                )
-                .map((cb) => (
-                  <div key={cb.id} className={styles.cardItem}>
-                    <div className={styles.cardItemImg}>
-                      <img
-                        src={`https://api.zoomayor.io${cb.image}`}
-                        alt={cb.name}
-                      />
-                    </div>
-                    <div className={styles.cardInfo}>
-                      <h3>{cb.name}</h3>
-                    </div>
-                    <button
-                      className={styles.addCardButton}
-                      onClick={() => handleAddShirt(cb)}
-                    >
-                      Добавить
-                    </button>
-                  </div>
-                ))}
-            </div>
+                <div className={styles.cardInfo}>
+                  <h3>{selectedShirt.name}</h3>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className={styles.searchContainer}>
+                  <input
+                    type="text"
+                    placeholder="Поиск рубашек"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={styles.searchInput}
+                  />
+                </div>
+                <div className={styles.cardsList}>
+                  {cardBacks
+                    .filter((cb) =>
+                      cb.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    .map((cb) => (
+                      <div key={cb.id} className={styles.cardItem}>
+                        <div className={styles.cardItemImg}>
+                          <img
+                            src={`https://api.zoomayor.io${cb.image}`}
+                            alt={cb.name}
+                          />
+                        </div>
+                        <div className={styles.cardInfo}>
+                          <h3>{cb.name}</h3>
+                        </div>
+                        <button
+                          className={styles.cardButton}
+                          onClick={() => handleSelectShirt(cb)}
+                        >
+                          Добавить
+                        </button>
+                      </div>
+                    ))}
+                </div>
+              </>
+            )}
             <div className={styles.inputContainer}>
               <input
                 type="number"
