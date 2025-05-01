@@ -48,7 +48,7 @@ const ShirtManagement = () => {
       setImageFile(null);
     } catch (error) {
       console.error("Ошибка создания рубашки:", error);
-      alert("Ошибка при создании рубашки");
+      alert("Ошибка при создании рубашкич");
     }
   };
   return (
