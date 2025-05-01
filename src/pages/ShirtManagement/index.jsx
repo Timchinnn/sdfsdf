@@ -87,7 +87,7 @@ const ShirtManagement = () => {
                           <h3>{cb.name}</h3>
                         </div>
                         <button
-                          className={styles.cardButton}
+                          className={styles.addCardButton}
                           onClick={() => handleSelectShirt(cb)}
                         >
                           Добавить
