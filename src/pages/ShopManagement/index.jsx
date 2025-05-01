@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ShopManagement.module.css";
 import routeShopManagement from "./route";
 import { NavLink } from "react-router-dom";
@@ -6,6 +6,19 @@ import { routeShirtManagement } from "pages/ShirtManagement";
 
 const ShopManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [shirts, setShirts] = useState([]);
+
+  useEffect(() => {
+    const fetchShirts = async () => {
+      try {
+        const response = await axios.get("/api/shirts");
+        setShirts(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке рубашек:", error);
+      }
+    };
+    fetchShirts();
+  }, []);
   const [items] = useState([
     {
       id: 1,
@@ -34,26 +47,36 @@ const ShopManagement = () => {
       <div className={styles.mainContent}>
         <h2>Рубашки</h2>
         <div className={styles.cardsList}>
-          {items
-            .filter(
-              (item) =>
-                item.type === "shirt" &&
-                item.title.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-            .map((item) => (
-              <div key={item.id} className={styles.cardItem}>
-                <div className={styles.cardItemImg}>
-                  <img src={item.image} alt={item.title} />
-                </div>
-                <div className={styles.cardInfo}>
-                  <h3>{item.title}</h3>
-                </div>
-                <button>Редактировать</button>
-                <button style={{ background: "red", marginTop: "10px" }}>
-                  Удалить
-                </button>
+          {shirts.map((shirt) => (
+            <div key={shirt.id} className={styles.cardItem}>
+              <div className={styles.cardItemImg}>
+                <img
+                  src={`https://api.zoomayor.io${shirt.imageUrl}`}
+                  alt={shirt.name}
+                />
               </div>
-            ))}
+              <div className={styles.cardInfo}>
+                <h3>{shirt.name}</h3>
+                <p>Цена: {shirt.price}</p>
+              </div>
+              <button
+                style={{ background: "red" }}
+                onClick={() => {
+                  axios
+                    .delete(`/api/shirts/${shirt.id}`)
+                    .then(() => {
+                      setShirts(shirts.filter((s) => s.id !== shirt.id));
+                    })
+                    .catch((error) => {
+                      console.error("Ошибка при удалении рубашки:", error);
+                      alert("Ошибка при удалении рубашки");
+                    });
+                }}
+              >
+                Удалить
+              </button>
+            </div>
+          ))}
         </div>
         <div className={styles.settings}>
           <div className={styles.searchContainer}>
