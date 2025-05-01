@@ -2,7 +2,8 @@ import React from "react";
 
 // libs
 import { Route, Switch, Redirect } from "react-router-dom";
-
+import AddEditShopCard from "pages/AddEditShopCard";
+import routeAddEditShopCard from "pages/AddEditShopCard/route";
 // routePages
 import MainPage, { routeMain as routeMainPage } from "pages/MainPage";
 import CityPage, { routeCity as routeCityPage } from "pages/CityPage";
@@ -64,7 +65,16 @@ const AppContent = () => {
             path="/addEditCityDeck/:id"
             component={AddEditCityDeck}
           />
-
+          <Route
+            path={routeAddEditShopCard()}
+            exact
+            component={AddEditShopCard}
+          />
+          <Route
+            path={routeAddEditShopCard(":id")}
+            exact
+            component={AddEditShopCard}
+          />
           <Route exact path={routeMainPage()} component={MainPage} />
           <Route exact path={routeAddEditDeckPage()} component={AddEditDeck} />
           <Route

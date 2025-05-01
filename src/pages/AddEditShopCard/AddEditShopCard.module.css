@@ -1,0 +1,62 @@
+.contents {
+  background: white;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  color: black;
+}
+.mainContent {
+  padding: 14px;
+  background: #dcdcdc;
+  margin: 10px;
+  border-radius: 5px;
+}
+.content {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+.whiteBox {
+  background: white;
+  height: 370px;
+  width: 200px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.whiteBoxImg {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 169px;
+  text-align: center;
+}
+.inputContainer {
+  display: flex;
+  margin-right: 10px;
+}
+.inputContainer input {
+  border-radius: 10px;
+  padding: 10px;
+  width: 265px;
+  margin-bottom: 15px;
+}
+.title {
+  font-size: 22px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+.saveButton {
+  background: green;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+}
+.saveButton:hover {
+  background: darkgreen;
+}
