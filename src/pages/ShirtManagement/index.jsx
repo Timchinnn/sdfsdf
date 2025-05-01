@@ -6,7 +6,7 @@ import addimg from "assets/img/addimg.png";
 const ShirtManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [cardBacks, setCardBacks] = useState([]);
-  const [showCardList, setShowCardList] = useState(false);
+  const [showCards, setShowCards] = useState(false);
   const [cardCost, setCardCost] = useState("");
   useEffect(() => {
     const fetchCardBacks = async () => {
@@ -19,29 +19,31 @@ const ShirtManagement = () => {
     };
     fetchCardBacks();
   }, []);
-  const handleShowCardList = () => {
-    setShowCardList(true);
+  const handleShowCards = () => {
+    setShowCards(true);
   };
-  const handleHideCardList = () => {
-    setShowCardList(false);
+  const handleHideCards = () => {
+    setShowCards(false);
   };
   const handleSave = () => {
-    console.log("Сохраняем стоимость карты:", cardCost);
-    setShowCardList(false);
+    console.log("Сохраняем рубашку с ценой:", cardCost);
+    setShowCards(false);
   };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
-        <div
-          className={styles.addButton}
-          onClick={handleShowCardList}
-          style={{ cursor: "pointer" }}
-        >
-          <img src={addimg} alt="Добавить рубашку" style={{ height: "64px" }} />
-          <p>Добавить рубашку</p>
-        </div>
-        {showCardList && (
-          <div>
+        {!showCards && (
+          <div className={styles.addButton} onClick={handleShowCards}>
+            <img
+              src={addimg}
+              alt="Добавить рубашку"
+              style={{ height: "64px" }}
+            />
+            <p>Добавить рубашку</p>
+          </div>
+        )}
+        {showCards && (
+          <>
             <div className={styles.searchContainer}>
               <input
                 type="text"
@@ -72,13 +74,10 @@ const ShirtManagement = () => {
                   </div>
                 ))}
             </div>
-            <div
-              className={styles.inputContainer}
-              style={{ marginTop: "20px" }}
-            >
+            <div className={styles.inputContainer}>
               <input
                 type="number"
-                placeholder="Стоимость карты"
+                placeholder="Стоимость рубашки"
                 value={cardCost}
                 onChange={(e) => setCardCost(e.target.value)}
               />
@@ -87,14 +86,11 @@ const ShirtManagement = () => {
               <button onClick={handleSave} className={styles.addButton}>
                 Сохранить изменения
               </button>
-              <button
-                onClick={handleHideCardList}
-                className={styles.cardButton}
-              >
+              <button onClick={handleHideCards} className={styles.cardButton}>
                 Отмена
               </button>
             </div>
-          </div>
+          </>
         )}
       </div>
     </div>
