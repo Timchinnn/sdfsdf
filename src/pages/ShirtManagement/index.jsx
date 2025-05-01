@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ShirtManagement.module.css";
 import { cardBackService } from "services/api";
+import axios from "services/axios-controller";
 import routeShirtManagement from "./route";
 import addimg from "assets/img/addimg.png";
 const ShirtManagement = () => {
@@ -13,7 +14,7 @@ const ShirtManagement = () => {
     cardBackService
       .getAllCardBacks()
       .then((response) => setCardBacks(response.data))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error("Ошибка получения рубашек:", error));
   }, []);
   const handleAddButtonClick = () => {
     setIsSelectionVisible(true);
@@ -23,18 +24,34 @@ const ShirtManagement = () => {
     setIsSelectionVisible(false);
     setSelectedShirt(null);
   };
-  const handleSave = () => {
-    console.log(
-      "Сохранить рубашку с ценой:",
-      cardCost,
-      "выбранная рубашка:",
-      selectedShirt
-    );
-    setIsSelectionVisible(false);
-  };
   const handleSelectShirt = (shirt) => {
     setSelectedShirt(shirt);
     setIsSelectionVisible(false);
+  };
+  const handleSave = async () => {
+    if (!selectedShirt || !cardCost) {
+      alert("Выберите рубашку и заполните цену!");
+      return;
+    }
+    try {
+      // Формируем полезную нагрузку для добавления рубашки в магазин.
+      // Здесь мы передаём название рубашки, стоимость и ссылку на изображение, полученную из существующих рубашек.
+      const payload = {
+        name: selectedShirt.name,
+        price: cardCost,
+        imageUrl: selectedShirt.image, // название поля imageUrl выбрано для соответствия данным из ответа API
+      };
+      // Отправляем POST-запрос с JSON-телом.
+      const response = await axios.post("/api/shirts", payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+      console.log("Рубашка успешно добавлена:", response.data);
+      alert("Рубашка успешно добавлена в магазин");
+      setIsSelectionVisible(false);
+    } catch (error) {
+      console.error("Ошибка при добавлении рубашки:", error);
+      alert("Ошибка при добавлении рубашки");
+    }
   };
   return (
     <div className={styles.contents}>
