@@ -54,7 +54,7 @@
   align-items: center;
   justify-content: center;
   margin-top: 8px;
-  padding: 0 5px;
+  padding: 18px;
 }
 .searchContainer {
   display: flex;
@@ -86,22 +86,16 @@
 .addButton:hover {
   background: darkgreen;
 }
-.addCardButton {
+.cardButton {
   background: green;
-  border: none;
   border-radius: 5px;
   color: #fff;
-  height: 40px;
-  width: 150px;
+  height: 32px;
+  width: 100%;
+  margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-.addCardButton:hover {
-  background: darkgreen;
 }
 .inputContainer {
   margin-top: 20px;
