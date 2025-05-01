@@ -57,7 +57,7 @@ const ShirtManagement = () => {
         {!isFormVisible && (
           <div className={styles.addButton} onClick={handleAddButtonClick}>
             <img src={addimg} alt="Добавить рубашку" />
-            <p>Добавить рубашку</p>
+            <p>Добавить рубашкуу</p>
           </div>
         )}
         {isFormVisible && (
