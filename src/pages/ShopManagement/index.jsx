@@ -3,6 +3,7 @@ import styles from "./ShopManagement.module.css";
 import routeShopManagement from "./route";
 import { NavLink } from "react-router-dom";
 import { routeShirtManagement } from "pages/ShirtManagement";
+import axios from "../../axios-controller";
 
 const ShopManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
