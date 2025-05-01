@@ -34,20 +34,22 @@ const ShirtManagement = () => {
       return;
     }
     try {
-      // Формируем полезную нагрузку для добавления рубашки в магазин.
-      // Здесь мы передаём название рубашки, стоимость и ссылку на изображение, полученную из существующих рубашек.
       const payload = {
         name: selectedShirt.name,
         price: cardCost,
-        imageUrl: selectedShirt.image, // название поля imageUrl выбрано для соответствия данным из ответа API
+        imageUrl: selectedShirt.image,
       };
-      // Отправляем POST-запрос с JSON-телом.
       const response = await axios.post("/shirts", payload, {
         headers: { "Content-Type": "application/json" },
       });
       console.log("Рубашка успешно добавлена:", response.data);
       alert("Рубашка успешно добавлена в магазин");
+
+      // Reset all state variables to initial values
       setIsSelectionVisible(false);
+      setSelectedShirt(null);
+      setCardCost("");
+      setSearchQuery("");
     } catch (error) {
       console.error("Ошибка при добавлении рубашки:", error);
       alert("Ошибка при добавлении рубашки");
