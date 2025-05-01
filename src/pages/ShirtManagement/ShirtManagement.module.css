@@ -70,11 +70,11 @@
   border: 1px solid #ccc;
   border-radius: 10px !important;
 }
-.addButton {
+.initialAddButton {
   background: green;
   border-radius: 5px;
   color: #fff;
-  width: 200px;
+  width: 300px;
   height: 150px;
   display: flex;
   flex-direction: column;
@@ -83,7 +83,7 @@
   cursor: pointer;
   margin: 20px 0;
 }
-.addButton:hover {
+.initialAddButton:hover {
   background: darkgreen;
 }
 .cardButton {
