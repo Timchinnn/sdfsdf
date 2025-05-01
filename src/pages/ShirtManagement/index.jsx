@@ -6,7 +6,7 @@ import addimg from "assets/img/addimg.png";
 const ShirtManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [cardBacks, setCardBacks] = useState([]);
-  const [isSelectionVisible, setIsSelectionVisible] = useState(false);
+  const [showList, setShowList] = useState(false);
   const [cardCost, setCardCost] = useState("");
   useEffect(() => {
     cardBackService
@@ -14,31 +14,28 @@ const ShirtManagement = () => {
       .then((response) => setCardBacks(response.data))
       .catch((error) => console.error(error));
   }, []);
-  const handleAddButton = () => setIsSelectionVisible(true);
-  const handleCancel = () => setIsSelectionVisible(false);
+  const handleAddClick = () => setShowList(true);
+  const handleCancel = () => setShowList(false);
   const handleSave = () => {
-    console.log("Сохраняем рубашку с ценой:", cardCost);
-    setIsSelectionVisible(false);
+    console.log("Сохранить рубашку с ценой:", cardCost);
+    setShowList(false);
+    // Здесь можно добавить вызов API для сохранения
   };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
-        {!isSelectionVisible && (
-          <div className={styles.addButton} onClick={handleAddButton}>
-            <img
-              src={addimg}
-              alt="Добавить рубашку"
-              style={{ height: "64px" }}
-            />
+        {!showList && (
+          <div className={styles.addButton} onClick={handleAddClick}>
+            <img src={addimg} alt="Добавить рубашку" />
             <p>Добавить рубашку</p>
           </div>
         )}
-        {isSelectionVisible && (
+        {showList && (
           <>
             <div className={styles.searchContainer}>
               <input
                 type="text"
-                placeholder="Поиск по рубашкам"
+                placeholder="Поиск рубашек"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={styles.searchInput}
@@ -72,10 +69,10 @@ const ShirtManagement = () => {
               />
             </div>
             <div className={styles.save}>
-              <button className={styles.addButton} onClick={handleSave}>
+              <button className={styles.saveButton} onClick={handleSave}>
                 Сохранить изменения
               </button>
-              <button className={styles.cardButton} onClick={handleCancel}>
+              <button className={styles.cancelButton} onClick={handleCancel}>
                 Отмена
               </button>
             </div>
