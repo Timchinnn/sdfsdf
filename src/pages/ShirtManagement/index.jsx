@@ -29,6 +29,7 @@ const ShirtManagement = () => {
     setIsSelectionVisible(false);
   };
   const handleSave = async () => {
+    console.log(selectedShirt);
     if (!selectedShirt || !cardCost) {
       alert("Выберите рубашку и заполните цену!");
       return;
