@@ -82,7 +82,7 @@ const AddEditShopCard = () => {
       } else {
         await axios.post("/shop-cards", formData);
       }
-      history.push("/shopmanagement");
+      history.push("/shop-management");
     } catch (error) {
       console.error("Error saving shop card1:", error);
     }
