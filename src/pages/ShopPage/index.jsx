@@ -131,32 +131,7 @@ const ShopPage = () => {
     setActivePopupFilter(true);
   };
   const handleBuySet = async (setId) => {
-    try {
-      const tg = window.Telegram.WebApp;
-      if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-        throw new Error("Telegram user data not found");
-      }
-      const telegram_id = tg.initDataUnsafe.user.id;
-
-      // Вызов API для покупки набора
-      const response = await axios.post(`/shop-sets/${setId}/buy`, {
-        telegram_id: telegram_id,
-      });
-      if (response.data.success) {
-        tg.showPopup({
-          title: "Успешно!",
-          message: "Набор карт успешно приобретен",
-          buttons: [{ type: "ok" }],
-        });
-      }
-    } catch (error) {
-      console.error("Error buying set:", error);
-      window.Telegram.WebApp.showPopup({
-        title: "Ошибка",
-        message: "Не удалось купить набор карт. Попробуйте позже.",
-        buttons: [{ type: "ok" }],
-      });
-    }
+    console.log(setId);
   };
   return (
     <section className="shop">
