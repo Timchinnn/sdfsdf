@@ -120,6 +120,19 @@
   margin-bottom: 20px;
   margin-top: 10px;
 }
+.saveButton {
+  align-items: center;
+  background: green;
+  border-radius: 5px;
+  color: #fff;
+  display: flex;
+  height: 45px;
+  justify-content: center;
+  margin-top: 20px;
+  width: 200px;
+  cursor: pointer;
+  border: none;
+}
 .mainContent button {
   align-items: center;
   background: green;
