@@ -187,12 +187,6 @@ const AddEditShopCard = () => {
             )}
           </div>
           <div>
-            <h2 className={styles.title}>Название</h2>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
             <h2 className={styles.title}>Цена</h2>
             <input
               type="text"
