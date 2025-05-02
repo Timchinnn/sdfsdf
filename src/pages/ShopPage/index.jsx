@@ -187,37 +187,41 @@ const ShopPage = () => {
                   </div>
                 </div>
                 <div className="shop-category">
-                  <div className="shop-sets">
+                  <div className="shop-category__item block-style">
                     <h2 className="section-content__title">Наборы карт</h2>
-                    <div className="shop-sets__grid">
+                    <ul className="shop-list f-jcsb">
                       {shopSets.map((set) => (
-                        <div key={set.id} className="shop-set-card">
-                          <div className="shop-set-card__image">
-                            <img
-                              src={
-                                set.image_url
-                                  ? `https://api.zoomayor.io${set.image_url}`
-                                  : DefaultImg
-                              }
-                              alt={set.name}
-                            />
-                          </div>
-                          <div className="shop-set-card__content">
-                            <h3>{set.name}</h3>
-                            <p className="shop-set-card__price">
-                              <img src={CoinIcon} alt="coins" />
+                        <li key={set.id} className="shop-list__item">
+                          <div className="shop-list__card">
+                            <div
+                              className="shop-list__image"
+                              onClick={() => handleBuySet(set.id)}
+                            >
+                              <img
+                                src={
+                                  set.image_url
+                                    ? `https://api.zoomayor.io${set.image_url}`
+                                    : DefaultImg
+                                }
+                                alt={set.name}
+                                className="shop-card__Img"
+                              />
+                            </div>
+                            <h3 className="shop-list__title">{set.name}</h3>
+                            <div className="shop-list__price f-center">
+                              <img src={CoinIcon} alt="" />
                               {set.price}
-                            </p>
+                            </div>
+                            <button
+                              onClick={() => handleBuySet(set.id)}
+                              className="shop-list__button"
+                            >
+                              Купить
+                            </button>
                           </div>
-                          <button
-                            onClick={() => handleBuySet(set.id)}
-                            className="shop-set-card__button"
-                          >
-                            Купить
-                          </button>
-                        </div>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
                   <div className="shop-category__item block-style">
                     <h2 className="section-content__title">
