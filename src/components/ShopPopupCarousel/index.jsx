@@ -67,6 +67,7 @@ const ShopPopupCarousel = (props) => {
           <MainCarouselSet
             getActiveSlide={5}
             handleOpenPopup={handleOpenPopup}
+            selectedSet={props.selectedSet}
           />
           {/* <img
               src={

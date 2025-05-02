@@ -382,6 +382,7 @@ const ShopPage = () => {
           active={activePopupCarousel}
           setActivePopup={setActivePopupCarousel}
           handleClosePopup={handleClosePopupCarousel}
+          selectedSet={selectedId}
         />
       )}
       <MobileNav />
