@@ -13,7 +13,7 @@ import ReactFlipCard from "reactjs-flip-card";
 // import { routeSets } from "pages/SetsPage";
 // import { routeBonus } from "pages/BonusPage";
 // import SettingsPopup from "components/SettingsPopup";
-// import { peopleService } from "services/api";
+import { peopleService } from "services/api";
 import { useSelector } from "react-redux";
 import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
@@ -22,7 +22,6 @@ import Style2CardBack from "assets/img/card2.png";
 import DefaultImg2 from "assets/img/42106291.png";
 import DefaultImg3 from "assets/img/4210629.png";
 import "./styles.scss";
-import axios from "../../axios-controller";
 
 // Отсутствует определение cardBackStyles
 const cardBackStyles = {
@@ -36,8 +35,7 @@ const data = [
   { id: 2, bgColor: "#7952B3", title: "Slide 2" },
   { id: 3, bgColor: "#1597BB", title: "Slide 3" },
 ];
-const MainCarouselSet = (props) => {
-  const { getActiveSlide, handleOpenPopup, setId } = props;
+const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
   const cardBackStyle = useSelector((state) => state.cardBack);
   console.log(cardBackStyle);
 
@@ -103,22 +101,16 @@ const MainCarouselSet = (props) => {
   const [selectedPhotos, setSelectedPhotos] = useState({});
 
   useEffect(() => {
-    const fetchSetCards = async () => {
+    const fetchPhotos = async () => {
       try {
-        if (setId) {
-          // Проверяем наличие setId
-          const response = await axios.get(`/shop-sets/${setId}/cards`);
-          setPhotos(response.data);
-          console.log("Fetched cards:", response.data);
-        } else {
-          console.log("No setId provided");
-        }
+        const policeData = await peopleService.getPolicePhotos();
+        setPhotos(policeData);
       } catch (error) {
-        console.error("Error fetching set cards:", error);
+        console.error(error);
       }
     };
-    fetchSetCards();
-  }, [setId]);
+    fetchPhotos();
+  }, []);
   useEffect(() => {
     if (photos.length > 0) {
       const newSelectedPhotos = data.reduce((acc, item) => {
