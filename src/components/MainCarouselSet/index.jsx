@@ -112,6 +112,7 @@ const MainCarouselSet = (props) => {
           // Получаем карты набора через API
           const response = await axios.get(`/shop-sets/${setId}/cards`);
           setPhotos(response.data);
+          console.log(response.data);
         }
       } catch (error) {
         console.error("Error fetching set cards:", error);
