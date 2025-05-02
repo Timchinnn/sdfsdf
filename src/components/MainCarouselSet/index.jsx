@@ -53,7 +53,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
   };
 
   // const prevSlide = () => {
-  //   setActiveSlide((prev) => (prev - 1 + data.length) % data.length);
+  //   setActiveSlide((prev) => (prev - 1 + data.lesangth) % data.length);
   // };
 
   const getStyles = (index) => {
