@@ -206,9 +206,14 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
                     frontComponent={
                       <div className="main-slider__image">
                         <img
-                          src={`${
-                            cardBackStyles[cardBackStyle || "default"].image
-                          }`}
+                          src={
+                            cardBackStyle
+                              ? cardBackStyle.startsWith("/img")
+                                ? `https://api.zoomayor.io${cardBackStyle}`
+                                : cardBackStyles[cardBackStyle]?.image ||
+                                  cardBackStyles.default.image
+                              : cardBackStyles.default.image
+                          }
                           alt=""
                           style={{
                             "@media (max-width: 529px)": {
