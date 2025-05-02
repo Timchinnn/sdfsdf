@@ -59,6 +59,11 @@ const AddEditShopSet = () => {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
+
+      // Convert cardsInSet Set to Array and append to formData
+      const cardIdsArray = Array.from(cardsInSet);
+      formData.append("cardIds", JSON.stringify(cardIdsArray));
+
       if (id) {
         await axios.put(`/shop-sets/${id}`, formData);
       } else {
