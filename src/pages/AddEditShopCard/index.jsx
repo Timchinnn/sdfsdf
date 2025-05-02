@@ -107,15 +107,17 @@ const AddEditShopCard = () => {
                     </button>
                   </div>
                 ))}
-              <div
-                className={styles.whiteBox}
-                onClick={() => setShowAddCards(!showAddCards)}
-              >
-                <div className={styles.whiteBoxImg}>
-                  <img src={addimg} alt="#" style={{ height: "64px" }} />
-                  <p>Добавьте карту</p>
+              {cards.filter((card) => cardsInSet.has(card.id)).length === 0 && (
+                <div
+                  className={styles.whiteBox}
+                  onClick={() => setShowAddCards(!showAddCards)}
+                >
+                  <div className={styles.whiteBoxImg}>
+                    <img src={addimg} alt="#" style={{ height: "64px" }} />
+                    <p>Добавьте карту</p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             {showAddCards && (
               <div>
