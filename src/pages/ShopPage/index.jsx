@@ -9,6 +9,8 @@ import { peopleService, shopSetService } from "services/api";
 import MobileNav from "components/MobileNav";
 import ShopPopup from "components/ShopPopup";
 import ShopPopupCarousel from "components/ShopPopupCarousel";
+import axios from "../../axios-controller";
+
 const ShopPage = () => {
   // Получаем telegram id пользователя из Telegram WebApp, если он существует
   const tgUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "";
