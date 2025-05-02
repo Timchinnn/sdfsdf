@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import styles from "./ShopManagement.module.css";
 import routeShopManagement from "./route";
 import { NavLink } from "react-router-dom";
+import DefaultImg from "assets/img/default-card.png";
+const cardBackStyles = {
+  default: { image: DefaultImg },
+};
 import { routeShirtManagement } from "pages/ShirtManagement";
 import { routeAddEditShopCard } from "pages/AddEditShopCard";
 import { routeAddEditShopSet } from "pages/AddEditShopSet";
 import axios from "../../axios-controller";
 
-import { useSelector } from "react-redux";
-import { cardBackStyles } from "../../constants";
 const ShopManagement = () => {
-  const cardBackStyle = useSelector((state) => state.cardBack);
   const [searchQuery, setSearchQuery] = useState("");
   const [shirts, setShirts] = useState([]);
   const [shopCards, setShopCards] = useState([]);
@@ -188,10 +189,7 @@ const ShopManagement = () => {
             .map((set) => (
               <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
-                  <img
-                    src={cardBackStyles[cardBackStyle || "default"].image}
-                    alt={set.name}
-                  />
+                  <img src={cardBackStyles.default.image} alt={set.name} />
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{set.name}</h3>
