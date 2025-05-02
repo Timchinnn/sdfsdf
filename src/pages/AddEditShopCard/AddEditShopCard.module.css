@@ -16,11 +16,14 @@
   background: #dcdcdc;
   margin: 10px;
   border-radius: 5px;
+  height: 97%;
 }
 .content {
   display: flex;
   gap: 20px;
   padding: 20px;
+  height: 44vh;
+  padding-top: 0;
 }
 .cardItem {
   display: flex;
