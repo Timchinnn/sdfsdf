@@ -18,7 +18,7 @@ const ShopManagement = () => {
         const response = await axios.get("/shop-sets");
         setShopSets(response.data);
       } catch (error) {
-        console.error("Ошибка при загрузке наборов:", error);
+        console.error("Ошибка при загрузке наборов1:", error);
       }
     };
     fetchShopSets();
