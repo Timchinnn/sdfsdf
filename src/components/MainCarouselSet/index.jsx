@@ -36,7 +36,8 @@ const data = [
   { id: 2, bgColor: "#7952B3", title: "Slide 2" },
   { id: 3, bgColor: "#1597BB", title: "Slide 3" },
 ];
-const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, setId }) => {
+const MainCarouselSet = (props) => {
+  const { getActiveSlide, handleOpenPopup, setId } = props;
   const cardBackStyle = useSelector((state) => state.cardBack);
   console.log(cardBackStyle);
 
