@@ -97,8 +97,8 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
     }
   };
 
-  const [photos, setPhotos] = useState([]);
-  const [selectedPhotos, setSelectedPhotos] = useState({});
+  // const [photos, setPhotos] = useState([]);
+  // const [selectedPhotos, setSelectedPhotos] = useState({});
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -111,15 +111,22 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
     };
     fetchPhotos();
   }, []);
+  const [photos, setPhotos] = useState([]);
+  const [selectedPhotos, setSelectedPhotos] = useState({});
   useEffect(() => {
-    if (photos.length > 0) {
+    if (props.selectedId && props.selectedId.cards) {
+      setPhotos(props.selectedId.cards);
       const newSelectedPhotos = data.reduce((acc, item) => {
-        acc[item.id] = photos[Math.floor(Math.random() * photos.length)];
+        const randomCard =
+          props.selectedId.cards[
+            Math.floor(Math.random() * props.selectedId.cards.length)
+          ];
+        acc[item.id] = randomCard;
         return acc;
       }, {});
       setSelectedPhotos(newSelectedPhotos);
     }
-  }, [photos]);
+  }, [props.selectedId]);
   const handleImageClick = (index) => {
     setActiveIndex(index === activeIndex ? null : index);
     // console.log(selectedPhotos[index].title);
