@@ -13,7 +13,7 @@ const ShopManagement = () => {
   useEffect(() => {
     const fetchShopCards = async () => {
       try {
-        const response = await axios.get("/api/shop-cards");
+        const response = await axios.get("/shop-cards");
         setShopCards(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке карт:", error);
