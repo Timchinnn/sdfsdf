@@ -83,7 +83,7 @@ const AddEditShopCard = () => {
       <div className={styles.mainContent}>
         <div className={styles.content}>
           <div>
-            <h3>Карты в наборе:</h3>
+            <h3>Карта для добавления в магазин:</h3>
             <div className={styles.mainContent}>
               {cards
                 .filter((card) => cardsInSet.has(card.id))
