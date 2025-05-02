@@ -226,6 +226,15 @@ export const peopleService = {
     }
   },
 };
+export const shopSetService = {
+  getAllShopSets: () => axios.get("/shop-sets"),
+  getShopSetCards: (setId) => axios.get(`/shop-sets/${setId}/cards`),
+  createShopSet: (formData) =>
+    axios.post("/shop-sets", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  deleteShopSet: (id) => axios.delete(`/shop-sets/${id}`),
+};
 export const bonusCodeService = {
   getAllBonusCodes: () => axios.get("/bonus-codes"),
   createBonusCode: (payload) => axios.post("/bonus-codes", payload),

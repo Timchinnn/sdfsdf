@@ -5,7 +5,7 @@ import DefaultImg from "assets/img/default-img.png";
 import MoneyImg from "assets/img/money.png";
 import EnergytImg from "assets/img/energy.png";
 import CoinIcon from "assets/img/coin-icon.svg";
-import { peopleService } from "services/api";
+import { peopleService, shopSetService } from "services/api";
 import MobileNav from "components/MobileNav";
 import ShopPopup from "components/ShopPopup";
 import ShopPopupCarousel from "components/ShopPopupCarousel";
@@ -23,6 +23,18 @@ const ShopPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [items, setItems] = useState([]); // оригинальный массив товаров
   const [filteredItems, setFilteredItems] = useState([]);
+  const [shopSets, setShopSets] = useState([]);
+  useEffect(() => {
+    const fetchShopSets = async () => {
+      try {
+        const response = await shopSetService.getAllShopSets();
+        setShopSets(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке наборов:", error);
+      }
+    };
+    fetchShopSets();
+  }, []);
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
@@ -172,6 +184,38 @@ const ShopPage = () => {
                   </div>
                 </div>
                 <div className="shop-category">
+                  <div className="shop-sets">
+                    <h2>Наборы карт</h2>
+                    <div className="shop-sets__grid">
+                      {shopSets.map((set) => (
+                        <div key={set.id} className="shop-set-card">
+                          <div className="shop-set-card__image">
+                            <img
+                              src={
+                                set.image_url
+                                  ? `https://api.zoomayor.io${set.image_url}`
+                                  : DefaultImg
+                              }
+                              alt={set.name}
+                            />
+                          </div>
+                          <div className="shop-set-card__content">
+                            <h3>{set.name}</h3>
+                            <p className="shop-set-card__price">
+                              <img src={CoinIcon} alt="coins" />
+                              {set.price}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => handleBuySet(set.id)}
+                            className="shop-set-card__button"
+                          >
+                            Купить
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                   <div className="shop-category__item block-style">
                     <h2 className="section-content__title">
                       Культурные объекты
