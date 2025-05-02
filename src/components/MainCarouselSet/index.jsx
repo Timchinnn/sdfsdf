@@ -129,7 +129,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
   }, [props.selectedId]);
   const handleImageClick = (index) => {
     setActiveIndex(index === activeIndex ? null : index);
-    // console.log(selectedPhotos[index].title);
+    // console.log(selectedPhotos[index].titleы);
     const selectedCard = selectedPhotos[data[index].id];
     handleOpenPopup(selectedCard);
   };
