@@ -36,7 +36,7 @@ const ShopManagement = () => {
   const [items] = useState([
     {
       id: 1,
-      title: "Классическая рубашка",
+      title: "Классическая рубашка1",
       price: 100,
       type: "shirt",
       image: "/img/shirt1.jpg",
