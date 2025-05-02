@@ -188,7 +188,7 @@ const ShopPage = () => {
                 </div>
                 <div className="shop-category">
                   <div className="shop-sets">
-                    <h2>Наборы карт</h2>
+                    <h2 className="section-content__title">Наборы карт</h2>
                     <div className="shop-sets__grid">
                       {shopSets.map((set) => (
                         <div key={set.id} className="shop-set-card">
