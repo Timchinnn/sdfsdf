@@ -6,7 +6,13 @@
   color: black;
 }
 .mainContent {
-  padding: 14px;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 16px;
+  scrollbar-width: none;
+  white-space: nowrap;
+  align-items: center;
   background: #dcdcdc;
   margin: 10px;
   border-radius: 5px;
@@ -16,8 +22,37 @@
   gap: 20px;
   padding: 20px;
 }
+.cardItem {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 372px;
+  overflow: hidden;
+  text-align: center;
+  width: 178px;
+}
+.cardItemImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cardItemImg img {
+  height: 284px;
+  object-fit: cover;
+  width: 99%;
+  border-radius: 8px;
+}
+.cardInfo {
+  background: #fff;
+  border-radius: 8px;
+  flex-direction: column;
+  min-height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .whiteBox {
-  background: white;
+  background-color: white;
   height: 370px;
   width: 200px;
   border-radius: 8px;
@@ -32,15 +67,27 @@
   width: 169px;
   text-align: center;
 }
-.inputContainer {
+.searchContainer {
+  align-items: center;
   display: flex;
-  margin-right: 10px;
+  margin: -5px;
+  width: 60%;
 }
-.inputContainer input {
-  border-radius: 10px;
-  padding: 10px;
-  width: 265px;
-  margin-bottom: 15px;
+.searchInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px !important;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.arrow {
+  height: 64px !important;
+}
+@media (max-width: 999px) {
+  .arrow {
+    height: 25px !important;
+  }
 }
 .title {
   font-size: 22px;

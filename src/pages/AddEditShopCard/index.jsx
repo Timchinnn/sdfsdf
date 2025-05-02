@@ -19,6 +19,7 @@ const AddEditShopCard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
+  const [cardsInSet, setCardsInSet] = useState(new Set());
   useEffect(() => {
     if (id) {
       const fetchCard = async () => {
@@ -48,13 +49,16 @@ const AddEditShopCard = () => {
     };
     fetchCards();
   }, []);
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedImage(file);
-      const previewUrl = URL.createObjectURL(file);
-      setImagePreview(previewUrl);
-    }
+  const handleSelectCard = (card) => {
+    setName(card.title);
+    setImagePreview(`https://api.zoomayor.io${card.image}`);
+    setShowAddCards(false);
+    setCardsInSet(new Set([...cardsInSet, card.id]));
+  };
+  const handleRemoveCard = (cardId) => {
+    const newCardsInSet = new Set(cardsInSet);
+    newCardsInSet.delete(cardId);
+    setCardsInSet(newCardsInSet);
   };
   const handleSubmit = async () => {
     try {
@@ -74,45 +78,69 @@ const AddEditShopCard = () => {
       console.error("Error saving card:", error);
     }
   };
-  const handleSelectCard = (card) => {
-    setName(card.title);
-    setImagePreview(`https://api.zoomayor.io${card.image}`);
-    setShowAddCards(false);
-  };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
         <div className={styles.content}>
           <div>
-            {imagePreview ? (
-              <div className={styles.imagePreview}>
-                <div
-                  onClick={() => setShowAddCards(!showAddCards)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    style={{ maxWidth: "265px", borderRadius: "8px" }}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className={styles.uploadButton}>
-                <div
-                  className={styles.whiteBox}
-                  onClick={() => setShowAddCards(!showAddCards)}
-                >
-                  <div className={styles.whiteBoxImg}>
-                    <img src={addimg} alt="#" />
-                    <p>Добавьте изображение</p>
+            <h3>Карты в наборе:</h3>
+            <div className={styles.mainContent}>
+              <img
+                src={left}
+                className={styles.arrow}
+                onClick={() => {
+                  currentSetIndex > 0 &&
+                    setCurrentSetIndex(currentSetIndex - 1);
+                }}
+                alt="Previous"
+              />
+              {cards
+                .filter((card) => cardsInSet.has(card.id))
+                .slice(currentSetIndex, currentSetIndex + 3)
+                .map((card) => (
+                  <div key={card.id} className={styles.cardItem}>
+                    <div className={styles.cardItemImg}>
+                      <img
+                        src={`https://api.zoomayor.io${card.image}`}
+                        alt={card.title}
+                      />
+                    </div>
+                    <div className={styles.cardInfo}>
+                      <h3>{card.title}</h3>
+                    </div>
+                    <button
+                      onClick={() => handleRemoveCard(card.id)}
+                      style={{ background: "red" }}
+                    >
+                      Удалить
+                    </button>
                   </div>
+                ))}
+              <div
+                className={styles.whiteBox}
+                onClick={() => setShowAddCards(!showAddCards)}
+              >
+                <div className={styles.whiteBoxImg}>
+                  <img src={addimg} alt="#" style={{ height: "64px" }} />
+                  <p>Добавьте карту</p>
                 </div>
               </div>
-            )}
+              <img
+                src={right}
+                className={styles.arrow}
+                onClick={() => {
+                  const filteredCards = cards.filter((card) =>
+                    cardsInSet.has(card.id)
+                  );
+                  currentSetIndex < filteredCards.length - 3 &&
+                    setCurrentSetIndex(currentSetIndex + 1);
+                }}
+                alt="Next"
+              />
+            </div>
             {showAddCards && (
               <div>
-                <h3>Выберите карту:</h3>
+                <h3>Добавить карты:</h3>
                 <div className={styles.mainContent}>
                   <img
                     src={left}
@@ -124,10 +152,12 @@ const AddEditShopCard = () => {
                     alt="Previous"
                   />
                   {cards
-                    .filter((card) =>
-                      card.title
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase())
+                    .filter(
+                      (card) =>
+                        !cardsInSet.has(card.id) &&
+                        card.title
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase())
                     )
                     .slice(currentAvailableIndex, currentAvailableIndex + 3)
                     .map((card) => (
@@ -150,10 +180,12 @@ const AddEditShopCard = () => {
                     src={right}
                     className={styles.arrow}
                     onClick={() => {
-                      const filteredCards = cards.filter((card) =>
-                        card.title
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase())
+                      const filteredCards = cards.filter(
+                        (card) =>
+                          !cardsInSet.has(card.id) &&
+                          card.title
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase())
                       );
                       currentAvailableIndex < filteredCards.length - 3 &&
                         setCurrentAvailableIndex(currentAvailableIndex + 1);
@@ -173,24 +205,22 @@ const AddEditShopCard = () => {
               </div>
             )}
           </div>
-          <div className={styles.inputContainer}>
-            <div>
-              <h2 className={styles.title}>Название</h2>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <h2 className={styles.title}>Цена</h2>
-              <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-              <button className={styles.saveButton} onClick={handleSubmit}>
-                Сохранить
-              </button>
-            </div>
+          <div>
+            <h2 className={styles.title}>Название</h2>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <h2 className={styles.title}>Цена</h2>
+            <input
+              type="text"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            <button className={styles.saveButton} onClick={handleSubmit}>
+              Сохранить
+            </button>
           </div>
         </div>
       </div>
