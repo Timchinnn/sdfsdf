@@ -52,6 +52,7 @@ const AddEditShopCard = () => {
   const handleSelectCard = (card) => {
     setName(card.title);
     setImagePreview(`https://api.zoomayor.io${card.image}`);
+    setSelectedImage(card.image); // Добавляем установку selectedImage
     setShowAddCards(false);
     setCardsInSet(new Set([...cardsInSet, card.id]));
   };
