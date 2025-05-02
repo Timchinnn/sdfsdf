@@ -11,6 +11,18 @@ const ShopManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [shirts, setShirts] = useState([]);
   const [shopCards, setShopCards] = useState([]);
+  const [shopSets, setShopSets] = useState([]);
+  useEffect(() => {
+    const fetchShopSets = async () => {
+      try {
+        const response = await axios.get("/shop-sets");
+        setShopSets(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке наборов:", error);
+      }
+    };
+    fetchShopSets();
+  }, []);
   useEffect(() => {
     const fetchShopCards = async () => {
       try {
@@ -166,22 +178,37 @@ const ShopManagement = () => {
       <div className={styles.mainContent}>
         <h2>Наборы карт</h2>
         <div className={styles.cardsList}>
-          {items
-            .filter(
-              (item) =>
-                item.type === "set" &&
-                item.title.toLowerCase().includes(searchQuery.toLowerCase())
+          {shopSets
+            .filter((set) =>
+              set.name.toLowerCase().includes(searchQuery.toLowerCase())
             )
-            .map((item) => (
-              <div key={item.id} className={styles.cardItem}>
+            .map((set) => (
+              <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
-                  <img src={item.image} alt={item.title} />
+                  <img
+                    src={`https://api.zoomayor.io${set.image_url}`}
+                    alt={set.name}
+                  />
                 </div>
                 <div className={styles.cardInfo}>
-                  <h3>{item.title}</h3>
+                  <h3>{set.name}</h3>
+                  <p>Цена: {set.price}</p>
                 </div>
                 <button>Редактировать</button>
-                <button style={{ background: "red", marginTop: "10px" }}>
+                <button
+                  style={{ background: "red", marginTop: "10px" }}
+                  onClick={() => {
+                    axios
+                      .delete(`/shop-sets/${set.id}`)
+                      .then(() => {
+                        setShopSets(shopSets.filter((s) => s.id !== set.id));
+                      })
+                      .catch((error) => {
+                        console.error("Ошибка при удалении набора:", error);
+                        alert("Ошибка при удалении набора");
+                      });
+                  }}
+                >
                   Удалить
                 </button>
               </div>
