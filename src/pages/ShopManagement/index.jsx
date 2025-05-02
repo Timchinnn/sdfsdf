@@ -7,7 +7,10 @@ import { routeAddEditShopCard } from "pages/AddEditShopCard";
 import { routeAddEditShopSet } from "pages/AddEditShopSet";
 import axios from "../../axios-controller";
 
+import { useSelector } from "react-redux";
+import { cardBackStyles } from "../../constants";
 const ShopManagement = () => {
+  const cardBackStyle = useSelector((state) => state.cardBack);
   const [searchQuery, setSearchQuery] = useState("");
   const [shirts, setShirts] = useState([]);
   const [shopCards, setShopCards] = useState([]);
@@ -186,7 +189,7 @@ const ShopManagement = () => {
               <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
                   <img
-                    src={`https://api.zoomayor.io${set.image_url}`}
+                    src={cardBackStyles[cardBackStyle || "default"].image}
                     alt={set.name}
                   />
                 </div>
