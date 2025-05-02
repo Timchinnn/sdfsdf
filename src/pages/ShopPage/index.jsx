@@ -10,8 +10,10 @@ import MobileNav from "components/MobileNav";
 import ShopPopup from "components/ShopPopup";
 import ShopPopupCarousel from "components/ShopPopupCarousel";
 import axios from "../../axios-controller";
+import { useSelector } from "react-redux";
 
 const ShopPage = () => {
+  const cardBackStyle = useSelector((state) => state.cardBack);
   // Получаем telegram id пользователя из Telegram WebApp, если он существует
   const tgUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "";
   // Флаг для специальных пользователей (7241281378 и 467518658)
@@ -224,8 +226,8 @@ const ShopPage = () => {
                             >
                               <img
                                 src={
-                                  set.image_url
-                                    ? `https://api.zoomayor.io${set.image_url}`
+                                  cardBackStyle
+                                    ? `https://api.zoomayor.io${cardBackStyle}`
                                     : DefaultImg
                                 }
                                 alt={set.name}
