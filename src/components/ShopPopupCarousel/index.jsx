@@ -59,7 +59,7 @@ const ShopPopupCarousel = (props) => {
         <div className="shop-popup__inner" style={{ overflowX: "hidden" }}>
           {/* <div className="shop-popup__image"> */}
           <MainCarouselSet
-            selectedId={selectedId}
+            getActiveSlide={5}
             handleOpenPopup={handleOpenPopup}
           />
           {/* <img
