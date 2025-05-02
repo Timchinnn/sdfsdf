@@ -3,13 +3,13 @@ import styles from "./ShopManagement.module.css";
 import routeShopManagement from "./route";
 import { NavLink } from "react-router-dom";
 import DefaultImg from "assets/img/default-card.png";
-const cardBackStyles = {
-  default: { image: DefaultImg },
-};
 import { routeShirtManagement } from "pages/ShirtManagement";
 import { routeAddEditShopCard } from "pages/AddEditShopCard";
 import { routeAddEditShopSet } from "pages/AddEditShopSet";
 import axios from "../../axios-controller";
+const cardBackStyles = {
+  default: { image: DefaultImg },
+};
 
 const ShopManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
