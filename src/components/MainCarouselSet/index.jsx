@@ -30,27 +30,22 @@ const cardBackStyles = {
   style2: { image: Style2CardBack },
 };
 // import ProdImg from "assets/img/prod-img.png";
-const data = [
-  { id: 1, bgColor: "#F54748", title: "Slide 1" },
-  { id: 2, bgColor: "#7952B3", title: "Slide 2" },
-  { id: 3, bgColor: "#1597BB", title: "Slide 3" },
-];
 const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
   const cardBackStyle = useSelector((state) => state.cardBack);
-  console.log("Selected Set:", selectedSet);
-  console.log(cardBackStyle);
-
-  const [openedCards] = useState({});
-
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
-
+  const [cards, setCards] = useState([]);
+  // Загружаем карты из выбранного набора
+  useEffect(() => {
+    if (selectedSet && selectedSet.cards) {
+      setCards(selectedSet.cards);
+    }
+  }, [selectedSet]);
   const prevSlide = () => {
-    setActiveSlide((prev) => (prev - 1 + data.length) % data.length);
+    setActiveSlide((prev) => (prev - 1 + cards.length) % cards.length);
   };
-
   const nextSlide = () => {
-    setActiveSlide((prev) => (prev + 1) % data.length);
+    setActiveSlide((prev) => (prev + 1) % cards.length);
   };
 
   // const prevSlide = () => {
@@ -186,12 +181,12 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
             />
           </div>
           <div className="slideC">
-            {data.map((item, i) => (
-              <React.Fragment key={item.i}>
+            {cards.map((item, i) => (
+              <React.Fragment key={item.id}>
                 <div
-                  className={`slide ${
-                    activeSlide === item.id - 1 ? "active" : ""
-                  } ${activeIndex === i ? "open" : ""}`}
+                  className={`slide ${activeSlide === i ? "active" : ""} ${
+                    activeIndex === i ? "open" : ""
+                  }`}
                   style={{
                     ...getStyles(i),
                     "@media (max-width: 529px)": {
@@ -229,11 +224,8 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
                     backComponent={
                       <div className="main-slider__image">
                         <img
-                          src={`${
-                            openedCards[i]?.image ||
-                            selectedPhotos[item.id]?.image
-                          }`}
-                          alt={selectedPhotos[item.id]?.title || ""}
+                          src={`https://api.zoomayor.io${item.image}`}
+                          alt={item.title || ""}
                           style={{
                             "@media (max-width: 529px)": {
                               width: "100%",
