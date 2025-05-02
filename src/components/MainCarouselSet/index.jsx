@@ -107,6 +107,7 @@ const MainCarouselSet = (props) => {
       try {
         // Получаем ID набора из параметров URL или props
         const setId = props.setId;
+        console.log(setId);
 
         if (setId) {
           // Получаем карты набора через API
