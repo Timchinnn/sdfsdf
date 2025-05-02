@@ -4,7 +4,9 @@ import { useParams, useHistory } from "react-router-dom";
 import addimg from "assets/img/addimg.png";
 import axios from "../../axios-controller";
 import routeAddEditShopCard from "./route";
-
+import { cardsService } from "services/api";
+import left from "assets/img/left.png";
+import right from "assets/img/right.png";
 const AddEditShopCard = () => {
   const { id } = useParams();
   const history = useHistory();
@@ -12,6 +14,11 @@ const AddEditShopCard = () => {
   const [price, setPrice] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [cards, setCards] = useState([]);
+  const [showAddCards, setShowAddCards] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
+  const [currentSetIndex, setCurrentSetIndex] = useState(0);
   useEffect(() => {
     if (id) {
       const fetchCard = async () => {
@@ -30,6 +37,17 @@ const AddEditShopCard = () => {
       fetchCard();
     }
   }, [id]);
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const response = await cardsService.getAllCards();
+        setCards(response.data);
+      } catch (error) {
+        console.error("Error fetching cards:", error);
+      }
+    };
+    fetchCards();
+  }, []);
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -51,11 +69,15 @@ const AddEditShopCard = () => {
       } else {
         await axios.post("/cards", formData);
       }
-
       history.push("/shopmanagement");
     } catch (error) {
       console.error("Error saving card:", error);
     }
+  };
+  const handleSelectCard = (card) => {
+    setName(card.title);
+    setImagePreview(`https://api.zoomayor.io${card.image}`);
+    setShowAddCards(false);
   };
   return (
     <div className={styles.contents}>
@@ -65,7 +87,7 @@ const AddEditShopCard = () => {
             {imagePreview ? (
               <div className={styles.imagePreview}>
                 <div
-                  onClick={() => document.getElementById("fileInput").click()}
+                  onClick={() => setShowAddCards(!showAddCards)}
                   style={{ cursor: "pointer" }}
                 >
                   <img
@@ -74,31 +96,80 @@ const AddEditShopCard = () => {
                     style={{ maxWidth: "265px", borderRadius: "8px" }}
                   />
                 </div>
-                <input
-                  id="fileInput"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  style={{ display: "none" }}
-                />
               </div>
             ) : (
               <div className={styles.uploadButton}>
-                <label htmlFor="fileInput" className={styles.customFileButton}>
-                  <div className={styles.whiteBox}>
-                    <div className={styles.whiteBoxImg}>
-                      <img src={addimg} alt="#" />
-                      <p>Добавьте изображение</p>
-                    </div>
+                <div
+                  className={styles.whiteBox}
+                  onClick={() => setShowAddCards(!showAddCards)}
+                >
+                  <div className={styles.whiteBoxImg}>
+                    <img src={addimg} alt="#" />
+                    <p>Добавьте изображение</p>
                   </div>
-                </label>
-                <input
-                  id="fileInput"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  style={{ display: "none" }}
-                />
+                </div>
+              </div>
+            )}
+            {showAddCards && (
+              <div>
+                <h3>Выберите карту:</h3>
+                <div className={styles.mainContent}>
+                  <img
+                    src={left}
+                    className={styles.arrow}
+                    onClick={() => {
+                      currentAvailableIndex > 0 &&
+                        setCurrentAvailableIndex(currentAvailableIndex - 1);
+                    }}
+                    alt="Previous"
+                  />
+                  {cards
+                    .filter((card) =>
+                      card.title
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase())
+                    )
+                    .slice(currentAvailableIndex, currentAvailableIndex + 3)
+                    .map((card) => (
+                      <div key={card.id} className={styles.cardItem}>
+                        <div className={styles.cardItemImg}>
+                          <img
+                            src={`https://api.zoomayor.io${card.image}`}
+                            alt={card.title}
+                          />
+                        </div>
+                        <div className={styles.cardInfo}>
+                          <h3>{card.title}</h3>
+                        </div>
+                        <button onClick={() => handleSelectCard(card)}>
+                          Выбрать
+                        </button>
+                      </div>
+                    ))}
+                  <img
+                    src={right}
+                    className={styles.arrow}
+                    onClick={() => {
+                      const filteredCards = cards.filter((card) =>
+                        card.title
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase())
+                      );
+                      currentAvailableIndex < filteredCards.length - 3 &&
+                        setCurrentAvailableIndex(currentAvailableIndex + 1);
+                    }}
+                    alt="Next"
+                  />
+                </div>
+                <div className={styles.searchContainer}>
+                  <input
+                    type="text"
+                    placeholder="Поиск по названию"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={styles.searchInput}
+                  />
+                </div>
               </div>
             )}
           </div>
