@@ -67,6 +67,7 @@ const ShopPopupCarousel = (props) => {
           <MainCarouselSet
             setId={props.selectedSet?.id}
             handleOpenPopup={handleOpenPopup}
+            key={props.selectedSet?.id} // Добавляем key для корректного обновления
           />
 
           {/* <img

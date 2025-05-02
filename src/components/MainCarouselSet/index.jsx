@@ -105,22 +105,20 @@ const MainCarouselSet = (props) => {
   useEffect(() => {
     const fetchSetCards = async () => {
       try {
-        // Получаем ID набора из параметров URL или props
-        const setId = props.setId;
-        console.log(setId);
-
         if (setId) {
-          // Получаем карты набора через API
+          // Проверяем наличие setId
           const response = await axios.get(`/shop-sets/${setId}/cards`);
           setPhotos(response.data);
-          console.log(response.data);
+          console.log("Fetched cards:", response.data);
+        } else {
+          console.log("No setId provided");
         }
       } catch (error) {
         console.error("Error fetching set cards:", error);
       }
     };
     fetchSetCards();
-  }, [props.setId]);
+  }, [setId]);
   useEffect(() => {
     if (photos.length > 0) {
       const newSelectedPhotos = data.reduce((acc, item) => {
