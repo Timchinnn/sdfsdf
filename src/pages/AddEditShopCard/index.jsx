@@ -65,17 +65,24 @@ const AddEditShopCard = () => {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
+
+      // Add cardId if a card is selected
+      if (cardsInSet.size > 0) {
+        // Get the first (and only) card ID from the set
+        const cardId = Array.from(cardsInSet)[0];
+        formData.append("cardId", cardId);
+      }
       if (selectedImage) {
         formData.append("image", selectedImage);
       }
       if (id) {
-        await axios.put(`/cards/${id}`, formData);
+        await axios.put(`/shop-cards/${id}`, formData);
       } else {
-        await axios.post("/cards", formData);
+        await axios.post("/shop-cards", formData);
       }
       history.push("/shopmanagement");
     } catch (error) {
-      console.error("Error saving card:", error);
+      console.error("Error saving shop card:", error);
     }
   };
   return (
