@@ -72,145 +72,142 @@ const AddEditShopSet = () => {
   };
   return (
     <div className={styles.contents}>
-      <div className={styles.mainContent}>
-        <div className={styles.content}>
-          <div>
-            <h3>Карты в наборе:</h3>
-            <div className={styles.mainContent}>
-              <img
-                src={left}
-                className={styles.arrow}
-                onClick={() => {
-                  currentSetIndex > 0 &&
-                    setCurrentSetIndex(currentSetIndex - 1);
-                }}
-                alt="Previous"
-              />
-              {cards
-                .filter((card) => cardsInSet.has(card.id))
-                .slice(currentSetIndex, currentSetIndex + 3)
-                .map((card) => (
-                  <div key={card.id} className={styles.cardItem}>
-                    <div className={styles.cardItemImg}>
-                      <img
-                        src={`https://api.zoomayor.io${card.image}`}
-                        alt={card.title}
-                      />
-                    </div>
-                    <div className={styles.cardInfo}>
-                      <h3>{card.title}</h3>
-                    </div>
-                    <button
-                      onClick={() => handleRemoveCardFromSet(card.id)}
-                      style={{ background: "red" }}
-                    >
-                      Удалить
-                    </button>
+      <div className={styles.content}>
+        <div>
+          <h3>Карты в наборе:</h3>
+          <div className={styles.mainContent}>
+            <img
+              src={left}
+              className={styles.arrow}
+              onClick={() => {
+                currentSetIndex > 0 && setCurrentSetIndex(currentSetIndex - 1);
+              }}
+              alt="Previous"
+            />
+            {cards
+              .filter((card) => cardsInSet.has(card.id))
+              .slice(currentSetIndex, currentSetIndex + 3)
+              .map((card) => (
+                <div key={card.id} className={styles.cardItem}>
+                  <div className={styles.cardItemImg}>
+                    <img
+                      src={`https://api.zoomayor.io${card.image}`}
+                      alt={card.title}
+                    />
                   </div>
-                ))}
-              <div
-                className={styles.whiteBox}
-                onClick={() => setShowAddCards(!showAddCards)}
-              >
-                <div className={styles.whiteBoxImg}>
-                  <img src={addimg} alt="#" style={{ height: "64px" }} />
-                  <p>Добавьте карту</p>
+                  <div className={styles.cardInfo}>
+                    <h3>{card.title}</h3>
+                  </div>
+                  <button
+                    onClick={() => handleRemoveCardFromSet(card.id)}
+                    style={{ background: "red" }}
+                  >
+                    Удалить
+                  </button>
                 </div>
+              ))}
+            <div
+              className={styles.whiteBox}
+              onClick={() => setShowAddCards(!showAddCards)}
+            >
+              <div className={styles.whiteBoxImg}>
+                <img src={addimg} alt="#" style={{ height: "64px" }} />
+                <p>Добавьте карту</p>
               </div>
-              <img
-                src={right}
-                className={styles.arrow}
-                onClick={() => {
-                  const filteredCards = cards.filter((card) =>
-                    cardsInSet.has(card.id)
-                  );
-                  currentSetIndex < filteredCards.length - 3 &&
-                    setCurrentSetIndex(currentSetIndex + 1);
-                }}
-                alt="Next"
-              />
             </div>
-            {showAddCards && (
-              <div>
-                <h3>Добавить карты:</h3>
-                <div className={styles.mainContent}>
-                  <img
-                    src={left}
-                    className={styles.arrow}
-                    onClick={() => {
-                      currentAvailableIndex > 0 &&
-                        setCurrentAvailableIndex(currentAvailableIndex - 1);
-                    }}
-                    alt="Previous"
-                  />
-                  {cards
-                    .filter(
-                      (card) =>
-                        !cardsInSet.has(card.id) &&
-                        card.title
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase())
-                    )
-                    .slice(currentAvailableIndex, currentAvailableIndex + 3)
-                    .map((card) => (
-                      <div key={card.id} className={styles.cardItem}>
-                        <div className={styles.cardItemImg}>
-                          <img
-                            src={`https://api.zoomayor.io${card.image}`}
-                            alt={card.title}
-                          />
-                        </div>
-                        <div className={styles.cardInfo}>
-                          <h3>{card.title}</h3>
-                        </div>
-                        <button onClick={() => handleAddCardToSet(card.id)}>
-                          Выбрать
-                        </button>
-                      </div>
-                    ))}
-                  <img
-                    src={right}
-                    className={styles.arrow}
-                    onClick={() => {
-                      const filteredCards = cards.filter(
-                        (card) => !cardsInSet.has(card.id)
-                      );
-                      currentAvailableIndex < filteredCards.length - 3 &&
-                        setCurrentAvailableIndex(currentAvailableIndex + 1);
-                    }}
-                    alt="Next"
-                  />
-                </div>
-                <div className={styles.searchContainer}>
-                  <input
-                    type="text"
-                    placeholder="Поиск по названию"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className={styles.searchInput}
-                  />
-                </div>
-              </div>
-            )}
+            <img
+              src={right}
+              className={styles.arrow}
+              onClick={() => {
+                const filteredCards = cards.filter((card) =>
+                  cardsInSet.has(card.id)
+                );
+                currentSetIndex < filteredCards.length - 3 &&
+                  setCurrentSetIndex(currentSetIndex + 1);
+              }}
+              alt="Next"
+            />
           </div>
-          <div className={styles.inputContainer}>
-            <div style={{ marginRight: "20px" }}>
-              <h2 className={styles.title}>Название</h2>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <h2 className={styles.title}>Цена</h2>
-              <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-              <button className={styles.saveButton} onClick={handleSubmit}>
-                Сохранить
-              </button>
+          {showAddCards && (
+            <div>
+              <h3>Добавить карты:</h3>
+              <div className={styles.mainContent}>
+                <img
+                  src={left}
+                  className={styles.arrow}
+                  onClick={() => {
+                    currentAvailableIndex > 0 &&
+                      setCurrentAvailableIndex(currentAvailableIndex - 1);
+                  }}
+                  alt="Previous"
+                />
+                {cards
+                  .filter(
+                    (card) =>
+                      !cardsInSet.has(card.id) &&
+                      card.title
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase())
+                  )
+                  .slice(currentAvailableIndex, currentAvailableIndex + 3)
+                  .map((card) => (
+                    <div key={card.id} className={styles.cardItem}>
+                      <div className={styles.cardItemImg}>
+                        <img
+                          src={`https://api.zoomayor.io${card.image}`}
+                          alt={card.title}
+                        />
+                      </div>
+                      <div className={styles.cardInfo}>
+                        <h3>{card.title}</h3>
+                      </div>
+                      <button onClick={() => handleAddCardToSet(card.id)}>
+                        Выбрать
+                      </button>
+                    </div>
+                  ))}
+                <img
+                  src={right}
+                  className={styles.arrow}
+                  onClick={() => {
+                    const filteredCards = cards.filter(
+                      (card) => !cardsInSet.has(card.id)
+                    );
+                    currentAvailableIndex < filteredCards.length - 3 &&
+                      setCurrentAvailableIndex(currentAvailableIndex + 1);
+                  }}
+                  alt="Next"
+                />
+              </div>
+              <div className={styles.searchContainer}>
+                <input
+                  type="text"
+                  placeholder="Поиск по названию"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={styles.searchInput}
+                />
+              </div>
             </div>
+          )}
+        </div>
+        <div className={styles.inputContainer}>
+          <div style={{ marginRight: "20px" }}>
+            <h2 className={styles.title}>Название</h2>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <h2 className={styles.title}>Цена</h2>
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            <button className={styles.saveButton} onClick={handleSubmit}>
+              Сохранить
+            </button>
           </div>
         </div>
       </div>
