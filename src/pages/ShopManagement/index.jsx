@@ -196,7 +196,7 @@ const ShopManagement = () => {
               className={styles.searchInput}
             />
           </div>
-          <NavLink to="/add-shop-item" style={{ width: "40%" }}>
+          <NavLink to={routeAddEditShopSet()} style={{ width: "40%" }}>
             <button className={styles.addButton}>Добавить товар</button>
           </NavLink>
         </div>

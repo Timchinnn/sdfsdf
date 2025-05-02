@@ -44,7 +44,8 @@ import ShirtManagement, {
   routeShirtManagement as routeShirtManagementPage,
 } from "pages/ShirtManagement";
 import { useSelector } from "react-redux";
-
+import AddEditShopSet from "pages/AddEditShopSet";
+import { routeAddEditShopSet } from "pages/AddEditShopSet";
 const AppContent = () => {
   const theme = useSelector((state) => state.theme);
 
@@ -58,6 +59,16 @@ const AppContent = () => {
     <div className={`main-wrapper`}>
       <main className="main-container">
         <Switch>
+          <Route
+            exact
+            path={routeAddEditShopSet()}
+            component={AddEditShopSet}
+          />
+          <Route
+            exact
+            path={routeAddEditShopSet(":id")}
+            component={AddEditShopSet}
+          />
           <Route exact path="/addEditCard/:id" component={AddEditCard} />
           <Route exact path="/addEditDeck/:id" component={AddEditDeck} />
           <Route
