@@ -78,16 +78,12 @@ const ShopManagement = () => {
                 onClick={() => {
                   axios
                     .delete(`/shirts/${shirt.id}`)
-                    .then((response) => {
-                      if (response.status === 200) {
-                        setShirts(shirts.filter((s) => s.id !== shirt.id));
-                      } else {
-                        throw new Error("Ошибка при удалении");
-                      }
+                    .then(() => {
+                      setShirts(shirts.filter((s) => s.id !== shirt.id));
                     })
                     .catch((error) => {
                       console.error("Ошибка при удалении рубашки:", error);
-                      alert("Ошибка при удалении рубашки: " + error.message);
+                      alert("Ошибка при удалении рубашки");
                     });
                 }}
               >
@@ -131,7 +127,7 @@ const ShopManagement = () => {
                   <h3>{card.name}</h3>
                   <p>Цена: {card.price}</p>
                 </div>
-                <button>Редактировать</button>
+                {/* <button>Редактировать</button> */}
                 <button
                   style={{ background: "red", marginTop: "10px" }}
                   onClick={() => {
