@@ -117,3 +117,13 @@
   justify-content: center;
   width: 100%;
 }
+.inputContainer {
+  display: flex;
+  margin-right: 10px;
+}
+.inputContainer input {
+  /* margin-top: 39px; */
+  border-radius: 10px !important;
+  padding: 10px;
+  width: 265px;
+}
