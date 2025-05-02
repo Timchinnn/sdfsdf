@@ -85,15 +85,6 @@ const AddEditShopCard = () => {
           <div>
             <h3>Карты в наборе:</h3>
             <div className={styles.mainContent}>
-              <img
-                src={left}
-                className={styles.arrow}
-                onClick={() => {
-                  currentSetIndex > 0 &&
-                    setCurrentSetIndex(currentSetIndex - 1);
-                }}
-                alt="Previous"
-              />
               {cards
                 .filter((card) => cardsInSet.has(card.id))
                 .slice(currentSetIndex, currentSetIndex + 3)
@@ -125,18 +116,6 @@ const AddEditShopCard = () => {
                   <p>Добавьте карту</p>
                 </div>
               </div>
-              <img
-                src={right}
-                className={styles.arrow}
-                onClick={() => {
-                  const filteredCards = cards.filter((card) =>
-                    cardsInSet.has(card.id)
-                  );
-                  currentSetIndex < filteredCards.length - 3 &&
-                    setCurrentSetIndex(currentSetIndex + 1);
-                }}
-                alt="Next"
-              />
             </div>
             {showAddCards && (
               <div>
