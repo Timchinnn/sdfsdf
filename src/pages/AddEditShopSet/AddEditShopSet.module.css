@@ -16,6 +16,19 @@
   margin: 10px;
   border-radius: 5px;
   height: 97%;
+  align-items: center;
+}
+.mainContents {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 16px;
+  scrollbar-width: none;
+  white-space: nowrap;
+  background: #dcdcdc;
+  margin: 10px;
+  border-radius: 5px;
+  height: 97%;
 }
 .content {
   display: flex;
