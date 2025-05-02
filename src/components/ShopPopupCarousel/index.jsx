@@ -15,8 +15,8 @@ const ShopPopupCarousel = (props) => {
   const [DescrCard, setDescrCard] = useState(false);
   const [priceCard, setPriceCard] = useState(false);
   const [expCard, setExpCard] = useState(false);
-  const { setActivePopup, selectedId } = props;
-
+  //
+  const { setActivePopup } = props;
   const handleOpenPopup = (cardData) => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
@@ -25,6 +25,11 @@ const ShopPopupCarousel = (props) => {
     setPriceCard(cardData.price);
     setExpCard(cardData.experience);
   };
+
+  //   const handleClosePopup = () => {
+  //     document.documentElement.classList.remove("fixed");
+  //     setActivePopup(false);
+  //   };
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -32,6 +37,7 @@ const ShopPopupCarousel = (props) => {
         setActivePopup(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);

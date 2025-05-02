@@ -137,10 +137,10 @@ const ShopPage = () => {
       // Get the set details
       const response = await axios.get(`/shop-sets/${setId}`);
       const set = response.data;
+
       // Get the cards in the set
       const cardsResponse = await axios.get(`/shop-sets/${setId}/cards`);
       const setCards = cardsResponse.data;
-
       // Open popup with set information
       document.documentElement.classList.add("fixed");
       setActivePopupCarousel(true);
@@ -152,7 +152,7 @@ const ShopPage = () => {
         image: set.image_url
           ? `https://api.zoomayor.io${set.image_url}`
           : DefaultImg,
-        cards: setCards, // Pass the cards array
+        cards: setCards,
       });
     } catch (error) {
       console.error("Ошибка при получении информации о наборе:", error);

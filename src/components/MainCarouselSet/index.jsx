@@ -35,13 +35,13 @@ const data = [
   { id: 2, bgColor: "#7952B3", title: "Slide 2" },
   { id: 3, bgColor: "#1597BB", title: "Slide 3" },
 ];
-const MainCarouselSet = ({ getActiveSlide, selectedId, setActivePopup }) => {
-  const [activeSlide, setActiveSlide] = useState(getActiveSlide);
+const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
   const cardBackStyle = useSelector((state) => state.cardBack);
   console.log(cardBackStyle);
 
   const [openedCards] = useState({});
 
+  const [activeSlide, setActiveSlide] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
 
   const prevSlide = () => {
@@ -53,7 +53,7 @@ const MainCarouselSet = ({ getActiveSlide, selectedId, setActivePopup }) => {
   };
 
   // const prevSlide = () => {
-  //   setActiveSlide((prev) => (prev - 1 + data.lesangth) % data.length);
+  //   setActiveSlide((prev) => (prev - 1 + data.length) % data.length);
   // };
 
   const getStyles = (index) => {
@@ -97,8 +97,8 @@ const MainCarouselSet = ({ getActiveSlide, selectedId, setActivePopup }) => {
     }
   };
 
-  // const [photos, setPhotos] = useState([]);
-  // const [selectedPhotos, setSelectedPhotos] = useState({});
+  const [photos, setPhotos] = useState([]);
+  const [selectedPhotos, setSelectedPhotos] = useState({});
 
   useEffect(() => {
     const fetchPhotos = async () => {
@@ -111,25 +111,18 @@ const MainCarouselSet = ({ getActiveSlide, selectedId, setActivePopup }) => {
     };
     fetchPhotos();
   }, []);
-  const [photos, setPhotos] = useState([]);
-  const [selectedPhotos, setSelectedPhotos] = useState({});
   useEffect(() => {
-    if (props.selectedId && props.selectedId.cards) {
-      setPhotos(props.selectedId.cards);
+    if (photos.length > 0) {
       const newSelectedPhotos = data.reduce((acc, item) => {
-        const randomCard =
-          props.selectedId.cards[
-            Math.floor(Math.random() * props.selectedId.cards.length)
-          ];
-        acc[item.id] = randomCard;
+        acc[item.id] = photos[Math.floor(Math.random() * photos.length)];
         return acc;
       }, {});
       setSelectedPhotos(newSelectedPhotos);
     }
-  }, [props.selectedId]);
+  }, [photos]);
   const handleImageClick = (index) => {
     setActiveIndex(index === activeIndex ? null : index);
-    // console.log(selectedPhotos[index].titleы);
+    // console.log(selectedPhotos[index].title);
     const selectedCard = selectedPhotos[data[index].id];
     handleOpenPopup(selectedCard);
   };
