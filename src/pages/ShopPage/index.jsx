@@ -131,7 +131,30 @@ const ShopPage = () => {
     setActivePopupFilter(true);
   };
   const handleBuySet = async (setId) => {
-    console.log(setId);
+    try {
+      // Get the set details
+      const response = await axios.get(`/shop-sets/${setId}`);
+      const set = response.data;
+
+      // Get the cards in the set
+      const cardsResponse = await axios.get(`/shop-sets/${setId}/cards`);
+      const setCards = cardsResponse.data;
+      // Open popup with set information
+      document.documentElement.classList.add("fixed");
+      setActivePopupCarousel(true);
+      setSelectedId({
+        id: set.id,
+        title: set.name,
+        description: `Набор из ${setCards.length} карт`,
+        price: set.price,
+        image: set.image_url
+          ? `https://api.zoomayor.io${set.image_url}`
+          : DefaultImg,
+        cards: setCards,
+      });
+    } catch (error) {
+      console.error("Ошибка при получении информации о наборе:", error);
+    }
   };
   return (
     <section className="shop">
