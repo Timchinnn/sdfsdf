@@ -212,12 +212,6 @@ const ShopPage = () => {
                               <img src={CoinIcon} alt="" />
                               {set.price}
                             </div>
-                            <button
-                              onClick={() => handleBuySet(set.id)}
-                              className="shop-list__button"
-                            >
-                              Купить
-                            </button>
                           </div>
                         </li>
                       ))}
