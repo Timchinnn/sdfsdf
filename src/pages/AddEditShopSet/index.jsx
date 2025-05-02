@@ -56,9 +56,15 @@ const AddEditShopSet = () => {
   };
   const handleSubmit = async () => {
     try {
+      // Проверяем минимальное количество карт
+      if (cardsInSet.size < 3) {
+        alert("Необходимо добавить минимум 3 карты в набор");
+        return;
+      }
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
+
       // Convert cardsInSet Set to Array and append each cardId separately
       const cardIdsArray = Array.from(cardsInSet);
       cardIdsArray.forEach((cardId) => {
