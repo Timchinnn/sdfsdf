@@ -24,6 +24,75 @@
   height: 44vh;
   padding-top: 0;
 }
+.cardItem {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 372px;
+  overflow: hidden;
+  text-align: center;
+  width: 178px;
+}
+.cardItemImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cardItemImg img {
+  height: 284px;
+  object-fit: cover;
+  width: 99%;
+  border-radius: 8px;
+}
+.cardInfo {
+  background: #fff;
+  border-radius: 8px;
+  flex-direction: column;
+  min-height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.whiteBox {
+  background-color: white;
+  height: 370px;
+  width: 200px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.whiteBoxImg {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 169px;
+  text-align: center;
+}
+.searchContainer {
+  align-items: center;
+  display: flex;
+  margin: -5px;
+  width: 60%;
+}
+.searchInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px !important;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.arrow {
+  height: 64px !important;
+  cursor: pointer;
+}
+@media (max-width: 999px) {
+  .arrow {
+    height: 25px !important;
+  }
+}
 .inputContainer {
   display: flex;
   margin-right: 10px;
@@ -48,20 +117,9 @@
   justify-content: center;
   margin-top: 20px;
   width: 200px;
+  cursor: pointer;
+  border: none;
 }
-.whiteBox {
-  background-color: white;
-  height: 370px;
-  width: 200px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.whiteBoxImg {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  width: 169px;
-  text-align: center;
+.saveButton:hover {
+  background: darkgreen;
 }
