@@ -4,6 +4,7 @@ import routeShopManagement from "./route";
 import { NavLink } from "react-router-dom";
 import { routeShirtManagement } from "pages/ShirtManagement";
 import { routeAddEditShopCard } from "pages/AddEditShopCard";
+import { routeAddEditShopSet } from "pages/AddEditShopSet";
 import axios from "../../axios-controller";
 
 const ShopManagement = () => {
