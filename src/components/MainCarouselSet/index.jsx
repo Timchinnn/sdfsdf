@@ -109,7 +109,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
   }, []);
   useEffect(() => {
     if (photos.length > 0) {
-      const newSelectedPhotos = data.reduce((acc, item) => {
+      const newSelectedPhotos = cards.reduce((acc, item) => {
         acc[item.id] = photos[Math.floor(Math.random() * photos.length)];
         return acc;
       }, {});
@@ -119,7 +119,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
   const handleImageClick = (index) => {
     setActiveIndex(index === activeIndex ? null : index);
     // console.log(selectedPhotos[index].title);
-    const selectedCard = selectedPhotos[data[index].id];
+    const selectedCard = selectedPhotos[cards[index].id];
     handleOpenPopup(selectedCard);
   };
   return (
