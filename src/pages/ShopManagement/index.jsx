@@ -9,7 +9,18 @@ import axios from "../../axios-controller";
 const ShopManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [shirts, setShirts] = useState([]);
-
+  const [shopCards, setShopCards] = useState([]);
+  useEffect(() => {
+    const fetchShopCards = async () => {
+      try {
+        const response = await axios.get("/shop-cards");
+        setShopCards(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке карт:", error);
+      }
+    };
+    fetchShopCards();
+  }, []);
   useEffect(() => {
     const fetchShirts = async () => {
       try {
@@ -25,7 +36,7 @@ const ShopManagement = () => {
   const [items] = useState([
     {
       id: 1,
-      title: "Классическая рубашка",
+      title: "Классическая рубашка1",
       price: 100,
       type: "shirt",
       image: "/img/shirt1.jpg",
@@ -100,22 +111,37 @@ const ShopManagement = () => {
       <div className={styles.mainContent}>
         <h2>Карты</h2>
         <div className={styles.cardsList}>
-          {items
-            .filter(
-              (item) =>
-                item.type === "card" &&
-                item.title.toLowerCase().includes(searchQuery.toLowerCase())
+          {shopCards
+            .filter((card) =>
+              card.name.toLowerCase().includes(searchQuery.toLowerCase())
             )
-            .map((item) => (
-              <div key={item.id} className={styles.cardItem}>
+            .map((card) => (
+              <div key={card.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
-                  <img src={item.image} alt={item.title} />
+                  <img
+                    src={`https://api.zoomayor.io${card.image_url}`}
+                    alt={card.name}
+                  />
                 </div>
                 <div className={styles.cardInfo}>
-                  <h3>{item.title}</h3>
+                  <h3>{card.name}</h3>
+                  <p>Цена: {card.price}</p>
                 </div>
                 <button>Редактировать</button>
-                <button style={{ background: "red", marginTop: "10px" }}>
+                <button
+                  style={{ background: "red", marginTop: "10px" }}
+                  onClick={() => {
+                    axios
+                      .delete(`/shop-cards/${card.id}`)
+                      .then(() => {
+                        setShopCards(shopCards.filter((c) => c.id !== card.id));
+                      })
+                      .catch((error) => {
+                        console.error("Ошибка при удалении карты:", error);
+                        alert("Ошибка при удалении карты");
+                      });
+                  }}
+                >
                   Удалить
                 </button>
               </div>
@@ -131,7 +157,6 @@ const ShopManagement = () => {
               className={styles.searchInput}
             />
           </div>
-
           <NavLink to={routeAddEditShopCard()} style={{ width: "40%" }}>
             <button className={styles.addButton}>Добавить товар</button>
           </NavLink>
