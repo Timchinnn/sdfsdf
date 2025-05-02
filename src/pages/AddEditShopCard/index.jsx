@@ -82,7 +82,7 @@ const AddEditShopCard = () => {
       }
       history.push("/shopmanagement");
     } catch (error) {
-      console.error("Error saving shop card:", error);
+      console.error("Error saving shop card1:", error);
     }
   };
   return (
