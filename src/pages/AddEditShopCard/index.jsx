@@ -186,16 +186,18 @@ const AddEditShopCard = () => {
               </div>
             )}
           </div>
-          <div>
-            <h2 className={styles.title}>Цена</h2>
-            <input
-              type="text"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-            <button className={styles.saveButton} onClick={handleSubmit}>
-              Сохранить
-            </button>
+          <div className={styles.inputContainer}>
+            <div style={{ marginRight: "20px" }}>
+              <h2 className={styles.title}>Название</h2>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <button className={styles.saveButton} onClick={handleSubmit}>
+                Сохранить
+              </button>
+            </div>
           </div>
         </div>
       </div>
