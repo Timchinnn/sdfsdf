@@ -35,13 +35,13 @@ const data = [
   { id: 2, bgColor: "#7952B3", title: "Slide 2" },
   { id: 3, bgColor: "#1597BB", title: "Slide 3" },
 ];
-const MainCarouselSet = ({ getActiveSlide, handleOpenPopup }) => {
+const MainCarouselSet = ({ getActiveSlide, selectedId, setActivePopup }) => {
+  const [activeSlide, setActiveSlide] = useState(getActiveSlide);
   const cardBackStyle = useSelector((state) => state.cardBack);
   console.log(cardBackStyle);
 
   const [openedCards] = useState({});
 
-  const [activeSlide, setActiveSlide] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
 
   const prevSlide = () => {
