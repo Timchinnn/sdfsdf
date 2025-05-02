@@ -53,9 +53,9 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
   // };
 
   const getStyles = (index) => {
-    const currentIndex = activeSlide % data.length;
-    const prevIndex = (activeSlide - 1 + data.length) % data.length;
-    const nextIndex = (activeSlide + 1) % data.length;
+    const currentIndex = activeSlide % cards.length;
+    const prevIndex = (activeSlide - 1 + cards.length) % cards.length;
+    const nextIndex = (activeSlide + 1) % cards.length;
 
     if (index === currentIndex) {
       return {
