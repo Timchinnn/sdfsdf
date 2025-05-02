@@ -10,16 +10,17 @@ import MobileNav from "components/MobileNav";
 import ShopPopup from "components/ShopPopup";
 import ShopPopupCarousel from "components/ShopPopupCarousel";
 import axios from "../../axios-controller";
-import "./styles.scss";
+
 const ShopPage = () => {
-  // Получаем telegram id пользователя из Telegram WebApp
+  // Получаем telegram id пользователя из Telegram WebApp, если он существует
   const tgUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "";
+  // Флаг для специальных пользователей (7241281378 и 467518658)
   const isSpecialUser = tgUserId === 7241281378 || tgUserId === 467518658;
-  // Состояния модальных окон и выбранного товара/набора
+  // Состояния модальных окон и выбранного товара
   const [activePopup, setActivePopup] = useState(false);
   const [activePopupCarousel, setActivePopupCarousel] = useState(false);
   const [activePopupFilter, setActivePopupFilter] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   // Состояния для поиска и фильтрации товаров
   const [searchTerm, setSearchTerm] = useState("");
   const [items, setItems] = useState([]); // оригинальный массив товаров
@@ -40,6 +41,7 @@ const ShopPage = () => {
     const fetchPhotos = async () => {
       try {
         const policeData = await peopleService.getPolicePhotos();
+        // Добавляем дополнительные товары: набор, энергия и монеты
         const allItems = [
           ...policeData,
           { id: "set", title: "набор", price: 456, image: DefaultImg },
@@ -54,6 +56,7 @@ const ShopPage = () => {
     };
     fetchPhotos();
   }, []);
+  // Функция поиска по названию товара
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
@@ -62,15 +65,17 @@ const ShopPage = () => {
     );
     setFilteredItems(filtered);
   };
+  // Функции открытия/закрытия popup окна для подробностей товара
   const handleOpenPopup = (item) => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
-    setSelectedItem(item);
+    setSelectedId(item);
   };
   const handleClosePopup = () => {
     document.documentElement.classList.remove("fixed");
     setActivePopup(false);
   };
+  // Функции открытия/закрытия popup карусели
   const handleOpenPopupCarousel = () => {
     document.documentElement.classList.add("fixed");
     setActivePopupCarousel(true);
@@ -109,6 +114,7 @@ const ShopPage = () => {
     setFilteredItems(items);
     setActivePopupFilter(false);
   };
+  // Ref и обработчик кликов вне модального окна фильтра
   const filterRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -118,30 +124,35 @@ const ShopPage = () => {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
   const handleOpenFilter = () => {
     document.documentElement.classList.add("fixed");
     setActivePopupFilter(true);
   };
-  // Обработка покупки набора: запрашиваем описание набора и список карт с сервера
   const handleBuySet = async (setId) => {
     try {
+      // Get the set details
       const response = await axios.get(`/shop-sets/${setId}`);
-      const setData = response.data;
+      const set = response.data;
+
+      // Get the cards in the set
       const cardsResponse = await axios.get(`/shop-sets/${setId}/cards`);
       const setCards = cardsResponse.data;
+      // Open popup with set information
       document.documentElement.classList.add("fixed");
       setActivePopupCarousel(true);
-      setSelectedItem({
-        id: setData.id,
-        title: setData.name,
+      setSelectedId({
+        id: set.id,
+        title: set.name,
         description: `Набор из ${setCards.length} карт`,
-        price: setData.price,
-        image: setData.image_url
-          ? `https://api.zoomayor.io${setData.image_url}`
+        price: set.price,
+        image: set.image_url
+          ? `https://api.zoomayor.io${set.image_url}`
           : DefaultImg,
-        cards: setCards, // Передаем список карт выбранного набора
+        cards: setCards,
       });
     } catch (error) {
       console.error("Ошибка при получении информации о наборе:", error);
@@ -363,7 +374,7 @@ const ShopPage = () => {
           active={activePopup}
           setActivePopup={setActivePopup}
           handleClosePopup={handleClosePopup}
-          selectedPhoto={selectedItem}
+          selectedPhoto={selectedId}
         />
       )}
       {activePopupCarousel && (
@@ -371,8 +382,6 @@ const ShopPage = () => {
           active={activePopupCarousel}
           setActivePopup={setActivePopupCarousel}
           handleClosePopup={handleClosePopupCarousel}
-          cards={selectedItem?.cards} // Передаём список карт выбранного набора
-          handleOpenPopup={handleOpenPopup} // Если необходимо открывать popup для карточки из набора
         />
       )}
       <MobileNav />
