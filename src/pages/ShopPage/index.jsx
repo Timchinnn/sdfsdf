@@ -24,6 +24,7 @@ const ShopPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [shopCards, setShopCards] = useState([]);
   const [shopSets, setShopSets] = useState([]);
+  const [shirts, setShirts] = useState([]); // Add shirts state
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   useEffect(() => {
@@ -36,6 +37,17 @@ const ShopPage = () => {
       }
     };
     fetchShopCards();
+  }, []);
+  useEffect(() => {
+    const fetchShirts = async () => {
+      try {
+        const response = await axios.get("/shirts");
+        setShirts(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке рубашек:", error);
+      }
+    };
+    fetchShirts();
   }, []);
   useEffect(() => {
     const fetchShopSets = async () => {
@@ -292,6 +304,42 @@ const ShopPage = () => {
                             </div>
                           </li>
                         ))}
+                    </ul>
+                    <h2 className="section-content__title">Рубашки карт</h2>
+                    <ul
+                      className="shop-list f-jcsb"
+                      style={{ marginBottom: "24px" }}
+                    >
+                      {shirts.map((shirt) => (
+                        <li key={shirt.id} className="shop-list__item">
+                          <div className="shop-list__card">
+                            <div
+                              className="shop-list__image"
+                              onClick={() =>
+                                handleOpenPopup({
+                                  id: shirt.id,
+                                  title: shirt.name,
+                                  price: shirt.price,
+                                  image: shirt.image_url,
+                                  type: "shirt",
+                                })
+                              }
+                            >
+                              <img
+                                src={`https://api.zoomayor.io${shirt.image_url}`}
+                                alt={shirt.name}
+                              />
+                            </div>
+                            <div className="shop-list__content">
+                              <h3>{shirt.name}</h3>
+                              <div className="shop-list__price">
+                                <img src={CoinIcon} alt="" />
+                                {shirt.price}
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                   {/* <div className="shop-category__item block-style">
