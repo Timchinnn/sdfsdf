@@ -469,13 +469,22 @@ const ShopPage = () => {
           </div>
         </div>
       </div>
-      {activePopup && (
-        <CardShopPopup
+      {activePopup && selectedId?.type === "shirt" ? (
+        <ShirtShopPopup
           active={activePopup}
           setActivePopup={setActivePopup}
           handleClosePopup={handleClosePopup}
           selectedPhoto={selectedId}
         />
+      ) : (
+        activePopup && (
+          <CardShopPopup
+            active={activePopup}
+            setActivePopup={setActivePopup}
+            handleClosePopup={handleClosePopup}
+            selectedPhoto={selectedId}
+          />
+        )
       )}
       {activePopupCarousel && (
         <ShopPopupCarousel
