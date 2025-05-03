@@ -164,7 +164,7 @@ const ShopPage = () => {
       // Get the cards in the set
       const cardsResponse = await axios.get(`/shop-sets/${setId}/cards`);
       const setCards = cardsResponse.data;
-      // Open popup with set information
+      // Open popup with set informationв
       document.documentElement.classList.add("fixed");
       setActivePopupCarousel(true);
       setSelectedId({
