@@ -19,7 +19,7 @@ const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
   // const [totalEnergy, setTotalEnergy] = useState(0);
   // const [totalCoins, setTotalCoins] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
-  const { setActivePopup } = props;
+  // const { setActivePopup } = props;
   const handleOpenPopup = (cardData) => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
