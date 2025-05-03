@@ -244,7 +244,7 @@ const ShopPage = () => {
                       ))}
                     </ul>
                   </div>
-                  <div className="shop-category__item block-style">
+                  {/* <div className="shop-category__item block-style">
                     <h2 className="section-content__title">
                       Культурные объекты
                     </h2>
@@ -275,7 +275,7 @@ const ShopPage = () => {
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </div> */}
                 </div>
               </>
             ) : (
