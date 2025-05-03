@@ -7,7 +7,7 @@ import EnergytImg from "assets/img/energy.png";
 import CoinIcon from "assets/img/coin-icon.svg";
 import { peopleService, shopSetService, shopCardService } from "services/api";
 import MobileNav from "components/MobileNav";
-import ShopPopup from "components/ShopPopup";
+import CardShopPopup from "components/CardShopPopup";
 import ShopPopupCarousel from "components/ShopPopupCarousel";
 import axios from "../../axios-controller";
 import { useSelector } from "react-redux";
@@ -422,7 +422,7 @@ const ShopPage = () => {
         </div>
       </div>
       {activePopup && (
-        <ShopPopup
+        <CardShopPopup
           active={activePopup}
           setActivePopup={setActivePopup}
           handleClosePopup={handleClosePopup}
