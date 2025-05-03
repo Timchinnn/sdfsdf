@@ -68,7 +68,10 @@ const CardShopPopup = (props) => {
           <div className="shop-popup__image">
             {/* Отображаем изображение карточки после заданной задержки */}
             {showImage && (
-              <img src={imageUrl} alt={props.selectedPhoto?.title || ""} />
+              <img
+                src={`https://api.zoomayor.io${props.selectedPhoto.image_url}`}
+                alt={props.selectedPhoto?.title || ""}
+              />
             )}
           </div>
           <div className="shop-popup__content">
