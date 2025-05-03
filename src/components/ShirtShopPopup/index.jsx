@@ -4,6 +4,7 @@ import DefaultImg from "assets/img/default-img.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
 const ShirtShopPopup = (props) => {
+  console.log(props);
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
   useEffect(() => {
