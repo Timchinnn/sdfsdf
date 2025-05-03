@@ -123,7 +123,7 @@ const ShopPage = () => {
     setFilteredItems(items);
     setActivePopupFilter(false);
   };
-  // Ref и обработчик кликов вне модального окна фильтрав
+  // Ref и обработчик кликов вне модального окна фильтра
   const filterRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (event) => {
