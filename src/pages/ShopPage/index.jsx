@@ -332,7 +332,7 @@ const ShopPage = () => {
                             </div>
                             <div className="shop-list__content">
                               <h3 className="shop-list__title">{shirt.name}</h3>
-                              <div className="shop-list__price">
+                              <div className="shop-list__price f-center">
                                 <img src={CoinIcon} alt="" />
                                 {Math.floor(shirt.price)}
                               </div>
