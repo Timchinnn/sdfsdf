@@ -9,6 +9,7 @@ import { peopleService, shopSetService, shopCardService } from "services/api";
 import MobileNav from "components/MobileNav";
 import CardShopPopup from "components/CardShopPopup";
 import ShopPopupCarousel from "components/ShopPopupCarousel";
+import ShirtShopPopup from "components/ShirtShopPopup";
 import axios from "../../axios-controller";
 import { useSelector } from "react-redux";
 
