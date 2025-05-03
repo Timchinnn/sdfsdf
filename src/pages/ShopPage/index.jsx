@@ -5,7 +5,7 @@ import DefaultImg from "assets/img/default-img.png";
 import MoneyImg from "assets/img/money.png";
 import EnergytImg from "assets/img/energy.png";
 import CoinIcon from "assets/img/coin-icon.svg";
-import { peopleService, shopSetService } from "services/api";
+import { peopleService, shopSetService, shopCardService } from "services/api";
 import MobileNav from "components/MobileNav";
 import ShopPopup from "components/ShopPopup";
 import ShopPopupCarousel from "components/ShopPopupCarousel";
@@ -24,6 +24,8 @@ const ShopPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [shopCards, setShopCards] = useState([]);
   const [shopSets, setShopSets] = useState([]);
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   useEffect(() => {
     const fetchShopCards = async () => {
       try {
