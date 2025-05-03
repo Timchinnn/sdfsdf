@@ -114,8 +114,8 @@ const ShopPopupCarousel = (props) => {
               <li className="friends-params__item f-center">
                 <img src={CoinIcon} alt="" />
                 {selectedCard
-                  ? selectedCard.price
-                  : props.selectedSet?.price || 0}
+                  ? Math.floor(selectedCard.price)
+                  : Math.floor(props.selectedSet?.price) || 0}
               </li>
             </ul>
           </div>

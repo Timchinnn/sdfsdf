@@ -237,7 +237,7 @@ const ShopPage = () => {
                             <h3 className="shop-list__title">{set.name}</h3>
                             <div className="shop-list__price f-center">
                               <img src={CoinIcon} alt="" />
-                              {set.price}
+                              {Math.floor(set.price)}
                             </div>
                           </div>
                         </li>
