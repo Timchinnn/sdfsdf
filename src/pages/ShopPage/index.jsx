@@ -225,7 +225,10 @@ const ShopPage = () => {
                 <div className="shop-category">
                   <div className="shop-category__item block-style">
                     <h2 className="section-content__title">Наборы карт</h2>
-                    <ul className="shop-list f-jcsb">
+                    <ul
+                      className="shop-list f-jcsb"
+                      style={{ marginBottom: "24px" }}
+                    >
                       {shopSets.map((set) => (
                         <li key={set.id} className="shop-list__item">
                           <div className="shop-list__card">
@@ -254,7 +257,10 @@ const ShopPage = () => {
                     </ul>
 
                     <h2 className="section-content__title">Карты</h2>
-                    <ul className="shop-list f-jcsb">
+                    <ul
+                      className="shop-list f-jcsb"
+                      style={{ marginBottom: "24px" }}
+                    >
                       {shopCards
                         .filter((card) =>
                           card.name

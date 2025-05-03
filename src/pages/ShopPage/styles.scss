@@ -72,6 +72,7 @@ body::-webkit-scrollbar {
   }
   &-list {
     margin-top: 24px;
+
     flex-wrap: wrap;
     row-gap: 34px;
     &__item {
