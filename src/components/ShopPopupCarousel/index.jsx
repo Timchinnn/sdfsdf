@@ -40,7 +40,33 @@ const ShopPopupCarousel = (props) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
+  const handleButtonClick = async () => {
+    if (props.handleClosePopup) {
+      try {
+        const tg = window.Telegram.WebApp;
+        const telegram_id = tg.initDataUnsafe?.user?.id;
 
+        if (!telegram_id) {
+          console.error("Telegram ID not found");
+          return;
+        }
+        const response = await axios.post("/shop/buy-set", {
+          telegram_id,
+          set_id: props.selectedSet.id,
+          price: props.selectedSet.price,
+        });
+        if (response.data.success) {
+          props.handleClosePopup();
+          if (onButtonClick) {
+            onButtonClick();
+          }
+        }
+      } catch (error) {
+        console.error("Error buying set:", error);
+        alert(error.response?.data?.message || "Error purchasing set");
+      }
+    }
+  };
   return (
     <div ref={popupRef} className={`shop-popup ${props.active ? "show" : ""}`}>
       <div className="shop-popup__wrapper">
