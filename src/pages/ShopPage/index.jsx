@@ -252,8 +252,7 @@ const ShopPage = () => {
                         </li>
                       ))}
                     </ul>
-                  </div>
-                  <div className="shop-category__item block-style">
+
                     <h2 className="section-content__title">Карты</h2>
                     <ul className="shop-list f-jcsb">
                       {shopCards
