@@ -11,12 +11,12 @@ import CoinIcon from "assets/img/coin-icon.svg";
 
 const ShopPopupCarousel = (props) => {
   const popupRef = useRef(null);
-  const [nameCard, setNameCard] = useState(false);
-
-  const [DescrCard, setDescrCard] = useState(false);
-  const [priceCard, setPriceCard] = useState(false);
-  const [expCard, setExpCard] = useState(false);
-  //
+  // const [nameCard, setNameCard] = useState(false);
+  // const [DescrCard, setDescrCard] = useState(false);
+  // const [priceCard, setPriceCard] = useState(false);
+  // const [expCard, setExpCard] = useState(false);
+  // const [totalEnergy, setTotalEnergy] = useState(0);
+  // const [totalCoins, setTotalCoins] = useState(0);
   const [selectedCard, setSelectedCard] = useState(null);
   const { setActivePopup } = props;
   const handleOpenPopup = (cardData) => {
@@ -96,7 +96,10 @@ const ShopPopupCarousel = (props) => {
                 <p className="main-params__title">
                   {selectedCard
                     ? selectedCard.hourly_income
-                    : props.selectedSet?.hourly_income || 0}{" "}
+                    : props.selectedSet?.cards?.reduce(
+                        (sum, card) => sum + (card.hourly_income || 0),
+                        0
+                      ) || 0}{" "}
                   K/H
                 </p>
               </div>
@@ -108,14 +111,22 @@ const ShopPopupCarousel = (props) => {
                 <img src={StarIcon} alt="" />
                 {selectedCard
                   ? selectedCard.experience
-                  : props.selectedSet?.experience || 0}{" "}
+                  : props.selectedSet?.cards?.reduce(
+                      (sum, card) => sum + (card.experience || 0),
+                      0
+                    ) || 0}{" "}
                 EXP
               </li>
               <li className="friends-params__item f-center">
                 <img src={CoinIcon} alt="" />
                 {selectedCard
                   ? Math.floor(selectedCard.price)
-                  : Math.floor(props.selectedSet?.price) || 0}
+                  : Math.floor(
+                      props.selectedSet?.cards?.reduce(
+                        (sum, card) => sum + (card.price || 0),
+                        0
+                      )
+                    ) || 0}
               </li>
             </ul>
           </div>
