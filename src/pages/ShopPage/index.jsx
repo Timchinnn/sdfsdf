@@ -423,10 +423,8 @@ const ShopPage = () => {
       </div>
       {activePopup && (
         <CardShopPopup
-          active={activePopup}
-          setActivePopup={setActivePopup}
-          handleClosePopup={handleClosePopup}
-          selectedPhoto={selectedId}
+          card={selectedCard}
+          onClose={() => setShowPopup(false)}
         />
       )}
       {activePopupCarousel && (
