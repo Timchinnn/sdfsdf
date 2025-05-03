@@ -31,6 +31,32 @@ const cardBackStyles = {
 };
 // import ProdImg from "assets/img/prod-img.png";
 const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const [isSwipeLocked, setIsSwipeLocked] = useState(false);
+  // Minimum distance required for swipe
+  const minSwipeDistance = 50;
+  const onTouchStart = (e) => {
+    if (isSwipeLocked) return;
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  const onTouchMove = (e) => {
+    if (isSwipeLocked) return;
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd || isSwipeLocked) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) {
+      nextSlide();
+    }
+    if (isRightSwipe) {
+      prevSlide();
+    }
+  };
   const cardBackStyle = useSelector((state) => state.cardBack);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -166,7 +192,13 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
         </svg>
       </div>
       <div className="main-carousel-set">
-        <div className="main-carousel">
+        <div
+          className="main-carousel"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          {" "}
           <div className="main-nav__play" onClick={prevSlide}>
             <img
               src={DefaultImg2}
