@@ -14,20 +14,27 @@ import { useSelector } from "react-redux";
 
 const ShopPage = () => {
   const cardBackStyle = useSelector((state) => state.cardBack);
-  // Получаем telegram id пользователя из Telegram WebApp, если он существует
   const tgUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "";
-  // Флаг для специальных пользователей (7241281378 и 467518658)
   const isSpecialUser = tgUserId === 7241281378 || tgUserId === 467518658;
-  // Состояния модальных окон и выбранного товара
+
   const [activePopup, setActivePopup] = useState(false);
   const [activePopupCarousel, setActivePopupCarousel] = useState(false);
   const [activePopupFilter, setActivePopupFilter] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  // Состояния для поиска и фильтрации товаров
   const [searchTerm, setSearchTerm] = useState("");
-  const [items, setItems] = useState([]); // оригинальный массив товаров
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [shopCards, setShopCards] = useState([]);
   const [shopSets, setShopSets] = useState([]);
+  useEffect(() => {
+    const fetchShopCards = async () => {
+      try {
+        const response = await shopCardService.getAllShopCards();
+        setShopCards(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке карт магазина:", error);
+      }
+    };
+    fetchShopCards();
+  }, []);
   useEffect(() => {
     const fetchShopSets = async () => {
       try {
@@ -242,6 +249,37 @@ const ShopPage = () => {
                           </div>
                         </li>
                       ))}
+                    </ul>
+                  </div>
+                  <div className="shop-category__item block-style">
+                    <h2 className="section-content__title">Карты</h2>
+                    <ul className="shop-list f-jcsb">
+                      {shopCards
+                        .filter((card) =>
+                          card.name
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase())
+                        )
+                        .map((card) => (
+                          <li key={card.id} className="shop-list__item">
+                            <div className="shop-list__card">
+                              <div
+                                className="shop-list__image"
+                                onClick={() => handleOpenPopup(card)}
+                              >
+                                <img
+                                  src={`https://api.zoomayor.io${card.image_url}`}
+                                  alt={card.name}
+                                  className="shop-card__Img"
+                                />
+                              </div>
+                              <div className="shop-list__content">
+                                <h3>{card.name}</h3>
+                                <p>Цена: {card.price}</p>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
                     </ul>
                   </div>
                   {/* <div className="shop-category__item block-style">

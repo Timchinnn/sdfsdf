@@ -202,7 +202,23 @@ export const userCardsService = {
   addCardToUser: (userId, cardId) =>
     axios.post(`/user/${userId}/cards`, { cardId }),
 };
-
+export const shopCardService = {
+  getAllShopCards: () => axios.get("/shop-cards"),
+  getShopCard: (id) => axios.get(`/shop-cards/${id}`),
+  createShopCard: (formData) =>
+    axios.post("/shop-cards", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+  updateShopCard: (id, formData) =>
+    axios.put(`/shop-cards/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+  deleteShopCard: (id) => axios.delete(`/shop-cards/${id}`),
+};
 export const peopleService = {
   // Получение списка фотографий для полиции
   async getPolicePhotos() {
