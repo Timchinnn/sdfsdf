@@ -281,8 +281,13 @@ const ShopPage = () => {
                                 />
                               </div>
                               <div className="shop-list__content">
-                                <h3>{card.name}</h3>
-                                <p>Цена: {card.price}</p>
+                                <h3 className="shop-list__title">
+                                  {card.name}
+                                </h3>
+                                <div className="shop-list__price f-center">
+                                  <img src={CoinIcon} alt="" />
+                                  {Math.floor(card.price)}
+                                </div>
                               </div>
                             </div>
                           </li>
