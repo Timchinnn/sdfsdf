@@ -286,7 +286,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
           </div>
         </div>
       </div>
-      <div className="main-nav f-center-jcsb">
+      {/* <div className="main-nav f-center-jcsb">
         <div className="main-nav__offer f-center">
           <div className="main-nav__icon">
             <svg
@@ -321,7 +321,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
             56:23:55
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
