@@ -123,7 +123,7 @@ const CardShopPopup = (props) => {
                         </li>
                         <li className="friends-params__item f-center">
                           <img src={CoinIcon} alt="Icon монет" />
-                          {props.selectedPhoto ? props.selectedPhoto.price : ""}
+                          {Math.floor(props.selectedPhoto.price)}
                         </li>
                       </ul>
                     </div>

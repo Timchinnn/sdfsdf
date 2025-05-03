@@ -72,7 +72,7 @@ const ShirtShopPopup = (props) => {
               <ul className="friends-params f-center-center">
                 <li className="friends-params__item f-center">
                   <img src={CoinIcon} alt="Icon монет" />
-                  {props.selectedPhoto ? props.selectedPhoto.price : ""}
+                  {Math.floor(props.selectedPhoto.price)}
                 </li>
               </ul>
             </div>
