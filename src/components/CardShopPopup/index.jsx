@@ -1,26 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import "./styles.scss";
-
 import DefaultImg from "assets/img/default-img.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import QuestionMarkImg from "assets/img/question-mark.png";
-
 import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
-
 const CardShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
   useEffect(() => {
+    // Если нужно показывать изображение сразу, можно убрать задержку или уменьшить время
     const timer = setTimeout(() => {
       setShowImage(true);
     }, 4000);
     return () => clearTimeout(timer);
   }, []);
-  const { setActivePopup, onButtonClick } = props; // Добавляем onButtonClick в props
-  console.log(props);
-
+  const { setActivePopup, onButtonClick } = props;
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -28,7 +23,6 @@ const CardShopPopup = (props) => {
         setActivePopup(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
@@ -37,18 +31,17 @@ const CardShopPopup = (props) => {
       props.handleClosePopup();
     }
     if (onButtonClick) {
-      onButtonClick(); // Вызываем callback при клике на кнопку
+      onButtonClick();
     }
   };
-  useEffect(() => {
-    if (props.selectedPhoto && props.selectedPhoto.image === QuestionMarkImg) {
-      console.log("Image matches QuestionMarkImg");
-      console.log(props.selectedPhoto.image);
-      console.log(QuestionMarkImg);
-    }
-  }, [props.selectedPhoto]);
+  // Определяем url изображения карточки.
   const imageUrl = props.selectedPhoto?.image
-    ? `https://api.zoomayor.io${props.selectedPhoto.image}`
+    ? props.selectedPhoto.id === "set" ||
+      props.selectedPhoto.id === "energy" ||
+      props.selectedPhoto.id === "money" ||
+      props.selectedPhoto.image === QuestionMarkImg
+      ? props.selectedPhoto.image
+      : `https://api.zoomayor.io${props.selectedPhoto.image}`
     : DefaultImg;
   return (
     <div ref={popupRef} className={`shop-popup ${props.active ? "show" : ""}`}>
@@ -72,37 +65,9 @@ const CardShopPopup = (props) => {
         </button>
         <div className="shop-popup__inner">
           <div className="shop-popup__image">
-            {/* <img
-              src={
-                props.selectedPhoto
-                  ? `${props.selectedPhoto.image}`
-                  : DefaultImg
-              }
-              alt={props.selectedPhoto?.title || ""}
-            /> */}
-            {/* <img
-              src={
-                item.id === "set" || item.id === "energy" || item.id === "money"
-                  ? item.image
-                  : `${item.image}`
-              }
-              alt=""
-              className="shop-card__Img"
-            /> */}
+            {/* Отображаем изображение карточки после заданной задержки */}
             {showImage && (
-              <img
-                src={
-                  props.selectedPhoto
-                    ? props.selectedPhoto.id === "set" ||
-                      props.selectedPhoto.id === "energy" ||
-                      props.selectedPhoto.id === "money" ||
-                      props.selectedPhoto.image === QuestionMarkImg
-                      ? props.selectedPhoto.image
-                      : `https://api.zoomayor.io${props.selectedPhoto.image}`
-                    : DefaultImg
-                }
-                alt={props.selectedPhoto?.title || ""}
-              />
+              <img src={imageUrl} alt={props.selectedPhoto?.title || ""} />
             )}
           </div>
           <div className="shop-popup__content">
@@ -111,9 +76,11 @@ const CardShopPopup = (props) => {
               <h3 className="shop-popup__title">Карта не открыта</h3>
             ) : (
               <>
+                {/* Заголовок карточки */}
                 <h3 className="shop-popup__title">
                   {props.selectedPhoto ? props.selectedPhoto.title : ""}
                 </h3>
+                {/* Описание карточки */}
                 <p className="shop-popup__text">
                   {props.selectedPhoto ? props.selectedPhoto.description : ""}
                   {props.selectedPhoto &&
@@ -123,10 +90,11 @@ const CardShopPopup = (props) => {
                       </span>
                     )}
                 </p>
+                {/* Дополнительная информация (например, заработок/час) */}
                 <div className="shop-popup__earn">
                   <div className="main-params__card f-center-center">
                     <div className="main-params__icon f-center-center">
-                      <img src={TimeIcon} alt="" />
+                      <img src={TimeIcon} alt="Icon времени" />
                     </div>
                     <p className="main-params__title">
                       {props.selectedPhoto?.hourly_income
@@ -138,24 +106,27 @@ const CardShopPopup = (props) => {
                     </p>
                   </div>
                 </div>
+                {/* Отображение основных параметров карточки */}
+                {props.selectedPhoto &&
+                  props.selectedPhoto.image !== QuestionMarkImg && (
+                    <div className="shop-popup__params">
+                      <ul className="friends-params f-center-center">
+                        <li className="friends-params__item f-center">
+                          <img src={StarIcon} alt="Icon опыта" />
+                          {props.selectedPhoto
+                            ? props.selectedPhoto.experience
+                            : ""}
+                        </li>
+                        <li className="friends-params__item f-center">
+                          <img src={CoinIcon} alt="Icon монет" />
+                          {props.selectedPhoto ? props.selectedPhoto.price : ""}
+                        </li>
+                      </ul>
+                    </div>
+                  )}
               </>
             )}
           </div>
-          {props.selectedPhoto &&
-            props.selectedPhoto.image !== QuestionMarkImg && (
-              <div className="shop-popup__params">
-                <ul className="friends-params f-center-center">
-                  <li className="friends-params__item f-center">
-                    <img src={StarIcon} alt="" />
-                    {props.selectedPhoto ? props.selectedPhoto.experience : ""}
-                  </li>
-                  <li className="friends-params__item f-center">
-                    <img src={CoinIcon} alt="" />
-                    {props.selectedPhoto ? props.selectedPhoto.price : ""}
-                  </li>
-                </ul>
-              </div>
-            )}
           <button
             type="button"
             className="shop-popup__btn"
@@ -174,5 +145,4 @@ const CardShopPopup = (props) => {
     </div>
   );
 };
-
 export default CardShopPopup;
