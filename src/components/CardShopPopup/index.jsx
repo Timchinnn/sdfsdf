@@ -5,6 +5,8 @@ import TimeIcon from "assets/img/time-icon.svg";
 import QuestionMarkImg from "assets/img/question-mark.png";
 import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
+import axios from "../../axios-controller";
+
 const CardShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);

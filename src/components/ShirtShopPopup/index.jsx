@@ -3,6 +3,8 @@ import "./styles.scss";
 import DefaultImg from "assets/img/default-img.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
+import axios from "../../axios-controller";
+
 const ShirtShopPopup = (props) => {
   console.log(props);
   const popupRef = useRef(null);

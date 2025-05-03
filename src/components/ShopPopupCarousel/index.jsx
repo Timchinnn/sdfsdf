@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import "./styles.scss";
+import axios from "../../axios-controller";
 
 // import DefaultImg from "assets/img/default-img.png";
 import TimeIcon from "assets/img/time-icon.svg";
@@ -9,7 +10,7 @@ import MainCarouselSet from "components/MainCarouselSet";
 import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
 
-const ShopPopupCarousel = (props) => {
+const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
   const popupRef = useRef(null);
   // const [nameCard, setNameCard] = useState(false);
   // const [DescrCard, setDescrCard] = useState(false);
