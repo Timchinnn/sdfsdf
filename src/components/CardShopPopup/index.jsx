@@ -42,7 +42,7 @@ const CardShopPopup = (props) => {
       props.selectedPhoto.id === "money" ||
       props.selectedPhoto.image === QuestionMarkImg
       ? props.selectedPhoto.image
-      : `https://api.zoomayor.io${props.selectedPhoto.image}`
+      : `https://api.zoomayor.io${props.selectedPhoto.image_url}`
     : DefaultImg;
   return (
     <div ref={popupRef} className={`shop-popup ${props.active ? "show" : ""}`}>
