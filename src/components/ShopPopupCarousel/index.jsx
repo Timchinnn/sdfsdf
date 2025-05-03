@@ -82,7 +82,7 @@ const ShopPopupCarousel = (props) => {
               {selectedCard
                 ? selectedCard.title
                 : props.selectedSet?.title || ""}
-            </h3>{" "}
+            </h3>
             <p className="shop-popup__text">
               {selectedCard
                 ? selectedCard.description
@@ -93,7 +93,12 @@ const ShopPopupCarousel = (props) => {
                 <div className="main-params__icon f-center-center">
                   <img src={TimeIcon} alt="" />
                 </div>
-                <p className="main-params__title">18,09 K/H</p>
+                <p className="main-params__title">
+                  {selectedCard
+                    ? selectedCard.hourly_income
+                    : props.selectedSet?.hourly_income || 0}{" "}
+                  K/H
+                </p>
               </div>
             </div>
           </div>
@@ -103,14 +108,14 @@ const ShopPopupCarousel = (props) => {
                 <img src={StarIcon} alt="" />
                 {selectedCard
                   ? selectedCard.experience
-                  : props.selectedSet?.experience || ""}{" "}
+                  : props.selectedSet?.experience || 0}{" "}
                 EXP
               </li>
               <li className="friends-params__item f-center">
                 <img src={CoinIcon} alt="" />
                 {selectedCard
                   ? selectedCard.price
-                  : props.selectedSet?.price || ""}
+                  : props.selectedSet?.price || 0}
               </li>
             </ul>
           </div>
