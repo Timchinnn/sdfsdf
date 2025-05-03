@@ -34,6 +34,7 @@ const CardShopPopup = (props) => {
       onButtonClick();
     }
   };
+  console.log(props.selectedPhoto);
   // Определяем url изображения карточки.
   const imageUrl = props.selectedPhoto?.image
     ? props.selectedPhoto.id === "set" ||
