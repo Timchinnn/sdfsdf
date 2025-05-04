@@ -160,7 +160,7 @@ const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
           <button
             type="button"
             className="shop-popup__btn"
-            onClick={props.handleClosePopup}
+            onClick={handleButtonClick()}
           >
             {!props.main ? "Купить" : "Ок"}
           </button>
