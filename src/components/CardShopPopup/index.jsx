@@ -36,10 +36,12 @@ const CardShopPopup = (props) => {
         console.error("Telegram ID not found");
         return;
       }
+      const price = parseFloat(props.selectedPhoto.price).toFixed(2);
+
       const response = await axios.post("/shop/buy-card", {
         telegram_id,
         card_id: props.selectedPhoto.id,
-        price: props.selectedPhoto.price,
+        price: price,
       });
       if (response.data.success) {
         props.handleClosePopup();
