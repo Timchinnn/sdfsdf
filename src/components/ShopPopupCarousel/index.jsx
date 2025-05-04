@@ -72,7 +72,7 @@ const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
     <div
       ref={popupRef}
       className={`shop-popup ${props.active ? "show" : ""}`}
-      style={{ padding: "0 24px" }}
+      style={{ padding: "0 7px" }}
     >
       <div className="shop-popup__wrapper">
         <button
