@@ -68,7 +68,7 @@ const CardShopPopup = (props) => {
         <button
           type="button"
           className="shop-popup__close"
-          onClick={handleButtonClick}
+          onClick={props.handleClosePopup}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
