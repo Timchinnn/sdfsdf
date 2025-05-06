@@ -39,16 +39,36 @@ const AddEditShopShirt = () => {
   };
   const handleSubmit = async () => {
     try {
+      if (!name || !price) {
+        alert("Пожалуйста, заполните все поля");
+        return;
+      }
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
+
       if (selectedImage) {
-        formData.append("image", selectedImage);
+        // Убедимся что selectedImage это File объект
+        if (selectedImage instanceof File) {
+          formData.append("image", selectedImage);
+        } else {
+          console.error("selectedImage is not a File object:", selectedImage);
+          alert("Ошибка при загрузке изображения");
+          return;
+        }
       }
       if (id) {
-        await axios.put(`/shop-shirts/${id}`, formData);
+        await axios.put(`/shop-shirts/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
       } else {
-        await axios.post("/shop-shirts", formData);
+        await axios.post("/shop-shirts", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
       }
       history.push("/shop-management");
     } catch (error) {
