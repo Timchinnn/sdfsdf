@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 import Avatar from "assets/img/avatar.png";
-import CardsIcon from "assets/img/cards-icon.png";
-import TaskIcon from "assets/img/task-icon.png";
-import BonusIcon from "assets/img/bonus-icon.png";
+import CardsIcon from "assets/img/card.png";
+import TaskIcon from "assets/img/vopros.png";
+import BonusIcon from "assets/img/sunduk.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import MoneyIcon from "assets/img/money-icon.svg";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
