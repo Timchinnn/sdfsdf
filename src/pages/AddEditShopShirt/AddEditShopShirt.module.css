@@ -1,11 +1,13 @@
 .contents {
-  padding: 24px;
+  /* padding: 24px; */
 }
 .mainContent {
   background: #ffffff;
-  border-radius: 16px;
+  /* border-radius: 16px; */
   padding: 24px;
   margin-bottom: 24px;
+  min-height: 100vh;
+  color: black;
 }
 .content {
   display: flex;

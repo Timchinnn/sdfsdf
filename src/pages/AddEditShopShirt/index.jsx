@@ -15,7 +15,7 @@ const AddEditShopShirt = () => {
     if (id) {
       const fetchShirt = async () => {
         try {
-          const response = await axios.get(`/api/shop-shirts/${id}`);
+          const response = await axios.get(`/shop-shirts/${id}`);
           const shirt = response.data;
           setName(shirt.name);
           setPrice(shirt.price);
@@ -46,9 +46,9 @@ const AddEditShopShirt = () => {
         formData.append("image", selectedImage);
       }
       if (id) {
-        await axios.put(`/api/shop-shirts/${id}`, formData);
+        await axios.put(`/shop-shirts/${id}`, formData);
       } else {
-        await axios.post("/api/shop-shirts", formData);
+        await axios.post("/shop-shirts", formData);
       }
       history.push("/shop-management");
     } catch (error) {
