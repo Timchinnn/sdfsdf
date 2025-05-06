@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 import Avatar from "assets/img/avatar.png";
-import CardsIcon from "assets/img/cards-icon.png";
-import TaskIcon from "assets/img/task-icon.png";
-import BonusIcon from "assets/img/bonus-icon.png";
+import CardsIcon from "assets/img/card.png";
+import TaskIcon from "assets/img/vopros.png";
+import BonusIcon from "assets/img/sunduk.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import MoneyIcon from "assets/img/money-icon.svg";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
@@ -262,7 +262,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
             <li className="main-menu__item">
               <NavLink to={routeSets()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img src={CardsIcon} alt="" />
+                  <img src={CardsIcon} alt="" style={{ width: "58px" }} />
                 </div>
                 <p className="main-menu__title">Сет</p>
               </NavLink>
@@ -270,7 +270,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
             <li className="main-menu__item">
               <NavLink to={routeTasks()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img src={TaskIcon} alt="" />
+                  <img src={TaskIcon} alt="" style={{ width: "58px" }} />
                 </div>
                 <p className="main-menu__title">Задания</p>
               </NavLink>
@@ -278,7 +278,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
             <li className="main-menu__item">
               <NavLink to={routeBonus()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img src={BonusIcon} alt="" />
+                  <img src={BonusIcon} alt="" style={{ width: "58px" }} />
                 </div>
                 <p className="main-menu__title">Бонус</p>
               </NavLink>
