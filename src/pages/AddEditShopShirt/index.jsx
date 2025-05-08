@@ -39,7 +39,7 @@ const AddEditShopShirt = () => {
   };
   const handleSubmit = async () => {
     try {
-      if (!name || !price) {
+      if (!name) {
         alert("Пожалуйста, заполните все поля");
         return;
       }
