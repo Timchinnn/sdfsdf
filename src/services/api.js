@@ -6,6 +6,23 @@ export const userService = {
   updateSettings: (userId, settings) =>
     axios.put("/user/settings", { userId, settings }),
 };
+export const shopShirtService = {
+  getAllShopShirts: () => axios.get("/shop-shirts"),
+  getShopShirt: (id) => axios.get(`/shop-shirts/${id}`),
+  createShopShirt: (formData) =>
+    axios.post("/shop-shirts", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+  updateShopShirt: (id, formData) =>
+    axios.put(`/shop-shirts/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+  deleteShopShirt: (id) => axios.delete(`/shop-shirts/${id}`),
+};
 export const userInitService = {
   // Инициализация пользователя
   initUser: (telegram_id, username) =>

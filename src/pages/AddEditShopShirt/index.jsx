@@ -8,7 +8,6 @@ const AddEditShopShirt = () => {
   const { id } = useParams();
   const history = useHistory();
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   useEffect(() => {
@@ -18,7 +17,6 @@ const AddEditShopShirt = () => {
           const response = await axios.get(`/shop-shirts/${id}`);
           const shirt = response.data;
           setName(shirt.name);
-          setPrice(shirt.price);
           if (shirt.image_url) {
             setImagePreview(`https://api.zoomayor.io${shirt.image_url}`);
           }
@@ -39,36 +37,19 @@ const AddEditShopShirt = () => {
   };
   const handleSubmit = async () => {
     try {
-      if (!name || !price) {
-        alert("Пожалуйста, заполните все поля");
+      if (!name) {
+        alert("Пожалуйста, заполните название");
         return;
       }
       const formData = new FormData();
       formData.append("name", name);
-      formData.append("price", price);
-
       if (selectedImage) {
-        // Убедимся что selectedImage это File объект
-        if (selectedImage instanceof File) {
-          formData.append("image", selectedImage);
-        } else {
-          console.error("selectedImage is not a File object:", selectedImage);
-          alert("Ошибка при загрузке изображения");
-          return;
-        }
+        formData.append("image", selectedImage);
       }
       if (id) {
-        await axios.put(`/shop-shirts/${id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        await axios.put(`/shop-shirts/${id}`, formData);
       } else {
-        await axios.post("/shop-shirts", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        await axios.post("/shop-shirts", formData);
       }
       history.push("/shop-management");
     } catch (error) {
@@ -128,13 +109,6 @@ const AddEditShopShirt = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-            />
-            <h2 className={styles.title}>Цена</h2>
-            <input
-              className={styles.inputCard}
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
             />
           </div>
           <button className={styles.saveButton} onClick={handleSubmit}>
