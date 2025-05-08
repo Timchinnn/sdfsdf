@@ -173,7 +173,6 @@ const ShopManagement = () => {
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{shirt.name}</h3>
-                  <p>Цена: {shirt.price}</p>
                 </div>
                 <button
                   style={{ background: "red" }}
