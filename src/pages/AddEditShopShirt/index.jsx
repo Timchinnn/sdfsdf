@@ -45,7 +45,7 @@ const AddEditShopShirt = () => {
       }
       const formData = new FormData();
       formData.append("name", name);
-      formData.append("price", price);
+      // formData.append("price", price);
 
       if (selectedImage) {
         // Убедимся что selectedImage это File объект
