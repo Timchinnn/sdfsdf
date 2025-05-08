@@ -11,8 +11,8 @@ const ShirtManagement = () => {
   const [cardCost, setCardCost] = useState("");
   const [selectedShirt, setSelectedShirt] = useState(null);
   useEffect(() => {
-    cardBackService
-      .shopShirtService()
+    shopShirtService
+      .getAllShopShirts()
       .then((response) => setCardBacks(response.data))
       .catch((error) => console.error("Ошибка получения рубашек:", error));
   }, []);
