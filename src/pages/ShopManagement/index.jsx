@@ -14,6 +14,7 @@ const cardBackStyles = {
 const ShopManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [shirts, setShirts] = useState([]);
+  const [shopShirts, setShopShirts] = useState([]);
   const [shopCards, setShopCards] = useState([]);
   const [shopSets, setShopSets] = useState([]);
   useEffect(() => {
@@ -26,6 +27,17 @@ const ShopManagement = () => {
       }
     };
     fetchShopSets();
+  }, []);
+  useEffect(() => {
+    const fetchShopShirts = async () => {
+      try {
+        const response = await axios.get("/shop-shirts");
+        setShopShirts(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке рубашек:", error);
+      }
+    };
+    fetchShopShirts();
   }, []);
   useEffect(() => {
     const fetchShopCards = async () => {
@@ -124,6 +136,44 @@ const ShopManagement = () => {
           </NavLink>
         </div>
       </div>
+      <div className={styles.mainContent}>
+        <h2>Рубашки</h2>
+        <div className={styles.cardsList}>
+          {shopShirts.map((shirt) => (
+            <div key={shirt.id} className={styles.cardItem}>
+              <div className={styles.cardItemImg}>
+                <img
+                  src={`https://api.zoomayor.io${shirt.image_url}`}
+                  alt={shirt.name}
+                />
+              </div>
+              <div className={styles.cardInfo}>
+                <h3>{shirt.name}</h3>
+                <p>Цена: {shirt.price}</p>
+              </div>
+              <button
+                style={{ background: "red" }}
+                onClick={() => {
+                  axios
+                    .delete(`/shop-shirts/${shirt.id}`)
+                    .then(() => {
+                      setShopShirts(
+                        shopShirts.filter((s) => s.id !== shirt.id)
+                      );
+                    })
+                    .catch((error) => {
+                      console.error("Ошибка при удалении рубашки:", error);
+                      alert("Ошибка при удалении рубашки");
+                    });
+                }}
+              >
+                Удалить
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Аналогичные секции для карт и наборов */}
       <div className={styles.mainContent}>
         <h2>Карты</h2>
