@@ -38,7 +38,7 @@ const ShirtManagement = () => {
       const payload = {
         name: selectedShirt.name,
         price: cardCost,
-        imageUrl: selectedShirt.image,
+        imageUrl: selectedShirt.image_url,
       };
       const response = await axios.post("/shirts", payload, {
         headers: { "Content-Type": "application/json" },
