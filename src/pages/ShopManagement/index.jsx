@@ -13,7 +13,12 @@ const cardBackStyles = {
 };
 
 const ShopManagement = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQueries, setSearchQueries] = useState({
+    shirts: "",
+    shopShirts: "",
+    shopCards: "",
+    shopSets: "",
+  });
   const [shirts, setShirts] = useState([]);
   const [shopShirts, setShopShirts] = useState([]);
   const [shopCards, setShopCards] = useState([]);
@@ -86,49 +91,61 @@ const ShopManagement = () => {
       image: "/img/set1.jpg",
     },
   ]);
+  const handleSearchChange = (type, value) => {
+    setSearchQueries((prev) => ({
+      ...prev,
+      [type]: value,
+    }));
+  };
   return (
     <div className={styles.contents}>
       <div className={styles.mainContent}>
         <h2>Рубашки</h2>
         <div className={styles.cardsList}>
-          {shirts.map((shirt) => (
-            <div key={shirt.id} className={styles.cardItem}>
-              <div className={styles.cardItemImg}>
-                <img
-                  src={`https://api.zoomayor.io${shirt.image_url}`}
-                  alt={shirt.name}
-                />
+          {shirts
+            .filter((shirt) =>
+              shirt.name
+                .toLowerCase()
+                .includes(searchQueries.shirts.toLowerCase())
+            )
+            .map((shirt) => (
+              <div key={shirt.id} className={styles.cardItem}>
+                <div className={styles.cardItemImg}>
+                  <img
+                    src={`https://api.zoomayor.io${shirt.image_url}`}
+                    alt={shirt.name}
+                  />
+                </div>
+                <div className={styles.cardInfo}>
+                  <h3>{shirt.name}</h3>
+                  <p>Цена: {shirt.price}</p>
+                </div>
+                <button
+                  style={{ background: "red" }}
+                  onClick={() => {
+                    axios
+                      .delete(`/shirts/${shirt.id}`)
+                      .then(() => {
+                        setShirts(shirts.filter((s) => s.id !== shirt.id));
+                      })
+                      .catch((error) => {
+                        console.error("Ошибка при удалении рубашки:", error);
+                        alert("Ошибка при удалении рубашки");
+                      });
+                  }}
+                >
+                  Удалить
+                </button>
               </div>
-              <div className={styles.cardInfo}>
-                <h3>{shirt.name}</h3>
-                <p>Цена: {shirt.price}</p>
-              </div>
-              <button
-                style={{ background: "red" }}
-                onClick={() => {
-                  axios
-                    .delete(`/shirts/${shirt.id}`)
-                    .then(() => {
-                      setShirts(shirts.filter((s) => s.id !== shirt.id));
-                    })
-                    .catch((error) => {
-                      console.error("Ошибка при удалении рубашки:", error);
-                      alert("Ошибка при удалении рубашки");
-                    });
-                }}
-              >
-                Удалить
-              </button>
-            </div>
-          ))}
+            ))}
         </div>
         <div className={styles.settings}>
           <div className={styles.searchContainer}>
             <input
               type="text"
               placeholder="Поиск по названию"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQueries.shirts}
+              onChange={(e) => handleSearchChange("shirts", e.target.value)}
               className={styles.searchInput}
             />
           </div>
@@ -138,11 +155,13 @@ const ShopManagement = () => {
         </div>
       </div>
       <div className={styles.mainContent}>
-        <h2>Рубашки</h2>
+        <h2>Рубашки в магазине</h2>
         <div className={styles.cardsList}>
           {shopShirts
             .filter((shirt) =>
-              shirt.name.toLowerCase().includes(searchQuery.toLowerCase())
+              shirt.name
+                .toLowerCase()
+                .includes(searchQueries.shopShirts.toLowerCase())
             )
             .map((shirt) => (
               <div key={shirt.id} className={styles.cardItem}>
@@ -182,8 +201,8 @@ const ShopManagement = () => {
             <input
               type="text"
               placeholder="Поиск по названию"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQueries.shopShirts}
+              onChange={(e) => handleSearchChange("shopShirts", e.target.value)}
               className={styles.searchInput}
             />
           </div>
@@ -192,14 +211,14 @@ const ShopManagement = () => {
           </NavLink>
         </div>
       </div>
-
-      {/* Аналогичные секции для карт и наборов */}
       <div className={styles.mainContent}>
         <h2>Карты</h2>
         <div className={styles.cardsList}>
           {shopCards
             .filter((card) =>
-              card.name.toLowerCase().includes(searchQuery.toLowerCase())
+              card.name
+                .toLowerCase()
+                .includes(searchQueries.shopCards.toLowerCase())
             )
             .map((card) => (
               <div key={card.id} className={styles.cardItem}>
@@ -238,8 +257,8 @@ const ShopManagement = () => {
             <input
               type="text"
               placeholder="Поиск по названию"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQueries.shopCards}
+              onChange={(e) => handleSearchChange("shopCards", e.target.value)}
               className={styles.searchInput}
             />
           </div>
@@ -253,7 +272,9 @@ const ShopManagement = () => {
         <div className={styles.cardsList}>
           {shopSets
             .filter((set) =>
-              set.name.toLowerCase().includes(searchQuery.toLowerCase())
+              set.name
+                .toLowerCase()
+                .includes(searchQueries.shopSets.toLowerCase())
             )
             .map((set) => (
               <div key={set.id} className={styles.cardItem}>
@@ -289,8 +310,8 @@ const ShopManagement = () => {
             <input
               type="text"
               placeholder="Поиск по названию"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQueries.shopSets}
+              onChange={(e) => handleSearchChange("shopSets", e.target.value)}
               className={styles.searchInput}
             />
           </div>
