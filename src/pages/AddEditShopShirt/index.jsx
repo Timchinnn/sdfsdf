@@ -39,14 +39,16 @@ const AddEditShopShirt = () => {
   };
   const handleSubmit = async () => {
     try {
-      if (!name) {
-        alert("Пожалуйста, заполните название");
+      if (!name || !price) {
+        alert("Пожалуйста, заполните все поля");
         return;
       }
       const formData = new FormData();
       formData.append("name", name);
+      formData.append("price", price);
 
       if (selectedImage) {
+        // Убедимся что selectedImage это File объект
         if (selectedImage instanceof File) {
           formData.append("image", selectedImage);
         } else {
@@ -55,20 +57,23 @@ const AddEditShopShirt = () => {
           return;
         }
       }
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
       if (id) {
-        await axios.put(`/shop-shirts/${id}`, formData, config);
+        await axios.put(`/shop-shirts/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
       } else {
-        await axios.post("/shop-shirts", formData, config);
+        await axios.post("/shop-shirts", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
       }
       history.push("/shop-management");
     } catch (error) {
       console.error("Error saving shirt:", error);
-      alert(error.response?.data?.message || "Ошибка при сохранении рубашки");
+      alert(error.response?.data?.message || "Error saving shirt");
     }
   };
   return (
@@ -124,13 +129,13 @@ const AddEditShopShirt = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            {/* <h2 className={styles.title}>Цена</h2>
+            <h2 className={styles.title}>Цена</h2>
             <input
               className={styles.inputCard}
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-            /> */}
+            />
           </div>
           <button className={styles.saveButton} onClick={handleSubmit}>
             Сохранить
