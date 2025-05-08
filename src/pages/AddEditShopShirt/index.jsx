@@ -8,7 +8,7 @@ const AddEditShopShirt = () => {
   const { id } = useParams();
   const history = useHistory();
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  // const [price, setPrice] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   useEffect(() => {
@@ -18,7 +18,7 @@ const AddEditShopShirt = () => {
           const response = await axios.get(`/shop-shirts/${id}`);
           const shirt = response.data;
           setName(shirt.name);
-          setPrice(shirt.price);
+          // setPrice(shirt.price);
           if (shirt.image_url) {
             setImagePreview(`https://api.zoomayor.io${shirt.image_url}`);
           }
@@ -39,13 +39,13 @@ const AddEditShopShirt = () => {
   };
   const handleSubmit = async () => {
     try {
-      if (!name || !price) {
+      if (!name) {
         alert("Пожалуйста, заполните все поля");
         return;
       }
       const formData = new FormData();
       formData.append("name", name);
-      formData.append("price", price);
+      // formData.append("price", price);
 
       if (selectedImage) {
         // Убедимся что selectedImage это File объект
@@ -129,13 +129,13 @@ const AddEditShopShirt = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <h2 className={styles.title}>Цена</h2>
+            {/* <h2 className={styles.title}>Цена</h2>
             <input
               className={styles.inputCard}
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-            />
+            /> */}
           </div>
           <button className={styles.saveButton} onClick={handleSubmit}>
             Сохранить
