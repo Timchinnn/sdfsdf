@@ -7,6 +7,7 @@ import { routeShirtManagement } from "pages/ShirtManagement";
 import { routeAddEditShopCard } from "pages/AddEditShopCard";
 import { routeAddEditShopSet } from "pages/AddEditShopSet";
 import axios from "../../axios-controller";
+import { routeAddEditShopShirt } from "pages/AddEditShopShirt";
 const cardBackStyles = {
   default: { image: DefaultImg },
 };
@@ -139,38 +140,56 @@ const ShopManagement = () => {
       <div className={styles.mainContent}>
         <h2>Рубашки</h2>
         <div className={styles.cardsList}>
-          {shopShirts.map((shirt) => (
-            <div key={shirt.id} className={styles.cardItem}>
-              <div className={styles.cardItemImg}>
-                <img
-                  src={`https://api.zoomayor.io${shirt.image_url}`}
-                  alt={shirt.name}
-                />
+          {shopShirts
+            .filter((shirt) =>
+              shirt.name.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            .map((shirt) => (
+              <div key={shirt.id} className={styles.cardItem}>
+                <div className={styles.cardItemImg}>
+                  <img
+                    src={`https://api.zoomayor.io${shirt.image_url}`}
+                    alt={shirt.name}
+                  />
+                </div>
+                <div className={styles.cardInfo}>
+                  <h3>{shirt.name}</h3>
+                  <p>Цена: {shirt.price}</p>
+                </div>
+                <button
+                  style={{ background: "red" }}
+                  onClick={() => {
+                    axios
+                      .delete(`/shop-shirts/${shirt.id}`)
+                      .then(() => {
+                        setShopShirts(
+                          shopShirts.filter((s) => s.id !== shirt.id)
+                        );
+                      })
+                      .catch((error) => {
+                        console.error("Ошибка при удалении рубашки:", error);
+                        alert("Ошибка при удалении рубашки");
+                      });
+                  }}
+                >
+                  Удалить
+                </button>
               </div>
-              <div className={styles.cardInfo}>
-                <h3>{shirt.name}</h3>
-                <p>Цена: {shirt.price}</p>
-              </div>
-              <button
-                style={{ background: "red" }}
-                onClick={() => {
-                  axios
-                    .delete(`/shop-shirts/${shirt.id}`)
-                    .then(() => {
-                      setShopShirts(
-                        shopShirts.filter((s) => s.id !== shirt.id)
-                      );
-                    })
-                    .catch((error) => {
-                      console.error("Ошибка при удалении рубашки:", error);
-                      alert("Ошибка при удалении рубашки");
-                    });
-                }}
-              >
-                Удалить
-              </button>
-            </div>
-          ))}
+            ))}
+        </div>
+        <div className={styles.settings}>
+          <div className={styles.searchContainer}>
+            <input
+              type="text"
+              placeholder="Поиск по названию"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
+          <NavLink to={routeAddEditShopShirt()} style={{ width: "40%" }}>
+            <button className={styles.addButton}>Добавить рубашку</button>
+          </NavLink>
         </div>
       </div>
 
