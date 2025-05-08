@@ -40,15 +40,13 @@ const AddEditShopShirt = () => {
   const handleSubmit = async () => {
     try {
       if (!name) {
-        alert("Пожалуйста, заполните все поля");
+        alert("Пожалуйста, заполните название");
         return;
       }
       const formData = new FormData();
       formData.append("name", name);
-      // formData.append("price", price);
 
       if (selectedImage) {
-        // Убедимся что selectedImage это File объект
         if (selectedImage instanceof File) {
           formData.append("image", selectedImage);
         } else {
@@ -57,23 +55,20 @@ const AddEditShopShirt = () => {
           return;
         }
       }
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
       if (id) {
-        await axios.put(`/shop-shirts/${id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        await axios.put(`/shop-shirts/${id}`, formData, config);
       } else {
-        await axios.post("/shop-shirts", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        await axios.post("/shop-shirts", formData, config);
       }
       history.push("/shop-management");
     } catch (error) {
       console.error("Error saving shirt:", error);
-      alert(error.response?.data?.message || "Error saving shirt");
+      alert(error.response?.data?.message || "Ошибка при сохранении рубашки");
     }
   };
   return (
