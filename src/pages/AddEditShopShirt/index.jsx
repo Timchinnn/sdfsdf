@@ -38,12 +38,16 @@ const AddEditShopShirt = () => {
   };
   const handleSubmit = async () => {
     try {
-      if (!name) {
-        alert("Пожалуйста, заполните название");
-        return;
+      // Валидация входных данных
+      if (!name.trim()) {
+        throw new Error("Название рубашки обязательно");
+      }
+      if (!selectedImage && !id) {
+        throw new Error("Изображение обязательно для новой рубашки");
       }
       const formData = new FormData();
-      formData.append("name", name);
+      formData.append("name", name.trim());
+
       if (selectedImage) {
         formData.append("image", selectedImage);
       }
@@ -63,7 +67,11 @@ const AddEditShopShirt = () => {
       history.push("/shop-management");
     } catch (error) {
       console.error("Error saving shirt:", error);
-      alert(error.response?.data?.message || "Error saving shirt");
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Ошибка при сохранении рубашки";
+      alert(errorMessage);
     }
   };
   return (
