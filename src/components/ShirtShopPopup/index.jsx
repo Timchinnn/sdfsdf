@@ -27,31 +27,29 @@ const ShirtShopPopup = (props) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
   const handleButtonClick = async () => {
-    if (props.handleClosePopup) {
-      console.log(1);
-      try {
-        const tg = window.Telegram.WebApp;
-        const telegram_id = tg.initDataUnsafe?.user?.id;
-
-        if (!telegram_id) {
-          console.error("Telegram ID not found");
-          return;
-        }
-        const response = await axios.post("/shop/buy-shirt", {
-          telegram_id,
-          shirt_id: props.selectedPhoto.id,
-          price: props.selectedPhoto.price,
-        });
-        if (response.data.success) {
-          props.handleClosePopup();
-          if (onButtonClick) {
-            onButtonClick();
-          }
-        }
-      } catch (error) {
-        console.error("Error buying shirt:", error);
-        alert(error.response?.data?.message || "Error purchasing shirt");
+    try {
+      const tg = window.Telegram.WebApp;
+      const telegram_id = tg.initDataUnsafe?.user?.id;
+      if (!telegram_id) {
+        console.error("Telegram ID not found");
+        return;
       }
+      const response = await axios.post("/shop/buy-shirt", {
+        telegram_id,
+        shirt_id: props.selectedPhoto.id,
+        price: props.selectedPhoto.price,
+      });
+      if (response.data.success) {
+        if (props.handleClosePopup) {
+          props.handleClosePopup();
+        }
+        if (onButtonClick) {
+          onButtonClick();
+        }
+      }
+    } catch (error) {
+      console.error("Error buying shirt:", error);
+      alert(error.response?.data?.message || "Error purchasing shirt");
     }
   };
   return (
