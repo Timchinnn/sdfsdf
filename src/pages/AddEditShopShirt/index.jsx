@@ -129,13 +129,13 @@ const AddEditShopShirt = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <h2 className={styles.title}>Цена</h2>
+            {/* <h2 className={styles.title}>Цена</h2>
             <input
               className={styles.inputCard}
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-            />
+            /> */}
           </div>
           <button className={styles.saveButton} onClick={handleSubmit}>
             Сохранить
