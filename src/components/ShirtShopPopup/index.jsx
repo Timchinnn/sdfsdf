@@ -28,6 +28,7 @@ const ShirtShopPopup = (props) => {
   }, [setActivePopup]);
   const handleButtonClick = async () => {
     if (props.handleClosePopup) {
+      console.log(1);
       try {
         const tg = window.Telegram.WebApp;
         const telegram_id = tg.initDataUnsafe?.user?.id;
