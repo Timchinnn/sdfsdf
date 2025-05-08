@@ -74,7 +74,7 @@ const ShirtManagement = () => {
               <div className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
                   <img
-                    src={`https://api.zoomayor.io${selectedShirt.image}`}
+                    src={`https://api.zoomayor.io${selectedShirt.image_url}`}
                     alt={selectedShirt.name}
                   />
                 </div>
@@ -102,7 +102,7 @@ const ShirtManagement = () => {
                       <div key={cb.id} className={styles.cardItem}>
                         <div className={styles.cardItemImg}>
                           <img
-                            src={`https://api.zoomayor.io${cb.image}`}
+                            src={`https://api.zoomayor.io${cb.image_url}`}
                             alt={cb.name}
                           />
                         </div>
