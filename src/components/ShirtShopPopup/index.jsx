@@ -37,7 +37,7 @@ const ShirtShopPopup = (props) => {
       const response = await axios.post("/shop/buy-shirt", {
         telegram_id,
         shirt_id: props.selectedPhoto.id,
-        price: props.selectedPhoto.price,
+        price: parseFloat(props.selectedPhoto.price).toFixed(2), // Обновлено для корректной обработки десятичных цен
       });
       if (response.data.success) {
         if (props.handleClosePopup) {
