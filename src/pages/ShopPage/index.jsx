@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import routeShop from "./routes";
 import MainSection from "components/MainSection";
 import DefaultImg from "assets/img/default-img.png";
@@ -183,7 +183,9 @@ const ShopPage = () => {
                 </div>
                 <div className="shop-category">
                   <div className="shop-category__item block-style">
-                    {shopSets.length > 0 && (
+                    {shopSets.filter((set) =>
+                      set.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    ).length > 0 && (
                       <h2 className="section-content__title">Наборы карт</h2>
                     )}
                     <ul
@@ -222,7 +224,9 @@ const ShopPage = () => {
                           </li>
                         ))}
                     </ul>
-                    {shopCards.length > 0 && (
+                    {shopCards.filter((card) =>
+                      card.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    ).length > 0 && (
                       <h2 className="section-content__title">Карты</h2>
                     )}
                     <ul
@@ -261,7 +265,11 @@ const ShopPage = () => {
                           </li>
                         ))}
                     </ul>
-                    {shirts.length > 0 && (
+                    {shirts.filter((shirt) =>
+                      shirt.name
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    ).length > 0 && (
                       <h2 className="section-content__title">Рубашки карт</h2>
                     )}
                     <ul
