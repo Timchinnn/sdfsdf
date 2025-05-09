@@ -58,7 +58,7 @@ const ShirtShopPopup = (props) => {
         <button
           type="button"
           className="shop-popup__close"
-          onClick={handleButtonClick}
+          onClick={props.handleClosePopup}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -97,13 +97,7 @@ const ShirtShopPopup = (props) => {
           <button
             type="button"
             className="shop-popup__btn"
-            onClick={() => {
-              if (props.main) {
-                handleButtonClick();
-              } else {
-                props.handleClosePopup();
-              }
-            }}
+            onClick={handleButtonClick}
           >
             {!props.main ? "Купить" : "Ок"}
           </button>
