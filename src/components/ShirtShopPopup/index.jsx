@@ -99,9 +99,9 @@ const ShirtShopPopup = (props) => {
             className="shop-popup__btn"
             onClick={() => {
               if (props.main) {
-                handleButtonClick;
+                handleButtonClick();
               } else {
-                props.handleClosePopup;
+                props.handleClosePopup();
               }
             }}
           >
