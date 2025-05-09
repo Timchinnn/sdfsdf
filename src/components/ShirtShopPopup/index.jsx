@@ -34,10 +34,22 @@ const ShirtShopPopup = (props) => {
         console.error("Telegram ID not found");
         return;
       }
+      // First check if user already owns this shirt
+      const checkResponse = await axios.get(`/user/${telegram_id}/shirts`);
+      const userShirts = checkResponse.data;
+
+      if (userShirts.some((shirt) => shirt.id === props.selectedPhoto.id)) {
+        tg.showPopup({
+          title: "Ошибка",
+          message: "У вас уже есть эта рубашка",
+          buttons: [{ type: "ok" }],
+        });
+        return;
+      }
       const response = await axios.post("/shop/buy-shirt", {
         telegram_id,
         shirt_id: props.selectedPhoto.id,
-        price: parseFloat(props.selectedPhoto.price).toFixed(2), // Обновлено для корректной обработки десятичных цен
+        price: parseFloat(props.selectedPhoto.price).toFixed(2),
       });
       if (response.data.success) {
         if (props.handleClosePopup) {
