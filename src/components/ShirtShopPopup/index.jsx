@@ -58,7 +58,7 @@ const ShirtShopPopup = (props) => {
         <button
           type="button"
           className="shop-popup__close"
-          onClick={props.handleClosePopup()}
+          onClick={props.handleClosePopup}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -99,9 +99,9 @@ const ShirtShopPopup = (props) => {
             className="shop-popup__btn"
             onClick={() => {
               if (props.main) {
-                handleButtonClick();
+                handleButtonClick;
               } else {
-                props.handleClosePopup();
+                props.handleClosePopup;
               }
             }}
           >
