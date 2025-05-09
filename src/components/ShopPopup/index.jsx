@@ -90,10 +90,7 @@ const ShopPopup = (props) => {
               className="shop-card__Img"
             /> */}
             {showImage && (
-              <img
-                src={`https://api.zoomayor.io${props.selectedPhoto.image}`}
-                alt={props.selectedPhoto?.title || ""}
-              />
+              <img src={imageUrl} alt={props.selectedPhoto?.title || ""} />
             )}
           </div>
           <div className="shop-popup__content">
