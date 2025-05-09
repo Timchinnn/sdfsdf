@@ -374,7 +374,7 @@ const ShopPage = () => {
                                     type: "shirt",
                                     id: shirt.id,
                                     name: shirt.title,
-                                    image: shirt.image_url,
+                                    image: shirt.image_url, // Используем image_url вместо image
                                   })
                                 }
                               >
