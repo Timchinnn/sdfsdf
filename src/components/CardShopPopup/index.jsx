@@ -14,7 +14,7 @@ const CardShopPopup = (props) => {
     // Если нужно показывать изображение сразу, можно убрать задержку или уменьшить время
     const timer = setTimeout(() => {
       setShowImage(true);
-    }, 100);
+    }, 50);
     return () => clearTimeout(timer);
   }, []);
   const { setActivePopup, onButtonClick } = props;
