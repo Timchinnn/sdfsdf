@@ -38,7 +38,7 @@ const CardShopPopup = (props) => {
       }
       const response = await axios.post("/shop/buy-card", {
         telegram_id,
-        card_id: props.selectedPhoto.card_id,
+        card_id: props.selectedPhoto.id,
         price: props.selectedPhoto.price,
       });
       if (response.data.success) {
