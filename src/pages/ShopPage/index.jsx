@@ -157,7 +157,13 @@ const ShopPage = () => {
   };
   const handleFilter = () => {
     const allItems = [
-      ...shopCards,
+      ...shopCards.map((card) => ({
+        id: card.id,
+        title: card.name,
+        price: card.price,
+        type: "cards",
+        image: card.image_url || DefaultImg,
+      })),
       ...shopSets.map((set) => ({
         id: set.id,
         title: set.name,
@@ -177,12 +183,7 @@ const ShopPage = () => {
       const priceMatches =
         (!priceFrom || item.price >= Number(priceFrom)) &&
         (!priceTo || item.price <= Number(priceTo));
-
-      const typeMatches =
-        filterType === "all" ||
-        (filterType === "sets" && item.type === "sets") ||
-        (filterType === "cards" && !item.type) ||
-        (filterType === "shirts" && item.type === "shirts");
+      const typeMatches = filterType === "all" || item.type === filterType;
       return priceMatches && typeMatches;
     });
     setFilteredItems(filtered);
