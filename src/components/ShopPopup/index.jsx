@@ -19,6 +19,7 @@ const ShopPopup = (props) => {
     return () => clearTimeout(timer);
   }, []);
   const { setActivePopup, onButtonClick } = props; // Добавляем onButtonClick в props
+  console.log(props.selectedPhoto.image);
   console.log(props);
 
   useEffect(() => {
