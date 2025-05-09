@@ -62,29 +62,37 @@ const ShopPage = () => {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const policeData = await peopleService.getPolicePhotos();
+        // Fetch all items
         const allItems = [
-          ...policeData,
+          ...shopCards.map((card) => ({
+            id: card.id,
+            title: card.name,
+            price: card.price,
+            type: "cards",
+            image: card.image_url || DefaultImg,
+          })),
           ...shopSets.map((set) => ({
             id: set.id,
             title: set.name,
             price: set.price,
+            type: "sets",
             image: set.image_url || DefaultImg,
           })),
           ...shirts.map((shirt) => ({
             id: shirt.id,
             title: shirt.name,
             price: shirt.price,
+            type: "shirts",
             image: shirt.image_url || DefaultImg,
           })),
         ];
-        setFilteredItems(allItems);
+        setFilteredItems(allItems); // Set all items by default
       } catch (error) {
         console.error(error);
       }
     };
     fetchPhotos();
-  }, [shopSets, shirts]);
+  }, [shopSets, shirts, shopCards]);
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
