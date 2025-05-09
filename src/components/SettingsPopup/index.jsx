@@ -50,7 +50,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
           }
         }
       } catch (error) {
-        console.error("Error fetching purchased shirts:", error);
+        console.error("Error fetching purchased shirts1:", error);
       }
     };
     fetchPurchasedShirts();
