@@ -17,8 +17,7 @@ const ShopPage = () => {
   const tgUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "";
   const isSpecialUser = tgUserId === 7241281378 || tgUserId === 467518658;
   const [activePopup, setActivePopup] = useState(false);
-  const [activeShirtPopup, setActiveShirtPopup] = useState(false);
-  const [selectedShirt, setSelectedShirt] = useState(null);
+
   const [activePopupCarousel, setActivePopupCarousel] = useState(false);
   const [activePopupFilter, setActivePopupFilter] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -119,13 +118,8 @@ const ShopPage = () => {
   };
   const handleOpenPopup = (item) => {
     document.documentElement.classList.add("fixed");
-    if (item.type === "shirt") {
-      setSelectedShirt(item);
-      setActiveShirtPopup(true);
-    } else {
-      setActivePopup(true);
-      setSelectedId(item);
-    }
+    setActivePopup(true);
+    setSelectedId(item);
   };
   const handleClosePopup = () => {
     document.documentElement.classList.remove("fixed");
@@ -542,17 +536,6 @@ const ShopPage = () => {
           setActivePopup={setActivePopupCarousel}
           handleClosePopup={handleClosePopupCarousel}
           selectedSet={selectedId}
-        />
-      )}
-      {activeShirtPopup && (
-        <ShirtShopPopup
-          active={activeShirtPopup}
-          setActivePopup={setActiveShirtPopup}
-          handleClosePopup={() => {
-            document.documentElement.classList.remove("fixed");
-            setActiveShirtPopup(false);
-          }}
-          selectedPhoto={selectedShirt}
         />
       )}
       <MobileNav />
