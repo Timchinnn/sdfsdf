@@ -34,6 +34,18 @@ const ShirtShopPopup = (props) => {
         console.error("Telegram ID not found");
         return;
       }
+      // Проверяем, есть ли у пользователя уже эта рубашка
+      const existingShirtResponse = await axios.get(
+        `/user/${telegram_id}/shirts`
+      );
+      const existingShirts = existingShirtResponse.data;
+      const shirtAlreadyOwned = existingShirts.some(
+        (shirt) => shirt.id === props.selectedPhoto.id
+      );
+      if (shirtAlreadyOwned) {
+        alert("У вас уже есть такая рубашка");
+        return;
+      }
       const response = await axios.post("/shop/buy-shirt", {
         telegram_id,
         shirt_id: props.selectedPhoto.id,
