@@ -27,6 +27,8 @@ const ShirtShopPopup = (props) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
   const handleButtonClick = async () => {
+    console.log(props);
+
     try {
       const tg = window.Telegram.WebApp;
       const telegram_id = tg.initDataUnsafe?.user?.id;
