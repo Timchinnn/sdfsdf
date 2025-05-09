@@ -43,7 +43,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         const tg = window.Telegram.WebApp;
         if (tg?.initDataUnsafe?.user?.id) {
           const response = await axios.get(
-            `/api/user/${tg.initDataUnsafe.user.id}/shirts`
+            `/user/${tg.initDataUnsafe.user.id}/shirts`
           );
           if (response.data && response.data.shirts) {
             setPurchasedShirts(response.data.shirts);
