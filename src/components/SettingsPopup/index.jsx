@@ -8,11 +8,13 @@ import { setTheme, setCardBack } from "../../redux/actions";
 import { routeAdmin } from "pages/AdminPanel";
 import { NavLink } from "react-router-dom";
 import { cardBackService } from "services/api";
+import axios from "../../axios-controller";
 
 // import { setTheme } from "../../redux/actions";
 
 const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const dispatch = useDispatch();
+  const [purchasedShirts, setPurchasedShirts] = useState([]);
 
   const [cardBackStyle, setCardBackStyle] = useState("default");
   const [cardBacks, setCardBacks] = useState([]);
@@ -36,6 +38,24 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
 
     loadUserCardBack();
   }, [dispatch]);
+  useEffect(() => {
+    const fetchPurchasedShirts = async () => {
+      try {
+        const tg = window.Telegram.WebApp;
+        if (tg?.initDataUnsafe?.user?.id) {
+          const response = await axios.get(
+            `/user/${tg.initDataUnsafe.user.id}/shirts`
+          );
+          if (response.data && response.data.shirts) {
+            setPurchasedShirts(response.data.shirts);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching purchased shirts:", error);
+      }
+    };
+    fetchPurchasedShirts();
+  }, []);
   useEffect(() => {
     const fetchCardBacks = async () => {
       try {
@@ -424,6 +444,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 whiteSpace: "nowrap",
               }}
             >
+              {/* Regular card backs */}
               {cardBacks.map((cardBack) => (
                 <div
                   key={cardBack.id}
@@ -442,14 +463,35 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                   <img
                     src={`https://api.zoomayor.io${cardBack.image}`}
                     alt={cardBack.name}
-                    style={{
-                      marginRight: "20px",
-                      height: "245px",
-                    }}
+                    style={{ marginRight: "20px", height: "245px" }}
+                  />
+                </div>
+              ))}
+              {/* Purchased shirts */}
+              {purchasedShirts.map((shirt) => (
+                <div
+                  key={shirt.id}
+                  className={`modal-cardback__item ${
+                    cardBackStyle === shirt.image_url ? "active" : ""
+                  }`}
+                  onClick={() => handleCardBackChange(shirt.image_url)}
+                >
+                  <div className="modal-cardback__select">
+                    <div className="modal-cardback__circle">
+                      {cardBackStyle === shirt.image_url && (
+                        <div className="modal-cardback__dot"></div>
+                      )}
+                    </div>
+                  </div>
+                  <img
+                    src={`https://api.zoomayor.io${shirt.image_url}`}
+                    alt={shirt.name}
+                    style={{ marginRight: "20px", height: "245px" }}
                   />
                 </div>
               ))}
             </div>
+
             <div className="modal-nav">
               <button
                 type="button"
