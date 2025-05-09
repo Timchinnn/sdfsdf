@@ -38,6 +38,9 @@ const ShirtShopPopup = (props) => {
       const existingShirtResponse = await axios.get(
         `/user/${telegram_id}/shirts`
       );
+      console.log(existingShirtResponse.data);
+      console.log(props.selectedPhoto);
+
       const existingShirts = existingShirtResponse.data;
       const shirtAlreadyOwned = existingShirts.some(
         (shirt) => shirt.id === props.selectedPhoto.id
