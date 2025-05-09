@@ -288,7 +288,14 @@ const ShopPage = () => {
                     )}
                     <ul
                       className="shop-list f-jcsb"
-                      style={{ marginBottom: "24px" }}
+                      style={{
+                        margin:
+                          filteredItems.filter((item) => item.type === "sets")
+                            .length === 0
+                            ? "24px 0 0 0"
+                            : "0",
+                        marginTop: "24px",
+                      }}
                     >
                       {filteredItems
                         .filter((item) => item.type === "sets")
@@ -324,7 +331,14 @@ const ShopPage = () => {
                     )}
                     <ul
                       className="shop-list f-jcsb"
-                      style={{ marginBottom: "24px" }}
+                      style={{
+                        margin:
+                          filteredItems.filter((item) => item.type === "cards")
+                            .length === 0
+                            ? "24px 0 0 0"
+                            : "0",
+                        marginTop: "24px",
+                      }}
                     >
                       {filteredItems
                         .filter((item) => item.type === "cards")
@@ -360,7 +374,14 @@ const ShopPage = () => {
                     )}
                     <ul
                       className="shop-list f-jcsb"
-                      style={{ marginBottom: "24px" }}
+                      style={{
+                        margin:
+                          filteredItems.filter((item) => item.type === "shirts")
+                            .length === 0
+                            ? "24px 0 0 0"
+                            : "0",
+                        marginTop: "24px",
+                      }}
                     >
                       {filteredItems
                         .filter((item) => item.type === "shirts")
