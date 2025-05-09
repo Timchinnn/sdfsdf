@@ -37,7 +37,7 @@ const ShirtShopPopup = (props) => {
       const response = await axios.post("/shop/buy-shirt", {
         telegram_id,
         shirt_id: props.selectedPhoto.id,
-        price: parseFloat(props.selectedPhoto.price).toFixed(2), // Обновлено для корректной обработки десятичных цен
+        price: parseFloat(props.selectedPhoto.price).toFixed(2),
       });
       if (response.data.success) {
         if (props.handleClosePopup) {
@@ -46,10 +46,23 @@ const ShirtShopPopup = (props) => {
         if (onButtonClick) {
           onButtonClick();
         }
+        // Показываем уведомление об успешной покупке
+        tg.showPopup({
+          title: "Успех!",
+          message: "Рубашка успешно куплена",
+          buttons: [{ type: "ok" }],
+        });
       }
     } catch (error) {
       console.error("Error buying shirt:", error);
-      alert(error.response?.data?.message || "Error purchasing shirt");
+      // Показываем ошибку пользователю через Telegram popup
+      const errorMessage =
+        error.response?.data?.error || "Ошибка при покупке рубашки";
+      window.Telegram.WebApp.showPopup({
+        title: "Ошибка",
+        message: errorMessage,
+        buttons: [{ type: "ok" }],
+      });
     }
   };
   return (
