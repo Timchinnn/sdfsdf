@@ -8,6 +8,7 @@ import { setTheme, setCardBack } from "../../redux/actions";
 import { routeAdmin } from "pages/AdminPanel";
 import { NavLink } from "react-router-dom";
 import { cardBackService } from "services/api";
+import axios from "../../axios-controller";
 
 // import { setTheme } from "../../redux/actions";
 
