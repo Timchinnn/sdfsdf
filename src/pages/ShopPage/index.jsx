@@ -58,9 +58,7 @@ const ShopPage = () => {
     };
     fetchShopSets();
   }, []);
-  useEffect(() => {
-    handleFilter();
-  }, []);
+
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
