@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import routeShop from "./routes";
 import MainSection from "components/MainSection";
 import DefaultImg from "assets/img/default-img.png";
@@ -18,6 +18,7 @@ const ShopPage = () => {
   const isSpecialUser = tgUserId === 7241281378 || tgUserId === 467518658;
   const [activePopup, setActivePopup] = useState(false);
   const [activePopupCarousel, setActivePopupCarousel] = useState(false);
+  const [activePopupFilter, setActivePopupFilter] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [shopCards, setShopCards] = useState([]);
@@ -144,6 +145,54 @@ const ShopPage = () => {
     } catch (error) {
       console.error("Ошибка при получении информации о наборе:", error);
     }
+  };
+  // Фильтрация по цене и типу
+  const [priceFrom, setPriceFrom] = useState("");
+  const [priceTo, setPriceTo] = useState("");
+  const [filterType, setFilterType] = useState("all");
+  const handlePriceFromChange = (e) => {
+    setPriceFrom(e.target.value);
+  };
+  const handlePriceToChange = (e) => {
+    setPriceTo(e.target.value);
+  };
+  const handleFilter = () => {
+    const filtered = filteredItems.filter((item) => {
+      const priceMatches =
+        (!priceFrom || item.price >= Number(priceFrom)) &&
+        (!priceTo || item.price <= Number(priceTo));
+      const typeMatches =
+        filterType === "all" ||
+        (filterType === "sets" && item.title.toLowerCase().includes("набор")) ||
+        (filterType === "cards" && !item.title.toLowerCase().includes("набор"));
+      return priceMatches && typeMatches;
+    });
+    setFilteredItems(filtered);
+    setActivePopupFilter(false);
+  };
+  const handleReset = () => {
+    setPriceFrom("");
+    setPriceTo("");
+    setFilteredItems(filteredItems);
+    setActivePopupFilter(false);
+  };
+  // Ref и обработчик кликов вне модального окна фильтра
+  const filterRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (filterRef.current && !filterRef.current.contains(event.target)) {
+        document.documentElement.classList.remove("fixed");
+        setActivePopupFilter(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  const handleOpenFilter = () => {
+    document.documentElement.classList.add("fixed");
+    setActivePopupFilter(true);
   };
   return (
     <section className="shop">
@@ -359,6 +408,85 @@ const ShopPage = () => {
         />
       )}
       <MobileNav />
+      <div
+        ref={filterRef}
+        className={`modal shop-filter ${activePopupFilter && "show"}`}
+      >
+        <div className="modal-wrapper">
+          <h3 className="modal-title">Фильтр</h3>
+          <div className="modal-filter__type">
+            <h3 className="modal-title">Тип</h3>
+            <div
+              className="modal-filter__buttons"
+              style={{ marginBottom: "15px", marginTop: "15px" }}
+            >
+              <button
+                className={`modal-btn-choose ${
+                  filterType === "all" ? "active" : ""
+                }`}
+                onClick={() => setFilterType("all")}
+              >
+                Все
+              </button>
+              <div>
+                <button
+                  className={`modal-btn-choose ${
+                    filterType === "sets" ? "active" : ""
+                  }`}
+                  style={{ marginBottom: "0", width: "49%" }}
+                  onClick={() => setFilterType("sets")}
+                >
+                  Наборы
+                </button>
+                <button
+                  style={{ marginBottom: "0", width: "49%" }}
+                  className={`modal-btn-choose ${
+                    filterType === "cards" ? "active" : ""
+                  }`}
+                  onClick={() => setFilterType("cards")}
+                >
+                  Карты
+                </button>
+              </div>
+            </div>
+          </div>
+          <h3 className="modal-title">Стоимость карты</h3>
+          <div className="modal-range f-center-jcsb">
+            <div className="modal-range__item">
+              <div className="modal-form__input">
+                <input
+                  type="number"
+                  value={priceFrom}
+                  onChange={handlePriceFromChange}
+                  placeholder="От"
+                />
+              </div>
+            </div>
+            <div className="modal-range__item">
+              <div className="modal-form__input">
+                <input
+                  type="number"
+                  value={priceTo}
+                  onChange={handlePriceToChange}
+                  placeholder="До"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="modal-nav">
+            <button type="button" className="modal-btn" onClick={handleFilter}>
+              Показать
+            </button>
+            <button
+              type="button"
+              className="modal-btn modal-btn_default"
+              onClick={handleReset}
+            >
+              Сбросить
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
