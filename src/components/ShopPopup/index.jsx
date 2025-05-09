@@ -91,7 +91,7 @@ const ShopPopup = (props) => {
             /> */}
             {showImage && (
               <img
-                src={`https://api.zoomayor.io${props.selectedPhoto.image}`}
+                src={`https://api.zoomayor.io${props.selectedPhoto.image_url}`}
                 alt={props.selectedPhoto?.title || ""}
               />
             )}
