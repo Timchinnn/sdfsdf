@@ -55,9 +55,11 @@ const ShirtShopPopup = (props) => {
       }
     } catch (error) {
       console.error("Error buying shirt:", error);
-      // Показываем ошибку пользователю через Telegram popup
+      // Show error message to user through Telegram popup
       const errorMessage =
-        error.response?.data?.error || "Ошибка при покупке рубашки";
+        error.response?.data?.error === "У вас уже есть эта рубашка"
+          ? "У вас уже есть такая рубашка"
+          : "Ошибка при покупке рубашки";
       window.Telegram.WebApp.showPopup({
         title: "Ошибка",
         message: errorMessage,
