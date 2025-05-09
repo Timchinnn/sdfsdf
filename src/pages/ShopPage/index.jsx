@@ -183,7 +183,9 @@ const ShopPage = () => {
                 </div>
                 <div className="shop-category">
                   <div className="shop-category__item block-style">
-                    <h2 className="section-content__title">Наборы карт</h2>
+                    {shopSets.length > 0 && (
+                      <h2 className="section-content__title">Наборы карт</h2>
+                    )}
                     <ul
                       className="shop-list f-jcsb"
                       style={{ marginBottom: "24px" }}
@@ -220,7 +222,9 @@ const ShopPage = () => {
                           </li>
                         ))}
                     </ul>
-                    <h2 className="section-content__title">Карты</h2>
+                    {shopCards.length > 0 && (
+                      <h2 className="section-content__title">Карты</h2>
+                    )}
                     <ul
                       className="shop-list f-jcsb"
                       style={{ marginBottom: "24px" }}
@@ -257,7 +261,9 @@ const ShopPage = () => {
                           </li>
                         ))}
                     </ul>
-                    <h2 className="section-content__title">Рубашки карт</h2>
+                    {shirts.length > 0 && (
+                      <h2 className="section-content__title">Рубашки карт</h2>
+                    )}
                     <ul
                       className="shop-list f-jcsb"
                       style={{ marginBottom: "24px" }}
