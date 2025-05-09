@@ -39,13 +39,7 @@ const ShirtShopPopup = (props) => {
         `/user/${telegram_id}/shirts`
       );
       console.log(existingShirtResponse.data);
-      console.log(props.selectedPhoto);
-
-      const existingShirts = existingShirtResponse.data;
-      const shirtAlreadyOwned = existingShirts.some(
-        (shirt) => shirt.id === props.selectedPhoto.id
-      );
-      if (shirtAlreadyOwned) {
+      if (existingShirtResponse.data.hasShirts) {
         alert("У вас уже есть такая рубашка");
         return;
       }
