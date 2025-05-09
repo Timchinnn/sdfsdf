@@ -436,10 +436,7 @@ const ShopPage = () => {
                 className={`modal-btn-choose ${
                   filterType === "all" ? "active" : ""
                 }`}
-                onClick={() => {
-                  setFilterType("all");
-                  handleFilter();
-                }}
+                onClick={() => setFilterType("all")}
               >
                 Все
               </button>
@@ -452,10 +449,7 @@ const ShopPage = () => {
                     marginBottom: "0",
                     width: "32%",
                   }}
-                  onClick={() => {
-                    setFilterType("sets");
-                    handleFilter();
-                  }}
+                  onClick={() => setFilterType("sets")}
                 >
                   Наборы
                 </button>
@@ -467,10 +461,7 @@ const ShopPage = () => {
                   className={`modal-btn-choose ${
                     filterType === "cards" ? "active" : ""
                   }`}
-                  onClick={() => {
-                    setFilterType("cards");
-                    handleFilter();
-                  }}
+                  onClick={() => setFilterType("cards")}
                 >
                   Карты
                 </button>
@@ -482,10 +473,7 @@ const ShopPage = () => {
                   className={`modal-btn-choose ${
                     filterType === "shirts" ? "active" : ""
                   }`}
-                  onClick={() => {
-                    setFilterType("shirts");
-                    handleFilter();
-                  }}
+                  onClick={() => setFilterType("shirts")}
                 >
                   Рубашки
                 </button>
