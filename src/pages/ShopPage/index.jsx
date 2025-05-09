@@ -229,6 +229,12 @@ const ShopPage = () => {
                       required
                     />
                   </div>
+                  <button
+                    className="shop-block__nav-btn"
+                    onClick={handleOpenFilter}
+                  >
+                    Фильтр
+                  </button>
                 </div>
                 <div className="shop-category">
                   <div className="shop-category__item block-style">
