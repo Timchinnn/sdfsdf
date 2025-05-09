@@ -86,9 +86,24 @@ const ShopPage = () => {
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
-    const filtered = filteredItems.filter((item) =>
+    const filtered = [
+      ...shopCards,
+      ...shopSets.map((set) => ({
+        id: set.id,
+        title: set.name,
+        price: set.price,
+        image: set.image_url || DefaultImg,
+      })),
+      ...shirts.map((shirt) => ({
+        id: shirt.id,
+        title: shirt.name,
+        price: shirt.price,
+        image: shirt.image_url || DefaultImg,
+      })),
+    ].filter((item) =>
       item.title.toLowerCase().includes(searchValue.toLowerCase())
     );
+
     setFilteredItems(filtered);
   };
   const handleOpenPopup = (item) => {
@@ -173,31 +188,37 @@ const ShopPage = () => {
                       className="shop-list f-jcsb"
                       style={{ marginBottom: "24px" }}
                     >
-                      {shopSets.map((set) => (
-                        <li key={set.id} className="shop-list__item">
-                          <div className="shop-list__card">
-                            <div
-                              className="shop-list__image"
-                              onClick={() => handleBuySet(set.id)}
-                            >
-                              <img
-                                src={
-                                  cardBackStyle
-                                    ? `https://api.zoomayor.io${cardBackStyle}`
-                                    : DefaultImg
-                                }
-                                alt={set.name}
-                                className="shop-card__Img"
-                              />
+                      {shopSets
+                        .filter((set) =>
+                          set.name
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase())
+                        )
+                        .map((set) => (
+                          <li key={set.id} className="shop-list__item">
+                            <div className="shop-list__card">
+                              <div
+                                className="shop-list__image"
+                                onClick={() => handleBuySet(set.id)}
+                              >
+                                <img
+                                  src={
+                                    cardBackStyle
+                                      ? `https://api.zoomayor.io${cardBackStyle}`
+                                      : DefaultImg
+                                  }
+                                  alt={set.name}
+                                  className="shop-card__Img"
+                                />
+                              </div>
+                              <h3 className="shop-list__title">{set.name}</h3>
+                              <div className="shop-list__price f-center">
+                                <img src={CoinIcon} alt="" />
+                                {Math.floor(set.price)}
+                              </div>
                             </div>
-                            <h3 className="shop-list__title">{set.name}</h3>
-                            <div className="shop-list__price f-center">
-                              <img src={CoinIcon} alt="" />
-                              {Math.floor(set.price)}
-                            </div>
-                          </div>
-                        </li>
-                      ))}
+                          </li>
+                        ))}
                     </ul>
                     <h2 className="section-content__title">Карты</h2>
                     <ul
