@@ -34,28 +34,12 @@ const ShirtShopPopup = (props) => {
         console.error("Telegram ID not found");
         return;
       }
-      // Проверяем, есть ли у пользователя уже купленная рубашка
-      const response = await axios.get(`/user/${telegram_id}/shirts`);
-      const userShirts = response.data;
-      const isShirtAlreadyPurchased = userShirts.some(
-        (shirt) => shirt.shirt_id === props.selectedPhoto.id
-      );
-      if (isShirtAlreadyPurchased) {
-        // Если рубашка уже куплена, показываем алерт
-        tg.showPopup({
-          title: "Ошибка",
-          message: "У вас уже есть эта рубашка",
-          buttons: [{ type: "ok" }],
-        });
-        return;
-      }
-      // Если рубашка еще не куплена, продолжаем процесс покупки
-      const response2 = await axios.post("/shop/buy-shirt", {
+      const response = await axios.post("/shop/buy-shirt", {
         telegram_id,
         shirt_id: props.selectedPhoto.id,
         price: parseFloat(props.selectedPhoto.price).toFixed(2),
       });
-      if (response2.data.success) {
+      if (response.data.success) {
         if (props.handleClosePopup) {
           props.handleClosePopup();
         }
