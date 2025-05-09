@@ -156,6 +156,7 @@ const ShopPage = () => {
     setPriceTo(e.target.value);
   };
   const handleFilter = () => {
+    // Получаем все элементы
     const allItems = [
       ...shopCards.map((card) => ({
         id: card.id,
@@ -179,6 +180,7 @@ const ShopPage = () => {
         image: shirt.image_url || DefaultImg,
       })),
     ];
+    // Применяем фильтры только если они заданы
     const filtered = allItems.filter((item) => {
       const priceMatches =
         (!priceFrom || item.price >= Number(priceFrom)) &&
