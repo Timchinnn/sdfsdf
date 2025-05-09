@@ -156,17 +156,33 @@ const ShopPage = () => {
     setPriceTo(e.target.value);
   };
   const handleFilter = () => {
-    const filtered = filteredItems.filter((item) => {
+    const allItems = [
+      ...shopCards,
+      ...shopSets.map((set) => ({
+        id: set.id,
+        title: set.name,
+        price: set.price,
+        type: "sets",
+        image: set.image_url || DefaultImg,
+      })),
+      ...shirts.map((shirt) => ({
+        id: shirt.id,
+        title: shirt.name,
+        price: shirt.price,
+        type: "shirts",
+        image: shirt.image_url || DefaultImg,
+      })),
+    ];
+    const filtered = allItems.filter((item) => {
       const priceMatches =
         (!priceFrom || item.price >= Number(priceFrom)) &&
         (!priceTo || item.price <= Number(priceTo));
+
       const typeMatches =
         filterType === "all" ||
-        (filterType === "sets" && item.title.toLowerCase().includes("набор")) ||
-        (filterType === "cards" &&
-          !item.title.toLowerCase().includes("набор")) ||
-        (filterType === "shirts" &&
-          item.title.toLowerCase().includes("рубашка"));
+        (filterType === "sets" && item.type === "sets") ||
+        (filterType === "cards" && !item.type) ||
+        (filterType === "shirts" && item.type === "shirts");
       return priceMatches && typeMatches;
     });
     setFilteredItems(filtered);
