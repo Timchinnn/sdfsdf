@@ -12,7 +12,7 @@ const ShirtShopPopup = (props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
-    }, 500);
+    }, 100);
     return () => clearTimeout(timer);
   }, []);
   const { setActivePopup, onButtonClick } = props;
