@@ -268,21 +268,16 @@ const ShopPage = () => {
                 </div>
                 <div className="shop-category">
                   <div className="shop-category__item block-style">
-                    {shopSets.filter((set) =>
-                      set.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    ).length > 0 && (
+                    {filteredItems.filter((item) => item.type === "sets")
+                      .length > 0 && (
                       <h2 className="section-content__title">Наборы карт</h2>
                     )}
                     <ul
                       className="shop-list f-jcsb"
                       style={{ marginBottom: "24px" }}
                     >
-                      {shopSets
-                        .filter((set) =>
-                          set.name
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                        )
+                      {filteredItems
+                        .filter((item) => item.type === "sets")
                         .map((set) => (
                           <li key={set.id} className="shop-list__item">
                             <div className="shop-list__card">
@@ -296,11 +291,11 @@ const ShopPage = () => {
                                       ? `https://api.zoomayor.io${cardBackStyle}`
                                       : DefaultImg
                                   }
-                                  alt={set.name}
+                                  alt={set.title}
                                   className="shop-card__Img"
                                 />
                               </div>
-                              <h3 className="shop-list__title">{set.name}</h3>
+                              <h3 className="shop-list__title">{set.title}</h3>
                               <div className="shop-list__price f-center">
                                 <img src={CoinIcon} alt="" />
                                 {Math.floor(set.price)}
@@ -309,21 +304,16 @@ const ShopPage = () => {
                           </li>
                         ))}
                     </ul>
-                    {shopCards.filter((card) =>
-                      card.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    ).length > 0 && (
+                    {filteredItems.filter((item) => item.type === "cards")
+                      .length > 0 && (
                       <h2 className="section-content__title">Карты</h2>
                     )}
                     <ul
                       className="shop-list f-jcsb"
                       style={{ marginBottom: "24px" }}
                     >
-                      {shopCards
-                        .filter((card) =>
-                          card.name
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                        )
+                      {filteredItems
+                        .filter((item) => item.type === "cards")
                         .map((card) => (
                           <li key={card.id} className="shop-list__item">
                             <div className="shop-list__card">
@@ -332,14 +322,14 @@ const ShopPage = () => {
                                 onClick={() => handleOpenPopup(card)}
                               >
                                 <img
-                                  src={`https://api.zoomayor.io${card.image_url}`}
-                                  alt={card.name}
+                                  src={`https://api.zoomayor.io${card.image}`}
+                                  alt={card.title}
                                   className="shop-card__Img"
                                 />
                               </div>
                               <div className="shop-list__content">
                                 <h3 className="shop-list__title">
-                                  {card.name}
+                                  {card.title}
                                 </h3>
                                 <div className="shop-list__price f-center">
                                   <img src={CoinIcon} alt="" />
@@ -350,46 +340,28 @@ const ShopPage = () => {
                           </li>
                         ))}
                     </ul>
-                    {shirts.filter((shirt) =>
-                      shirt.name
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                    ).length > 0 && (
+                    {filteredItems.filter((item) => item.type === "shirts")
+                      .length > 0 && (
                       <h2 className="section-content__title">Рубашки карт</h2>
                     )}
                     <ul
                       className="shop-list f-jcsb"
                       style={{ marginBottom: "24px" }}
                     >
-                      {shirts
-                        .filter((shirt) =>
-                          shirt.name
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                        )
+                      {filteredItems
+                        .filter((item) => item.type === "shirts")
                         .map((shirt) => (
                           <li key={shirt.id} className="shop-list__item">
                             <div className="shop-list__card">
-                              <div
-                                className="shop-list__image"
-                                onClick={() =>
-                                  handleOpenPopup({
-                                    id: shirt.id,
-                                    title: shirt.name,
-                                    price: shirt.price,
-                                    image: shirt.image_url,
-                                    type: "shirt",
-                                  })
-                                }
-                              >
+                              <div className="shop-list__image">
                                 <img
-                                  src={`https://api.zoomayor.io${shirt.image_url}`}
-                                  alt={shirt.name}
+                                  src={`https://api.zoomayor.io${shirt.image}`}
+                                  alt={shirt.title}
                                 />
                               </div>
                               <div className="shop-list__content">
                                 <h3 className="shop-list__title">
-                                  {shirt.name}
+                                  {shirt.title}
                                 </h3>
                                 <div className="shop-list__price f-center">
                                   <img src={CoinIcon} alt="" />
