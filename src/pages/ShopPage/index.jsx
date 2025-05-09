@@ -68,7 +68,7 @@ const ShopPage = () => {
         // Fetch all items
         const allItems = [
           ...shopCards.map((card) => ({
-            id: card.id,
+            id: card.card_id,
             title: card.name,
             price: card.price,
             type: "cards",
@@ -171,7 +171,7 @@ const ShopPage = () => {
     // Получаем все элементы
     const allItems = [
       ...shopCards.map((card) => ({
-        id: card.id,
+        id: card.card_id,
         title: card.name,
         price: card.price,
         type: "cards",
@@ -329,7 +329,7 @@ const ShopPage = () => {
                       {filteredItems
                         .filter((item) => item.type === "cards")
                         .map((card) => (
-                          <li key={card.id} className="shop-list__item">
+                          <li key={card.card_id} className="shop-list__item">
                             <div className="shop-list__card">
                               <div
                                 className="shop-list__image"
