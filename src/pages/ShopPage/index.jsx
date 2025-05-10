@@ -99,25 +99,36 @@ const ShopPage = () => {
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
-    const filtered = [
-      ...shopCards,
+
+    const allItems = [
+      ...shopCards.map((card) => ({
+        id: card.card_id,
+        title: card.name,
+        price: card.price,
+        type: "cards",
+        image: card.image_url || DefaultImg,
+      })),
       ...shopSets.map((set) => ({
         id: set.id,
-        title: set.name || "",
+        title: set.name,
         price: set.price,
+        type: "sets",
         image: set.image_url || DefaultImg,
       })),
       ...shirts.map((shirt) => ({
         id: shirt.id,
-        title: shirt.name || "",
+        title: shirt.name,
         price: shirt.price,
+        type: "shirts",
         image: shirt.image_url || DefaultImg,
       })),
-    ]
-      .filter((item) => item.title)
-      .filter((item) =>
+    ];
+    const filtered = allItems.filter(
+      (item) =>
+        item.title &&
         item.title.toLowerCase().includes(searchValue.toLowerCase())
-      );
+    );
+
     setFilteredItems(filtered);
   };
   const handleOpenPopup = (item) => {
