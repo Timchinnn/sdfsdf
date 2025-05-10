@@ -118,7 +118,8 @@ const ShopManagement = () => {
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{shirt.name}</h3>
-                  <p>Цена: {shirt.price}</p>
+                  {/* <p>Цена: {shirt.price}</p> */}
+                  <p>Цена: {Math.floor(shirt.price)}</p>
                 </div>
                 <button
                   style={{ background: "red" }}
@@ -229,7 +230,8 @@ const ShopManagement = () => {
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{card.name}</h3>
-                  <p>Цена: {card.price}</p>
+                  {/* <p>Цена: {card.price}</p> */}
+                  <p>Цена: {Math.floor(card.price)}</p>
                 </div>
                 {/* <button>Редактировать</button> */}
                 <button
@@ -282,7 +284,8 @@ const ShopManagement = () => {
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{set.name}</h3>
-                  <p>Цена: {set.price}</p>
+                  {/* <p>Цена: {set.price}</p> */}
+                  <p>Цена: {Math.floor(set.price)}</p>
                 </div>
                 <button>Редактировать</button>
                 <button
