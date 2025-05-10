@@ -103,19 +103,21 @@ const ShopPage = () => {
       ...shopCards,
       ...shopSets.map((set) => ({
         id: set.id,
-        title: set.name,
+        title: set.name || "",
         price: set.price,
         image: set.image_url || DefaultImg,
       })),
       ...shirts.map((shirt) => ({
         id: shirt.id,
-        title: shirt.name,
+        title: shirt.name || "",
         price: shirt.price,
         image: shirt.image_url || DefaultImg,
       })),
-    ].filter((item) =>
-      item.title.toLowerCase().includes(searchValue.toLowerCase())
-    );
+    ]
+      .filter((item) => item.title)
+      .filter((item) =>
+        item.title.toLowerCase().includes(searchValue.toLowerCase())
+      );
     setFilteredItems(filtered);
   };
   const handleOpenPopup = (item) => {
@@ -256,6 +258,7 @@ const ShopPage = () => {
                     </div>
                     <input
                       type="search"
+                      style={{ color: "white" }}
                       name="search"
                       value={searchTerm}
                       onChange={handleSearch}
