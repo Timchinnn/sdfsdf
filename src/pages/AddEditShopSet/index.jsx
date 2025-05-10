@@ -26,8 +26,15 @@ const AddEditShopSet = () => {
           const data = response.data;
           setName(data.name || "");
           setPrice(data.price || "");
+
+          // Fetch cards in the set
+          const cardsResponse = await axios.get(`/shop-sets/${id}/cards`);
+          const setCards = cardsResponse.data;
+          // Add cards to cardsInSet
+          const cardIds = new Set(setCards.map((card) => card.id));
+          setCardsInSet(cardIds);
         } catch (error) {
-          console.error("Error fetching set");
+          console.error("Error fetching set data:", error);
         }
       };
       fetchSetData();
