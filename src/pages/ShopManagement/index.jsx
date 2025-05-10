@@ -287,7 +287,9 @@ const ShopManagement = () => {
                   {/* <p>Цена: {set.price}</p> */}
                   <p>Цена: {Math.floor(set.price)}</p>
                 </div>
-                <button>Редактировать</button>
+                <NavLink to={routeAddEditShopSet(set.id)}>
+                  <button>Редактировать</button>
+                </NavLink>{" "}
                 <button
                   style={{ background: "red", marginTop: "10px" }}
                   onClick={() => {
