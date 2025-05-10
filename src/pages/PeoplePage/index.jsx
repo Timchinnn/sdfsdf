@@ -14,7 +14,6 @@ import ShopPopup from "components/ShopPopup";
 const PeoplePage = () => {
   const [showInfo, setShowInfo] = useState({}); // const [policePhotos, setPolicePhotos] = useState([]);
   const [cardSets, setCardSets] = useState([]);
-  console.log(cardSets);
   const [cardSetData, setCardSetData] = useState({}); // Store cards for each set
 
   const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -43,7 +42,6 @@ const PeoplePage = () => {
             try {
               const completionResponse =
                 await cardSetsService.checkSetCompletion(set.id, telegram_id);
-              console.log(completionResponse.data);
             } catch (completionError) {
               if (
                 completionError.response &&

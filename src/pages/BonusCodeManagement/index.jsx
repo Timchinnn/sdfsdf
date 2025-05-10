@@ -72,7 +72,6 @@ const BonusCodeManagement = () => {
     }
   };
   const saveCode = async (codeData) => {
-    console.log("Начало сохранения кода:", codeData);
     try {
       // Подготовка данных
       const payload = {
@@ -98,9 +97,7 @@ const BonusCodeManagement = () => {
         payload.reward_type = "card";
         payload.reward_card_id = codeData.rewards.cardId;
       }
-      console.log("Отправляемые данные:", payload);
       const response = await bonusCodeService.createBonusCode(payload);
-      console.log("Ответ сервера:", response.data);
       // Добавляем код в список существующих кодов
       setCodes((prevCodes) => [...prevCodes, response.data]);
       alert("Код успешно сохранен");

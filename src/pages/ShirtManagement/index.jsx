@@ -29,7 +29,6 @@ const ShirtManagement = () => {
     setIsSelectionVisible(false);
   };
   const handleSave = async () => {
-    console.log(selectedShirt);
     if (!selectedShirt || !cardCost) {
       alert("Выберите рубашку и заполните цену!");
       return;
@@ -43,7 +42,6 @@ const ShirtManagement = () => {
       const response = await axios.post("/shirts", payload, {
         headers: { "Content-Type": "application/json" },
       });
-      console.log("Рубашка успешно добавлена:", response.data);
       alert("Рубашка успешно добавлена в магазин");
 
       // Reset all state variables to initial values

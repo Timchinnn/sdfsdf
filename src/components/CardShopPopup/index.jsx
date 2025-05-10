@@ -52,7 +52,6 @@ const CardShopPopup = (props) => {
       alert(error.response?.data?.message || "Error purchasing card");
     }
   };
-  console.log(props.selectedPhoto);
   // Определяем url изображения карточки.
   const imageUrl = props.selectedPhoto?.image
     ? props.selectedPhoto.id === "set" ||

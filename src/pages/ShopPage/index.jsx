@@ -31,7 +31,6 @@ const ShopPage = () => {
       try {
         const response = await shopCardService.getAllShopCards();
         setShopCards(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке карт магазина:", error);
       }
@@ -43,7 +42,6 @@ const ShopPage = () => {
       try {
         const response = await axios.get("/shirts");
         setShirts(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке рубашек:", error);
       }

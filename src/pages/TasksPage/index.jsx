@@ -41,7 +41,6 @@ const TasksPage = () => {
   const showRewardedAd = async (adId) => {
     try {
       const result = await AdController.show();
-      console.log("Результат показа рекламы:", result);
 
       if (result.done) {
         const tg = window.Telegram.WebApp;

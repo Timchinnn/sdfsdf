@@ -30,7 +30,6 @@ const FriendsPage = () => {
             telegram_id
           );
           // console.log(referralsResponse);
-          console.log(referralsResponse.data);
           setReferrals(referralsResponse.data.referrals);
         }
       } catch (error) {
@@ -47,7 +46,6 @@ const FriendsPage = () => {
       .then(() => {
         // Open Telegram with the referral link
         window.open(`https://${referralUrl}`, "_blank");
-        console.log("Success copy");
       })
       .catch((err) => {
         console.error("Err copy: ", err);

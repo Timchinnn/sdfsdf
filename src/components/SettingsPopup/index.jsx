@@ -86,7 +86,6 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   };
   const darkTheme = useSelector((state) => state.theme);
 
-  console.log(darkTheme);
   // const cardBackStyles = [
   //   {
   //     id: "default",

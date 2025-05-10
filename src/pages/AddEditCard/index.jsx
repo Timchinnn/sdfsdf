@@ -21,7 +21,6 @@ const AddEditCard = () => {
 
   // const [image, setImage] = useState(null);
   const { id } = useParams(); // Добавить импорт useParams из react-router-dom
-  console.log(id);
   useEffect(() => {
     const fetchCardData = async () => {
       if (id) {
@@ -69,7 +68,6 @@ const AddEditCard = () => {
       return () => URL.revokeObjectURL(previewUrl);
     }
   };
-  console.log(selectedImage);
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("title", title);

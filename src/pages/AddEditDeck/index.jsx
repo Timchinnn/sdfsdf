@@ -11,7 +11,6 @@ const AddEditDeck = () => {
   const { id } = useParams();
   const history = useHistory();
 
-  console.log(id);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [rewards, setRewards] = useState([
@@ -27,7 +26,6 @@ const AddEditDeck = () => {
     experience: false,
   });
   const [cardReward, setCardReward] = useState("");
-  console.log(cardReward);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [currentSetIndex, setCurrentSetIndex] = useState(0);

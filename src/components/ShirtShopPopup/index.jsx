@@ -6,7 +6,6 @@ import CoinIcon from "assets/img/coin-icon.svg";
 import axios from "../../axios-controller";
 
 const ShirtShopPopup = (props) => {
-  console.log(props);
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
   useEffect(() => {
@@ -27,8 +26,6 @@ const ShirtShopPopup = (props) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
   const handleButtonClick = async () => {
-    console.log(props);
-
     try {
       const tg = window.Telegram.WebApp;
       const telegram_id = tg.initDataUnsafe?.user?.id;
@@ -40,7 +37,6 @@ const ShirtShopPopup = (props) => {
       const existingShirtResponse = await axios.get(
         `/user/${telegram_id}/shirts`
       );
-      console.log(existingShirtResponse.data);
       if (
         existingShirtResponse.data.shirts.some(
           (shirt) => shirt.id === props.selectedPhoto.id

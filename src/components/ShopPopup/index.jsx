@@ -19,7 +19,6 @@ const ShopPopup = (props) => {
     return () => clearTimeout(timer);
   }, []);
   const { setActivePopup, onButtonClick } = props; // Добавляем onButtonClick в props
-  console.log(props);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -42,8 +41,6 @@ const ShopPopup = (props) => {
   };
   useEffect(() => {
     if (props.selectedPhoto && props.selectedPhoto.image === QuestionMarkImg) {
-      console.log("Image matches QuestionMarkImg");
-      console.log(props.selectedPhoto.image);
       console.log(QuestionMarkImg);
     }
   }, [props.selectedPhoto]);

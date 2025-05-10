@@ -158,7 +158,6 @@ export const adsService = {
       },
     }),
   processAdReward: (telegram_id, adId) => {
-    console.log("Отправляем запрос с параметрами:", { telegram_id, adId });
     return axios.post(`/process-reward/${telegram_id}`, { adId });
   },
 };
@@ -173,7 +172,6 @@ export const processReward = async (
     }
     // Если передан default_reward, используем альтернативную логику
     if (default_reward) {
-      console.log("Используем альтернативную логику начисления награды");
       const response = await axios.post(
         `/process-reward/${telegram_id}`,
         {

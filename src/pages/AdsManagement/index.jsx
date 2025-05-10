@@ -31,7 +31,6 @@ const AdsManagement = () => {
     energy: "",
     experience: "",
   });
-  console.log(8);
   useEffect(() => {
     fetchAds();
     fetchCards();
@@ -40,7 +39,6 @@ const AdsManagement = () => {
     try {
       const response = await adsService.getAllAds();
       setAds(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching ads:", error);
     }
@@ -55,7 +53,6 @@ const AdsManagement = () => {
   };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    console.log(file);
     if (file) {
       if (!file.type.startsWith("image/")) {
         alert("Пожалуйста, выберите изображение");
@@ -70,7 +67,6 @@ const AdsManagement = () => {
     }
   };
   const handleSubmit = async (e) => {
-    console.log(selectedImage);
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", title);

@@ -42,7 +42,6 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
         try {
           const telegram_id = tg.initDataUnsafe.user.id;
           const response = await userInitService.getUserLevel(telegram_id);
-          console.log(response.data);
           setLevel(response.data.level);
           setCurrentExp(response.data.currentExperience);
           setExpForNextLevel(response.data.experienceToNextLevel);
