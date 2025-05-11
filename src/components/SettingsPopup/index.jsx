@@ -104,7 +104,45 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const [settingsNight, setSettingsNight] = useState(darkTheme);
   const [modalStep, setModalStep] = useState(1);
   const [seletLang, setSelectLang] = useState(1);
+  const [translations, setTranslations] = useState({});
 
+  const translateText = async (text, targetLang) => {
+    try {
+      const response = await axios.post("/translate", {
+        texts: [text],
+        targetLanguageCode: targetLang,
+      });
+      if (response.data && response.data[0]) {
+        return response.data[0].text;
+      }
+      return text;
+    } catch (error) {
+      console.error("Translation error:", error);
+      return text;
+    }
+  };
+  const handleLanguageChange = async (langCode) => {
+    setSelectLang(langCode);
+
+    // Тексты для перевода
+    const textsToTranslate = {
+      vibration: "Вибрация",
+      nightMode: "Ночной режим",
+      cardBack: "Рубашка карты",
+      language: "Язык",
+      deleteAccount: "Удалить аккаунт",
+      saveAndContinue: "Сохранить и продолжить",
+    };
+    try {
+      const translatedTexts = {};
+      for (const [key, text] of Object.entries(textsToTranslate)) {
+        translatedTexts[key] = await translateText(text, langCode);
+      }
+      setTranslations(translatedTexts);
+    } catch (error) {
+      console.error("Error translating texts:", error);
+    }
+  };
   const settingsPopupRef = useRef(null);
 
   useEffect(() => {
@@ -164,7 +202,10 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 )}
               </div>
               <div className="modal-settings__item f-center-jcsb">
-                <p className="modal-settings__title">Вибрация</p>
+                <p className="modal-settings__title">
+                  {" "}
+                  {translations.vibration || "Вибрация"}
+                </p>
                 <div
                   className={`modal-settings__toggle ${
                     settingsVibration ? "active" : ""
@@ -282,7 +323,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
               </div>
               <div
                 className="modal-lang__item f-center-jcsb"
-                onClick={() => setSelectLang(2)}
+                onClick={() => handleLanguageChange("en")}
               >
                 <div className="modal-lang__content">
                   <p className="modal-lang__content-title">English</p>
