@@ -1,8 +1,8 @@
 const initialState = {
   theme: true,
-  cardBack: "default",
-  language: "ru",
+  cardBack: "default", // Добавить начальное состояние
 };
+
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_THEME":
@@ -14,11 +14,6 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         cardBack: action.payload,
-      };
-    case "SET_LANGUAGE":
-      return {
-        ...state,
-        language: action.payload,
       };
     default:
       return state;

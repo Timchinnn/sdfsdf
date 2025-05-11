@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 // import DefaultImg from "assets/img/default-card.png";
 // import Style1CardBack from "assets/img/card1.png";
 // import Style2CardBack from "assets/img/card2.png";
-import { setTheme, setCardBack, setLanguage } from "../../redux/actions";
+import { setTheme, setCardBack } from "../../redux/actions";
 import { routeAdmin } from "pages/AdminPanel";
 import { NavLink } from "react-router-dom";
-import { cardBackService, translationService } from "services/api";
+import { cardBackService } from "services/api";
 import axios from "../../axios-controller";
 
 // import { setTheme } from "../../redux/actions";
@@ -104,116 +104,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const [settingsNight, setSettingsNight] = useState(darkTheme);
   const [modalStep, setModalStep] = useState(1);
   const [seletLang, setSelectLang] = useState(1);
-  const [currentLanguage, setCurrentLanguage] = useState(
-    useSelector((state) => state.language)
-  );
 
-  // Добавляем состояния для текстов
-  const [uiTexts, setUiTexts] = useState({
-    saveButton: "Сохранить и продолжить",
-    resetButton: "Сбросить",
-    adminTitle: "Админ панель",
-    goToButton: "Перейти",
-    vibrationTitle: "Вибрация",
-    nightModeTitle: "Ночной режим",
-    cardBackTitle: "Рубашка карты",
-    languageTitle: "Язык",
-    deleteAccount: "Удалить аккаунт",
-    keepAccount: "Оставить аккаунт",
-    eraseData: "Стереть все данные",
-    confirmErase:
-      "Вы уверенны, что хотите стереть все данные на нашем сервисе?",
-    apply: "Применить",
-  });
-
-  const handleLanguageChange = async (langCode) => {
-    try {
-      setSelectLang(langCode === "ru" ? 1 : 2);
-      setCurrentLanguage(langCode);
-
-      const textsToTranslate = [
-        "Сохранить и продолжить",
-        "Сбросить",
-        "Админ панель",
-        "Перейти",
-        "Вибрация",
-        "Ночной режим",
-        "Рубашка карты",
-        "Язык",
-        "Удалить аккаунт",
-        "Оставить аккаунт",
-        "Стереть все данные",
-        "Вы уверенны, что хотите стереть все данные на нашем сервисе?",
-        "Применить",
-      ];
-      const response = await translationService.translateText(
-        textsToTranslate,
-        langCode
-      );
-
-      if (response.data && response.data.translations) {
-        const translations = response.data.translations;
-
-        // Сохраняем переводы в localStorage
-        localStorage.setItem("translations", JSON.stringify(translations));
-        localStorage.setItem("currentLanguage", langCode);
-
-        // Обновляем Redux store
-        dispatch(setLanguage(langCode));
-
-        // Обновляем состояние с текстами
-        setUiTexts({
-          saveButton: translations[0],
-          resetButton: translations[1],
-          adminTitle: translations[2],
-          goToButton: translations[3],
-          vibrationTitle: translations[4],
-          nightModeTitle: translations[5],
-          cardBackTitle: translations[6],
-          languageTitle: translations[7],
-          deleteAccount: translations[8],
-          keepAccount: translations[9],
-          eraseData: translations[10],
-          confirmErase: translations[11],
-          apply: translations[12],
-        });
-        handleClickPopupClose();
-      }
-    } catch (error) {
-      console.error("Error changing language:", error);
-    }
-  };
-  // Функция для обновления текста UI элементов
-  // const updateUITexts = (translations) => {
-  //   const elements = {
-  //     ".modal-btn": translations[0],
-  //     ".modal-btn_default": translations[1],
-  //     ".modal-settings__title": translations[2],
-  //     ".modal-settings__select span": translations[3],
-  //   };
-  //   Object.entries(elements).forEach(([selector, text]) => {
-  //     const element = document.querySelector(selector);
-  //     if (element) element.textContent = text;
-  //   });
-  //   const settingsItems = document.querySelectorAll(".modal-settings__title");
-  //   if (settingsItems.length >= 5) {
-  //     settingsItems[1].textContent = translations[4];
-  //     settingsItems[2].textContent = translations[5];
-  //     settingsItems[3].textContent = translations[6];
-  //     settingsItems[4].textContent = translations[7];
-  //   }
-  // };
-  // Загружаем сохраненные переводы при монтировании
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem("currentLanguage");
-    const savedTranslations = localStorage.getItem("translations");
-
-    if (savedLanguage && savedTranslations) {
-      setCurrentLanguage(savedLanguage);
-      setSelectLang(savedLanguage === "ru" ? 1 : 2);
-      // updateUITexts(JSON.parse(savedTranslations));
-    }
-  }, []);
   const settingsPopupRef = useRef(null);
 
   useEffect(() => {
@@ -235,8 +126,6 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   }, [setActivePopup]);
 
   const handleClickPopupClose = () => {
-    // Применяем изменения перед закрытием
-    dispatch(setLanguage(currentLanguage));
     setActivePopup(false);
     document.documentElement.classList.remove("fixed");
     setModalStep(1);
@@ -355,7 +244,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 className="modal-btn"
                 onClick={handleClickPopupClose}
               >
-                {uiTexts.saveButton}
+                Сохранить и продолжить
               </button>
             </div>
           </>
@@ -366,7 +255,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
             <div className="modal-lang">
               <div
                 className="modal-lang__item f-center-jcsb"
-                onClick={() => handleLanguageChange("ru")}
+                onClick={() => setSelectLang(1)}
               >
                 <div className="modal-lang__content">
                   <p className="modal-lang__content-title">Russian</p>
@@ -374,10 +263,16 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 </div>
                 <span
                   className={`modal-lang__select ${
-                    currentLanguage === "ru" ? "active" : ""
+                    seletLang === 1 ? "active" : ""
                   }`}
                 >
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M6.7403 17.0108C7.31573 17.0108 7.75862 16.7748 8.06896 16.3028L17.1465 2.2597C17.2565 2.09159 17.3373 1.92996 17.389 1.77478C17.4407 1.61961 17.4666 1.46444 17.4666 1.30927C17.4666 0.927802 17.3405 0.614224 17.0884 0.368535C16.8362 0.122845 16.5129 0 16.1185 0C15.847 0 15.6207 0.0549569 15.4397 0.164871C15.2586 0.268319 15.084 0.449353 14.9159 0.707974L6.70151 13.7231L2.49246 8.38901C2.18858 8.00754 1.81358 7.81681 1.36746 7.81681C0.97306 7.81681 0.646551 7.94289 0.387931 8.19504C0.12931 8.4472 0 8.76724 0 9.15517C0 9.32974 0.0290948 9.49784 0.0872845 9.65948C0.15194 9.82112 0.255388 9.98599 0.397629 10.1541L5.42133 16.3416C5.7834 16.7877 6.22306 17.0108 6.7403 17.0108Z"
                       fill="#71B21D"
@@ -387,18 +282,105 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
               </div>
               <div
                 className="modal-lang__item f-center-jcsb"
-                onClick={() => handleLanguageChange("en")}
+                onClick={() => setSelectLang(2)}
               >
                 <div className="modal-lang__content">
                   <p className="modal-lang__content-title">English</p>
-                  <p className="modal-lang__content-subtitle">English</p>
+                  <p className="modal-lang__content-subtitle">Русский</p>
                 </div>
                 <span
                   className={`modal-lang__select ${
-                    currentLanguage === "en" ? "active" : ""
+                    seletLang === 2 ? "active" : ""
                   }`}
                 >
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6.7403 17.0108C7.31573 17.0108 7.75862 16.7748 8.06896 16.3028L17.1465 2.2597C17.2565 2.09159 17.3373 1.92996 17.389 1.77478C17.4407 1.61961 17.4666 1.46444 17.4666 1.30927C17.4666 0.927802 17.3405 0.614224 17.0884 0.368535C16.8362 0.122845 16.5129 0 16.1185 0C15.847 0 15.6207 0.0549569 15.4397 0.164871C15.2586 0.268319 15.084 0.449353 14.9159 0.707974L6.70151 13.7231L2.49246 8.38901C2.18858 8.00754 1.81358 7.81681 1.36746 7.81681C0.97306 7.81681 0.646551 7.94289 0.387931 8.19504C0.12931 8.4472 0 8.76724 0 9.15517C0 9.32974 0.0290948 9.49784 0.0872845 9.65948C0.15194 9.82112 0.255388 9.98599 0.397629 10.1541L5.42133 16.3416C5.7834 16.7877 6.22306 17.0108 6.7403 17.0108Z"
+                      fill="#71B21D"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div
+                className="modal-lang__item f-center-jcsb"
+                onClick={() => setSelectLang(3)}
+              >
+                <div className="modal-lang__content">
+                  <p className="modal-lang__content-title">Italian</p>
+                  <p className="modal-lang__content-subtitle">Italiano</p>
+                </div>
+                <span
+                  className={`modal-lang__select ${
+                    seletLang === 3 ? "active" : ""
+                  }`}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6.7403 17.0108C7.31573 17.0108 7.75862 16.7748 8.06896 16.3028L17.1465 2.2597C17.2565 2.09159 17.3373 1.92996 17.389 1.77478C17.4407 1.61961 17.4666 1.46444 17.4666 1.30927C17.4666 0.927802 17.3405 0.614224 17.0884 0.368535C16.8362 0.122845 16.5129 0 16.1185 0C15.847 0 15.6207 0.0549569 15.4397 0.164871C15.2586 0.268319 15.084 0.449353 14.9159 0.707974L6.70151 13.7231L2.49246 8.38901C2.18858 8.00754 1.81358 7.81681 1.36746 7.81681C0.97306 7.81681 0.646551 7.94289 0.387931 8.19504C0.12931 8.4472 0 8.76724 0 9.15517C0 9.32974 0.0290948 9.49784 0.0872845 9.65948C0.15194 9.82112 0.255388 9.98599 0.397629 10.1541L5.42133 16.3416C5.7834 16.7877 6.22306 17.0108 6.7403 17.0108Z"
+                      fill="#71B21D"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div
+                className="modal-lang__item f-center-jcsb"
+                onClick={() => setSelectLang(4)}
+              >
+                <div className="modal-lang__content">
+                  <p className="modal-lang__content-title">Spanish</p>
+                  <p className="modal-lang__content-subtitle">Español</p>
+                </div>
+                <span
+                  className={`modal-lang__select ${
+                    seletLang === 4 ? "active" : ""
+                  }`}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6.7403 17.0108C7.31573 17.0108 7.75862 16.7748 8.06896 16.3028L17.1465 2.2597C17.2565 2.09159 17.3373 1.92996 17.389 1.77478C17.4407 1.61961 17.4666 1.46444 17.4666 1.30927C17.4666 0.927802 17.3405 0.614224 17.0884 0.368535C16.8362 0.122845 16.5129 0 16.1185 0C15.847 0 15.6207 0.0549569 15.4397 0.164871C15.2586 0.268319 15.084 0.449353 14.9159 0.707974L6.70151 13.7231L2.49246 8.38901C2.18858 8.00754 1.81358 7.81681 1.36746 7.81681C0.97306 7.81681 0.646551 7.94289 0.387931 8.19504C0.12931 8.4472 0 8.76724 0 9.15517C0 9.32974 0.0290948 9.49784 0.0872845 9.65948C0.15194 9.82112 0.255388 9.98599 0.397629 10.1541L5.42133 16.3416C5.7834 16.7877 6.22306 17.0108 6.7403 17.0108Z"
+                      fill="#71B21D"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div
+                className="modal-lang__item f-center-jcsb"
+                onClick={() => setSelectLang(5)}
+              >
+                <div className="modal-lang__content">
+                  <p className="modal-lang__content-title">German</p>
+                  <p className="modal-lang__content-subtitle">Deutsch</p>
+                </div>
+                <span
+                  className={`modal-lang__select ${
+                    seletLang === 5 ? "active" : ""
+                  }`}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M6.7403 17.0108C7.31573 17.0108 7.75862 16.7748 8.06896 16.3028L17.1465 2.2597C17.2565 2.09159 17.3373 1.92996 17.389 1.77478C17.4407 1.61961 17.4666 1.46444 17.4666 1.30927C17.4666 0.927802 17.3405 0.614224 17.0884 0.368535C16.8362 0.122845 16.5129 0 16.1185 0C15.847 0 15.6207 0.0549569 15.4397 0.164871C15.2586 0.268319 15.084 0.449353 14.9159 0.707974L6.70151 13.7231L2.49246 8.38901C2.18858 8.00754 1.81358 7.81681 1.36746 7.81681C0.97306 7.81681 0.646551 7.94289 0.387931 8.19504C0.12931 8.4472 0 8.76724 0 9.15517C0 9.32974 0.0290948 9.49784 0.0872845 9.65948C0.15194 9.82112 0.255388 9.98599 0.397629 10.1541L5.42133 16.3416C5.7834 16.7877 6.22306 17.0108 6.7403 17.0108Z"
                       fill="#71B21D"
