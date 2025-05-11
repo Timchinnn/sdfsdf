@@ -112,7 +112,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     try {
       setSelectLang(langCode === "ru" ? 1 : 2);
       setCurrentLanguage(langCode);
-      dispatch(setLanguage(langCode));
+
       const textsToTranslate = [
         "Сохранить и продолжить",
         "Сбросить",
@@ -135,10 +135,14 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       if (response.data && response.data.translations) {
         const translations = response.data.translations;
 
-        // Сохраняем переводы в localStorage для последующего использования
+        // Сохраняем переводы и текущий язык
         localStorage.setItem("translations", JSON.stringify(translations));
         localStorage.setItem("currentLanguage", langCode);
-        // Обновляем текст элементов
+
+        // Обновляем Redux store
+        dispatch(setLanguage(langCode));
+
+        // Обновляем UI
         updateUITexts(translations);
       }
     } catch (error) {
@@ -197,6 +201,8 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   }, [setActivePopup]);
 
   const handleClickPopupClose = () => {
+    // Применяем изменения перед закрытием
+    dispatch(setLanguage(currentLanguage));
     setActivePopup(false);
     document.documentElement.classList.remove("fixed");
     setModalStep(1);
