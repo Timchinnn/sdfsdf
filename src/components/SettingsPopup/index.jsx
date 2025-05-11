@@ -102,12 +102,13 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   // ];
   const [settingsVibration, setSettingsVibration] = useState(false);
   const [settingsNight, setSettingsNight] = useState(darkTheme);
+  const language = useSelector((state) => state.language);
+
   const [modalStep, setModalStep] = useState(1);
   const [seletLang, setSelectLang] = useState(() => {
     return language || "ru"; // Инициализация из Redux state
   });
   const [translations, setTranslations] = useState({});
-  const language = useSelector((state) => state.language);
 
   const translateText = async (text, targetLang) => {
     try {
