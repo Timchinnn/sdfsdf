@@ -104,13 +104,15 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const [settingsNight, setSettingsNight] = useState(darkTheme);
   const [modalStep, setModalStep] = useState(1);
   const [seletLang, setSelectLang] = useState(1);
-  const [currentLanguage, setCurrentLanguage] = useState("ru");
+  const [currentLanguage, setCurrentLanguage] = useState(
+    useSelector((state) => state.language)
+  );
+
   const handleLanguageChange = async (langCode) => {
     try {
-      // Update UI language selection
       setSelectLang(langCode === "ru" ? 1 : 2);
       setCurrentLanguage(langCode);
-      // Define text elements that need translation
+      dispatch(setLanguage(langCode));
       const textsToTranslate = [
         "Сохранить и продолжить",
         "Сбросить",
@@ -126,47 +128,54 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         "Вы уверенны, что хотите стереть все данные на нашем сервисе?",
         "Применить",
       ];
-      // Call translation service
       const response = await translationService.translateText(
         textsToTranslate,
         langCode
       );
-      // Update UI with translated text
       if (response.data && response.data.translations) {
         const translations = response.data.translations;
 
-        // Update text elements with translations
-        document.querySelector(".modal-btn").textContent = translations[0];
-        document.querySelector(".modal-btn_default").textContent =
-          translations[1];
-        document.querySelector(".modal-settings__title").textContent =
-          translations[2];
-        document.querySelector(".modal-settings__select span").textContent =
-          translations[3];
-
-        // Update other text elements...
-        const settingsItems = document.querySelectorAll(
-          ".modal-settings__title"
-        );
-        settingsItems[1].textContent = translations[4]; // Вибрация
-        settingsItems[2].textContent = translations[5]; // Ночной режим
-        settingsItems[3].textContent = translations[6]; // Рубашка карты
-        settingsItems[4].textContent = translations[7]; // Язык
-
-        document.querySelector(".modal-settings__delete").textContent =
-          translations[8];
-        document.querySelector(".modal-btn").textContent = translations[9];
-        document.querySelector(".modal-btn_delete").textContent =
-          translations[10];
-        document.querySelector(".modal-title").textContent = translations[11];
-        document.querySelector(".shop-popup__btn").textContent =
-          translations[12];
+        // Сохраняем переводы в localStorage для последующего использования
+        localStorage.setItem("translations", JSON.stringify(translations));
+        localStorage.setItem("currentLanguage", langCode);
+        // Обновляем текст элементов
+        updateUITexts(translations);
       }
     } catch (error) {
       console.error("Error changing language:", error);
     }
   };
+  // Функция для обновления текста UI элементов
+  const updateUITexts = (translations) => {
+    const elements = {
+      ".modal-btn": translations[0],
+      ".modal-btn_default": translations[1],
+      ".modal-settings__title": translations[2],
+      ".modal-settings__select span": translations[3],
+    };
+    Object.entries(elements).forEach(([selector, text]) => {
+      const element = document.querySelector(selector);
+      if (element) element.textContent = text;
+    });
+    const settingsItems = document.querySelectorAll(".modal-settings__title");
+    if (settingsItems.length >= 5) {
+      settingsItems[1].textContent = translations[4];
+      settingsItems[2].textContent = translations[5];
+      settingsItems[3].textContent = translations[6];
+      settingsItems[4].textContent = translations[7];
+    }
+  };
+  // Загружаем сохраненные переводы при монтировании
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("currentLanguage");
+    const savedTranslations = localStorage.getItem("translations");
 
+    if (savedLanguage && savedTranslations) {
+      setCurrentLanguage(savedLanguage);
+      setSelectLang(savedLanguage === "ru" ? 1 : 2);
+      updateUITexts(JSON.parse(savedTranslations));
+    }
+  }, []);
   const settingsPopupRef = useRef(null);
 
   useEffect(() => {
