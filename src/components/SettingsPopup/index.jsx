@@ -96,7 +96,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         await cardBackService.updateUserCardBack(userId, { style });
       }
     } catch (error) {
-      console.error("Error updating card back:", error);
+      console.error("Error updating card backф:", error);
     }
   };
   const setThemeMode = () => {
