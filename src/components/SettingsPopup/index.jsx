@@ -39,6 +39,16 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     loadUserCardBack();
   }, [dispatch]);
   useEffect(() => {
+    const savedLanguage = localStorage.getItem("language");
+    if (savedLanguage) {
+      dispatch(setLanguage(savedLanguage));
+      setSelectLang(savedLanguage === "en" ? 2 : 1);
+    } else {
+      localStorage.setItem("language", "ru");
+      dispatch(setLanguage("ru"));
+    }
+  }, [dispatch]);
+  useEffect(() => {
     const fetchPurchasedShirts = async () => {
       try {
         const tg = window.Telegram.WebApp;
@@ -106,7 +116,8 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
 
   const [modalStep, setModalStep] = useState(1);
   const [seletLang, setSelectLang] = useState(() => {
-    return language || "ru"; // Инициализация из Redux state
+    const savedLang = localStorage.getItem("language");
+    return savedLang === "en" ? 2 : savedLang === "ru" ? 1 : 1;
   });
   const [translations, setTranslations] = useState({});
 
@@ -129,11 +140,11 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     if (langCode === "ru") {
       setSelectLang(1);
       dispatch(setLanguage("ru"));
-      localStorage.setItem("language", "ru"); // Сохраняем в localStorage
+      localStorage.setItem("language", "ru");
     } else if (langCode === "en") {
       setSelectLang(2);
       dispatch(setLanguage("en"));
-      localStorage.setItem("language", "en"); // Сохраняем в localStorage
+      localStorage.setItem("language", "en");
     }
     // Тексты для переводаы
     const textsToTranslate = {
