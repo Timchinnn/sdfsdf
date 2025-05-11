@@ -103,7 +103,9 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const [settingsVibration, setSettingsVibration] = useState(false);
   const [settingsNight, setSettingsNight] = useState(darkTheme);
   const [modalStep, setModalStep] = useState(1);
-  const [seletLang, setSelectLang] = useState(1);
+  const [seletLang, setSelectLang] = useState(() => {
+    return language || "ru"; // Инициализация из Redux state
+  });
   const [translations, setTranslations] = useState({});
   const language = useSelector((state) => state.language);
 
@@ -126,9 +128,11 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     if (langCode === "ru") {
       setSelectLang(1);
       dispatch(setLanguage("ru"));
+      localStorage.setItem("language", "ru"); // Сохраняем в localStorage
     } else if (langCode === "en") {
       setSelectLang(2);
       dispatch(setLanguage("en"));
+      localStorage.setItem("language", "en"); // Сохраняем в localStorage
     }
     // Тексты для переводаы
     const textsToTranslate = {

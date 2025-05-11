@@ -1,7 +1,7 @@
 const initialState = {
   theme: true,
   cardBack: "default",
-  language: "ru", // Добавляем начальное значение языкаы
+  language: localStorage.getItem("language") || "ru", // Добавляем начальное значение языкаы
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
