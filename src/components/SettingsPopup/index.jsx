@@ -132,6 +132,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         textsToTranslate,
         langCode
       );
+      console.log(response.data);
       if (response.data && response.data.translations) {
         const translations = response.data.translations;
 
