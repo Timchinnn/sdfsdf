@@ -67,7 +67,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const handleLanguageChange = async (lang) => {
     setSelectedLanguage(lang);
     try {
-      const response = await fetch("/api/translate", {
+      const response = await fetch("/translate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
