@@ -39,14 +39,10 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     loadUserCardBack();
   }, [dispatch]);
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("language");
-    if (savedLanguage) {
-      dispatch(setLanguage(savedLanguage));
-      setSelectLang(savedLanguage === "en" ? 2 : 1);
-    } else {
-      localStorage.setItem("language", "ru");
-      dispatch(setLanguage("ru"));
-    }
+    // Загружаем сохраненный язык при монтировании
+    const savedLanguage = localStorage.getItem("language") || "ru";
+    dispatch(setLanguage(savedLanguage));
+    setSelectLang(savedLanguage === "en" ? 2 : 1);
   }, [dispatch]);
   useEffect(() => {
     const fetchPurchasedShirts = async () => {
@@ -137,6 +133,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     }
   };
   const handleLanguageChange = async (langCode) => {
+    // Устанавливаем язык и сохраняем в localStorage
     if (langCode === "ru") {
       setSelectLang(1);
       dispatch(setLanguage("ru"));
@@ -146,7 +143,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       dispatch(setLanguage("en"));
       localStorage.setItem("language", "en");
     }
-    // Тексты для переводаы
+    // Тексты для перевода на русский
     const textsToTranslate = {
       vibration: "Вибрация",
       nightMode: "Ночной режим",
