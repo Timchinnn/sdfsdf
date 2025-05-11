@@ -110,13 +110,58 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       // Update UI language selection
       setSelectLang(langCode === "ru" ? 1 : 2);
       setCurrentLanguage(langCode);
-      // Call translation service for UI elements that need translation
+      // Define text elements that need translation
+      const textsToTranslate = [
+        "Сохранить и продолжить",
+        "Сбросить",
+        "Админ панель",
+        "Перейти",
+        "Вибрация",
+        "Ночной режим",
+        "Рубашка карты",
+        "Язык",
+        "Удалить аккаунт",
+        "Оставить аккаунт",
+        "Стереть все данные",
+        "Вы уверенны, что хотите стереть все данные на нашем сервисе?",
+        "Применить",
+      ];
+      // Call translation service
       const response = await translationService.translateText(
-        ["Сохранить", "Отмена"],
+        textsToTranslate,
         langCode
       );
       // Update UI with translated text
-      // TODO: Implement UI text updates with translations
+      if (response.data && response.data.translations) {
+        const translations = response.data.translations;
+
+        // Update text elements with translations
+        document.querySelector(".modal-btn").textContent = translations[0];
+        document.querySelector(".modal-btn_default").textContent =
+          translations[1];
+        document.querySelector(".modal-settings__title").textContent =
+          translations[2];
+        document.querySelector(".modal-settings__select span").textContent =
+          translations[3];
+
+        // Update other text elements...
+        const settingsItems = document.querySelectorAll(
+          ".modal-settings__title"
+        );
+        settingsItems[1].textContent = translations[4]; // Вибрация
+        settingsItems[2].textContent = translations[5]; // Ночной режим
+        settingsItems[3].textContent = translations[6]; // Рубашка карты
+        settingsItems[4].textContent = translations[7]; // Язык
+
+        document.querySelector(".modal-settings__delete").textContent =
+          translations[8];
+        document.querySelector(".modal-btn").textContent = translations[9];
+        document.querySelector(".modal-btn_delete").textContent =
+          translations[10];
+        document.querySelector(".modal-title").textContent = translations[11];
+        document.querySelector(".shop-popup__btn").textContent =
+          translations[12];
+      }
     } catch (error) {
       console.error("Error changing language:", error);
     }
