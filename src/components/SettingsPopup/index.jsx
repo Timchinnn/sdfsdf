@@ -122,8 +122,11 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     }
   };
   const handleLanguageChange = async (langCode) => {
-    setSelectLang(langCode);
-
+    if (langCode === "ru") {
+      setSelectLang(1);
+    } else if (langCode === "en") {
+      setSelectLang(2);
+    }
     // Тексты для перевода
     const textsToTranslate = {
       vibration: "Вибрация",
