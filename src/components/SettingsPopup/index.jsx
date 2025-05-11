@@ -43,6 +43,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     const savedLanguage = localStorage.getItem("language") || "ru";
     dispatch(setLanguage(savedLanguage));
     setSelectLang(savedLanguage === "en" ? 2 : 1);
+    handleLanguageChange(savedLanguage); // Добавляем вызов для загрузки переводов
   }, [dispatch]);
   useEffect(() => {
     const fetchPurchasedShirts = async () => {
@@ -143,7 +144,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       dispatch(setLanguage("en"));
       localStorage.setItem("language", "en");
     }
-    // Тексты для перевода на русский
+    // Тексты для перевода
     const textsToTranslate = {
       vibration: "Вибрация",
       nightMode: "Ночной режим",
