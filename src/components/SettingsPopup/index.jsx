@@ -108,10 +108,29 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     useSelector((state) => state.language)
   );
 
+  // Добавляем состояния для текстов
+  const [uiTexts, setUiTexts] = useState({
+    saveButton: "Сохранить и продолжить",
+    resetButton: "Сбросить",
+    adminTitle: "Админ панель",
+    goToButton: "Перейти",
+    vibrationTitle: "Вибрация",
+    nightModeTitle: "Ночной режим",
+    cardBackTitle: "Рубашка карты",
+    languageTitle: "Язык",
+    deleteAccount: "Удалить аккаунт",
+    keepAccount: "Оставить аккаунт",
+    eraseData: "Стереть все данные",
+    confirmErase:
+      "Вы уверенны, что хотите стереть все данные на нашем сервисе?",
+    apply: "Применить",
+  });
+
   const handleLanguageChange = async (langCode) => {
     try {
       setSelectLang(langCode === "ru" ? 1 : 2);
       setCurrentLanguage(langCode);
+
       const textsToTranslate = [
         "Сохранить и продолжить",
         "Сбросить",
@@ -131,17 +150,33 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         textsToTranslate,
         langCode
       );
+
       if (response.data && response.data.translations) {
         const translations = response.data.translations;
-        // Сохраняем переводы и текущий язык
+
+        // Сохраняем переводы в localStorage
         localStorage.setItem("translations", JSON.stringify(translations));
         localStorage.setItem("currentLanguage", langCode);
+
         // Обновляем Redux store
         dispatch(setLanguage(langCode));
-        // Обновляем UI немедленно
-        updateUITexts(translations);
 
-        // Закрываем popup после успешного применения языка
+        // Обновляем состояние с текстами
+        setUiTexts({
+          saveButton: translations[0],
+          resetButton: translations[1],
+          adminTitle: translations[2],
+          goToButton: translations[3],
+          vibrationTitle: translations[4],
+          nightModeTitle: translations[5],
+          cardBackTitle: translations[6],
+          languageTitle: translations[7],
+          deleteAccount: translations[8],
+          keepAccount: translations[9],
+          eraseData: translations[10],
+          confirmErase: translations[11],
+          apply: translations[12],
+        });
         handleClickPopupClose();
       }
     } catch (error) {
@@ -149,25 +184,25 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     }
   };
   // Функция для обновления текста UI элементов
-  const updateUITexts = (translations) => {
-    const elements = {
-      ".modal-btn": translations[0],
-      ".modal-btn_default": translations[1],
-      ".modal-settings__title": translations[2],
-      ".modal-settings__select span": translations[3],
-    };
-    Object.entries(elements).forEach(([selector, text]) => {
-      const element = document.querySelector(selector);
-      if (element) element.textContent = text;
-    });
-    const settingsItems = document.querySelectorAll(".modal-settings__title");
-    if (settingsItems.length >= 5) {
-      settingsItems[1].textContent = translations[4];
-      settingsItems[2].textContent = translations[5];
-      settingsItems[3].textContent = translations[6];
-      settingsItems[4].textContent = translations[7];
-    }
-  };
+  // const updateUITexts = (translations) => {
+  //   const elements = {
+  //     ".modal-btn": translations[0],
+  //     ".modal-btn_default": translations[1],
+  //     ".modal-settings__title": translations[2],
+  //     ".modal-settings__select span": translations[3],
+  //   };
+  //   Object.entries(elements).forEach(([selector, text]) => {
+  //     const element = document.querySelector(selector);
+  //     if (element) element.textContent = text;
+  //   });
+  //   const settingsItems = document.querySelectorAll(".modal-settings__title");
+  //   if (settingsItems.length >= 5) {
+  //     settingsItems[1].textContent = translations[4];
+  //     settingsItems[2].textContent = translations[5];
+  //     settingsItems[3].textContent = translations[6];
+  //     settingsItems[4].textContent = translations[7];
+  //   }
+  // };
   // Загружаем сохраненные переводы при монтировании
   useEffect(() => {
     const savedLanguage = localStorage.getItem("currentLanguage");
@@ -176,7 +211,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     if (savedLanguage && savedTranslations) {
       setCurrentLanguage(savedLanguage);
       setSelectLang(savedLanguage === "ru" ? 1 : 2);
-      updateUITexts(JSON.parse(savedTranslations));
+      // updateUITexts(JSON.parse(savedTranslations));
     }
   }, []);
   const settingsPopupRef = useRef(null);
@@ -320,7 +355,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 className="modal-btn"
                 onClick={handleClickPopupClose}
               >
-                Сохранить и продолжить
+                {uiTexts.saveButton}
               </button>
             </div>
           </>
