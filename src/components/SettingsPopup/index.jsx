@@ -105,6 +105,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const [modalStep, setModalStep] = useState(1);
   const [seletLang, setSelectLang] = useState(1);
   const [translations, setTranslations] = useState({});
+  const language = useSelector((state) => state.language);
 
   const translateText = async (text, targetLang) => {
     try {
@@ -124,8 +125,10 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const handleLanguageChange = async (langCode) => {
     if (langCode === "ru") {
       setSelectLang(1);
+      dispatch(setLanguage("ru"));
     } else if (langCode === "en") {
       setSelectLang(2);
+      dispatch(setLanguage("en"));
     }
     // Тексты для перевода
     const textsToTranslate = {
