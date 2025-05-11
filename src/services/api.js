@@ -23,6 +23,13 @@ export const shopShirtService = {
     }),
   deleteShopShirt: (id) => axios.delete(`/shop-shirts/${id}`),
 };
+export const translationService = {
+  translateText: (texts, targetLanguageCode) =>
+    axios.post("/api/translate", {
+      texts,
+      targetLanguageCode,
+    }),
+};
 export const userInitService = {
   // Инициализация пользователя
   initUser: (telegram_id, username) =>
