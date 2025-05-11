@@ -107,7 +107,6 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const [currentLanguage, setCurrentLanguage] = useState(
     useSelector((state) => state.language)
   );
-
   const handleLanguageChange = async (langCode) => {
     try {
       setSelectLang(langCode === "ru" ? 1 : 2);
@@ -140,9 +139,10 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         dispatch(setLanguage(langCode));
         // Обновляем UI немедленно
         updateUITexts(translations);
-
-        // Закрываем popup после успешного применения языка
-        handleClickPopupClose();
+        // Закрываем popup через небольшую задержку
+        setTimeout(() => {
+          handleClickPopupClose();
+        }, 500);
       }
     } catch (error) {
       console.error("Error changing language:", error);
