@@ -146,7 +146,9 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         setTranslations(newTranslations);
         localStorage.setItem("translations", JSON.stringify(newTranslations));
         localStorage.setItem("currentLanguage", langCode);
-        dispatch(setLanguage(langCode));
+
+        // Применяем изменения языка сразу
+        await dispatch(setLanguage(langCode));
       }
     } catch (error) {
       console.error("Error changing language:", error);
@@ -178,8 +180,8 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setActivePopup]);
-  const handleClickPopupClose = () => {
-    dispatch(setLanguage(currentLanguage));
+  const handleClickPopupClose = async () => {
+    await dispatch(setLanguage(currentLanguage));
     setActivePopup(false);
     document.documentElement.classList.remove("fixed");
     setModalStep(1);
