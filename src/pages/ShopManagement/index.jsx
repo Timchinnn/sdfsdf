@@ -155,7 +155,7 @@ const ShopManagement = () => {
         </div>
       </div>
       <div className={styles.mainContent}>
-        <h2>Рубашки в магазине</h2>
+        <h2>Рубашки для магазина</h2>
         <div className={styles.cardsList}>
           {shopShirts
             .filter((shirt) =>
