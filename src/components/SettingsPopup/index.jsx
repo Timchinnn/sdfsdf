@@ -296,7 +296,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
             <div className="modal-lang">
               <div
                 className="modal-lang__item f-center-jcsb"
-                onClick={() => setSelectLang(1)}
+                onClick={() => handleLanguageChange("ru")}
               >
                 <div className="modal-lang__content">
                   <p className="modal-lang__content-title">Russian</p>
