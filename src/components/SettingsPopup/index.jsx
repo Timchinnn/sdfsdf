@@ -112,7 +112,6 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     try {
       setSelectLang(langCode === "ru" ? 1 : 2);
       setCurrentLanguage(langCode);
-
       const textsToTranslate = [
         "Сохранить и продолжить",
         "Сбросить",
@@ -132,19 +131,18 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         textsToTranslate,
         langCode
       );
-      console.log(response.data);
       if (response.data && response.data.translations) {
         const translations = response.data.translations;
-
         // Сохраняем переводы и текущий язык
         localStorage.setItem("translations", JSON.stringify(translations));
         localStorage.setItem("currentLanguage", langCode);
-
         // Обновляем Redux store
         dispatch(setLanguage(langCode));
-
-        // Обновляем UI
+        // Обновляем UI немедленно
         updateUITexts(translations);
+
+        // Закрываем popup после успешного применения языка
+        handleClickPopupClose();
       }
     } catch (error) {
       console.error("Error changing language:", error);
