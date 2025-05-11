@@ -25,7 +25,7 @@ export const shopShirtService = {
 };
 export const translationService = {
   translateText: (texts, targetLanguageCode) =>
-    axios.post("/api/translate", {
+    axios.post("/translate", {
       texts,
       targetLanguageCode,
     }),
