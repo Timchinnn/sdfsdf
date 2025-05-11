@@ -130,7 +130,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       setSelectLang(2);
       dispatch(setLanguage("en"));
     }
-    // Тексты для перевода
+    // Тексты для переводаы
     const textsToTranslate = {
       vibration: "Вибрация",
       nightMode: "Ночной режим",
