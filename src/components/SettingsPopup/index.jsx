@@ -9,7 +9,7 @@ import { routeAdmin } from "pages/AdminPanel";
 import { NavLink } from "react-router-dom";
 import { cardBackService } from "services/api";
 import axios from "../../axios-controller";
-
+import Spinner from "../Spinner";
 // import { setTheme } from "../../redux/actions";
 
 const SettingsPopup = ({ setActivePopup, activePopup }) => {
@@ -221,6 +221,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                   </>
                 )}
               </div>
+              <Spinner />
               <div className="modal-settings__item f-center-jcsb">
                 <p className="modal-settings__title">
                   {" "}
