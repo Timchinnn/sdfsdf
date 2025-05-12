@@ -221,7 +221,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                   </>
                 )}
               </div>
-              <Spinner />
+              {/* <Spinner /> */}
               <div className="modal-settings__item f-center-jcsb">
                 <p className="modal-settings__title">
                   {" "}
