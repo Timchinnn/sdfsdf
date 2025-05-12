@@ -3,7 +3,7 @@ import "./styles.scss";
 const Spinner = ({
   loading = true,
   color = "#ffffff",
-  size = 150,
+  size = 40,
   cssOverride = {},
   speedMultiplier = 1,
 }) => {
