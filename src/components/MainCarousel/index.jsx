@@ -133,27 +133,19 @@ const MainCarousel = ({
       try {
         const response = await cardsService.getAllCards();
         const cards = response.data;
-
-        // Загружаем изображения группами по 3
-        for (let i = 0; i < cards.length; i += 3) {
-          const batch = cards.slice(i, i + 3);
-          const loadPromises = batch.map((card) => {
-            return new Promise((resolve, reject) => {
-              const img = new Image();
-              img.src = `https://api.zoomayor.io${card.image}`;
-              img.onload = () => resolve(card);
-              img.onerror = () => {
-                console.error(`Failed to load image for card ${card.id}`);
-                resolve(card); // Разрешаем промис даже при ошибке
-              };
-              // Таймаут 10 секунд на загрузку
-              setTimeout(() => resolve(card), 3000);
-            });
+        // Предварительная загрузка изображений
+        const preloadImages = cards.map((card) => {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = `https://api.zoomayor.io${card.image}`;
+            img.onload = () => resolve(card);
+            img.onerror = () => reject();
           });
-
-          const loadedBatch = await Promise.all(loadPromises);
-          setPhotos((prev) => [...prev, ...loadedBatch]);
-        }
+        });
+        // Ждем загрузки всех изображений
+        const loadedCards = await Promise.all(preloadImages);
+        setPhotos(loadedCards);
+        alert("Все изображения успешно загружены!");
       } catch (error) {
         console.error(error);
       }
