@@ -133,19 +133,27 @@ const MainCarousel = ({
       try {
         const response = await cardsService.getAllCards();
         const cards = response.data;
-        // Предварительная загрузка изображений
-        const preloadImages = cards.map((card) => {
-          return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = `https://api.zoomayor.io${card.image}`;
-            img.onload = () => resolve(card);
-            img.onerror = () => reject();
+
+        // Загружаем изображения группами по 3
+        for (let i = 0; i < cards.length; i += 3) {
+          const batch = cards.slice(i, i + 3);
+          const loadPromises = batch.map((card) => {
+            return new Promise((resolve, reject) => {
+              const img = new Image();
+              img.src = `https://api.zoomayor.io${card.image}`;
+              img.onload = () => resolve(card);
+              img.onerror = () => {
+                console.error(`Failed to load image for card ${card.id}`);
+                resolve(card); // Разрешаем промис даже при ошибке
+              };
+              // Таймаут 10 секунд на загрузку
+              setTimeout(() => resolve(card), 3000);
+            });
           });
-        });
-        // Ждем загрузки всех изображений
-        const loadedCards = await Promise.all(preloadImages);
-        setPhotos(loadedCards);
-        alert("Все изображения успешно загружены!");
+
+          const loadedBatch = await Promise.all(loadPromises);
+          setPhotos((prev) => [...prev, ...loadedBatch]);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -438,15 +446,17 @@ const MainCarousel = ({
                     <div className="main-slider__image">
                       <img
                         src={
-                          getStyles(i).isBackCard
-                            ? getCardBackImage()
-                            : openedCards[i]?.image
-                            ? `https://api.zoomayor.io${openedCards[i].image}`
-                            : selectedPhotos[item.id]?.image
-                            ? `https://api.zoomayor.io${
-                                selectedPhotos[item.id].image
-                              }`
-                            : cardBackStyles.default.image
+                          getStyles(i).isBackCard ? (
+                            getCardBackImage()
+                          ) : openedCards[i]?.image ? (
+                            `https://api.zoomayor.io${openedCards[i].image}`
+                          ) : selectedPhotos[item.id]?.image ? (
+                            `https://api.zoomayor.io${
+                              selectedPhotos[item.id].image
+                            }`
+                          ) : (
+                            <Spinner color="#71B21D" size={50} />
+                          )
                         }
                         alt=""
                       />
