@@ -148,7 +148,7 @@ const MainCarousel = ({
                 resolve(card); // Разрешаем промис даже при ошибке
               };
               // Таймаут 10 секунд на загрузку
-              setTimeout(() => resolve(card), 3000);
+              setTimeout(() => resolve(card), 100);
             });
           });
 
