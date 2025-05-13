@@ -132,20 +132,7 @@ const MainCarousel = ({
     const fetchPhotos = async () => {
       try {
         const response = await cardsService.getAllCards();
-        const cards = response.data;
-        // Предварительная загрузка изображений
-        const preloadImages = cards.map((card) => {
-          return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = `https://api.zoomayor.io${card.image}`;
-            img.onload = () => resolve(card);
-            img.onerror = () => reject();
-          });
-        });
-        // Ждем загрузки всех изображений
-        const loadedCards = await Promise.all(preloadImages);
-        setPhotos(loadedCards);
-        alert("Все изображения успешно загружены!");
+        setPhotos(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -288,7 +275,7 @@ const MainCarousel = ({
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
     // Set next open time to 5 seconds from now
-    const nextTime = Date.now() + 1000; // 5 seconds cooldown
+    const nextTime = Date.now() + 5000; // 5 seconds cooldown
     setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
     setTimeout(() => {
       setIsFlipped(true);
@@ -297,7 +284,7 @@ const MainCarousel = ({
         setIsButtonLocked(false);
         setIsAnimating(false);
         setIsFlipped(false);
-      }, 1500);
+      }, 3100);
     }, ANIMATION_DURATION);
 
     const tg = window.Telegram.WebApp;
