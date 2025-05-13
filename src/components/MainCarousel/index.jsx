@@ -132,7 +132,28 @@ const MainCarousel = ({
     const fetchPhotos = async () => {
       try {
         const response = await cardsService.getAllCards();
-        setPhotos(response.data);
+        const cards = response.data;
+
+        // Загружаем изображения группами по 3
+        for (let i = 0; i < cards.length; i += 3) {
+          const batch = cards.slice(i, i + 3);
+          const loadPromises = batch.map((card) => {
+            return new Promise((resolve, reject) => {
+              const img = new Image();
+              img.src = `https://api.zoomayor.io${card.image}`;
+              img.onload = () => resolve(card);
+              img.onerror = () => {
+                console.error(`Failed to load image for card ${card.id}`);
+                resolve(card); // Разрешаем промис даже при ошибке
+              };
+              // Таймаут 10 секунд на загрузку
+              setTimeout(() => resolve(card), 3000);
+            });
+          });
+
+          const loadedBatch = await Promise.all(loadPromises);
+          setPhotos((prev) => [...prev, ...loadedBatch]);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -265,7 +286,7 @@ const MainCarousel = ({
     if (energy < 40) {
       return; // Недостаточно энергии
     }
-    if (isAnimating) return; // Prevent multiple clicks during animation
+    if (isAnimating) return; // Prevent multiple clicks during animationолрллдо
 
     // Check if card is still locked
     if (nextOpenTime[index] && Date.now() < nextOpenTime[index]) {
@@ -275,7 +296,7 @@ const MainCarousel = ({
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
     // Set next open time to 5 seconds from now
-    const nextTime = Date.now() + 5000; // 5 seconds cooldown
+    const nextTime = Date.now() + 1000; // 5 seconds cooldown
     setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
     setTimeout(() => {
       setIsFlipped(true);
@@ -284,7 +305,7 @@ const MainCarousel = ({
         setIsButtonLocked(false);
         setIsAnimating(false);
         setIsFlipped(false);
-      }, 3100);
+      }, 1500);
     }, ANIMATION_DURATION);
 
     const tg = window.Telegram.WebApp;
