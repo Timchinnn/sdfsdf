@@ -6,7 +6,6 @@ import { userCardsService } from "services/api";
 import { useSelector } from "react-redux";
 import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
-import Spinner from "components/Spinner";
 import Style2CardBack from "assets/img/card2.png";
 // Отсутствует определение cardBackStyles
 const cardBackStyles = {
@@ -133,28 +132,7 @@ const MainCarousel = ({
     const fetchPhotos = async () => {
       try {
         const response = await cardsService.getAllCards();
-        const cards = response.data;
-
-        // Загружаем изображения группами по 3
-        for (let i = 0; i < cards.length; i += 3) {
-          const batch = cards.slice(i, i + 3);
-          const loadPromises = batch.map((card) => {
-            return new Promise((resolve, reject) => {
-              const img = new Image();
-              img.src = `https://api.zoomayor.io${card.image}`;
-              img.onload = () => resolve(card);
-              img.onerror = () => {
-                console.error(`Failed to load image for card ${card.id}`);
-                resolve(card); // Разрешаем промис даже при ошибке
-              };
-              // Таймаут 10 секунд на загрузку
-              setTimeout(() => resolve(card), 100);
-            });
-          });
-
-          const loadedBatch = await Promise.all(loadPromises);
-          setPhotos((prev) => [...prev, ...loadedBatch]);
-        }
+        setPhotos(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -287,7 +265,7 @@ const MainCarousel = ({
     if (energy < 40) {
       return; // Недостаточно энергии
     }
-    if (isAnimating) return; // Prevent multiple clicks during animationолрллдо
+    if (isAnimating) return; // Prevent multiple clicks during animation
 
     // Check if card is still locked
     if (nextOpenTime[index] && Date.now() < nextOpenTime[index]) {
@@ -297,7 +275,7 @@ const MainCarousel = ({
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
     // Set next open time to 5 seconds from now
-    const nextTime = Date.now() + 1000; // 5 seconds cooldown
+    const nextTime = Date.now() + 5000; // 5 seconds cooldown
     setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
     setTimeout(() => {
       setIsFlipped(true);
@@ -306,7 +284,7 @@ const MainCarousel = ({
         setIsButtonLocked(false);
         setIsAnimating(false);
         setIsFlipped(false);
-      }, 1500);
+      }, 3100);
     }, ANIMATION_DURATION);
 
     const tg = window.Telegram.WebApp;
@@ -445,25 +423,20 @@ const MainCarousel = ({
                   }
                   backComponent={
                     <div className="main-slider__image">
-                      {openedCards[i]?.image ||
-                      selectedPhotos[item.id]?.image ? (
-                        <img
-                          src={
-                            getStyles(i).isBackCard
-                              ? getCardBackImage()
-                              : openedCards[i]?.image
-                              ? `https://api.zoomayor.io${openedCards[i].image}`
-                              : selectedPhotos[item.id]?.image
-                              ? `https://api.zoomayor.io${
-                                  selectedPhotos[item.id].image
-                                }`
-                              : cardBackStyles.default.image
-                          }
-                          alt=""
-                        />
-                      ) : (
-                        <Spinner color="#71B21D" size={50} />
-                      )}
+                      <img
+                        src={
+                          getStyles(i).isBackCard
+                            ? getCardBackImage()
+                            : openedCards[i]?.image
+                            ? `https://api.zoomayor.io${openedCards[i].image}`
+                            : selectedPhotos[item.id]?.image
+                            ? `https://api.zoomayor.io${
+                                selectedPhotos[item.id].image
+                              }`
+                            : cardBackStyles.default.image
+                        }
+                        alt=""
+                      />
                     </div>
                   }
                 />
