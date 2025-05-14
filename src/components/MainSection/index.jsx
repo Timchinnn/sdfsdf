@@ -261,7 +261,7 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
             <li className="main-menu__item">
               <NavLink to={routeSets()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img src="" alt="" style={{ width: "58px" }} />
+                  <img src={CardsIcon} alt="" style={{ width: "58px" }} />
                 </div>
                 <p className="main-menu__title">Сет</p>
               </NavLink>
