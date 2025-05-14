@@ -144,23 +144,29 @@ const MainCarousel = ({
   useEffect(() => {
     if (photos.length > 0 && !shouldUpdate) {
       const weightedRandom = (items) => {
+        // Фильтруем предметы с нулевым шансом выпадения
         const availableItems = items.filter((item) => {
           const chance = parseFloat(item.chance);
           return !isNaN(chance) && chance > 0;
         });
+        // Если нет доступных предметов, возвращаем null
         if (availableItems.length === 0) {
           return null;
         }
+        // Считаем общий вес с поддержкой дробных чисел
         const totalWeight = availableItems.reduce(
           (sum, item) => sum + parseFloat(item.chance || 0.001),
           0
         );
+        // Нормализуем шансы
         const normalizedItems = availableItems.map((item) => ({
           ...item,
           normalizedChance: parseFloat(item.chance || 0.001) / totalWeight,
         }));
+        // Выбираем случайный элемент
         const random = Math.random();
         let cumulativeWeight = 0;
+
         for (const item of normalizedItems) {
           cumulativeWeight += item.normalizedChance;
           if (random <= cumulativeWeight) {
@@ -169,6 +175,7 @@ const MainCarousel = ({
         }
         return normalizedItems[0];
       };
+
       const newSelectedPhotos = data.reduce((acc, item) => {
         const selectedItem = weightedRandom(photos);
         if (selectedItem) {
@@ -176,39 +183,7 @@ const MainCarousel = ({
         }
         return acc;
       }, {});
-      // Preload first 3 images immediately
-      const preloadFirst3 = async () => {
-        const first3Cards = Object.values(newSelectedPhotos).slice(0, 3);
-        await Promise.all(
-          first3Cards.map(
-            (card) =>
-              new Promise((resolve, reject) => {
-                const img = new Image();
-                img.src = `https://api.zoomayor.io${card.image}`;
-                img.onload = () => resolve();
-                img.onerror = () => reject();
-              })
-          )
-        );
-      };
-      // Preload remaining images with delay
-      const preloadRemaining = async () => {
-        const remainingCards = Object.values(newSelectedPhotos).slice(3);
-        for (const card of remainingCards) {
-          await new Promise((resolve) => setTimeout(resolve, 100)); // Add delay between loads
-          await new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = `https://api.zoomayor.io${card.image}`;
-            img.onload = () => resolve();
-            img.onerror = () => reject();
-          });
-        }
-      };
-      // Execute preloading
-      preloadFirst3().then(() => {
-        setSelectedPhotos(newSelectedPhotos);
-        preloadRemaining();
-      });
+      setSelectedPhotos(newSelectedPhotos);
     }
   }, [photos, data, shouldUpdate]);
   const nextSlide = () => {
@@ -298,17 +273,17 @@ const MainCarousel = ({
     const selectedCard = selectedPhotos[data[index].id];
 
     // Preload the card image
-    // try {
-    //   await new Promise((resolve, reject) => {
-    //     const img = new Image();
-    //     img.src = `https://api.zoomayor.io${selectedCard.image}`;
-    //     img.onload = () => resolve(selectedCard);
-    //     img.onerror = () => reject();
-    //   });
-    // } catch (error) {
-    //   console.error("Error preloading image:", error);
-    //   return;
-    // }
+    try {
+      await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = `https://api.zoomayor.io${selectedCard.image}`;
+        img.onload = () => resolve(selectedCard);
+        img.onerror = () => reject();
+      });
+    } catch (error) {
+      console.error("Error preloading image:", error);
+      return;
+    }
     setIsAnimating(true);
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
