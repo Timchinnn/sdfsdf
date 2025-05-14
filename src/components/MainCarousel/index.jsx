@@ -8,6 +8,7 @@ import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
 import Style2CardBack from "assets/img/card2.png";
 // Отсутствует определение cardBackStyles
+import Spinner from "components/Spinner";
 const cardBackStyles = {
   default: { image: DefaultImg },
   style1: { image: Style1CardBack },
@@ -33,6 +34,7 @@ const MainCarousel = ({
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const [isSwipeLocked, setIsSwipeLocked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // Minimum distance required for swipe
   const minSwipeDistance = 50;
   const getCardBackImage = () => {
@@ -274,14 +276,17 @@ const MainCarousel = ({
 
     // Preload the card image
     try {
+      setIsLoading(true); // Add loading state
       await new Promise((resolve, reject) => {
         const img = new Image();
         img.src = `https://api.zoomayor.io${selectedCard.image}`;
         img.onload = () => resolve(selectedCard);
-        img.onerror = () => reject();
+        img.onerror = () => reject(new Error("Failed to load image"));
       });
+      setIsLoading(false);
     } catch (error) {
-      console.error("Error preloading image:", error);
+      console.error("Error loading image:", error);
+      setIsLoading(false);
       return;
     }
     setIsAnimating(true);
@@ -426,20 +431,26 @@ const MainCarousel = ({
                   }
                   backComponent={
                     <div className="main-slider__image">
-                      <img
-                        src={
-                          getStyles(i).isBackCard
-                            ? getCardBackImage()
-                            : openedCards[i]?.image
-                            ? `https://api.zoomayor.io${openedCards[i].image}`
-                            : selectedPhotos[item.id]?.image
-                            ? `https://api.zoomayor.io${
-                                selectedPhotos[item.id].image
-                              }`
-                            : cardBackStyles.default.image
-                        }
-                        alt=""
-                      />
+                      {isLoading ? (
+                        <div className="loading-placeholder">
+                          <Spinner />
+                        </div>
+                      ) : (
+                        <img
+                          src={
+                            getStyles(i).isBackCard
+                              ? getCardBackImage()
+                              : openedCards[i]?.image
+                              ? `https://api.zoomayor.io${openedCards[i].image}`
+                              : selectedPhotos[item.id]?.image
+                              ? `https://api.zoomayor.io${
+                                  selectedPhotos[item.id].image
+                                }`
+                              : cardBackStyles.default.image
+                          }
+                          alt=""
+                        />
+                      )}
                     </div>
                   }
                 />
