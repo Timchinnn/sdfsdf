@@ -151,6 +151,7 @@ const MainCarousel = ({
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0 && !shouldUpdate) {
+      // Функция для случайного выбора элемента с учетом поля "chance"
       const weightedRandom = (items) => {
         const availableItems = items.filter((item) => {
           const chance = parseFloat(item.chance);
@@ -177,7 +178,7 @@ const MainCarousel = ({
         }
         return normalizedItems[0];
       };
-      // Выбираем случайную карту для каждой карточки из data
+      // Для каждого элемента из data выбираем случайный элемент из photos
       const newSelectedPhotos = data.reduce((acc, item) => {
         const selectedItem = weightedRandom(photos);
         if (selectedItem) {
@@ -186,29 +187,25 @@ const MainCarousel = ({
         return acc;
       }, {});
       setSelectedPhotos(newSelectedPhotos);
-      // Функция для предзагрузки массива изображений
-      const preloadImages = async (imageUrls) => {
-        return Promise.all(imageUrls.map((url) => preloadImage(url)));
+      // Функция для предзагрузки изображения
+      const preloadImage = (url) => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = url;
+          img.onload = () => resolve(url);
+          img.onerror = reject;
+        });
       };
-      // Получаем массив URL'ов для предзагрузки (например, добавляем префикс, если нужно)
+      // Получаем массив URL для выбранных изображений
       const allImageUrls = Object.values(newSelectedPhotos).map(
         (item) => `https://api.zoomayor.io${item.image}`
       );
-      // Подгружаем сразу первые 3 картинки
+      // Ограничиваем до первых трех изображений
       const firstThree = allImageUrls.slice(0, 3);
-      preloadImages(firstThree)
+      // Предзагружаем первые три картинки
+      Promise.all(firstThree.map((url) => preloadImage(url)))
         .then(() => {
-          // После успешной загрузки первых трёх, запускаем подгрузку остальных
-          const remaining = allImageUrls.slice(3);
-          // Можно загрузить все оставшиеся сразу, либо по очереди с задержкой
-          // Пример последовательной загрузки с задержкой 500 мс:
-          remaining.reduce((promise, url) => {
-            return promise.then(() => {
-              return preloadImage(url).then(() => {
-                return new Promise((res) => setTimeout(res, 500));
-              });
-            });
-          }, Promise.resolve());
+          alert("Первые три картинки успешно загружены");
         })
         .catch((err) => {
           console.error("Ошибка предзагрузки изображений:", err);
