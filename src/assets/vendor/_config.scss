@@ -44,4 +44,6 @@ img[src^="../assets/"] {
   backface-visibility: hidden;
   transform: translateZ(0);
   perspective: 1000;
+  will-change: transform;
+  cache-control: public;
 }
