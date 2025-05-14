@@ -379,6 +379,11 @@ const MainCarousel = ({
       >
         {" "}
         <div className="slideC">
+          <img
+            src="https://s3-ap-southeast-1.amazonaws.com/story.kingpower.com/wp-content/uploads/2016/10/05033519/location-black-png-10.png"
+            alt=""
+            style={{ width: "58px" }}
+          />
           {data.map((item, i) => (
             <React.Fragment key={item.i}>
               <div

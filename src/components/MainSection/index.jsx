@@ -220,11 +220,6 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
               <div className="main-head__content">
                 <div className="main-head__user">
                   {username} <span>/ Мэр</span>
-                  <img
-                    src="https://s3-ap-southeast-1.amazonaws.com/story.kingpower.com/wp-content/uploads/2016/10/05033519/location-black-png-10.png"
-                    alt=""
-                    style={{ width: "58px" }}
-                  />
                 </div>
 
                 <p className="main-head__level">
@@ -232,11 +227,6 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
                 </p>
 
                 <div className="main-head__progress">
-                  <img
-                    src="https://s3-ap-southeast-1.amazonaws.com/story.kingpower.com/wp-content/uploads/2016/10/05033519/location-black-png-10.png"
-                    alt=""
-                    style={{ width: "58px" }}
-                  />
                   {showAchievement && (
                     <div
                       className="main-head__progress-bar"
