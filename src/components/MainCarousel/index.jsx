@@ -128,6 +128,14 @@ const MainCarousel = ({
     }, 10); // Обновляем каждые 10мс для плавности
     return () => clearInterval(timer);
   }, [nextOpenTime]);
+  const preloadImage = (url) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => resolve(url);
+      img.onerror = reject;
+    });
+  };
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
@@ -144,29 +152,23 @@ const MainCarousel = ({
   useEffect(() => {
     if (photos.length > 0 && !shouldUpdate) {
       const weightedRandom = (items) => {
-        // Фильтруем предметы с нулевым шансом выпадения
         const availableItems = items.filter((item) => {
           const chance = parseFloat(item.chance);
           return !isNaN(chance) && chance > 0;
         });
-        // Если нет доступных предметов, возвращаем null
         if (availableItems.length === 0) {
           return null;
         }
-        // Считаем общий вес с поддержкой дробных чисел
         const totalWeight = availableItems.reduce(
           (sum, item) => sum + parseFloat(item.chance || 0.001),
           0
         );
-        // Нормализуем шансы
         const normalizedItems = availableItems.map((item) => ({
           ...item,
           normalizedChance: parseFloat(item.chance || 0.001) / totalWeight,
         }));
-        // Выбираем случайный элемент
         const random = Math.random();
         let cumulativeWeight = 0;
-
         for (const item of normalizedItems) {
           cumulativeWeight += item.normalizedChance;
           if (random <= cumulativeWeight) {
@@ -175,7 +177,7 @@ const MainCarousel = ({
         }
         return normalizedItems[0];
       };
-
+      // Выбираем случайную карту для каждой карточки из data
       const newSelectedPhotos = data.reduce((acc, item) => {
         const selectedItem = weightedRandom(photos);
         if (selectedItem) {
@@ -184,6 +186,33 @@ const MainCarousel = ({
         return acc;
       }, {});
       setSelectedPhotos(newSelectedPhotos);
+      // Функция для предзагрузки массива изображений
+      const preloadImages = async (imageUrls) => {
+        return Promise.all(imageUrls.map((url) => preloadImage(url)));
+      };
+      // Получаем массив URL'ов для предзагрузки (например, добавляем префикс, если нужно)
+      const allImageUrls = Object.values(newSelectedPhotos).map(
+        (item) => `https://api.zoomayor.io${item.image}`
+      );
+      // Подгружаем сразу первые 3 картинки
+      const firstThree = allImageUrls.slice(0, 3);
+      preloadImages(firstThree)
+        .then(() => {
+          // После успешной загрузки первых трёх, запускаем подгрузку остальных
+          const remaining = allImageUrls.slice(3);
+          // Можно загрузить все оставшиеся сразу, либо по очереди с задержкой
+          // Пример последовательной загрузки с задержкой 500 мс:
+          remaining.reduce((promise, url) => {
+            return promise.then(() => {
+              return preloadImage(url).then(() => {
+                return new Promise((res) => setTimeout(res, 500));
+              });
+            });
+          }, Promise.resolve());
+        })
+        .catch((err) => {
+          console.error("Ошибка предзагрузки изображений:", err);
+        });
     }
   }, [photos, data, shouldUpdate]);
   const nextSlide = () => {
@@ -273,17 +302,17 @@ const MainCarousel = ({
     const selectedCard = selectedPhotos[data[index].id];
 
     // Preload the card image
-    try {
-      await new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = `https://api.zoomayor.io${selectedCard.image}`;
-        img.onload = () => resolve(selectedCard);
-        img.onerror = () => reject();
-      });
-    } catch (error) {
-      console.error("Error preloading image:", error);
-      return;
-    }
+    // try {
+    //   await new Promise((resolve, reject) => {
+    //     const img = new Image();
+    //     img.src = `https://api.zoomayor.io${selectedCard.image}`;
+    //     img.onload = () => resolve(selectedCard);
+    //     img.onerror = () => reject();
+    //   });
+    // } catch (error) {
+    //   console.error("Error preloading image:", error);
+    //   return;
+    // }
     setIsAnimating(true);
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
