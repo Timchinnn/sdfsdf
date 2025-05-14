@@ -273,17 +273,17 @@ const MainCarousel = ({
     const selectedCard = selectedPhotos[data[index].id];
 
     // Preload the card image
-    // try {
-    //   await new Promise((resolve, reject) => {
-    //     const img = new Image();
-    //     img.src = `https://api.zoomayor.io${selectedCard.image}`;
-    //     img.onload = () => resolve(selectedCard);
-    //     img.onerror = () => reject();
-    //   });
-    // } catch (error) {
-    //   console.error("Error preloading image:", error);
-    //   return;
-    // }
+    try {
+      await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = `https://api.zoomayor.io${selectedCard.image}`;
+        img.onload = () => resolve(selectedCard);
+        img.onerror = () => reject();
+      });
+    } catch (error) {
+      console.error("Error preloading image:", error);
+      return;
+    }
     setIsAnimating(true);
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
@@ -379,11 +379,6 @@ const MainCarousel = ({
       >
         {" "}
         <div className="slideC">
-          <img
-            src="https://s3-ap-southeast-1.amazonaws.com/story.kingpower.com/wp-content/uploads/2016/10/05033519/location-black-png-10.png"
-            alt=""
-            style={{ width: "58px" }}
-          />
           {data.map((item, i) => (
             <React.Fragment key={item.i}>
               <div
