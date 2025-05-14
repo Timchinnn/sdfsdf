@@ -261,7 +261,11 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
             <li className="main-menu__item">
               <NavLink to={routeSets()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img src={CardsIcon} alt="" style={{ width: "58px" }} />
+                  <img
+                    src="https://s3-ap-southeast-1.amazonaws.com/story.kingpower.com/wp-content/uploads/2016/10/05033519/location-black-png-10.png"
+                    alt=""
+                    style={{ width: "58px" }}
+                  />{" "}
                 </div>
                 <p className="main-menu__title">Сет</p>
               </NavLink>
