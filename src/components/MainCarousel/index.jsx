@@ -128,14 +128,6 @@ const MainCarousel = ({
     }, 10); // Обновляем каждые 10мс для плавности
     return () => clearInterval(timer);
   }, [nextOpenTime]);
-  const preloadImage = (url) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => resolve(url);
-      img.onerror = reject;
-    });
-  };
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
@@ -151,25 +143,30 @@ const MainCarousel = ({
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0 && !shouldUpdate) {
-      // Функция для случайного выбора элемента с учетом поля "chance"
       const weightedRandom = (items) => {
+        // Фильтруем предметы с нулевым шансом выпадения
         const availableItems = items.filter((item) => {
           const chance = parseFloat(item.chance);
           return !isNaN(chance) && chance > 0;
         });
+        // Если нет доступных предметов, возвращаем null
         if (availableItems.length === 0) {
           return null;
         }
+        // Считаем общий вес с поддержкой дробных чисел
         const totalWeight = availableItems.reduce(
           (sum, item) => sum + parseFloat(item.chance || 0.001),
           0
         );
+        // Нормализуем шансы
         const normalizedItems = availableItems.map((item) => ({
           ...item,
           normalizedChance: parseFloat(item.chance || 0.001) / totalWeight,
         }));
+        // Выбираем случайный элемент
         const random = Math.random();
         let cumulativeWeight = 0;
+
         for (const item of normalizedItems) {
           cumulativeWeight += item.normalizedChance;
           if (random <= cumulativeWeight) {
@@ -178,7 +175,7 @@ const MainCarousel = ({
         }
         return normalizedItems[0];
       };
-      // Для каждого элемента из data выбираем случайный элемент из photos
+
       const newSelectedPhotos = data.reduce((acc, item) => {
         const selectedItem = weightedRandom(photos);
         if (selectedItem) {
@@ -187,29 +184,6 @@ const MainCarousel = ({
         return acc;
       }, {});
       setSelectedPhotos(newSelectedPhotos);
-      // Функция для предзагрузки изображения
-      const preloadImage = (url) => {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.src = url;
-          img.onload = () => resolve(url);
-          img.onerror = reject;
-        });
-      };
-      // Получаем массив URL для выбранных изображений
-      const allImageUrls = Object.values(newSelectedPhotos).map(
-        (item) => `https://api.zoomayor.io${item.image}`
-      );
-      // Ограничиваем до первых трех изображений
-      const firstThree = allImageUrls.slice(0, 3);
-      // Предзагружаем первые три картинки
-      Promise.all(firstThree.map((url) => preloadImage(url)))
-        .then(() => {
-          alert("Первые три картинки успешно загружены");
-        })
-        .catch((err) => {
-          console.error("Ошибка предзагрузки изображений:", err);
-        });
     }
   }, [photos, data, shouldUpdate]);
   const nextSlide = () => {
@@ -299,17 +273,17 @@ const MainCarousel = ({
     const selectedCard = selectedPhotos[data[index].id];
 
     // Preload the card image
-    // try {
-    //   await new Promise((resolve, reject) => {
-    //     const img = new Image();
-    //     img.src = `https://api.zoomayor.io${selectedCard.image}`;
-    //     img.onload = () => resolve(selectedCard);
-    //     img.onerror = () => reject();
-    //   });
-    // } catch (error) {
-    //   console.error("Error preloading image:", error);
-    //   return;
-    // }
+    try {
+      await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = `https://api.zoomayor.io${selectedCard.image}`;
+        img.onload = () => resolve(selectedCard);
+        img.onerror = () => reject();
+      });
+    } catch (error) {
+      console.error("Error preloading image:", error);
+      return;
+    }
     setIsAnimating(true);
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
