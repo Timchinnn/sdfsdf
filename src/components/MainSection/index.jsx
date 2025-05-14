@@ -216,6 +216,11 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
             <div className="main-head__offer flex">
               <div className="main-head__avatar">
                 <img src={avatar} alt="" />
+                <img
+                  src="https://s3-ap-southeast-1.amazonaws.com/story.kingpower.com/wp-content/uploads/2016/10/05033519/location-black-png-10.png"
+                  alt=""
+                  style={{ width: "58px" }}
+                />
               </div>
               <div className="main-head__content">
                 <div className="main-head__user">
@@ -262,11 +267,6 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
               <NavLink to={routeSets()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
                   <img src={CardsIcon} alt="" style={{ width: "58px" }} />
-                  <img
-                    src="https://s3-ap-southeast-1.amazonaws.com/story.kingpower.com/wp-content/uploads/2016/10/05033519/location-black-png-10.png"
-                    alt=""
-                    style={{ width: "58px" }}
-                  />
                 </div>
                 <p className="main-menu__title">Сет</p>
               </NavLink>
