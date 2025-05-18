@@ -273,17 +273,17 @@ const MainCarousel = ({
     const selectedCard = selectedPhotos[data[index].id];
 
     // Preload the card image
-    try {
-      await new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = `https://api.zoomayor.io${selectedCard.image}`;
-        img.onload = () => resolve(selectedCard);
-        img.onerror = () => reject();
-      });
-    } catch (error) {
-      console.error("Error preloading image:", error);
-      return;
-    }
+    // try {
+    //   await new Promise((resolve, reject) => {
+    //     const img = new Image();
+    //     img.src = `https://api.zoomayor.io${selectedCard.image}`;
+    //     img.onload = () => resolve(selectedCard);
+    //     img.onerror = () => reject();
+    //   });
+    // } catch (error) {
+    //   console.error("Error preloading image:", error);
+    //   return;
+    // }
     setIsAnimating(true);
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
