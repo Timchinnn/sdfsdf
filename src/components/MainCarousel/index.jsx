@@ -35,23 +35,6 @@ const MainCarousel = ({
   const [isSwipeLocked, setIsSwipeLocked] = useState(false);
   // Minimum distance required for swipe
   const minSwipeDistance = 50;
-  const [responseTime, setResponseTime] = useState(null);
-  useEffect(() => {
-    const measureResponseTime = async () => {
-      const startTime = performance.now();
-      try {
-        const response = await fetch("https://api.zoomayor.io/api/cards");
-        const endTime = performance.now();
-        const time = endTime - startTime;
-        setResponseTime(time);
-        alert(`Время ответа сервера: ${Math.round(time)}мс`);
-      } catch (error) {
-        console.error("Ошибка при измерении времени ответа:", error);
-      }
-    };
-
-    measureResponseTime();
-  }, []);
   const getCardBackImage = () => {
     // Если cardBackStyle отсутствует, возвращаем изображение по умолчанию
     if (!cardBackStyle) return cardBackStyles.default.image;
@@ -157,7 +140,6 @@ const MainCarousel = ({
     fetchPhotos();
   }, []);
   const [activeSlide, setActiveSlide] = useState(0);
-
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0 && !shouldUpdate) {
