@@ -273,7 +273,11 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
             <li className="main-menu__item">
               <NavLink to={routeTasks()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img src={TaskIcon} alt="" style={{ width: "46px" }} />
+                  <img
+                    src="https://image.tw1.ru/image/vopros.webp"
+                    alt=""
+                    style={{ width: "46px" }}
+                  />
                 </div>
                 <p className="main-menu__title">Задания</p>
               </NavLink>
@@ -281,7 +285,11 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
             <li className="main-menu__item">
               <NavLink to={routeBonus()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img src={BonusIcon} alt="" style={{ width: "47px" }} />
+                  <img
+                    src="https://image.tw1.ru/image/sunduk.webp"
+                    alt=""
+                    style={{ width: "47px" }}
+                  />
                 </div>
                 <p className="main-menu__title">Бонус</p>
               </NavLink>
