@@ -7,8 +7,6 @@ import { useSelector } from "react-redux";
 import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
 import Style2CardBack from "assets/img/card2.png";
-import axios from "../../axios-controller";
-
 // Отсутствует определение cardBackStyles
 const cardBackStyles = {
   default: { image: DefaultImg },
@@ -147,40 +145,21 @@ const MainCarousel = ({
     }, 10); // Обновляем каждые 10мс для плавности
     return () => clearInterval(timer);
   }, [nextOpenTime]);
-  // useEffect(() => {
-  //   const fetchPhotos = async () => {
-  //     try {
-  //       const response = await cardsService.getAllCards();
-  //       // console.log(response.data);
-
-  //       setPhotos(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchPhotos();
-  // }, []);
   useEffect(() => {
-    // Запрос к тестовому эндпоинту вместо cardsService.getAllCards
-    const fetchTestCards = async () => {
+    const fetchPhotos = async () => {
       try {
-        // Предполагается, что базовый URL уже настроен в axios
-        const response = await axios.get("/test-cards");
-        // console.log(response.data);
-        // Преобразование изображения: добавляем базовый URL, если нужно
+        const response = await cardsService.getAllCards();
         setPhotos(response.data);
       } catch (error) {
-        console.error("Ошибка при загрузке тестовых карточек:", error);
+        console.error(error);
       }
     };
-    fetchTestCards();
+    fetchPhotos();
   }, []);
-
   const [activeSlide, setActiveSlide] = useState(0);
 
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
-    // console.log(photos);
     if (photos.length > 0 && !shouldUpdate) {
       const weightedRandom = (items) => {
         // Фильтруем предметы с нулевым шансом выпадения
@@ -217,13 +196,11 @@ const MainCarousel = ({
 
       const newSelectedPhotos = data.reduce((acc, item) => {
         const selectedItem = weightedRandom(photos);
-        // console.log(selectedItem);
         if (selectedItem) {
           acc[item.id] = selectedItem;
         }
         return acc;
       }, {});
-      // console.log(newSelectedPhotos);
       setSelectedPhotos(newSelectedPhotos);
     }
   }, [photos, data, shouldUpdate]);
@@ -312,7 +289,6 @@ const MainCarousel = ({
       return; // Card is still locked
     }
     const selectedCard = selectedPhotos[data[index].id];
-    console.log(selectedPhotos);
 
     // Preload the card image
     // try {
@@ -356,7 +332,7 @@ const MainCarousel = ({
         ...openedCards,
         [index]: selectedCard,
       });
-      // await userCardsService.addCardToUser(telegram_id, selectedCard.id);
+      await userCardsService.addCardToUser(telegram_id, selectedCard.id);
 
       if (selectedCard.type === "energy_boost") {
         const boostValue = Number(selectedCard.energy) || 100;
