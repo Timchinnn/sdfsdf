@@ -145,38 +145,17 @@ const MainCarousel = ({
     }, 10); // Обновляем каждые 10мс для плавности
     return () => clearInterval(timer);
   }, [nextOpenTime]);
-  // useEffect(() => {
-  //   const fetchPhotos = async () => {
-  //     try {
-  //       const response = await cardsService.getAllCards();
-  //       setPhotos(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchPhotos();
-  // }, []);
   useEffect(() => {
-    // Запрос к тестовому эндпоинту вместо cardsService.getAllCards
-    const fetchTestCards = async () => {
+    const fetchPhotos = async () => {
       try {
-        // Предполагается, что базовый URL уже настроен в axios
-        const response = await axios.get("/test-cards");
-        // Преобразование изображения: добавляем базовый URL, если нужно
-        const testCards = response.data.map((card) => ({
-          ...card,
-          image: card.image.startsWith("/img")
-            ? `https://api.zoomayor.io${card.image}`
-            : card.image,
-        }));
-        setPhotos(testCards);
+        const response = await cardsService.getAllCards();
+        setPhotos(response.data);
       } catch (error) {
-        console.error("Ошибка при загрузке тестовых карточек:", error);
+        console.error(error);
       }
     };
-    fetchTestCards();
+    fetchPhotos();
   }, []);
-
   const [activeSlide, setActiveSlide] = useState(0);
 
   const [activeIndex, setActiveIndex] = useState(null);
