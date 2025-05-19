@@ -78,8 +78,10 @@ const MainPage = () => {
       // Update hourly income and coins when card is opened
       if (photo) {
         setHourlyIncome((prevIncome) => {
-          const newIncome = prevIncome + (photo.hourly_income || 0);
-          return parseFloat(newIncome.toFixed(2)); // Round to 2 decimal places
+          const currentIncome = parseFloat(prevIncome) || 0;
+          const additionalIncome = parseFloat(photo?.hourly_income) || 0;
+          const newIncome = currentIncome + additionalIncome;
+          return Number(newIncome.toFixed(2));
         });
         const newCoins = photo.price || 0;
         setCoins((prevCoins) => {
