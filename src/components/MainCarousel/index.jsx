@@ -180,6 +180,7 @@ const MainCarousel = ({
 
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
+    console.log(photos);
     if (photos.length > 0 && !shouldUpdate) {
       const weightedRandom = (items) => {
         // Фильтруем предметы с нулевым шансом выпадения
