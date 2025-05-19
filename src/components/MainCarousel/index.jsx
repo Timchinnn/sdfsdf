@@ -309,7 +309,7 @@ const MainCarousel = ({
       return; // Card is still locked
     }
     const selectedCard = selectedPhotos[data[index].id];
-    console.log(selectedCard);
+    console.log(selectedPhotos);
 
     // Preload the card image
     // try {
