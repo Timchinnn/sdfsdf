@@ -216,6 +216,7 @@ const MainCarousel = ({
 
       const newSelectedPhotos = data.reduce((acc, item) => {
         const selectedItem = weightedRandom(photos);
+        console.log(selectedItem);
         if (selectedItem) {
           acc[item.id] = selectedItem;
         }
