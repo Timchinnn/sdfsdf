@@ -349,7 +349,7 @@ const MainCarousel = ({
         ...openedCards,
         [index]: selectedCard,
       });
-      await userCardsService.addCardToUser(telegram_id, selectedCard.id);
+      // await userCardsService.addCardToUser(telegram_id, selectedCard.id);
 
       if (selectedCard.type === "energy_boost") {
         const boostValue = Number(selectedCard.energy) || 100;
