@@ -151,7 +151,7 @@ const MainCarousel = ({
     const fetchPhotos = async () => {
       try {
         const response = await cardsService.getAllCards();
-        console.log(response.data);
+        // console.log(response.data);
 
         setPhotos(response.data);
       } catch (error) {
@@ -166,7 +166,7 @@ const MainCarousel = ({
       try {
         // Предполагается, что базовый URL уже настроен в axios
         const response = await axios.get("/test-cards");
-        console.log(response.data);
+        // console.log(response.data);
         // Преобразование изображения: добавляем базовый URL, если нужно
         setPhotos(response.data);
       } catch (error) {
@@ -180,7 +180,7 @@ const MainCarousel = ({
 
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
-    console.log(photos);
+    // console.log(photos);
     if (photos.length > 0 && !shouldUpdate) {
       const weightedRandom = (items) => {
         // Фильтруем предметы с нулевым шансом выпадения
@@ -217,13 +217,13 @@ const MainCarousel = ({
 
       const newSelectedPhotos = data.reduce((acc, item) => {
         const selectedItem = weightedRandom(photos);
-        console.log(selectedItem);
+        // console.log(selectedItem);
         if (selectedItem) {
           acc[item.id] = selectedItem;
         }
         return acc;
       }, {});
-      console.log(newSelectedPhotos);
+      // console.log(newSelectedPhotos);
       setSelectedPhotos(newSelectedPhotos);
     }
   }, [photos, data, shouldUpdate]);
