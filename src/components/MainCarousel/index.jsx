@@ -164,6 +164,7 @@ const MainCarousel = ({
       try {
         // Предполагается, что базовый URL уже настроен в axios
         const response = await axios.get("/test-cards");
+        console.log(response.data);
         // Преобразование изображения: добавляем базовый URL, если нужно
         setPhotos(response.data);
       } catch (error) {
