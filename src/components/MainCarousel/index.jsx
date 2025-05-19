@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
 import Style2CardBack from "assets/img/card2.png";
+import axios from "../../axios-controller";
+
 // Отсутствует определение cardBackStyles
 const cardBackStyles = {
   default: { image: DefaultImg },
