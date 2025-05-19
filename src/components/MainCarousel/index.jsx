@@ -147,19 +147,19 @@ const MainCarousel = ({
     }, 10); // Обновляем каждые 10мс для плавности
     return () => clearInterval(timer);
   }, [nextOpenTime]);
-  useEffect(() => {
-    const fetchPhotos = async () => {
-      try {
-        const response = await cardsService.getAllCards();
-        // console.log(response.data);
+  // useEffect(() => {
+  //   const fetchPhotos = async () => {
+  //     try {
+  //       const response = await cardsService.getAllCards();
+  //       // console.log(response.data);
 
-        setPhotos(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchPhotos();
-  }, []);
+  //       setPhotos(response.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchPhotos();
+  // }, []);
   useEffect(() => {
     // Запрос к тестовому эндпоинту вместо cardsService.getAllCards
     const fetchTestCards = async () => {
