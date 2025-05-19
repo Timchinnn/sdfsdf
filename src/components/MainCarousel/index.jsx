@@ -221,6 +221,7 @@ const MainCarousel = ({
         }
         return acc;
       }, {});
+      console.log(newSelectedPhotos);
       setSelectedPhotos(newSelectedPhotos);
     }
   }, [photos, data, shouldUpdate]);
