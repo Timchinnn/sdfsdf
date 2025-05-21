@@ -162,7 +162,7 @@ const MainCarousel = ({
   useEffect(() => {
     if (photos.length > 0 && !shouldUpdate) {
       const weightedRandom = (items) => {
-        // Фильтруем предметы с нулевым шансом выпадения
+        // Фильтруем предметы с нулевым шансом выпаденияа
         const availableItems = items.filter((item) => {
           const chance = parseFloat(item.chance);
           return !isNaN(chance) && chance > 0;
