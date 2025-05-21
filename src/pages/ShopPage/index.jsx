@@ -301,11 +301,10 @@ const ShopPage = () => {
                     <ul
                       className="shop-list f-jcsb"
                       style={
-                        filteredItems.filter((item) =>
-                          ["sets", "card", "shirt"].includes(item.type)
-                        ).length > 1
+                        filteredItems.filter((item) => item.type === "sets")
+                          .length > 0
                           ? { marginBottom: "24px" }
-                          : {}
+                          : { display: "none" }
                       }
                     >
                       {filteredItems
