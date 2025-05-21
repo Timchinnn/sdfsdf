@@ -342,11 +342,10 @@ const ShopPage = () => {
                     <ul
                       className="shop-list f-jcsb"
                       style={
-                        filteredItems.filter((item) =>
-                          ["sets", "card", "shirt"].includes(item.type)
-                        ).length > 1
+                        filteredItems.filter((item) => item.type === "cards")
+                          .length > 0
                           ? { marginBottom: "24px" }
-                          : {}
+                          : { display: "none" }
                       }
                     >
                       {filteredItems
@@ -384,11 +383,10 @@ const ShopPage = () => {
                     <ul
                       className="shop-list f-jcsb"
                       style={
-                        filteredItems.filter((item) =>
-                          ["sets", "card", "shirt"].includes(item.type)
-                        ).length > 1
+                        filteredItems.filter((item) => item.type === "shirts")
+                          .length > 0
                           ? { marginBottom: "24px" }
-                          : {}
+                          : { display: "none" }
                       }
                     >
                       {filteredItems
