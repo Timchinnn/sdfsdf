@@ -247,30 +247,26 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                   <span className="modal-settings__toggle-select"></span>
                 </div>
               </div>
-              <div className="modal-settings__item f-center-jcsb">
-                <p className="modal-settings__title">Рубашка карты</p>
-                <div
-                  className="modal-settings__select"
-                  onClick={() => setModalStep(4)}
-                >
-                  <span>
-                    {cardBacks.find((cb) => cb.image === cardBackStyle)?.name ||
-                      "Default"}
-                  </span>{" "}
-                  <svg
-                    width="8"
-                    height="14"
-                    viewBox="0 0 8 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7.96826 6.71191C7.96826 6.89502 7.89502 7.05615 7.75586 7.19531L1.95508 12.8716C1.82324 13.0034 1.66211 13.0693 1.47168 13.0693C1.09814 13.0693 0.805176 12.7837 0.805176 12.4028C0.805176 12.2124 0.878418 12.0513 0.995605 11.9268L6.32764 6.71191L0.995605 1.49707C0.878418 1.37256 0.805176 1.2041 0.805176 1.021C0.805176 0.640137 1.09814 0.354492 1.47168 0.354492C1.66211 0.354492 1.82324 0.42041 1.95508 0.544922L7.75586 6.22852C7.89502 6.36035 7.96826 6.52881 7.96826 6.71191Z"
-                      fill="#AAB2BD"
-                    />
-                  </svg>
-                </div>
-              </div>
+<div className="modal-settings__item f-center-jcsb">
+  <p className="modal-settings__title">Рубашка карты</p>
+  <div className="modal-settings__select" onClick={() => setModalStep(4)}>
+    <span>
+      {purchasedShirts.find((shirt) => shirt.image_url === cardBackStyle)?.name || "Default"}
+    </span>{" "}
+    <svg
+      width="8"
+      height="14"
+      viewBox="0 0 8 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7.96826 6.71191C7.96826 6.89502 7.89502 7.05615 7.75586 7.19531L1.95508 12.8716C1.82324 13.0034 1.66211 13.0693 1.47168 13.0693C1.09814 13.0693 0.805176 12.7837 0.805176 12.4028C0.805176 12.2124 0.878418 12.0513 0.995605 11.9268L6.32764 6.71191L0.995605 1.49707C0.878418 1.37256 0.805176 1.2041 0.805176 1.021C0.805176 0.640137 1.09814 0.354492 1.47168 0.354492C1.66211 0.354492 1.82324 0.42041 1.95508 0.544922L7.75586 6.22852C7.89502 6.36035 7.96826 6.52881 7.96826 6.71191Z"
+        fill="#AAB2BD"
+      />
+    </svg>
+  </div>
+</div>
               <div className="modal-settings__item f-center-jcsb">
                 <p className="modal-settings__title">Язык</p>
                 <div
