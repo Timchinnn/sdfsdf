@@ -54,6 +54,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
             `/user/${tg.initDataUnsafe.user.id}/shirts`
           );
           if (response.data && response.data.shirts) {
+            console.log(response.data.shirts)
             setPurchasedShirts(response.data.shirts);
           }
         }
