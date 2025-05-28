@@ -37,6 +37,19 @@ const ShopPage = () => {
     };
     fetchShopCards();
   }, []);
+    const refreshPurchasedShirts = async () => {
+    try {
+      const tg = window.Telegram.WebApp;
+      if (tg?.initDataUnsafe?.user?.id) {
+        const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/shirts`);
+        if (response.data && response.data.shirts) {
+          setShirts(response.data.shirts); // Обновляем состояние рубашек
+        }
+      }
+    } catch (error) {
+      console.error("Error refreshing purchased shirts:", error);
+    }
+  };
   useEffect(() => {
     const fetchShirts = async () => {
       try {
@@ -548,6 +561,7 @@ const ShopPage = () => {
           setActivePopup={setActivePopup}
           handleClosePopup={handleClosePopup}
           selectedPhoto={selectedId}
+          onShirtPurchased={refreshPurchasedShirts}
         />
       ) : (
         activePopup && (
