@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 const ShopPage = () => {
   const cardBackStyle = useSelector((state) => state.cardBack);
   const tgUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "";
-  const isSpecialUser = tgUserId === 7241281378 || tgUserId === 467518658;
+const isSpecialUser = tgUserId === 7241281378 || tgUserId === 467518658 || tgUserId === 6243418179;
   const [activePopup, setActivePopup] = useState(false);
 
   const [activePopupCarousel, setActivePopupCarousel] = useState(false);
