@@ -45,6 +45,22 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     setSelectLang(savedLanguage === "en" ? 2 : 1);
     handleLanguageChange(savedLanguage); // Добавляем вызов для загрузки переводов
   }, [dispatch]);
+    const fetchPurchasedShirts = async () => {
+    try {
+      const tg = window.Telegram.WebApp;
+      if (tg?.initDataUnsafe?.user?.id) {
+        const response = await axios.get(
+          `/user/${tg.initDataUnsafe.user.id}/shirts`
+        );
+        if (response.data && response.data.shirts) {
+          console.log(response.data.shirts);
+          setPurchasedShirts(response.data.shirts);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching purchased shirts:", error);
+    }
+  };
   useEffect(() => {
     const fetchPurchasedShirts = async () => {
       try {
@@ -199,7 +215,11 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   //     document.body.classList.add("dark");
   //   }
   const tg = window.Telegram.WebApp;
-
+  const handleSelectClick = () => {
+    // Вызываем функцию для получения купленных рубашек при клике
+    fetchPurchasedShirts();
+    setModalStep(4); // Переход на шаг 4
+  };
   return (
     <div
       ref={settingsPopupRef}
@@ -250,7 +270,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
               </div>
 <div className="modal-settings__item f-center-jcsb">
   <p className="modal-settings__title">Рубашка карты</p>
-  <div className="modal-settings__select" onClick={() => setModalStep(4)}>
+  <div className="modal-settings__select" onClick={handleSelectClick}>
     <span>
       {purchasedShirts.find((shirt) => shirt.image_url === cardBackStyle)?.name || "Default"}
     </span>{" "}
