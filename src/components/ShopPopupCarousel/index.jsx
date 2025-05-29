@@ -79,6 +79,7 @@ const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
           type="button"
           className="shop-popup__close"
           onClick={props.handleClosePopup}
+          style={{ zIndex: 1000 }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
