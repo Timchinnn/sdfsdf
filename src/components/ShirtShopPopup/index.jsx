@@ -57,7 +57,7 @@ const ShirtShopPopup = (props) => {
         if (onButtonClick) {
           onButtonClick();
         }
-        props.onShirtPurchased();
+        // props.onShirtPurchased();
         // Показываем уведомление об успешной покупке
         tg.showPopup({
           title: "Успех!",
