@@ -565,7 +565,6 @@ const ShopPage = () => {
           setActivePopup={setActivePopup}
           handleClosePopup={handleClosePopup}
           selectedPhoto={selectedId}
-{/*           onShirtPurchased={refreshPurchasedShirts} */}
         />
       ) : (
         activePopup && (
