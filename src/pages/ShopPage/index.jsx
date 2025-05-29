@@ -39,21 +39,21 @@ const ShopPage = () => {
     };
     fetchShopCards();
   }, []);
-const refreshPurchasedShirts = async () => {
-       console.log("Обновление купленных рубашек..."); // Добавьте этот лог
-       try {
-           const tg = window.Telegram.WebApp;
-           if (tg?.initDataUnsafe?.user?.id) {
-               const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/shirts`);
-               if (response.data && response.data.shirts) {
-                   setShirts(response.data.shirts); // Обновляем состояние рубашек
-                   console.log("Купленные рубашки обновлены:", response.data.shirts); // Лог для проверки
-               }
-           }
-       } catch (error) {
-           console.error("Ошибка при обновлении купленных рубашек:", error);
-       }
-   };
+// const refreshPurchasedShirts = async () => {
+//        console.log("Обновление купленных рубашек..."); // Добавьте этот лог
+//        try {
+//            const tg = window.Telegram.WebApp;
+//            if (tg?.initDataUnsafe?.user?.id) {
+//                const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/shirts`);
+//                if (response.data && response.data.shirts) {
+//                    setShirts(response.data.shirts); // Обновляем состояние рубашек
+//                    console.log("Купленные рубашки обновлены:", response.data.shirts); // Лог для проверки
+//                }
+//            }
+//        } catch (error) {
+//            console.error("Ошибка при обновлении купленных рубашек:", error);
+//        }
+//    };
   useEffect(() => {
     const fetchShirts = async () => {
       try {
