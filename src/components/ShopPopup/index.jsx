@@ -69,103 +69,64 @@ const ShopPopup = (props) => {
         </button>
         <div className="shop-popup__inner">
           <div className="shop-popup__image">
-            {/* <img
-              src={
-                props.selectedPhoto
-                  ? `${props.selectedPhoto.image}`
-                  : DefaultImg
-              }
-              alt={props.selectedPhoto?.title || ""}
-            /> */}
-            {/* <img
-              src={
-                item.id === "set" || item.id === "energy" || item.id === "money"
-                  ? item.image
-                  : `${item.image}`
-              }
-              alt=""
-              className="shop-card__Img"
-            /> */}
             {showImage && (
               <img
-                src={
-                  props.selectedPhoto
-                    ? props.selectedPhoto.id === "set" ||
-                      props.selectedPhoto.id === "energy" ||
-                      props.selectedPhoto.id === "money" ||
-                      props.selectedPhoto.image === QuestionMarkImg
-                      ? props.selectedPhoto.image
-                      : `https://api.zoomayor.io${props.selectedPhoto.image}`
-                    : DefaultImg
-                }
+                src={`https://api.zoomayor.io${props.selectedPhoto.image}`}
                 alt={props.selectedPhoto?.title || ""}
               />
             )}
           </div>
           <div className="shop-popup__content">
-            {props.selectedPhoto &&
-            props.selectedPhoto.image === QuestionMarkImg ? (
-              <h3 className="shop-popup__title">Карта не открыта</h3>
-            ) : (
-              <>
-                <h3 className="shop-popup__title">
-                  {props.selectedPhoto ? props.selectedPhoto.title : ""}
-                </h3>
-                <p className="shop-popup__text">
-                  {props.selectedPhoto ? props.selectedPhoto.description : ""}
-                  {props.selectedPhoto &&
-                    props.selectedPhoto.type === "energy_boost" && (
-                      <span style={{ marginLeft: "5px" }}>
-                        ⚡ {props.selectedPhoto.energy || 100}
-                      </span>
-                    )}
-                </p>
-                <div className="shop-popup__earn">
-                  <div className="main-params__card f-center-center">
-                    <div className="main-params__icon f-center-center">
-                      <img src={TimeIcon} alt="" />
-                    </div>
-                    <p className="main-params__title">
-                      {props.selectedPhoto?.hourly_income
-                        ? typeof props.selectedPhoto.hourly_income === "number"
-                          ? props.selectedPhoto.hourly_income.toFixed(2)
-                          : props.selectedPhoto.hourly_income
-                        : "0.00"}{" "}
-                      K/H
-                    </p>
-                  </div>
+            <h3 className="shop-popup__title">
+              {props.selectedPhoto ? props.selectedPhoto.title : ""}
+            </h3>
+            <p className="shop-popup__text">
+              {props.selectedPhoto ? props.selectedPhoto.description : ""}
+              {props.selectedPhoto &&
+                props.selectedPhoto.type === "energy_boost" && (
+                  <span style={{ marginLeft: "5px" }}>
+                    ⚡ {props.selectedPhoto.energy || 100}
+                  </span>
+                )}
+            </p>
+            <div className="shop-popup__earn">
+              <div className="main-params__card f-center-center">
+                <div className="main-params__icon f-center-center">
+                  <img src={TimeIcon} alt="Icon времени" />
                 </div>
-              </>
-            )}
-          </div>
-          {props.selectedPhoto &&
-            props.selectedPhoto.image !== QuestionMarkImg && (
-              <div className="shop-popup__params">
-                <ul className="friends-params f-center-center">
-                  <li className="friends-params__item f-center">
-                    <img src={StarIcon} alt="" />
-                    {props.selectedPhoto ? props.selectedPhoto.experience : ""}
-                  </li>
-                  <li className="friends-params__item f-center">
-                    <img src={CoinIcon} alt="" />
-                    {props.selectedPhoto ? props.selectedPhoto.price : ""}
-                  </li>
-                </ul>
+                <p className="main-params__title">
+                  {props.selectedPhoto?.hourly_income
+                    ? typeof props.selectedPhoto.hourly_income === "number"
+                      ? props.selectedPhoto.hourly_income.toFixed(2)
+                      : props.selectedPhoto.hourly_income
+                    : "0.00"}{" "}
+                  K/H
+                </p>
               </div>
-            )}
-          <button
-            type="button"
-            className="shop-popup__btn"
-            onClick={() => {
-              if (props.main) {
-                handleButtonClick();
-              } else {
-                props.handleClosePopup();
-              }
-            }}
-          >
-            {!props.main ? "Купить" : "Ок"}
-          </button>
+            </div>
+          </div>
+          <div className="shop-popup__divider"></div>
+          <div className="shop-popup__footer">
+            <div className="shop-popup__params">
+              <ul className="friends-params f-center-center">
+                <li className="friends-params__item f-center">
+                  <img src={StarIcon} alt="Icon опыта" />
+                  {props.selectedPhoto ? props.selectedPhoto.experience : ""}
+                </li>
+                <li className="friends-params__item f-center">
+                  <img src={CoinIcon} alt="Icon монет" />
+                  {Math.floor(props.selectedPhoto.price)}
+                </li>
+              </ul>
+            </div>
+            <button
+              type="button"
+              className="shop-popup__btn"
+              onClick={handleButtonClick}
+            >
+              {!props.main ? "Купить" : "Ок"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

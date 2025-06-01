@@ -30,9 +30,17 @@
     }
     &__content {
       text-align: center;
-      margin-top: 40px;
+      margin-top: 20px;
       padding-bottom: 16px;
-      border-bottom: 1px solid #e6e9ed;
+    }
+    &__divider {
+      width: 100%;
+      height: 1px;
+      background: #e6e9ed;
+      margin: 16px 0;
+    }
+    &__footer {
+      padding-top: 16px;
     }
     &__params {
       margin-top: 24px;
