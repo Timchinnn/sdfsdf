@@ -339,7 +339,7 @@ const ShopPage = () => {
                                 onClick={() => handleBuySet(set.id)}
                               >
                                 <img
-                                  src={`https://api.zoomayor.io${set.image_url}`}
+                                  src={`https://api.zoomayor.io${set.image}`}
                                   alt={set.title}
                                   className="shop-card__Img"
                                 />
