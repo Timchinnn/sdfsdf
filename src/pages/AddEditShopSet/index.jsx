@@ -90,9 +90,17 @@ const AddEditShopSet = () => {
         formData.append("cardIds[]", cardId);
       });
       if (id) {
-        await axios.put(`/shop-sets/${id}`, formData);
+        await axios.put(`/shop-sets/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
       } else {
-        await axios.post("/shop-sets", formData);
+        await axios.post("/shop-sets", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
       }
       history.push("/shop-management");
     } catch (error) {
