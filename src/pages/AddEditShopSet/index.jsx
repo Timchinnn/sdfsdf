@@ -18,11 +18,14 @@ const AddEditShopSet = () => {
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
   const [cardsInSet, setCardsInSet] = useState(new Set());
-  const [imageFile, setImageFile] = useState(null); // Инициализация состояния для файла изображения
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const handleImageUpload = (e) => {
-    const file = e.target.files[0]; // Получаем первый выбранный файл
+    const file = e.target.files[0];
     if (file) {
-      setImageFile(file); // Обновляем состояние с новым файлом
+      setSelectedImage(file);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
     }
   };
   useEffect(() => {
@@ -78,8 +81,8 @@ const AddEditShopSet = () => {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
-      if (imageFile) {
-        formData.append("image", imageFile);
+      if (selectedImage) {
+        formData.append("image", selectedImage);
       }
       // Convert cardsInSet Set to Array and append each cardId separately
       const cardIdsArray = Array.from(cardsInSet);
@@ -221,18 +224,43 @@ const AddEditShopSet = () => {
             )}
           </div>
           <div className={styles.inputContainer}>
-            {" "}
-            <div>
+            <div style={{ marginRight: "20px" }}>
+              <h2 className={styles.title}>Название</h2>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
               <h2 className={styles.title}>Изображение набора</h2>
-              <div className={styles.uploadButton}>
-                <label htmlFor="fileInput" className={styles.customFileButton}>
-                  <div className={styles.whiteBox}>
-                    <div className={styles.whiteBoxImg}>
-                      <img src={addimg} alt="#" />
-                      <p>Добавьте изображение</p>
+              <div className={styles.imageUploadContainer}>
+                {imagePreview ? (
+                  <div
+                    className={styles.imagePreview}
+                    onClick={() => document.getElementById("fileInput").click()}
+                  >
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      style={{
+                        maxWidth: "265px",
+                        borderRadius: "8px",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className={styles.uploadButton}
+                    onClick={() => document.getElementById("fileInput").click()}
+                  >
+                    <div className={styles.whiteBox}>
+                      <div className={styles.whiteBoxImg}>
+                        <img src={addimg} alt="#" />
+                        <p>Добавьте изображение</p>
+                      </div>
                     </div>
                   </div>
-                </label>
+                )}
                 <input
                   id="fileInput"
                   type="file"
@@ -241,20 +269,6 @@ const AddEditShopSet = () => {
                   style={{ display: "none" }}
                 />
               </div>
-            </div>
-            <div style={{ marginRight: "20px" }}>
-              <h2 className={styles.title}>Название</h2>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <h2 className={styles.title}>Цена</h2>
-              <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
               <button className={styles.saveButton} onClick={handleSubmit}>
                 Сохранить
               </button>

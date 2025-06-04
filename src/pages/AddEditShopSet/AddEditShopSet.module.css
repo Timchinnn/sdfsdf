@@ -146,32 +146,34 @@
 .saveButton:hover {
   background: darkgreen;
 }
-.uploadButton {
+.imageUploadContainer {
+  margin-top: 10px;
   margin-bottom: 20px;
 }
-.customFileButton {
+.imagePreview {
+  width: 100%;
+  max-width: 265px;
+  border-radius: 8px;
+  overflow: hidden;
   cursor: pointer;
+}
+.imagePreview img {
+  width: 100%;
+  height: auto;
   display: block;
+}
+.uploadButton {
+  cursor: pointer;
 }
 .whiteBox {
   background: #f5f7fa;
-  border-radius: 8px;
   padding: 20px;
+  border-radius: 8px;
   text-align: center;
-  width: 265px;
 }
 .whiteBoxImg {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
-}
-.whiteBoxImg img {
-  height: 64px;
-  width: auto;
-}
-.whiteBoxImg p {
-  color: #656d77;
-  font-size: 14px;
-  margin: 0;
 }
