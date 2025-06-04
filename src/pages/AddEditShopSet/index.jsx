@@ -18,6 +18,13 @@ const AddEditShopSet = () => {
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
   const [cardsInSet, setCardsInSet] = useState(new Set());
+  const [imageFile, setImageFile] = useState(null); // Инициализация состояния для файла изображения
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]; // Получаем первый выбранный файл
+    if (file) {
+      setImageFile(file); // Обновляем состояние с новым файлом
+    }
+  };
   useEffect(() => {
     if (id) {
       const fetchSetData = async () => {
@@ -71,7 +78,9 @@ const AddEditShopSet = () => {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
-
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
       // Convert cardsInSet Set to Array and append each cardId separately
       const cardIdsArray = Array.from(cardsInSet);
       cardIdsArray.forEach((cardId) => {
@@ -212,6 +221,27 @@ const AddEditShopSet = () => {
             )}
           </div>
           <div className={styles.inputContainer}>
+            {" "}
+            <div>
+              <h2 className={styles.title}>Изображение набора</h2>
+              <div className={styles.uploadButton}>
+                <label htmlFor="fileInput" className={styles.customFileButton}>
+                  <div className={styles.whiteBox}>
+                    <div className={styles.whiteBoxImg}>
+                      <img src={addimg} alt="#" />
+                      <p>Добавьте изображение</p>
+                    </div>
+                  </div>
+                </label>
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{ display: "none" }}
+                />
+              </div>
+            </div>
             <div style={{ marginRight: "20px" }}>
               <h2 className={styles.title}>Название</h2>
               <input

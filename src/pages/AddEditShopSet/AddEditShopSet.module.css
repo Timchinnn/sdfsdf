@@ -146,3 +146,32 @@
 .saveButton:hover {
   background: darkgreen;
 }
+.uploadButton {
+  margin-bottom: 20px;
+}
+.customFileButton {
+  cursor: pointer;
+  display: block;
+}
+.whiteBox {
+  background: #f5f7fa;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  width: 265px;
+}
+.whiteBoxImg {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.whiteBoxImg img {
+  height: 64px;
+  width: auto;
+}
+.whiteBoxImg p {
+  color: #656d77;
+  font-size: 14px;
+  margin: 0;
+}
