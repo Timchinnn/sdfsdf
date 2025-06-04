@@ -15,7 +15,12 @@ import { useSelector } from "react-redux";
 const ShopPage = () => {
   const cardBackStyle = useSelector((state) => state.cardBack);
   const tgUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "";
-  const isSpecialUser = tgUserId === 7241281378 || tgUserId === 467518658 || tgUserId === 6243418179 || tgUserId === 6568811367 || tgUserId === 6391586511;
+  const isSpecialUser =
+    tgUserId === 7241281378 ||
+    tgUserId === 467518658 ||
+    tgUserId === 6243418179 ||
+    tgUserId === 6568811367 ||
+    tgUserId === 6391586511;
   console.log("tgUserId:", tgUserId);
   console.log("isSpecialUser:", isSpecialUser);
   const [activePopup, setActivePopup] = useState(false);
@@ -39,21 +44,21 @@ const ShopPage = () => {
     };
     fetchShopCards();
   }, []);
-// const refreshPurchasedShirts = async () => {
-//        console.log("Обновление купленных рубашек..."); // Добавьте этот лог
-//        try {
-//            const tg = window.Telegram.WebApp;
-//            if (tg?.initDataUnsafe?.user?.id) {
-//                const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/shirts`);
-//                if (response.data && response.data.shirts) {
-//                    setShirts(response.data.shirts); // Обновляем состояние рубашек
-//                    console.log("Купленные рубашки обновлены:", response.data.shirts); // Лог для проверки
-//                }
-//            }
-//        } catch (error) {
-//            console.error("Ошибка при обновлении купленных рубашек:", error);
-//        }
-//    };
+  // const refreshPurchasedShirts = async () => {
+  //        console.log("Обновление купленных рубашек..."); // Добавьте этот лог
+  //        try {
+  //            const tg = window.Telegram.WebApp;
+  //            if (tg?.initDataUnsafe?.user?.id) {
+  //                const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/shirts`);
+  //                if (response.data && response.data.shirts) {
+  //                    setShirts(response.data.shirts); // Обновляем состояние рубашек
+  //                    console.log("Купленные рубашки обновлены:", response.data.shirts); // Лог для проверки
+  //                }
+  //            }
+  //        } catch (error) {
+  //            console.error("Ошибка при обновлении купленных рубашек:", error);
+  //        }
+  //    };
   useEffect(() => {
     const fetchShirts = async () => {
       try {
@@ -334,11 +339,7 @@ const ShopPage = () => {
                                 onClick={() => handleBuySet(set.id)}
                               >
                                 <img
-                                  src={
-                                    cardBackStyle
-                                      ? `https://api.zoomayor.io${cardBackStyle}`
-                                      : DefaultImg
-                                  }
+                                  src={`https://api.zoomayor.io${set.image_url}`}
                                   alt={set.title}
                                   className="shop-card__Img"
                                 />

@@ -280,7 +280,10 @@ const ShopManagement = () => {
             .map((set) => (
               <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
-                  <img src={set.image_url} alt={set.name} />
+                  <img
+                    src={`https://api.zoomayor.io${set.image_url}`}
+                    alt={set.name}
+                  />
                 </div>
                 <div className={styles.cardInfo}>
                   <h3>{set.name}</h3>
