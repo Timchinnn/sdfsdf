@@ -231,6 +231,12 @@ const AddEditShopSet = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
+              <h2 className={styles.title}>Цена</h2>
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
               <h2 className={styles.title}>Изображение набора</h2>
               <div className={styles.imageUploadContainer}>
                 {imagePreview ? (
