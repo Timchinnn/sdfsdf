@@ -7,6 +7,15 @@
 .content {
   margin-top: 20px;
 }
+.adminLink {
+  display: block;
+  padding: 10px;
+  background: #71b21d;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  margin: 10px;
+}
 .addButton {
   background: green;
   color: white;

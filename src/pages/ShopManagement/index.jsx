@@ -99,6 +99,10 @@ const ShopManagement = () => {
   };
   return (
     <div className={styles.contents}>
+      {" "}
+      <NavLink to="/admin" className={styles.adminLink}>
+        Admin Panel
+      </NavLink>
       <div className={styles.mainContent}>
         <h2>Рубашки</h2>
         <div className={styles.cardsList}>

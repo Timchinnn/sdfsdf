@@ -15,6 +15,15 @@
   -ms-overflow-style: none; /* для IE и Edge */
   scrollbar-width: none; /* для Firefox */
 }
+.adminLink {
+  display: block;
+  padding: 10px;
+  background: #71b21d;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  margin: 10px;
+}
 .cardsList::-webkit-scrollbar {
   display: none; /* для Chrome, Safari и Opera */
 }
