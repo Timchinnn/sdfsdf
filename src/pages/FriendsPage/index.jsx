@@ -198,7 +198,7 @@ const FriendsPage = () => {
                           </li>
                           <li className="friends-params__item f-center">
                             <img src={CoinIcon} alt="" />
-                            50
+                            5000
                           </li>
                         </ul>
                       </div>
