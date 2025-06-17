@@ -156,7 +156,7 @@ const AddEditCard = () => {
             )}
           </div>
           <div>
-            <h2 className={styles.title}>Изображение низкого качества</h2>
+            {/* <h2 className={styles.title}>Изображение низкого качества</h2> */}
             {lowQualityImage ? (
               <div className={styles.imagePreview}>
                 <div
@@ -188,7 +188,7 @@ const AddEditCard = () => {
                   <div className={styles.whiteBox}>
                     <div className={styles.whiteBoxImg}>
                       <img src={addimg} alt="#" />
-                      {/* <p>Добавьте изображение низкого качества</p> */}
+                      <p>Добавьте изображение низкого качества</p>
                     </div>
                   </div>
                 </label>
