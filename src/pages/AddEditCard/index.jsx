@@ -12,6 +12,8 @@ const AddEditCard = () => {
   const [chance, setChance] = useState("0");
   const [hourlyIncome, setHourlyIncome] = useState("0"); // Добавляем состояние для hourly_income
   const [cardType, setCardType] = useState("citizen");
+  const [lowQualityImage, setLowQualityImage] = useState(null);
+
   const [cardSection, setCardSection] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -58,6 +60,12 @@ const AddEditCard = () => {
       setSelectedImage(null);
     }
   }, [id, cardResponse]);
+  const handleLowQualityImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setLowQualityImage(file);
+    }
+  };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -72,8 +80,7 @@ const AddEditCard = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    const chanceValue = parseFloat(chance) || 0;
-    formData.append("chance", chanceValue);
+    formData.append("chance", chance);
     formData.append("hourly_income", hourlyIncome);
     formData.append("price", price);
     formData.append("experience", experience);
@@ -83,6 +90,9 @@ const AddEditCard = () => {
     }
     if (selectedImage) {
       formData.append("image", selectedImage);
+    }
+    if (lowQualityImage) {
+      formData.append("low_quality_image", lowQualityImage);
     }
     try {
       if (id) {
@@ -140,6 +150,53 @@ const AddEditCard = () => {
                   type="file"
                   accept="image/*"
                   onChange={handleImageUpload}
+                  style={{ display: "none" }}
+                />
+              </div>
+            )}
+          </div>
+          <div>
+            <h2 className={styles.title}>Изображение низкого качества</h2>
+            {lowQualityImage ? (
+              <div className={styles.imagePreview}>
+                <div
+                  onClick={() =>
+                    document.getElementById("lowQualityFileInput").click()
+                  }
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={URL.createObjectURL(lowQualityImage)}
+                    alt="Preview"
+                    style={{ maxWidth: "265px", borderRadius: "8px" }}
+                  />
+                </div>
+                <input
+                  id="lowQualityFileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLowQualityImageUpload}
+                  style={{ display: "none" }}
+                />
+              </div>
+            ) : (
+              <div className={styles.uploadButton}>
+                <label
+                  htmlFor="lowQualityFileInput"
+                  className={styles.customFileButton}
+                >
+                  <div className={styles.whiteBox}>
+                    <div className={styles.whiteBoxImg}>
+                      <img src={addimg} alt="#" />
+                      <p>Добавьте изображение низкого качества</p>
+                    </div>
+                  </div>
+                </label>
+                <input
+                  id="lowQualityFileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLowQualityImageUpload}
                   style={{ display: "none" }}
                 />
               </div>
