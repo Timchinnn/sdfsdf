@@ -53,20 +53,28 @@ const MainCarousel = ({
   //   measureResponseTime();
   // }, []);
   const getCardBackImage = () => {
-    // Если cardBackStyle отсутствует, возвращаем изображение по умолчанию
+    // Measure response time to determine connection speed
+    const startTime = performance.now();
+
+    // If cardBackStyle is missing, return default image
     if (!cardBackStyle) return cardBackStyles.default.image;
-
-    // Если cardBackStyle уже является полноценным URL (например, "/img/card1.png")
+    // If cardBackStyle is a full URL
     if (typeof cardBackStyle === "string" && cardBackStyle.startsWith("/img")) {
-      return `https://api.zoomayor.io${cardBackStyle}`;
-    }
+      const baseUrl = `https://api.zoomayor.io${cardBackStyle}`;
+      const endTime = performance.now();
+      const responseTime = endTime - startTime;
 
-    // Если cardBackStyle является ключом для cardBackStyles, используем его
+      // Add _bad suffix for slow connections (>400ms)
+      if (responseTime > 400) {
+        return baseUrl.replace(/(\.[^.]+)$/, "bad$1");
+      }
+      return baseUrl;
+    }
+    // If cardBackStyle is a key in cardBackStyles
     if (cardBackStyles[cardBackStyle] && cardBackStyles[cardBackStyle].image) {
       return cardBackStyles[cardBackStyle].image;
     }
-
-    // В остальных случаях возвращаем дефолтное изображение
+    // Default case
     return cardBackStyles.default.image;
   };
   const onTouchStart = (e) => {
