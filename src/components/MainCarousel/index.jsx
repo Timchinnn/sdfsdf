@@ -306,7 +306,7 @@ const MainCarousel = ({
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
 
-    const nextTime = Date.now() + 5000; // 5 seconds cooldown
+    const nextTime = Date.now() + 2500; // 5 seconds cooldown
     setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
     setTimeout(() => {
       setIsFlipped(true);
@@ -315,7 +315,7 @@ const MainCarousel = ({
         setIsButtonLocked(false);
         setIsAnimating(false);
         setIsFlipped(false);
-      }, 3100);
+      }, 2500);
     }, ANIMATION_DURATION);
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;

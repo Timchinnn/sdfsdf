@@ -15,7 +15,7 @@ const ShopPopup = (props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
-    }, 4000);
+    }, 100);
     return () => clearTimeout(timer);
   }, []);
   const { setActivePopup, onButtonClick } = props; // Добавляем onButtonClick в props
