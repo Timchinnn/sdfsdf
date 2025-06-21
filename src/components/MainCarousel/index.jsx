@@ -290,7 +290,7 @@ const MainCarousel = ({
 
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const ANIMATION_DURATION = 500;
+  const ANIMATION_DURATION = 5500;
   const handleImageClick = async (index) => {
     if (energy < 40) {
       return; // Недостаточно энергии
@@ -318,7 +318,7 @@ const MainCarousel = ({
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
 
-    const nextTime = Date.now() + 5500; // 5 seconds cooldown
+    const nextTime = Date.now() + 500; // 5 seconds cooldown
     setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
     setTimeout(() => {
       setIsFlipped(true);
