@@ -290,29 +290,52 @@ const MainCarousel = ({
 
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const ANIMATION_DURATION = 2500;
+  const ANIMATION_DURATION = 500;
   const handleImageClick = async (index) => {
     if (energy < 40) {
       return; // Недостаточно энергии
     }
-    if (isAnimating || isButtonLocked) return;
+    if (isAnimating) return;
     // Check if card is still locked
     if (nextOpenTime[index] && Date.now() < nextOpenTime[index]) {
       return; // Card is still locked
     }
-
     const selectedCard = selectedPhotos[data[index].id];
+
+    // Preload the card image
+    // try {
+    //   await new Promise((resolve, reject) => {
+    //     const img = new Image();
+    //     img.src = `https://api.zoomayor.io${selectedCard.image}`;
+    //     img.onload = () => resolve(selectedCard);
+    //     img.onerror = () => reject();
+    //   });
+    // } catch (error) {
+    //   console.error("Error preloading image:", error);
+    //   return;
+    // }
     setIsAnimating(true);
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
 
+    const nextTime = Date.now() + 5000; // 5 seconds cooldown
+    setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
+    setTimeout(() => {
+      setIsFlipped(true);
+      setTimeout(() => {
+        setIsSwipeLocked(false);
+        setIsButtonLocked(false);
+        setIsAnimating(false);
+        setIsFlipped(false);
+      }, 3100);
+    }, ANIMATION_DURATION);
+    const tg = window.Telegram.WebApp;
+    const telegram_id = tg.initDataUnsafe?.user?.id;
+    if (!telegram_id) {
+      console.error("Telegram ID not found");
+      return;
+    }
     try {
-      const tg = window.Telegram.WebApp;
-      const telegram_id = tg.initDataUnsafe?.user?.id;
-      if (!telegram_id) {
-        console.error("Telegram ID not found");
-        return;
-      }
       const newEnergy = Math.max(0, energy - 40);
       await userInitService.updateEnergy(telegram_id, newEnergy);
       setEnergy(newEnergy);
@@ -321,7 +344,6 @@ const MainCarousel = ({
         ...openedCards,
         [index]: selectedCard,
       });
-
       await userCardsService.addCardToUser(telegram_id, selectedCard.id);
 
       if (selectedCard.type === "energy_boost") {
@@ -331,15 +353,8 @@ const MainCarousel = ({
         setEnergy(boostedEnergy);
       }
       handleOpenPopup(selectedCard);
-      setIsAnimating(false);
-      setIsSwipeLocked(false);
-      setIsButtonLocked(false);
-      setIsFlipped(false);
     } catch (error) {
       console.error("Error in handleImageClick:", error);
-      setIsAnimating(false);
-      setIsSwipeLocked(false);
-      setIsButtonLocked(false);
     }
   };
   return (
