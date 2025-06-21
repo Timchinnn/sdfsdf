@@ -148,8 +148,20 @@ const MainCarousel = ({
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
+        const startTime = performance.now();
         const response = await cardsService.getAllCards();
-        setPhotos(response.data);
+        const endTime = performance.now();
+        const responseTime = endTime - startTime;
+        if (responseTime < 400) {
+          // Add 'bad' suffix to image names for slow responses
+          const modifiedData = response.data.map((card) => ({
+            ...card,
+            image: card.image.replace(/(\.[^.]+)$/, "bad$1"),
+          }));
+          setPhotos(modifiedData);
+        } else {
+          setPhotos(response.data);
+        }
       } catch (error) {
         console.error(error);
       }
