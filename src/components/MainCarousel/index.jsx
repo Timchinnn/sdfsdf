@@ -295,18 +295,17 @@ const MainCarousel = ({
     if (energy < 40) {
       return; // Недостаточно энергии
     }
-    if (isAnimating || isButtonLocked) return; // Проверяем оба флага
-
+    if (isAnimating || isButtonLocked) return;
     // Check if card is still locked
     if (nextOpenTime[index] && Date.now() < nextOpenTime[index]) {
       return; // Card is still locked
     }
+
     const selectedCard = selectedPhotos[data[index].id];
     setIsAnimating(true);
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
-    const nextTime = Date.now() + 0; // 5 seconds cooldown
-    setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
+
     try {
       const tg = window.Telegram.WebApp;
       const telegram_id = tg.initDataUnsafe?.user?.id;
@@ -322,20 +321,20 @@ const MainCarousel = ({
         ...openedCards,
         [index]: selectedCard,
       });
+
       await userCardsService.addCardToUser(telegram_id, selectedCard.id);
+
       if (selectedCard.type === "energy_boost") {
         const boostValue = Number(selectedCard.energy) || 100;
         const boostedEnergy = Math.min(newEnergy + boostValue, 1000);
         await userInitService.updateEnergy(telegram_id, boostedEnergy);
         setEnergy(boostedEnergy);
       }
-      setTimeout(() => {
-        handleOpenPopup(selectedCard);
-        setIsAnimating(false);
-        setIsSwipeLocked(false);
-        setIsButtonLocked(false);
-        setIsFlipped(false);
-      }, 2500);
+      handleOpenPopup(selectedCard);
+      setIsAnimating(false);
+      setIsSwipeLocked(false);
+      setIsButtonLocked(false);
+      setIsFlipped(false);
     } catch (error) {
       console.error("Error in handleImageClick:", error);
       setIsAnimating(false);
