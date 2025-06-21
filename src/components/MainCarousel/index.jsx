@@ -148,20 +148,8 @@ const MainCarousel = ({
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const startTime = performance.now();
         const response = await cardsService.getAllCards();
-        const endTime = performance.now();
-        const responseTime = endTime - startTime;
-        if (responseTime < 400) {
-          // Add 'bad' suffix to image names for slow responses
-          const modifiedData = response.data.map((card) => ({
-            ...card,
-            image: card.image.replace(/(\.[^.]+)$/, "bad$1"),
-          }));
-          setPhotos(modifiedData);
-        } else {
-          setPhotos(response.data);
-        }
+        setPhotos(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -318,7 +306,7 @@ const MainCarousel = ({
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
 
-    const nextTime = Date.now() + 2500; // 5 seconds cooldown
+    const nextTime = Date.now() + 5000; // 5 seconds cooldown
     setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
     setTimeout(() => {
       setIsFlipped(true);
@@ -327,7 +315,7 @@ const MainCarousel = ({
         setIsButtonLocked(false);
         setIsAnimating(false);
         setIsFlipped(false);
-      }, 2500);
+      }, 3100);
     }, ANIMATION_DURATION);
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;
