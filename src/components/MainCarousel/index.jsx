@@ -160,6 +160,7 @@ const MainCarousel = ({
         const response = await cardsService.getAllCards();
         const endTime = performance.now();
         const responseTime = endTime - startTime;
+        console.log(responseTime);
         if (responseTime < 800) {
           // Add 'bad' suffix to image names for slow responses
           const modifiedData = response.data.map((card) => ({
