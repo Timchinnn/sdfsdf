@@ -63,6 +63,7 @@ const MainCarousel = ({
       const baseUrl = `https://api.zoomayor.io${cardBackStyle}`;
       const endTime = performance.now();
       const responseTime = endTime - startTime;
+      console.log(responseTime);
       // console.log(responseTime);
       // Add _bad suffix for slow connections (>400ms)
       if (responseTime > 800) {
@@ -165,6 +166,8 @@ const MainCarousel = ({
         const response = await cardsService.getAllCards();
         const endTime = performance.now();
         const responseTime = endTime - startTime;
+        console.log(responseTime);
+
         // Process the response data based on response time
         if (responseTime > 800) {
           // For slow connections, modify image names
