@@ -60,20 +60,19 @@ const MainCarousel = ({
     if (!cardBackStyle) return cardBackStyles.default.image;
     // If cardBackStyle is a full URL
     if (typeof cardBackStyle === "string" && cardBackStyle.startsWith("/img")) {
-      const baseUrl = `https://api.zoomayor.io${cardBackStyle}`;
       const endTime = performance.now();
       const responseTime = endTime - startTime;
-      // console.log(responseTime);
-      // console.log(responseTime);
-      // Add _bad suffix for slow connections (>400ms)
-      if (responseTime > 2000) {
+
+      if (responseTime < 2000) {
         // Check if path has extension
-        const hasExtension = /\.[^.]+$/.test(baseUrl);
-        console.log(baseUrl);
+        const hasExtension = /\.[^.]+$/.test(cardBackStyle);
+        console.log(cardBackStyle);
         return hasExtension
-          ? baseUrl.replace(/(\.[^.]+)$/, "bad$1")
-          : baseUrl + "bad";
+          ? cardBackStyle.replace(/(\.[^.]+)$/, "bad$1")
+          : cardBackStyle + "bad";
       }
+      const baseUrl = `https://api.zoomayor.io${cardBackStyle}`;
+
       return baseUrl;
     }
     // If cardBackStyle is a key in cardBackStyles
