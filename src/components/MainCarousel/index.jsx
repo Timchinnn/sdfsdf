@@ -68,6 +68,7 @@ const MainCarousel = ({
       if (responseTime > 800) {
         // Check if path has extension
         const hasExtension = /\.[^.]+$/.test(baseUrl);
+        console.log(baseUrl);
         return hasExtension
           ? baseUrl.replace(/(\.[^.]+)$/, "bad$1")
           : baseUrl + "bad";
@@ -178,6 +179,7 @@ const MainCarousel = ({
                   : card.image + "bad", // Add 'bad' at the end if no extension
               };
             }
+            console.log(modifiedData);
             return card;
           });
           setPhotos(modifiedData);
