@@ -66,10 +66,10 @@ const MainCarousel = ({
       // console.log(responseTime);
       // console.log(responseTime);
       // Add _bad suffix for slow connections (>400ms)
-      if (responseTime < 2000) {
+      if (responseTime > 2000) {
         // Check if path has extension
         const hasExtension = /\.[^.]+$/.test(baseUrl);
-        // console.log(baseUrl);
+        console.log(baseUrl);
         return hasExtension
           ? baseUrl.replace(/(\.[^.]+)$/, "bad$1")
           : baseUrl + "bad";
