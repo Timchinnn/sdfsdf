@@ -63,7 +63,7 @@ const MainCarousel = ({
       const endTime = performance.now();
       const responseTime = endTime - startTime;
       // For slow connections (>2000ms), append 'bad' to image path
-      if (responseTime < 2000) {
+      if (responseTime > 2000) {
         const hasExtension = /\.[^.]+$/.test(cardBackStyle);
         return `https://api.zoomayor.io${
           hasExtension
@@ -167,7 +167,7 @@ const MainCarousel = ({
         console.log(responseTime);
 
         // Process the response data based on response time
-        if (responseTime < 800) {
+        if (responseTime > 800) {
           // For slow connections, modify image names
           const modifiedData = response.data.map((card) => {
             if (card.image) {
