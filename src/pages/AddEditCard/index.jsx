@@ -155,8 +155,7 @@ const AddEditCard = () => {
               </div>
             )}
           </div>
-          <div>
-            {/* <h2 className={styles.title}>Изображение низкого качества</h2> */}
+          {/* <div>
             {lowQualityImage ? (
               <div className={styles.imagePreview}>
                 <div
@@ -201,7 +200,7 @@ const AddEditCard = () => {
                 />
               </div>
             )}
-          </div>
+          </div> */}
           <div>
             <h2 className={styles.title}>Название</h2>
             <input
