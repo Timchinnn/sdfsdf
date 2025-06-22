@@ -69,7 +69,7 @@ const MainCarousel = ({
       if (responseTime < 2000) {
         // Check if path has extension
         const hasExtension = /\.[^.]+$/.test(baseUrl);
-        console.log(baseUrl);
+        // console.log(baseUrl);
         return hasExtension
           ? baseUrl.replace(/(\.[^.]+)$/, "bad$1")
           : baseUrl + "bad";
