@@ -62,18 +62,17 @@ const MainCarousel = ({
     if (typeof cardBackStyle === "string" && cardBackStyle.startsWith("/img")) {
       const endTime = performance.now();
       const responseTime = endTime - startTime;
-
+      // For slow connections (>2000ms), append 'bad' to image path
       if (responseTime > 2000) {
-        // Check if path has extension
         const hasExtension = /\.[^.]+$/.test(cardBackStyle);
-        console.log(cardBackStyle);
-        return hasExtension
-          ? cardBackStyle.replace(/(\.[^.]+)$/, "bad$1")
-          : cardBackStyle + "bad";
+        return `https://api.zoomayor.io${
+          hasExtension
+            ? cardBackStyle.replace(/(\.[^.]+)$/, "bad$1")
+            : cardBackStyle + "bad"
+        }`;
       }
-      const baseUrl = `https://api.zoomayor.io${cardBackStyle}`;
-
-      return baseUrl;
+      // Return full URL for the card back image
+      return `https://api.zoomayor.io${cardBackStyle}`;
     }
     // If cardBackStyle is a key in cardBackStyles
     if (cardBackStyles[cardBackStyle] && cardBackStyles[cardBackStyle].image) {
