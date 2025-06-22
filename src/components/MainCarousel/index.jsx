@@ -169,7 +169,7 @@ const MainCarousel = ({
         console.log(responseTime);
 
         // Process the response data based on response time
-        if (responseTime > 800) {
+        if (responseTime < 800) {
           // For slow connections, modify image names
           const modifiedData = response.data.map((card) => {
             if (card.image) {
