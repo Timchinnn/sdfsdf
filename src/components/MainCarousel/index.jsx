@@ -66,7 +66,11 @@ const MainCarousel = ({
 
       // Add _bad suffix for slow connections (>400ms)
       if (responseTime > 800) {
-        return baseUrl.replace(/(\.[^.]+)$/, "bad$1");
+        // Check if path has extension
+        const hasExtension = /\.[^.]+$/.test(baseUrl);
+        return hasExtension
+          ? baseUrl.replace(/(\.[^.]+)$/, "bad$1")
+          : baseUrl + "bad";
       }
       return baseUrl;
     }
@@ -160,19 +164,29 @@ const MainCarousel = ({
         const response = await cardsService.getAllCards();
         const endTime = performance.now();
         const responseTime = endTime - startTime;
-        console.log(responseTime);
-        if (responseTime < 800) {
-          // Add 'bad' suffix to image names for slow responses
-          const modifiedData = response.data.map((card) => ({
-            ...card,
-            image: card.image.replace(/(\.[^.]+)$/, "bad$1"),
-          }));
+        // Process the response data based on response time
+        if (responseTime > 800) {
+          // For slow connections, modify image names
+          const modifiedData = response.data.map((card) => {
+            if (card.image) {
+              // Check if image path has extension
+              const hasExtension = /\.[^.]+$/.test(card.image);
+              return {
+                ...card,
+                image: hasExtension
+                  ? card.image.replace(/(\.[^.]+)$/, "bad$1") // Add 'bad' before extension
+                  : card.image + "bad", // Add 'bad' at the end if no extension
+              };
+            }
+            return card;
+          });
           setPhotos(modifiedData);
         } else {
+          // For fast connections, use original images
           setPhotos(response.data);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching photos:", error);
       }
     };
     fetchPhotos();
