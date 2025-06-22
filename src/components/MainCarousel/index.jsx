@@ -65,7 +65,7 @@ const MainCarousel = ({
       const responseTime = endTime - startTime;
 
       // Add _bad suffix for slow connections (>400ms)
-      if (responseTime > 400) {
+      if (responseTime > 800) {
         return baseUrl.replace(/(\.[^.]+)$/, "bad$1");
       }
       return baseUrl;
@@ -160,7 +160,7 @@ const MainCarousel = ({
         const response = await cardsService.getAllCards();
         const endTime = performance.now();
         const responseTime = endTime - startTime;
-        if (responseTime < 400) {
+        if (responseTime < 800) {
           // Add 'bad' suffix to image names for slow responses
           const modifiedData = response.data.map((card) => ({
             ...card,
