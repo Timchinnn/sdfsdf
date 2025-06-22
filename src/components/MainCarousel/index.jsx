@@ -63,12 +63,12 @@ const MainCarousel = ({
       const endTime = performance.now();
       const responseTime = endTime - startTime;
       // For slow connections (>2000ms), append 'bad' to image path
-      if (responseTime > 2000) {
+      if (responseTime < 2000) {
         const hasExtension = /\.[^.]+$/.test(cardBackStyle);
         return `https://api.zoomayor.io${
           hasExtension
             ? cardBackStyle.replace(/(\.[^.]+)$/, "bad$1")
-            : cardBackStyle + "bad"
+            : cardBackStyle + "bad.webp"
         }`;
       }
       // Return full URL for the card back image
@@ -167,7 +167,7 @@ const MainCarousel = ({
         console.log(responseTime);
 
         // Process the response data based on response time
-        if (responseTime > 800) {
+        if (responseTime < 800) {
           // For slow connections, modify image names
           const modifiedData = response.data.map((card) => {
             if (card.image) {
@@ -177,7 +177,7 @@ const MainCarousel = ({
                 ...card,
                 image: hasExtension
                   ? card.image.replace(/(\.[^.]+)$/, "bad$1") // Add 'bad' before extension
-                  : card.image + "bad", // Add 'bad' at the end if no extension
+                  : card.image + "bad.webp", // Add 'bad' at the end if no extension
               };
             }
             console.log(modifiedData);
