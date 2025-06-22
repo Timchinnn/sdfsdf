@@ -63,7 +63,7 @@ const MainCarousel = ({
       const endTime = performance.now();
       const responseTime = endTime - startTime;
 
-      if (responseTime < 2000) {
+      if (responseTime > 2000) {
         // Check if path has extension
         const hasExtension = /\.[^.]+$/.test(cardBackStyle);
         console.log(cardBackStyle);
