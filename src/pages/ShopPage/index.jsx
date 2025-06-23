@@ -342,7 +342,7 @@ const ShopPage = () => {
                                   style={{ width: "100% !important" }}
                                   src={`https://api.zoomayor.io${set.image}`}
                                   alt={set.title}
-                                  className="shop-card__Img"
+                                  className="shop-card__Img1"
                                 />
                               </div>
                               <h3 className="shop-list__title">{set.title}</h3>
@@ -379,7 +379,7 @@ const ShopPage = () => {
                                 <img
                                   src={`https://api.zoomayor.io${card.image}`}
                                   alt={card.title}
-                                  className="shop-card__Img"
+                                  className="shop-card__Img1"
                                 />
                               </div>
                               <div className="shop-list__content">
