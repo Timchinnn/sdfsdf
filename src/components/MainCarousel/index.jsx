@@ -35,33 +35,33 @@ const MainCarousel = ({
   const [isSwipeLocked, setIsSwipeLocked] = useState(false);
   // Minimum distance required for swipe
   const minSwipeDistance = 50;
-  // const [responseTime, setResponseTime] = useState(null);
-  // useEffect(() => {
-  //   const measureResponseTime = async () => {
-  //     const startTime = performance.now();
-  //     try {
-  //       const response = await fetch("https://api.zoomayor.io/api/cards");
-  //       const endTime = performance.now();
-  //       const time = endTime - startTime;
-  //       setResponseTime(time);
-  //       alert(`Время ответа сервера: ${Math.round(time)}мс`);
-  //     } catch (error) {
-  //       console.error("Ошибка при измерении времени ответа:", error);
-  //     }
-  //   };
+  const [responseTime, setResponseTime] = useState(null);
+  useEffect(() => {
+    const measureResponseTime = async () => {
+      const startTime = performance.now();
+      try {
+        const response = await fetch("https://api.zoomayor.io/api/cards");
+        const endTime = performance.now();
+        const time = endTime - startTime;
+        setResponseTime(time);
+        alert(`Время ответа сервера: ${Math.round(time)}мс`);
+      } catch (error) {
+        console.error("Ошибка при измерении времени ответа:", error);
+      }
+    };
 
-  //   measureResponseTime();
-  // }, []);
+    measureResponseTime();
+  }, []);
   const getCardBackImage = () => {
     // Measure response time to determine connection speed
-    const startTime = performance.now();
+    // const startTime = performance.now();
 
     // If cardBackStyle is missing, return default image
     if (!cardBackStyle) return cardBackStyles.default.image;
     // If cardBackStyle is a full URL
     if (typeof cardBackStyle === "string" && cardBackStyle.startsWith("/img")) {
-      const endTime = performance.now();
-      const responseTime = endTime - startTime;
+      // const endTime = performance.now();
+      // const responseTime = endTime - startTime;
       // For slow connections (>2000ms), append 'bad' to image path
       if (responseTime > 2000) {
         const hasExtension = /\.[^.]+$/.test(cardBackStyle);
@@ -160,11 +160,11 @@ const MainCarousel = ({
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const startTime = performance.now();
-        const response = await cardsService.getAllCards();
-        const endTime = performance.now();
-        const responseTime = endTime - startTime;
-        console.log(responseTime);
+        // const startTime = performance.now();
+        // const response = await cardsService.getAllCards();
+        // const endTime = performance.now();
+        // const responseTime = endTime - startTime;
+        // console.log(responseTime);
 
         // Process the response data based on response time
         if (responseTime > 800) {
