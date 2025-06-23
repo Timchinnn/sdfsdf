@@ -161,7 +161,7 @@ const MainCarousel = ({
     const fetchPhotos = async () => {
       try {
         // const startTime = performance.now();
-        // const response = await cardsService.getAllCards();
+        const response = await cardsService.getAllCards();
         // const endTime = performance.now();
         // const responseTime = endTime - startTime;
         // console.log(responseTime);
