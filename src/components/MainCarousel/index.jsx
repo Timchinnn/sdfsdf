@@ -44,7 +44,7 @@ const MainCarousel = ({
         const endTime = performance.now();
         const time = endTime - startTime;
         setResponseTime(time);
-        alert(`Время ответа серверач: ${Math.round(time)}мс`);
+        // alert(`Время ответа серверач: ${Math.round(time)}мс`);
       } catch (error) {
         console.error("Ошибка при измерении времени ответа:", error);
       }
