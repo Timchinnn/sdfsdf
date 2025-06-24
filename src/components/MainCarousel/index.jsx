@@ -192,12 +192,27 @@ const MainCarousel = ({
             setPhotos(modifiedData);
 
             // Show notification
-            tg.showPopup({
-              title: "Производительность",
-              message:
-                "Обнаружена низкая производительность. Качество изображений автоматически снижено.",
-              buttons: [{ type: "ok" }],
-            });
+            const notificationDiv = document.createElement("div");
+            notificationDiv.className = "income-popup";
+            notificationDiv.innerHTML = `
+              <div class="income-popup__content">
+                <h3>Производительность</h3>
+                <p class="income-popup__text">Обнаружена низкая производительность. Качество изображений автоматически снижено.</p>
+                <button class="income-popup__button">OK</button>
+              </div>
+            `;
+            document.body.appendChild(notificationDiv);
+            // Add click handler to close
+            const closeButton = notificationDiv.querySelector("button");
+            closeButton.onclick = () => {
+              document.body.removeChild(notificationDiv);
+            };
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+              if (document.body.contains(notificationDiv)) {
+                document.body.removeChild(notificationDiv);
+              }
+            }, 5000);
           }
         } else {
           setPhotos(response.data);
