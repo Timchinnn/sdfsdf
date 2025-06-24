@@ -13,3 +13,10 @@ export const setLanguage = (language) => {
     payload: language,
   };
 };
+export const setImageQuality = (quality) => {
+  localStorage.setItem("imageQuality", quality); // Сохраняем выбор пользователя
+  return {
+    type: "SET_IMAGE_QUALITY",
+    payload: quality,
+  };
+};

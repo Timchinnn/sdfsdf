@@ -26,6 +26,8 @@ const MainCarousel = ({
   onUpdateComplete,
 }) => {
   const [isButtonLocked, setIsButtonLocked] = useState(false);
+  const imageQuality = useSelector((state) => state.imageQuality);
+
   const [nextOpenTime, setNextOpenTime] = useState({});
   const [remainingTime, setRemainingTime] = useState({});
   const [openedCards, setOpenedCards] = useState({});
@@ -62,16 +64,26 @@ const MainCarousel = ({
     measureResponseTime();
   }, []);
   const getCardBackImage = () => {
-    // Measure response time to determine connection speed
-    // const startTime = performance.now();
-
-    // If cardBackStyle is missing, return default image
     if (!cardBackStyle) return cardBackStyles.default.image;
-    // If cardBackStyle is a full URL
+
+    // Если cardBackStyle - это URL
     if (typeof cardBackStyle === "string" && cardBackStyle.startsWith("/img")) {
-      // const endTime = performance.now();
-      // const responseTime = endTime - startTime;
-      // For slow connections (>2000ms), append 'bad' to image path
+      // Если пользователь выбрал высокое качество, всегда возвращаем высокое
+      if (imageQuality === "high") {
+        return `https://api.zoomayor.io${cardBackStyle}`;
+      }
+
+      // Если пользователь выбрал низкое качество, всегда возвращаем низкое
+      if (imageQuality === "low") {
+        const hasExtension = /\.[^.]+$/.test(cardBackStyle);
+        return `https://api.zoomayor.io${
+          hasExtension
+            ? cardBackStyle.replace(/(\.[^.]+)$/, "bad$1")
+            : cardBackStyle + "bad.webp"
+        }`;
+      }
+
+      // Автоматический режим - проверяем время ответа
       if (responseTime > 300) {
         const hasExtension = /\.[^.]+$/.test(cardBackStyle);
         return `https://api.zoomayor.io${
@@ -80,14 +92,15 @@ const MainCarousel = ({
             : cardBackStyle + "bad.webp"
         }`;
       }
-      // Return full URL for the card back image
+
       return `https://api.zoomayor.io${cardBackStyle}`;
     }
-    // If cardBackStyle is a key in cardBackStyles
+
+    // Если cardBackStyle - это ключ в cardBackStyles
     if (cardBackStyles[cardBackStyle] && cardBackStyles[cardBackStyle].image) {
       return cardBackStyles[cardBackStyle].image;
     }
-    // Default case
+
     return cardBackStyles.default.image;
   };
   const onTouchStart = (e) => {
@@ -166,12 +179,17 @@ const MainCarousel = ({
     }, 10);
     return () => clearInterval(timer);
   }, [nextOpenTime]);
+
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
         const response = await cardsService.getAllCards();
 
-        if (responseTime > 300) {
+        // Если выбрано низкое качество или автоматически при медленном соединении
+        if (
+          imageQuality === "low" ||
+          (imageQuality === "auto" && responseTime > 300)
+        ) {
           const modifiedData = response.data.map((card) => {
             if (card.image) {
               const hasExtension = /\.[^.]+$/.test(card.image);
@@ -182,7 +200,6 @@ const MainCarousel = ({
                   : card.image + "bad.webp",
               };
             }
-            console.log(modifiedData);
             return card;
           });
           setPhotos(modifiedData);
@@ -194,7 +211,7 @@ const MainCarousel = ({
       }
     };
     fetchPhotos();
-  }, []);
+  }, [imageQuality, responseTime]);
   const [activeSlide, setActiveSlide] = useState(0);
 
   const [activeIndex, setActiveIndex] = useState(null);
