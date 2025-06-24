@@ -44,8 +44,9 @@ const MainCarousel = ({
         const endTime = performance.now();
         const time = endTime - startTime;
         setResponseTime(time);
-        console.log(time);
         if (time > 900) {
+          console.log(time);
+
           const tg = window.Telegram.WebApp;
           tg.showPopup({
             title: "Внимание",
