@@ -167,25 +167,39 @@ const MainCarousel = ({
         // console.log(responseTime);
 
         // Process the response data based on response time
-        if (responseTime > 300) {
-          // For slow connections, modify image names
-          const modifiedData = response.data.map((card) => {
-            if (card.image) {
-              // Check if image path has extension
-              const hasExtension = /\.[^.]+$/.test(card.image);
-              return {
-                ...card,
-                image: hasExtension
-                  ? card.image.replace(/(\.[^.]+)$/, "bad$1") // Add 'bad' before extension
-                  : card.image + "bad.webp", // Add 'bad' at the end if no extension
-              };
-            }
-            console.log(modifiedData);
-            return card;
-          });
-          setPhotos(modifiedData);
+        if (responseTime > 500) {
+          // For slow connections, show notification and adjust quality
+          const tg = window.Telegram.WebApp;
+          const userSettings = localStorage.getItem("userSettings");
+          const settings = userSettings
+            ? JSON.parse(userSettings)
+            : { autoAdjustQuality: true };
+
+          if (settings.autoAdjustQuality) {
+            // Modify image quality
+            const modifiedData = response.data.map((card) => {
+              if (card.image) {
+                const hasExtension = /\.[^.]+$/.test(card.image);
+                return {
+                  ...card,
+                  image: hasExtension
+                    ? card.image.replace(/(\.[^.]+)$/, "_low$1")
+                    : card.image + "_low",
+                };
+              }
+              return card;
+            });
+            setPhotos(modifiedData);
+
+            // Show notification
+            tg.showPopup({
+              title: "Производительность",
+              message:
+                "Обнаружена низкая производительность. Качество изображений автоматически снижено.",
+              buttons: [{ type: "ok" }],
+            });
+          }
         } else {
-          // For fast connections, use original images
           setPhotos(response.data);
         }
       } catch (error) {
