@@ -44,12 +44,20 @@ const MainCarousel = ({
         const endTime = performance.now();
         const time = endTime - startTime;
         setResponseTime(time);
-        // alert(`Время ответа серверач: ${Math.round(time)}мс`);
+
+        if (time > 900) {
+          const tg = window.Telegram.WebApp;
+          tg.showPopup({
+            title: "Внимание",
+            message:
+              "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+            buttons: [{ type: "ok" }],
+          });
+        }
       } catch (error) {
         console.error("Ошибка при измерении времени ответа:", error);
       }
     };
-
     measureResponseTime();
   }, []);
   const getCardBackImage = () => {
@@ -154,66 +162,29 @@ const MainCarousel = ({
         }
       });
       setRemainingTime(newRemainingTime);
-    }, 10); // Обновляем каждые 10мс для плавности
+    }, 10);
     return () => clearInterval(timer);
   }, [nextOpenTime]);
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        // const startTime = performance.now();
         const response = await cardsService.getAllCards();
-        // const endTime = performance.now();
-        // const responseTime = endTime - startTime;
-        // console.log(responseTime);
 
-        // Process the response data based on response time
-        if (responseTime > 500) {
-          // For slow connections, show notification and adjust quality
-          const tg = window.Telegram.WebApp;
-          const userSettings = localStorage.getItem("userSettings");
-          const settings = userSettings
-            ? JSON.parse(userSettings)
-            : { autoAdjustQuality: true };
-
-          if (settings.autoAdjustQuality) {
-            // Modify image quality
-            const modifiedData = response.data.map((card) => {
-              if (card.image) {
-                const hasExtension = /\.[^.]+$/.test(card.image);
-                return {
-                  ...card,
-                  image: hasExtension
-                    ? card.image.replace(/(\.[^.]+)$/, "_low$1")
-                    : card.image + "_low",
-                };
-              }
-              return card;
-            });
-            setPhotos(modifiedData);
-
-            // Show notification
-            const notificationDiv = document.createElement("div");
-            notificationDiv.className = "income-popup";
-            notificationDiv.innerHTML = `
-              <div class="income-popup__content">
-                <h3>Производительность</h3>
-                <p class="income-popup__text">Обнаружена низкая производительность. Качество изображений автоматически снижено.</p>
-                <button class="income-popup__button">OK</button>
-              </div>
-            `;
-            document.body.appendChild(notificationDiv);
-            // Add click handler to close
-            const closeButton = notificationDiv.querySelector("button");
-            closeButton.onclick = () => {
-              document.body.removeChild(notificationDiv);
-            };
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-              if (document.body.contains(notificationDiv)) {
-                document.body.removeChild(notificationDiv);
-              }
-            }, 5000);
-          }
+        if (responseTime > 300) {
+          const modifiedData = response.data.map((card) => {
+            if (card.image) {
+              const hasExtension = /\.[^.]+$/.test(card.image);
+              return {
+                ...card,
+                image: hasExtension
+                  ? card.image.replace(/(\.[^.]+)$/, "bad$1")
+                  : card.image + "bad.webp",
+              };
+            }
+            console.log(modifiedData);
+            return card;
+          });
+          setPhotos(modifiedData);
         } else {
           setPhotos(response.data);
         }
