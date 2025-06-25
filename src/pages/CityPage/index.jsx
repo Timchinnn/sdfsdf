@@ -72,7 +72,7 @@ const CityPage = () => {
     const fetchCardSets = async () => {
       try {
         const response = await cardSetsService.getAllCardSets();
-        // Фильтруем наборы, оставляя лишь те, в которых set_type === "city"
+        // Фильтруем наборы, оставляя лишь те, в которых set_type === "city"d
         const citySets = response.data.filter((set) => set.set_type === "city");
         setCardSets(citySets);
         // Далее для каждого набора получаем карточки и награды
