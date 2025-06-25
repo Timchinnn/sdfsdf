@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
 import Style2CardBack from "assets/img/card2.png";
+import { useDispatch } from "react-redux";
+import { setImageQuality } from "./redux/actions";
 // Отсутствует определение cardBackStyles
 const cardBackStyles = {
   default: { image: DefaultImg },
@@ -38,6 +40,13 @@ const MainCarousel = ({
   // Minimum distance required for swipe
   const minSwipeDistance = 50;
   const [responseTime, setResponseTime] = useState(null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // При каждом запуске приложения устанавливаем автонастройку
+    dispatch(setImageQuality("auto"));
+  }, [dispatch]);
+
   useEffect(() => {
     const measureResponseTime = async () => {
       const startTime = performance.now();

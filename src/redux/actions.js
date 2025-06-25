@@ -14,7 +14,7 @@ export const setLanguage = (language) => {
   };
 };
 export const setImageQuality = (quality) => {
-  localStorage.setItem("imageQuality", quality); // Сохраняем выбор пользователя
+  // Убираем сохранение в localStorage
   return {
     type: "SET_IMAGE_QUALITY",
     payload: quality,

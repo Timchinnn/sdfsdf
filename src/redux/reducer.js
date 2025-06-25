@@ -1,8 +1,8 @@
 const initialState = {
   theme: true,
   cardBack: "default",
-  language: localStorage.getItem("language") || "ru", // Добавляем начальное значение языкаы
-  imageQuality: localStorage.getItem("imageQuality") || "auto", // auto, high, low
+  language: localStorage.getItem("language") || "ru",
+  imageQuality: "auto", // Всегда начинаем с auto при запуске
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
