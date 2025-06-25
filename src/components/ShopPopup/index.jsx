@@ -93,7 +93,10 @@ const ShopPopup = (props) => {
                     ? props.selectedPhoto.id === "set" ||
                       props.selectedPhoto.id === "energy" ||
                       props.selectedPhoto.id === "money" ||
-                      props.selectedPhoto.image === QuestionMarkImg
+                      props.selectedPhoto.image === QuestionMarkImg ||
+                      props.selectedPhoto.image.startsWith(
+                        "https://api.zoomayor.io"
+                      )
                       ? props.selectedPhoto.image
                       : `https://api.zoomayor.io${props.selectedPhoto.image}`
                     : DefaultImg
