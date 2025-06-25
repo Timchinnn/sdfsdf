@@ -55,7 +55,7 @@ const MainCarousel = ({
         const endTime = performance.now();
         const time = endTime - startTime;
         setResponseTime(time);
-        if (time > 300) {
+        if (time > 18) {
           // console.log(time);
 
           const tg = window.Telegram.WebApp;
@@ -93,7 +93,7 @@ const MainCarousel = ({
       }
 
       // Автоматический режим - проверяем время ответа
-      if (responseTime > 300) {
+      if (responseTime > 18) {
         const hasExtension = /\.[^.]+$/.test(cardBackStyle);
         return `https://api.zoomayor.io${
           hasExtension
@@ -197,7 +197,7 @@ const MainCarousel = ({
         // Если выбрано низкое качество или автоматически при медленном соединении
         if (
           imageQuality === "low" ||
-          (imageQuality === "auto" && responseTime > 300)
+          (imageQuality === "auto" && responseTime > 18)
         ) {
           const modifiedData = response.data.map((card) => {
             if (card.image) {
