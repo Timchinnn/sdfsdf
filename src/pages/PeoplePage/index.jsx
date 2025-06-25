@@ -302,7 +302,7 @@ const PeoplePage = () => {
                                     userCards.some(
                                       (userCard) => userCard.id === card.id
                                     )
-                                      ? `https://api.zoomayor.io${card.image}`
+                                      ? getImageUrl(card.image)
                                       : QuestionMarkImg
                                   }
                                   alt={card.title}
