@@ -1,40 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import "./styles.scss";
+
 import DefaultImg from "assets/img/default-img.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import QuestionMarkImg from "assets/img/question-mark.png";
+
 import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
-import { useSelector } from "react-redux";
+
 const ShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
-  const [responseTime, setResponseTime] = useState(null);
-  const imageQuality = useSelector((state) => state.imageQuality);
-
-  useEffect(() => {
-    // Измеряем время ответа сервера при загрузке компонента
-    const measureResponseTime = async () => {
-      const startTime = performance.now();
-      try {
-        const response = await fetch("https://api.zoomayor.io/api/cards");
-        const endTime = performance.now();
-        const time = endTime - startTime;
-        setResponseTime(time);
-      } catch (error) {
-        console.error("Ошибка при измерении времени ответа:", error);
-      }
-    };
-    measureResponseTime();
-  }, []);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
     }, 100);
     return () => clearTimeout(timer);
   }, []);
-
   const { setActivePopup, onButtonClick } = props; // Добавляем onButtonClick в props
 
   useEffect(() => {
@@ -44,10 +27,10 @@ const ShopPopup = (props) => {
         setActivePopup(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
-
   const handleButtonClick = () => {
     if (props.handleClosePopup) {
       props.handleClosePopup();
@@ -56,54 +39,14 @@ const ShopPopup = (props) => {
       onButtonClick(); // Вызываем callback при клике на кнопку
     }
   };
-
   useEffect(() => {
     if (props.selectedPhoto && props.selectedPhoto.image === QuestionMarkImg) {
       console.log(QuestionMarkImg);
     }
   }, [props.selectedPhoto]);
-
-  // Функция для определения URL изображения с учетом качества
-  const getImageUrl = () => {
-    if (!props.selectedPhoto) return DefaultImg;
-
-    // Если это специальное изображение или локальное изображение
-    if (
-      props.selectedPhoto.id === "set" ||
-      props.selectedPhoto.id === "energy" ||
-      props.selectedPhoto.id === "money" ||
-      props.selectedPhoto.image === QuestionMarkImg
-    ) {
-      return props.selectedPhoto.image;
-    }
-
-    // Проверяем настройки качества изображений
-    if (imageQuality === "high") {
-      // Всегда высокое качество
-      return `https://api.zoomayor.io${props.selectedPhoto.image}`;
-    } else if (imageQuality === "low") {
-      // Всегда низкое качество
-      const hasExtension = /\.[^.]+$/.test(props.selectedPhoto.image);
-      return `https://api.zoomayor.io${
-        hasExtension
-          ? props.selectedPhoto.image.replace(/(\.[^.]+)$/, "bad$1")
-          : props.selectedPhoto.image + "bad.webp"
-      }`;
-    } else {
-      // Автоматический режим - зависит от времени ответа
-      if (responseTime > 300) {
-        const hasExtension = /\.[^.]+$/.test(props.selectedPhoto.image);
-        return `https://api.zoomayor.io${
-          hasExtension
-            ? props.selectedPhoto.image.replace(/(\.[^.]+)$/, "bad$1")
-            : props.selectedPhoto.image + "bad.webp"
-        }`;
-      } else {
-        return `https://api.zoomayor.io${props.selectedPhoto.image}`;
-      }
-    }
-  };
-
+  const imageUrl = props.selectedPhoto?.image
+    ? `https://api.zoomayor.io${props.selectedPhoto.image}`
+    : DefaultImg;
   return (
     <div ref={popupRef} className={`shop-popup ${props.active ? "show" : ""}`}>
       <div className="shop-popup__wrapper">
@@ -126,8 +69,37 @@ const ShopPopup = (props) => {
         </button>
         <div className="shop-popup__inner">
           <div className="shop-popup__image">
+            {/* <img
+              src={
+                props.selectedPhoto
+                  ? `${props.selectedPhoto.image}`
+                  : DefaultImg
+              }
+              alt={props.selectedPhoto?.title || ""}
+            /> */}
+            {/* <img
+              src={
+                item.id === "set" || item.id === "energy" || item.id === "money"
+                  ? item.image
+                  : `${item.image}`
+              }
+              alt=""
+              className="shop-card__Img"
+            /> */}
             {showImage && (
-              <img src={getImageUrl()} alt={props.selectedPhoto?.title || ""} />
+              <img
+                src={
+                  props.selectedPhoto
+                    ? props.selectedPhoto.id === "set" ||
+                      props.selectedPhoto.id === "energy" ||
+                      props.selectedPhoto.id === "money" ||
+                      props.selectedPhoto.image === QuestionMarkImg
+                      ? props.selectedPhoto.image
+                      : `https://api.zoomayor.io${props.selectedPhoto.image}`
+                    : DefaultImg
+                }
+                alt={props.selectedPhoto?.title || ""}
+              />
             )}
           </div>
           <div className="shop-popup__content">
@@ -199,4 +171,5 @@ const ShopPopup = (props) => {
     </div>
   );
 };
+
 export default ShopPopup;
