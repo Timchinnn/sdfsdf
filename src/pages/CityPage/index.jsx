@@ -125,7 +125,7 @@ const CityPage = () => {
       ...photo,
       image:
         userCards && userCards.some((card) => card.id === photo.id)
-          ? getImageUrl(photo.image) // Use getImageUrl helper for quality selection
+          ? photo.image
           : QuestionMarkImg,
     });
     setActivePopup(true);
