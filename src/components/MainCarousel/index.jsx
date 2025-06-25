@@ -3,13 +3,11 @@ import ReactFlipCard from "reactjs-flip-card";
 import { userInitService } from "services/api";
 import { cardsService } from "services/api";
 import { userCardsService } from "services/api";
-import { useSelector } from "react-redux";
 import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
 import Style2CardBack from "assets/img/card2.png";
-import { useDispatch } from "react-redux";
-import { setImageQuality } from "./redux/actions";
-// Отсутствует определение cardBackStyles
+import { useDispatch, useSelector } from "react-redux";
+import { setImageQuality } from "../../redux/actions"; // Отсутствует определение cardBackStyles
 const cardBackStyles = {
   default: { image: DefaultImg },
   style1: { image: Style1CardBack },
