@@ -7,7 +7,7 @@ export const setCardBack = (style) => ({
   payload: style,
 });
 export const setLanguage = (language) => {
-  localStorage.setItem("language", language); // Сохраняем при изменении
+  localStorage.setItem("language", language); // Сохраняем при измененииы
   return {
     type: "SET_LANGUAGE",
     payload: language,
