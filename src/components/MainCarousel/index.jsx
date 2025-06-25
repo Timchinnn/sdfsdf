@@ -7,7 +7,7 @@ import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
 import Style2CardBack from "assets/img/card2.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setImageQuality } from "../../redux/actions"; // Отсутствует определение cardBackStyles
+import { setImageQuality } from "../../redux/actions"; // Отсутствует определение cardBackStyless
 const cardBackStyles = {
   default: { image: DefaultImg },
   style1: { image: Style1CardBack },
