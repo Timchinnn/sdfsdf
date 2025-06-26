@@ -209,7 +209,11 @@ const ShopPage = () => {
   const handleOpenPopup = (item) => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
-    setSelectedId(item);
+    // Создаем копию объекта с обработанным URL изображения
+    setSelectedId({
+      ...item,
+      image: getImageUrl(item.image),
+    });
   };
   const handleClosePopup = () => {
     document.documentElement.classList.remove("fixed");
