@@ -33,6 +33,61 @@ const ShopPage = () => {
   const [shopSets, setShopSets] = useState([]);
   const [shirts, setShirts] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
+  const imageQuality = useSelector((state) => state.imageQuality);
+  const [responseTime, setResponseTime] = useState(null);
+  // Добавить useEffect для измерения времени ответа
+  useEffect(() => {
+    // Измеряем время ответа сервера при загрузке компонента
+    const measureResponseTime = async () => {
+      const startTime = performance.now();
+      try {
+        const response = await fetch("https://api.zoomayor.io/api/cards");
+        const endTime = performance.now();
+        const time = endTime - startTime;
+        setResponseTime(time);
+      } catch (error) {
+        console.error("Ошибка при измерении времени ответа:", error);
+      }
+    };
+    measureResponseTime();
+  }, []);
+  // Добавить функцию getImageUrl
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl || typeof imageUrl !== "string") return imageUrl;
+    if (
+      imageUrl === DefaultImg ||
+      imageUrl === MoneyImg ||
+      imageUrl === EnergytImg
+    )
+      return imageUrl;
+    if (imageUrl.startsWith("http")) return imageUrl;
+
+    // Проверяем настройки качества изображений
+    if (imageQuality === "high") {
+      // Всегда высокое качество
+      return `https://api.zoomayor.io${imageUrl}`;
+    } else if (imageQuality === "low") {
+      // Всегда низкое качество
+      const hasExtension = /\.[^.]+$/.test(imageUrl);
+      return `https://api.zoomayor.io${
+        hasExtension
+          ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
+          : imageUrl + "bad.webp"
+      }`;
+    } else {
+      // Автоматический режим - зависит от времени ответа
+      if (responseTime > 300) {
+        const hasExtension = /\.[^.]+$/.test(imageUrl);
+        return `https://api.zoomayor.io${
+          hasExtension
+            ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
+            : imageUrl + "bad.webp"
+        }`;
+      } else {
+        return `https://api.zoomayor.io${imageUrl}`;
+      }
+    }
+  };
   useEffect(() => {
     const fetchShopCards = async () => {
       try {
@@ -340,7 +395,7 @@ const ShopPage = () => {
                               >
                                 <img
                                   style={{ width: "100% !important" }}
-                                  src={`https://api.zoomayor.io${set.image}`}
+                                  src={getImageUrl(set.image)}
                                   alt={set.title}
                                   className="shop-card__Img1"
                                 />
@@ -377,7 +432,7 @@ const ShopPage = () => {
                                 onClick={() => handleOpenPopup(card)}
                               >
                                 <img
-                                  src={`https://api.zoomayor.io${card.image}`}
+                                  src={getImageUrl(card.image)}
                                   alt={card.title}
                                   className="shop-card__Img1"
                                 />
@@ -426,7 +481,7 @@ const ShopPage = () => {
                                 }
                               >
                                 <img
-                                  src={`https://api.zoomayor.io${shirt.image}`}
+                                  src={getImageUrl(shirt.image)}
                                   alt={shirt.title}
                                 />
                               </div>
