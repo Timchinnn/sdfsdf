@@ -109,7 +109,7 @@ const ShopPage = () => {
             image: shirt.image_url || DefaultImg,
           })),
         ];
-        setFilteredItems(allItems); // Set all items by default
+        setFilteredItems(allItems); // Set all items by defaultа
       } catch (error) {
         console.error(error);
       }
