@@ -209,11 +209,7 @@ const ShopPage = () => {
   const handleOpenPopup = (item) => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
-    // Создаем копию объекта с обработанным URL изображения
-    setSelectedId({
-      ...item,
-      image: getImageUrl(item.image),
-    });
+    setSelectedId(item);
   };
   const handleClosePopup = () => {
     document.documentElement.classList.remove("fixed");
@@ -240,11 +236,10 @@ const ShopPage = () => {
         title: set.name,
         description: `Набор из ${setCards.length} карт`,
         price: set.price,
-        image: getImageUrl(set.image_url), // Используем getImageUrl
-        cards: setCards.map((card) => ({
-          ...card,
-          image: getImageUrl(card.image), // Обрабатываем URL каждой карты в наборе
-        })),
+        image: set.image_url
+          ? `https://api.zoomayor.io${set.image_url}`
+          : DefaultImg,
+        cards: setCards,
       });
     } catch (error) {
       console.error("Ошибка при получении информации о наборе:", error);
@@ -481,7 +476,7 @@ const ShopPage = () => {
                                     type: "shirt",
                                     id: shirt.id,
                                     name: shirt.title,
-                                    image: getImageUrl(shirt.image),
+                                    image: shirt.image, // Используем image_url вместо image
                                   })
                                 }
                               >
