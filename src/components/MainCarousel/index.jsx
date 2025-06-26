@@ -3,11 +3,11 @@ import ReactFlipCard from "reactjs-flip-card";
 import { userInitService } from "services/api";
 import { cardsService } from "services/api";
 import { userCardsService } from "services/api";
+import { useSelector } from "react-redux";
 import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
 import Style2CardBack from "assets/img/card2.png";
-import { useDispatch, useSelector } from "react-redux";
-import { setImageQuality } from "../../redux/actions"; // Отсутствует определение cardBackStyles
+// Отсутствует определение cardBackStyles
 const cardBackStyles = {
   default: { image: DefaultImg },
   style1: { image: Style1CardBack },
@@ -26,8 +26,6 @@ const MainCarousel = ({
   onUpdateComplete,
 }) => {
   const [isButtonLocked, setIsButtonLocked] = useState(false);
-  const imageQuality = useSelector((state) => state.imageQuality);
-
   const [nextOpenTime, setNextOpenTime] = useState({});
   const [remainingTime, setRemainingTime] = useState({});
   const [openedCards, setOpenedCards] = useState({});
@@ -37,77 +35,38 @@ const MainCarousel = ({
   const [isSwipeLocked, setIsSwipeLocked] = useState(false);
   // Minimum distance required for swipe
   const minSwipeDistance = 50;
-  const [responseTime, setResponseTime] = useState(null);
-  const dispatch = useDispatch();
+  // const [responseTime, setResponseTime] = useState(null);
+  // useEffect(() => {
+  //   const measureResponseTime = async () => {
+  //     const startTime = performance.now();
+  //     try {
+  //       const response = await fetch("https://api.zoomayor.io/api/cards");
+  //       const endTime = performance.now();
+  //       const time = endTime - startTime;
+  //       setResponseTime(time);
+  //       alert(`Время ответа сервера: ${Math.round(time)}мс`);
+  //     } catch (error) {
+  //       console.error("Ошибка при измерении времени ответа:", error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    // При каждом запуске приложения устанавливаем автонастройку
-    dispatch(setImageQuality("auto"));
-  }, [dispatch]);
-
-  useEffect(() => {
-    const measureResponseTime = async () => {
-      const startTime = performance.now();
-      try {
-        const response = await fetch("https://api.zoomayor.io/api/cards");
-        const endTime = performance.now();
-        const time = endTime - startTime;
-        setResponseTime(time);
-        if (time > 300) {
-          // console.log(time);
-
-          const tg = window.Telegram.WebApp;
-          tg.showPopup({
-            title: "Внимание",
-            message:
-              "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
-            buttons: [{ type: "ok" }],
-          });
-        }
-      } catch (error) {
-        console.error("Ошибка при измерении времени ответа:", error);
-      }
-    };
-    measureResponseTime();
-  }, []);
+  //   measureResponseTime();
+  // }, []);
   const getCardBackImage = () => {
+    // Если cardBackStyle отсутствует, возвращаем изображение по умолчанию
     if (!cardBackStyle) return cardBackStyles.default.image;
 
-    // Если cardBackStyle - это URL
+    // Если cardBackStyle уже является полноценным URL (например, "/img/card1.png")
     if (typeof cardBackStyle === "string" && cardBackStyle.startsWith("/img")) {
-      // Если пользователь выбрал высокое качество, всегда возвращаем высокое
-      if (imageQuality === "high") {
-        return `https://api.zoomayor.io${cardBackStyle}`;
-      }
-
-      // Если пользователь выбрал низкое качество, всегда возвращаем низкое
-      if (imageQuality === "low") {
-        const hasExtension = /\.[^.]+$/.test(cardBackStyle);
-        return `https://api.zoomayor.io${
-          hasExtension
-            ? cardBackStyle.replace(/(\.[^.]+)$/, "bad$1")
-            : cardBackStyle + "bad.webp"
-        }`;
-      }
-
-      // Автоматический режим - проверяем время ответа
-      if (responseTime > 300) {
-        const hasExtension = /\.[^.]+$/.test(cardBackStyle);
-        return `https://api.zoomayor.io${
-          hasExtension
-            ? cardBackStyle.replace(/(\.[^.]+)$/, "bad$1")
-            : cardBackStyle + "bad.webp"
-        }`;
-      }
-
       return `https://api.zoomayor.io${cardBackStyle}`;
     }
 
-    // Если cardBackStyle - это ключ в cardBackStyles
+    // Если cardBackStyle является ключом для cardBackStyles, используем его
     if (cardBackStyles[cardBackStyle] && cardBackStyles[cardBackStyle].image) {
       return cardBackStyles[cardBackStyle].image;
     }
 
+    // В остальных случаях возвращаем дефолтное изображение
     return cardBackStyles.default.image;
   };
   const onTouchStart = (e) => {
@@ -183,42 +142,20 @@ const MainCarousel = ({
         }
       });
       setRemainingTime(newRemainingTime);
-    }, 10);
+    }, 10); // Обновляем каждые 10мс для плавности
     return () => clearInterval(timer);
   }, [nextOpenTime]);
-
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
         const response = await cardsService.getAllCards();
-
-        // Если выбрано низкое качество или автоматически при медленном соединении
-        if (
-          imageQuality === "low" ||
-          (imageQuality === "auto" && responseTime > 300)
-        ) {
-          const modifiedData = response.data.map((card) => {
-            if (card.image) {
-              const hasExtension = /\.[^.]+$/.test(card.image);
-              return {
-                ...card,
-                image: hasExtension
-                  ? card.image.replace(/(\.[^.]+)$/, "bad$1")
-                  : card.image + "bad.webp",
-              };
-            }
-            return card;
-          });
-          setPhotos(modifiedData);
-        } else {
-          setPhotos(response.data);
-        }
+        setPhotos(response.data);
       } catch (error) {
-        console.error("Error fetching photos:", error);
+        console.error(error);
       }
     };
     fetchPhotos();
-  }, [imageQuality, responseTime]);
+  }, []);
   const [activeSlide, setActiveSlide] = useState(0);
 
   const [activeIndex, setActiveIndex] = useState(null);
@@ -369,7 +306,7 @@ const MainCarousel = ({
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
 
-    const nextTime = Date.now() + 2500; // 5 seconds cooldown
+    const nextTime = Date.now() + 5000; // 5 seconds cooldown
     setNextOpenTime((prev) => ({ ...prev, [index]: nextTime }));
     setTimeout(() => {
       setIsFlipped(true);
@@ -378,7 +315,7 @@ const MainCarousel = ({
         setIsButtonLocked(false);
         setIsAnimating(false);
         setIsFlipped(false);
-      }, 2500);
+      }, 3100);
     }, ANIMATION_DURATION);
     const tg = window.Telegram.WebApp;
     const telegram_id = tg.initDataUnsafe?.user?.id;
