@@ -429,7 +429,12 @@ const ShopPage = () => {
                             <div className="shop-list__card">
                               <div
                                 className="shop-list__image"
-                                onClick={() => handleOpenPopup(card)}
+                                onClick={() =>
+                                  handleOpenPopup({
+                                    ...card,
+                                    image: getImageUrl(card.image),
+                                  })
+                                }
                               >
                                 <img
                                   src={getImageUrl(card.image)}
@@ -476,7 +481,7 @@ const ShopPage = () => {
                                     type: "shirt",
                                     id: shirt.id,
                                     name: shirt.title,
-                                    image: shirt.image, // Используем image_url вместо image
+                                    image: getImageUrl(shirt.image),
                                   })
                                 }
                               >
