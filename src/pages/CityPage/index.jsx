@@ -33,24 +33,34 @@ const CityPage = () => {
   const [responseTime, setResponseTime] = useState(null);
   const imageQuality = useSelector((state) => state.imageQuality);
 
-  // Добавляем состояния для спиннера и загрузки данных
-  const [showSpinner, setShowSpinner] = useState(true);
-  const [userDataLoaded, setUserDataLoaded] = useState(false);
-  const [userAvatar, setUserAvatar] = useState(null);
-
   // Состояния для данных пользователя
+  const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
-  // Инициализация загрузки данных
+  const [username, setUsername] = useState("Пользователь");
+
+  // Состояния для отслеживания загрузки данных
+  const [userPhotoLoaded, setUserPhotoLoaded] = useState(false);
+  const [userCoinsLoaded, setUserCoinsLoaded] = useState(false);
+  const [userLevelLoaded, setUserLevelLoaded] = useState(false);
+  const [cardSetsLoaded, setCardSetsLoaded] = useState(false);
+  const [userCardsLoaded, setUserCardsLoaded] = useState(false);
+  const [responseTimeLoaded, setResponseTimeLoaded] = useState(false);
+  const [usernameLoaded, setUsernameLoaded] = useState(false);
+
+  // Состояние для спиннера
+  const [showSpinner, setShowSpinner] = useState(true);
+  // Получаем username из Telegram API
   useEffect(() => {
-    setUserDataLoaded(true);
-    const timer = setTimeout(() => {
-      setShowSpinner(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    const tg = window.Telegram.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const tgUsername = tg.initDataUnsafe.user.username || "Пользователь";
+      setUsername(tgUsername);
+    }
+    setUsernameLoaded(true);
   }, []);
   // Получение аватара пользователя
   useEffect(() => {
@@ -60,13 +70,11 @@ const CityPage = () => {
         try {
           const telegram_id = tg.initDataUnsafe.user.id;
           const userPhoto = tg.initDataUnsafe.user.photo_url;
-
           const existingUser = await userInitService.getUser(telegram_id);
           const lastPhotoUpdate = existingUser.data?.last_photo_update;
           const now = new Date();
           const lastUpdate = lastPhotoUpdate ? new Date(lastPhotoUpdate) : null;
           const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-
           if (
             !lastPhotoUpdate ||
             !lastUpdate ||
@@ -86,12 +94,11 @@ const CityPage = () => {
           setUserAvatar(null);
         }
       }
+      setUserPhotoLoaded(true);
     };
 
-    if (userDataLoaded) {
-      initializeUserPhoto();
-    }
-  }, [userDataLoaded]);
+    initializeUserPhoto();
+  }, []);
   // Получение монет и почасового дохода
   useEffect(() => {
     const fetchUserCoins = async () => {
@@ -116,29 +123,29 @@ const CityPage = () => {
           console.error("Ошибка при получении данных пользователя:", error);
         }
       }
+      setUserCoinsLoaded(true);
     };
     fetchUserCoins();
   }, []);
   // Получение уровня и опыта пользователя
   useEffect(() => {
-    if (userDataLoaded) {
-      const fetchUserLevel = async () => {
-        const tg = window.Telegram.WebApp;
-        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-          try {
-            const telegram_id = tg.initDataUnsafe.user.id;
-            const response = await userInitService.getUserLevel(telegram_id);
-            setLevel(response.data.level);
-            setCurrentExp(response.data.currentExperience);
-            setExpForNextLevel(response.data.experienceToNextLevel);
-          } catch (error) {
-            console.error("Ошибка при получении уровня пользователя:", error);
-          }
+    const fetchUserLevel = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const response = await userInitService.getUserLevel(telegram_id);
+          setLevel(response.data.level);
+          setCurrentExp(response.data.currentExperience);
+          setExpForNextLevel(response.data.experienceToNextLevel);
+        } catch (error) {
+          console.error("Ошибка при получении уровня пользователя:", error);
         }
-      };
-      fetchUserLevel();
-    }
-  }, [userDataLoaded]);
+      }
+      setUserLevelLoaded(true);
+    };
+    fetchUserLevel();
+  }, []);
   // Измеряем время ответа сервера при загрузке компонента
   useEffect(() => {
     const measureResponseTime = async () => {
@@ -151,38 +158,10 @@ const CityPage = () => {
       } catch (error) {
         console.error("Ошибка при измерении времени ответа:", error);
       }
+      setResponseTimeLoaded(true);
     };
     measureResponseTime();
   }, []);
-  // Функция для определения URL изображения
-  const getImageUrl = (imageUrl) => {
-    if (!imageUrl || imageUrl === QuestionMarkImg) return imageUrl;
-    // Проверяем настройки качества изображений
-    if (imageQuality === "high") {
-      // Всегда высокое качество
-      return `https://api.zoomayor.io${imageUrl}`;
-    } else if (imageQuality === "low") {
-      // Всегда низкое качество
-      const hasExtension = /\.[^.]+$/.test(imageUrl);
-      return `https://api.zoomayor.io${
-        hasExtension
-          ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
-          : imageUrl + "bad.webp"
-      }`;
-    } else {
-      // Автоматический режим - зависит от времени ответа
-      if (responseTime > 300) {
-        const hasExtension = /\.[^.]+$/.test(imageUrl);
-        return `https://api.zoomayor.io${
-          hasExtension
-            ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
-            : imageUrl + "bad.webp"
-        }`;
-      } else {
-        return `https://api.zoomayor.io${imageUrl}`;
-      }
-    }
-  };
   // Получение наборов карточек
   useEffect(() => {
     const fetchCardSets = async () => {
@@ -212,6 +191,7 @@ const CityPage = () => {
       } catch (error) {
         console.error("Ошибка при получении наборов карточек:", error);
       }
+      setCardSetsLoaded(true);
     };
     fetchCardSets();
   }, []);
@@ -223,6 +203,7 @@ const CityPage = () => {
         const telegram_id = tg.initDataUnsafe?.user?.id;
         if (!telegram_id) {
           console.error("Telegram ID не найден");
+          setUserCardsLoaded(true);
           return;
         }
         const response = await userCardsService.getUserCards(telegram_id);
@@ -230,9 +211,65 @@ const CityPage = () => {
       } catch (error) {
         console.error(error);
       }
+      setUserCardsLoaded(true);
     };
     fetchUserCards();
   }, []);
+  // Проверка загрузки всех данных и отключение спиннера
+  useEffect(() => {
+    if (
+      userPhotoLoaded &&
+      userCoinsLoaded &&
+      userLevelLoaded &&
+      cardSetsLoaded &&
+      userCardsLoaded &&
+      responseTimeLoaded &&
+      usernameLoaded
+    ) {
+      // Добавляем небольшую задержку для плавности
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [
+    userPhotoLoaded,
+    userCoinsLoaded,
+    userLevelLoaded,
+    cardSetsLoaded,
+    userCardsLoaded,
+    responseTimeLoaded,
+    usernameLoaded,
+  ]);
+  // Функция для определения URL изображения
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl || imageUrl === QuestionMarkImg) return imageUrl;
+    // Проверяем настройки качества изображений
+    if (imageQuality === "high") {
+      // Всегда высокое качество
+      return `https://api.zoomayor.io${imageUrl}`;
+    } else if (imageQuality === "low") {
+      // Всегда низкое качество
+      const hasExtension = /\.[^.]+$/.test(imageUrl);
+      return `https://api.zoomayor.io${
+        hasExtension
+          ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
+          : imageUrl + "bad.webp"
+      }`;
+    } else {
+      // Автоматический режим - зависит от времени ответа
+      if (responseTime > 300) {
+        const hasExtension = /\.[^.]+$/.test(imageUrl);
+        return `https://api.zoomayor.io${
+          hasExtension
+            ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
+            : imageUrl + "bad.webp"
+        }`;
+      } else {
+        return `https://api.zoomayor.io${imageUrl}`;
+      }
+    }
+  };
   const handleAccordionClick = (id) => {
     setOpenAccordion(openAccordion === id ? null : id);
   };
@@ -242,7 +279,7 @@ const CityPage = () => {
       ...photo,
       image:
         userCards && userCards.some((card) => card.id === photo.id)
-          ? getImageUrl(photo.image) // Use getImageUrl helper for quality selection
+          ? getImageUrl(photo.image)
           : QuestionMarkImg,
     });
     setActivePopup(true);
@@ -259,6 +296,7 @@ const CityPage = () => {
       if (
         popup &&
         !popup.contains(event.target) &&
+        infoIcon &&
         !infoIcon.contains(event.target)
       ) {
         setShowInfo({});
@@ -271,8 +309,9 @@ const CityPage = () => {
     <section className="city">
       <div className="container">
         <div className="city-inner">
-          {showSpinner && <Spinner loading={true} size={50} />}
-          {!showSpinner && (
+          {showSpinner ? (
+            <Spinner loading={true} size={50} />
+          ) : (
             <>
               <MainSection
                 hourlyIncome={hourlyIncome}
@@ -280,7 +319,7 @@ const CityPage = () => {
                 level={level}
                 currentExp={currentExp}
                 expForNextLevel={expForNextLevel}
-                loaded={userDataLoaded}
+                loaded={true}
                 userAvatar={userAvatar}
                 defaultAvatar={Avatar}
                 timeIcon={TimeIcon}
@@ -288,6 +327,7 @@ const CityPage = () => {
                 cardImg={cardImg}
                 taskImg={taskImg}
                 bonusImg={bonusImg}
+                username={username}
               />
               <ul className="city-list">
                 {cardSets.map((set) => (
@@ -345,7 +385,7 @@ const CityPage = () => {
                                 ))}
                             <button
                               className="info-popup__close"
-                              onClick={() => setShowInfo(false)}
+                              onClick={() => setShowInfo({})}
                             >
                               <p>✕</p>
                             </button>

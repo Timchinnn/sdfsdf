@@ -16,28 +16,36 @@ const cardImg = "https://image.tw1.ru/image/card.webp";
 const taskImg = "https://image.tw1.ru/image/vopros.webp";
 const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
 const FriendsPage = () => {
-  // copy text
+  // Состояния для реферальной системы
   const [referralCode, setReferralCode] = useState("");
   const [referrals, setReferrals] = useState([]);
 
-  // Добавляем состояния для спиннера и загрузки данных
-  const [showSpinner, setShowSpinner] = useState(true);
-  const [userDataLoaded, setUserDataLoaded] = useState(false);
-  const [userAvatar, setUserAvatar] = useState(null);
-
   // Состояния для данных пользователя
+  const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
-  // Инициализация загрузки данных
+  const [username, setUsername] = useState("Пользователь");
+
+  // Состояния для отслеживания загрузки данных
+  const [userPhotoLoaded, setUserPhotoLoaded] = useState(false);
+  const [userCoinsLoaded, setUserCoinsLoaded] = useState(false);
+  const [userLevelLoaded, setUserLevelLoaded] = useState(false);
+  const [usernameLoaded, setUsernameLoaded] = useState(false);
+  const [referralDataLoaded, setReferralDataLoaded] = useState(false);
+
+  // Состояние для спиннера
+  const [showSpinner, setShowSpinner] = useState(true);
+  // Получаем username из Telegram API
   useEffect(() => {
-    setUserDataLoaded(true);
-    const timer = setTimeout(() => {
-      setShowSpinner(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    const tg = window.Telegram.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const tgUsername = tg.initDataUnsafe.user.username || "Пользователь";
+      setUsername(tgUsername);
+    }
+    setUsernameLoaded(true);
   }, []);
   // Получение аватара пользователя
   useEffect(() => {
@@ -47,13 +55,11 @@ const FriendsPage = () => {
         try {
           const telegram_id = tg.initDataUnsafe.user.id;
           const userPhoto = tg.initDataUnsafe.user.photo_url;
-
           const existingUser = await userInitService.getUser(telegram_id);
           const lastPhotoUpdate = existingUser.data?.last_photo_update;
           const now = new Date();
           const lastUpdate = lastPhotoUpdate ? new Date(lastPhotoUpdate) : null;
           const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-
           if (
             !lastPhotoUpdate ||
             !lastUpdate ||
@@ -73,12 +79,11 @@ const FriendsPage = () => {
           setUserAvatar(null);
         }
       }
+      setUserPhotoLoaded(true);
     };
 
-    if (userDataLoaded) {
-      initializeUserPhoto();
-    }
-  }, [userDataLoaded]);
+    initializeUserPhoto();
+  }, []);
   // Получение монет и почасового дохода
   useEffect(() => {
     const fetchUserCoins = async () => {
@@ -103,59 +108,82 @@ const FriendsPage = () => {
           console.error("Ошибка при получении данных пользователя:", error);
         }
       }
+      setUserCoinsLoaded(true);
     };
     fetchUserCoins();
   }, []);
   // Получение уровня и опыта пользователя
   useEffect(() => {
-    if (userDataLoaded) {
-      const fetchUserLevel = async () => {
-        const tg = window.Telegram.WebApp;
-        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-          try {
-            const telegram_id = tg.initDataUnsafe.user.id;
-            const response = await userInitService.getUserLevel(telegram_id);
-            setLevel(response.data.level);
-            setCurrentExp(response.data.currentExperience);
-            setExpForNextLevel(response.data.experienceToNextLevel);
-          } catch (error) {
-            console.error("Ошибка при получении уровня пользователя:", error);
-          }
+    const fetchUserLevel = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const response = await userInitService.getUserLevel(telegram_id);
+          setLevel(response.data.level);
+          setCurrentExp(response.data.currentExperience);
+          setExpForNextLevel(response.data.experienceToNextLevel);
+        } catch (error) {
+          console.error("Ошибка при получении уровня пользователя:", error);
         }
-      };
-      fetchUserLevel();
-    }
-  }, [userDataLoaded]);
+      }
+      setUserLevelLoaded(true);
+    };
+    fetchUserLevel();
+  }, []);
+  // Получение реферальных данных
   useEffect(() => {
     const fetchReferralData = async () => {
       try {
         const tg = window.Telegram.WebApp;
         if (tg && tg.initDataUnsafe?.user?.id) {
           const telegram_id = tg.initDataUnsafe.user.id;
-          // Get referral code
+          // Получаем реферальный код
           const codeResponse = await userInitService.getReferralCode(
             telegram_id
           );
           setReferralCode(codeResponse.data.referral_code);
-          // Get referrals list
+          // Получаем список рефералов
           const referralsResponse = await userInitService.getReferrals(
             telegram_id
           );
-          // console.log(referralsResponse);
           setReferrals(referralsResponse.data.referrals);
         }
       } catch (error) {
-        console.error("Error fetching referral");
+        console.error("Ошибка при получении реферальных данных:", error);
       }
+      setReferralDataLoaded(true);
     };
     fetchReferralData();
   }, []);
+  // Проверка загрузки всех данных и отключение спиннера
+  useEffect(() => {
+    if (
+      userPhotoLoaded &&
+      userCoinsLoaded &&
+      userLevelLoaded &&
+      usernameLoaded &&
+      referralDataLoaded
+    ) {
+      // Добавляем небольшую задержку для плавности
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [
+    userPhotoLoaded,
+    userCoinsLoaded,
+    userLevelLoaded,
+    usernameLoaded,
+    referralDataLoaded,
+  ]);
   const copyToClipboard = () => {
     const referralUrl = `t.me/ZooMayorbot?start=${referralCode}`;
     navigator.clipboard
       .writeText(referralUrl)
       .then(() => {
-        // Open Telegram with the referral link
+        // Открываем Telegram с реферальной ссылкой
         window.open(`https://${referralUrl}`, "_blank");
       })
       .catch((err) => {
@@ -166,8 +194,9 @@ const FriendsPage = () => {
     <section className="friends">
       <div className="container">
         <div className="friends-inner">
-          {showSpinner && <Spinner loading={true} size={50} />}
-          {!showSpinner && (
+          {showSpinner ? (
+            <Spinner loading={true} size={50} />
+          ) : (
             <>
               <MainSection
                 hourlyIncome={hourlyIncome}
@@ -175,7 +204,7 @@ const FriendsPage = () => {
                 level={level}
                 currentExp={currentExp}
                 expForNextLevel={expForNextLevel}
-                loaded={userDataLoaded}
+                loaded={true}
                 userAvatar={userAvatar}
                 defaultAvatar={Avatar}
                 timeIcon={TimeIcon}
@@ -183,6 +212,7 @@ const FriendsPage = () => {
                 cardImg={cardImg}
                 taskImg={taskImg}
                 bonusImg={bonusImg}
+                username={username}
               />
               <div className="friends-referal block-style">
                 <div className="section-content">

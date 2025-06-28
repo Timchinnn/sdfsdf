@@ -22,24 +22,32 @@ const BonusPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Добавляем состояния для спиннера и загрузки данных
-  const [showSpinner, setShowSpinner] = useState(true);
-  const [userDataLoaded, setUserDataLoaded] = useState(false);
-  const [userAvatar, setUserAvatar] = useState(null);
-
   // Состояния для данных пользователя
+  const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
-  // Инициализация загрузки данных
+  const [username, setUsername] = useState("Пользователь");
+
+  // Состояния для отслеживания загрузки данных
+  const [userPhotoLoaded, setUserPhotoLoaded] = useState(false);
+  const [userCoinsLoaded, setUserCoinsLoaded] = useState(false);
+  const [userLevelLoaded, setUserLevelLoaded] = useState(false);
+  const [usernameLoaded, setUsernameLoaded] = useState(false);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
+
+  // Состояние для спиннера
+  const [showSpinner, setShowSpinner] = useState(true);
+  // Получаем username из Telegram API
   useEffect(() => {
-    setUserDataLoaded(true);
-    const timer = setTimeout(() => {
-      setShowSpinner(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    const tg = window.Telegram.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const tgUsername = tg.initDataUnsafe.user.username || "Пользователь";
+      setUsername(tgUsername);
+    }
+    setUsernameLoaded(true);
   }, []);
   // Получение аватара пользователя
   useEffect(() => {
@@ -49,13 +57,11 @@ const BonusPage = () => {
         try {
           const telegram_id = tg.initDataUnsafe.user.id;
           const userPhoto = tg.initDataUnsafe.user.photo_url;
-
           const existingUser = await userInitService.getUser(telegram_id);
           const lastPhotoUpdate = existingUser.data?.last_photo_update;
           const now = new Date();
           const lastUpdate = lastPhotoUpdate ? new Date(lastPhotoUpdate) : null;
           const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-
           if (
             !lastPhotoUpdate ||
             !lastUpdate ||
@@ -71,16 +77,15 @@ const BonusPage = () => {
             setUserAvatar(existingUser.data.photo_url || null);
           }
         } catch (error) {
-          console.error("Error initializing user photo:", error);
+          console.error("Ошибка при инициализации фото пользователя:", error);
           setUserAvatar(null);
         }
       }
+      setUserPhotoLoaded(true);
     };
 
-    if (userDataLoaded) {
-      initializeUserPhoto();
-    }
-  }, [userDataLoaded]);
+    initializeUserPhoto();
+  }, []);
   // Получение монет и почасового дохода
   useEffect(() => {
     const fetchUserCoins = async () => {
@@ -102,32 +107,32 @@ const BonusPage = () => {
             setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
           }
         } catch (error) {
-          console.error("Error fetching");
+          console.error("Ошибка при получении данных пользователя:", error);
         }
       }
+      setUserCoinsLoaded(true);
     };
     fetchUserCoins();
   }, []);
   // Получение уровня и опыта пользователя
   useEffect(() => {
-    if (userDataLoaded) {
-      const fetchUserLevel = async () => {
-        const tg = window.Telegram.WebApp;
-        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-          try {
-            const telegram_id = tg.initDataUnsafe.user.id;
-            const response = await userInitService.getUserLevel(telegram_id);
-            setLevel(response.data.level);
-            setCurrentExp(response.data.currentExperience);
-            setExpForNextLevel(response.data.experienceToNextLevel);
-          } catch (error) {
-            console.error("Error fetching user level:", error);
-          }
+    const fetchUserLevel = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const response = await userInitService.getUserLevel(telegram_id);
+          setLevel(response.data.level);
+          setCurrentExp(response.data.currentExperience);
+          setExpForNextLevel(response.data.experienceToNextLevel);
+        } catch (error) {
+          console.error("Ошибка при получении уровня пользователя:", error);
         }
-      };
-      fetchUserLevel();
-    }
-  }, [userDataLoaded]);
+      }
+      setUserLevelLoaded(true);
+    };
+    fetchUserLevel();
+  }, []);
   // Получение истории активаций бонусов
   useEffect(() => {
     const fetchHistory = async () => {
@@ -138,19 +143,42 @@ const BonusPage = () => {
           );
           setHistory(response.data);
         } catch (err) {
-          console.error("Error fetching history:", err);
+          console.error("Ошибка при получении истории:", err);
         }
       }
+      setHistoryLoaded(true);
     };
     fetchHistory();
   }, []);
+  // Проверка загрузки всех данных и отключение спиннера
+  useEffect(() => {
+    if (
+      userPhotoLoaded &&
+      userCoinsLoaded &&
+      userLevelLoaded &&
+      usernameLoaded &&
+      historyLoaded
+    ) {
+      // Добавляем небольшую задержку для плавности
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [
+    userPhotoLoaded,
+    userCoinsLoaded,
+    userLevelLoaded,
+    usernameLoaded,
+    historyLoaded,
+  ]);
   const handleActivateCode = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
     try {
       if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-        throw new Error("Telegram user data not found");
+        throw new Error("Данные пользователя Telegram не найдены");
       }
       const telegram_id = tg.initDataUnsafe.user.id;
       const response = await bonusCodeService.activateCode(telegram_id, code);
@@ -180,8 +208,9 @@ const BonusPage = () => {
     <section className="bonus">
       <div className="container">
         <div className="tasks-inner">
-          {showSpinner && <Spinner loading={true} size={50} />}
-          {!showSpinner && (
+          {showSpinner ? (
+            <Spinner loading={true} size={50} />
+          ) : (
             <>
               <MainSection
                 hourlyIncome={hourlyIncome}
@@ -189,7 +218,7 @@ const BonusPage = () => {
                 level={level}
                 currentExp={currentExp}
                 expForNextLevel={expForNextLevel}
-                loaded={userDataLoaded}
+                loaded={true}
                 userAvatar={userAvatar}
                 defaultAvatar={Avatar}
                 timeIcon={TimeIcon}
@@ -197,6 +226,7 @@ const BonusPage = () => {
                 cardImg={cardImg}
                 taskImg={taskImg}
                 bonusImg={bonusImg}
+                username={username}
               />
               <div className="bonus-wrap">
                 <div className="bonus-promo block-style">
