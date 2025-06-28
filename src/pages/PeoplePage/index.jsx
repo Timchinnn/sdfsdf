@@ -1,3 +1,4 @@
+jsx;
 import React, { useState, useEffect } from "react";
 import routePeople from "./routes";
 import MainSection from "components/MainSection";
@@ -40,6 +41,7 @@ const PeoplePage = () => {
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
+  const [username, setUsername] = useState("Пользователь"); // Добавляем состояние для username
 
   // Состояния для отслеживания загрузки данных
   const [userPhotoLoaded, setUserPhotoLoaded] = useState(false);
@@ -48,9 +50,19 @@ const PeoplePage = () => {
   const [cardSetsLoaded, setCardSetsLoaded] = useState(false);
   const [userCardsLoaded, setUserCardsLoaded] = useState(false);
   const [responseTimeLoaded, setResponseTimeLoaded] = useState(false);
+  const [usernameLoaded, setUsernameLoaded] = useState(false); // Добавляем состояние для отслеживания загрузки username
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+  // Получаем username из Telegram API
+  useEffect(() => {
+    const tg = window.Telegram.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const tgUsername = tg.initDataUnsafe.user.username || "Пользователь";
+      setUsername(tgUsername);
+    }
+    setUsernameLoaded(true);
+  }, []);
   // Измеряем время ответа сервера при загрузке компонента
   useEffect(() => {
     const measureResponseTime = async () => {
@@ -228,12 +240,13 @@ const PeoplePage = () => {
       userLevelLoaded &&
       cardSetsLoaded &&
       userCardsLoaded &&
-      responseTimeLoaded
+      responseTimeLoaded &&
+      usernameLoaded // Добавляем проверку загрузки username
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
         setShowSpinner(false);
-      }, 1300);
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [
@@ -243,6 +256,7 @@ const PeoplePage = () => {
     cardSetsLoaded,
     userCardsLoaded,
     responseTimeLoaded,
+    usernameLoaded, // Добавляем в зависимости
   ]);
   // Добавить функцию для определения URL изображения
   const getImageUrl = (imageUrl) => {
@@ -330,6 +344,7 @@ const PeoplePage = () => {
                 cardImg={cardImg}
                 taskImg={taskImg}
                 bonusImg={bonusImg}
+                username={username} // Передаем username в MainSection
               />
               <ul className="city-list">
                 {cardSets.map((set) => (

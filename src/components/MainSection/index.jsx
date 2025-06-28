@@ -19,73 +19,15 @@ const MainSection = ({
   cardImg,
   taskImg,
   bonusImg,
+  username, // Получаем username из пропсов
 }) => {
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
   const telegramId = tg ? tg.id : null;
   const [coins, setCoins] = useState(propCoins || 0);
   const [hourlyIncome, setHourlyIncome] = useState(propHourlyIncome || 0);
   const [activePopup, setActivePopup] = useState(false);
-  const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState(userAvatar || defaultAvatar);
 
-  // Получение данных пользователя с сервера
-  useEffect(() => {
-    if (loaded) {
-      fetchUserData();
-    }
-  }, [loaded]);
-
-  const fetchUserData = async () => {
-    const tg = window.Telegram.WebApp;
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      try {
-        const telegram_id = tg.initDataUnsafe.user.id;
-        const response = await userInitService.getUser(telegram_id);
-        if (response.data && response.data.coins) {
-          setCoins(response.data.coins);
-        }
-        const hourlyIncomeResponse = await userInitService.getHourlyIncome(
-          telegram_id
-        );
-        if (
-          hourlyIncomeResponse.data &&
-          hourlyIncomeResponse.data.hourly_income
-        ) {
-          setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
-        }
-      } catch (error) {
-        console.error("Error fetching user");
-      }
-    }
-  };
-  useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      setUsername(tg.initDataUnsafe.user.username || "Пользователь");
-    }
-  }, []);
-  useEffect(() => {
-    const initializeUser = async () => {
-      const isFirstLogin = !localStorage.getItem("firstLogin");
-      const tg = window.Telegram.WebApp;
-      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        try {
-          const telegram_id = tg.initDataUnsafe.user.id;
-          const username = tg.initDataUnsafe.user.username || "Пользователь";
-          const existingUser = await userInitService.getUser(telegram_id);
-          if (!existingUser.data || isFirstLogin) {
-            await userInitService.initUser(telegram_id, username);
-            localStorage.setItem("firstLogin", "true");
-          }
-          setUsername(username);
-        } catch (error) {
-          console.error("Error initializing user:", error);
-          setUsername("Пользователь");
-        }
-      }
-    };
-    initializeUser();
-  }, [defaultAvatar]);
   // Логика накопленного дохода
   const MAX_ACCUMULATED_INCOME = 1000000;
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
@@ -140,6 +82,9 @@ const MainSection = ({
   useEffect(() => {
     setCoins(propCoins);
   }, [propCoins]);
+  useEffect(() => {
+    setAvatar(userAvatar || defaultAvatar);
+  }, [userAvatar, defaultAvatar]);
   const handleOpenSettings = () => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
