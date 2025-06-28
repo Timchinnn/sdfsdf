@@ -50,7 +50,7 @@ const PeoplePage = () => {
     setUserDataLoaded(true);
     const timer = setTimeout(() => {
       setShowSpinner(false);
-    }, 3000);
+    }, 4000);
     return () => clearTimeout(timer);
   }, []);
   // Получение аватара пользователя
