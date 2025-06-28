@@ -23,9 +23,10 @@ const MainPage = () => {
   const [showSpinner, setShowSpinner] = useState(true);
   const [userDataLoaded, setUserDataLoaded] = useState(false);
   useEffect(() => {
+    setUserDataLoaded(true);
+
     const timer = setTimeout(() => {
       setShowSpinner(false);
-      setUserDataLoaded(true);
     }, 7000);
     return () => clearTimeout(timer);
   }, []);
