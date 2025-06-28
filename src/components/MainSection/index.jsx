@@ -26,7 +26,7 @@ const MainSection = ({
   const [activePopup, setActivePopup] = useState(false);
   const [username, setUsername] = useState("");
   const [showAchievement, setShowAchievement] = useState(false);
-  const [avatar, setAvatar] = useState("");
+  const [avatar, setAvatar] = useState(defaultAvatar);
   // Получение данных пользователя с сервера
   useEffect(() => {
     if (loaded) {
