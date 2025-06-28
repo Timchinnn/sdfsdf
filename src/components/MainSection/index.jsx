@@ -12,8 +12,8 @@ const MainSection = ({
   currentExp,
   expForNextLevel,
   loaded,
-  userAvatar, // Добавляем новый проп для аватара из Telegram
-  defaultAvatar, // Дефолтное изображение
+  userAvatar,
+  defaultAvatar,
   timeIcon,
   moneyIcon,
   cardImg,
@@ -26,14 +26,15 @@ const MainSection = ({
   const [hourlyIncome, setHourlyIncome] = useState(propHourlyIncome || 0);
   const [activePopup, setActivePopup] = useState(false);
   const [username, setUsername] = useState("");
-  const [showAchievement, setShowAchievement] = useState(false);
   const [avatar, setAvatar] = useState(userAvatar || defaultAvatar);
+
   // Получение данных пользователя с сервера
   useEffect(() => {
     if (loaded) {
       fetchUserData();
     }
   }, [loaded]);
+
   const fetchUserData = async () => {
     const tg = window.Telegram.WebApp;
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -53,15 +54,10 @@ const MainSection = ({
           setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching user");
       }
     }
   };
-  useEffect(() => {
-    setTimeout(() => {
-      setShowAchievement(true);
-    }, 0);
-  }, []);
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -76,27 +72,12 @@ const MainSection = ({
         try {
           const telegram_id = tg.initDataUnsafe.user.id;
           const username = tg.initDataUnsafe.user.username || "Пользователь";
-          // const userPhoto = tg.initDataUnsafe.user.photo_url;
           const existingUser = await userInitService.getUser(telegram_id);
           if (!existingUser.data || isFirstLogin) {
             await userInitService.initUser(telegram_id, username);
             localStorage.setItem("firstLogin", "true");
-            // if (userPhoto) {
-            //   await userInitService.updateUserPhoto(telegram_id, userPhoto);
-            //   setAvatar(userPhoto);
-            // }
           }
           setUsername(username);
-          const lastPhotoUpdate = existingUser.data?.last_photo_update;
-
-          // if (!lastPhotoUpdate || now - lastUpdate >= twoDaysInMs) {
-          //   if (userPhoto) {
-          //     await userInitService.updateUserPhoto(telegram_id, userPhoto);
-          //     setAvatar(userPhoto);
-          //   }
-          // } else {
-          //   setAvatar(existingUser.data.photo_url || defaultAvatar);
-          // }
         } catch (error) {
           console.error("Error initializing user:", error);
           setUsername("Пользователь");
@@ -176,18 +157,14 @@ const MainSection = ({
                 <div className="main-head__user">
                   {username} <span>/ Мэр</span>
                 </div>
-                <p className="main-head__level">
-                  Уровень города {showAchievement && level}
-                </p>
+                <p className="main-head__level">Уровень города {level}</p>
                 <div className="main-head__progress">
-                  {showAchievement && (
-                    <div
-                      className="main-head__progress-bar"
-                      style={{
-                        width: `${(currentExp / expForNextLevel) * 100}%`,
-                      }}
-                    ></div>
-                  )}
+                  <div
+                    className="main-head__progress-bar"
+                    style={{
+                      width: `${(currentExp / expForNextLevel) * 100}%`,
+                    }}
+                  ></div>
                 </div>
               </div>
             </div>
@@ -244,14 +221,12 @@ const MainSection = ({
                 <div className="main-params__icon f-center-center">
                   <img src={timeIcon} alt="time" />
                 </div>
-                {showAchievement && (
-                  <p className="main-params__title">
-                    {typeof hourlyIncome === "number"
-                      ? hourlyIncome.toFixed(2)
-                      : "0.00"}{" "}
-                    K/H
-                  </p>
-                )}
+                <p className="main-params__title">
+                  {typeof hourlyIncome === "number"
+                    ? hourlyIncome.toFixed(2)
+                    : "0.00"}{" "}
+                  K/H
+                </p>
               </div>
             </li>
             <li className="main-params__item">
@@ -259,9 +234,7 @@ const MainSection = ({
                 <div className="main-params__icon f-center-center">
                   <img src={moneyIcon} alt="money" />
                 </div>
-                {showAchievement && (
-                  <p className="main-params__title">{coins}</p>
-                )}
+                <p className="main-params__title">{coins}</p>
               </div>
             </li>
           </ul>
