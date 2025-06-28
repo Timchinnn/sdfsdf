@@ -53,6 +53,29 @@ const MainSection = ({
       }
     }
   };
+  const fetchUserData = async () => {
+    const tg = window.Telegram.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      try {
+        const telegram_id = tg.initDataUnsafe.user.id;
+        const response = await userInitService.getUser(telegram_id);
+        if (response.data && response.data.coins) {
+          setCoins(response.data.coins);
+        }
+        const hourlyIncomeResponse = await userInitService.getHourlyIncome(
+          telegram_id
+        );
+        if (
+          hourlyIncomeResponse.data &&
+          hourlyIncomeResponse.data.hourly_income
+        ) {
+          setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    }
+  };
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowAchievement(true);
