@@ -6,6 +6,14 @@ import MainSection from "components/MainSection";
 import MobileNav from "components/MobileNav";
 import ShopPopup from "components/ShopPopup";
 import MainCarousel from "components/MainCarousel";
+// Импортируем необходимые локальные изображения
+import Avatar from "assets/img/avatar.png";
+import TimeIcon from "assets/img/time-icon.svg";
+import MoneyIcon from "assets/img/money-icon.svg";
+// Определяем URL-ы для остальных изображений, которые используются в MainSection
+const cardImg = "https://image.tw1.ru/image/card.webp";
+const taskImg = "https://image.tw1.ru/image/vopros.webp";
+const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
 const MainPage = () => {
   const [activeShopPopup, setActiveShopPopup] = useState(false);
   const [showSpinner, setShowSpinner] = useState(true);
@@ -25,7 +33,7 @@ const MainPage = () => {
     }, 7000);
     return () => clearTimeout(timer);
   }, []);
-  // Получение монет и hourly income
+  // Получаем монеты и hourly income
   useEffect(() => {
     const fetchUserCoins = async () => {
       const tg = window.Telegram.WebApp;
@@ -52,7 +60,7 @@ const MainPage = () => {
     };
     fetchUserCoins();
   }, []);
-  // Перемещённая функция fetchUserLevel
+  // Получаем уровень пользователя и опыт прямо в MainPage
   useEffect(() => {
     if (userDataLoaded) {
       const fetchUserLevel = async () => {
@@ -73,10 +81,11 @@ const MainPage = () => {
     }
   }, [userDataLoaded]);
   const handleOpenPopup = (photo) => {
-    setTimeout(function () {
+    setTimeout(() => {
       document.documentElement.classList.add("fixed");
       setSelectedPhoto(photo);
       setActiveShopPopup(true);
+      // Обновляем hourly income и coins при открытии popup
       if (photo) {
         setHourlyIncome((prevIncome) => {
           const currentIncome = parseFloat(prevIncome) || 0;
@@ -110,11 +119,18 @@ const MainPage = () => {
                 currentExp={currentExp}
                 expForNextLevel={expForNextLevel}
                 loaded={userDataLoaded}
+                // Передаём все изображения в MainSection через пропсы
+                defaultAvatar={Avatar}
+                timeIcon={TimeIcon}
+                moneyIcon={MoneyIcon}
+                cardImg={cardImg}
+                taskImg={taskImg}
+                bonusImg={bonusImg}
               />
               <div className="main-game">
                 <MainCarousel
                   getActiveSlide={3}
-                  handleOpenPopup={(photo) => handleOpenPopup(photo)}
+                  handleOpenPopup={handleOpenPopup}
                   shouldUpdate={shouldUpdateCarousel}
                   onUpdateComplete={() => setShouldUpdateCarousel(false)}
                 />

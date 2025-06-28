@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "assets/img/avatar.png";
-import TimeIcon from "assets/img/time-icon.svg";
-import MoneyIcon from "assets/img/money-icon.svg";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { routeTasks } from "pages/TasksPage";
 import { routeSets } from "pages/SetsPage";
@@ -15,8 +12,13 @@ const MainSection = ({
   currentExp,
   expForNextLevel,
   loaded,
+  defaultAvatar, // переданный аватар
+  timeIcon, // переданный timeIcon
+  moneyIcon, // переданный moneyIcon
+  cardImg, // переданное изображение для "Сета"
+  taskImg, // переданное изображение для "Заданий"
+  bonusImg, // переданное изображение для "Бонуса"
 }) => {
-  // Данные Telegram
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
   const telegramId = tg ? tg.id : null;
   const [coins, setCoins] = useState(propCoins || 0);
@@ -24,8 +26,8 @@ const MainSection = ({
   const [activePopup, setActivePopup] = useState(false);
   const [username, setUsername] = useState("");
   const [showAchievement, setShowAchievement] = useState(false);
-  const [avatar, setAvatar] = useState(Avatar);
-  // Другие useEffect для получения данных пользователя и фото
+  const [avatar, setAvatar] = useState(defaultAvatar);
+  // Получение данных пользователя с сервера
   useEffect(() => {
     if (loaded) {
       fetchUserData();
@@ -65,7 +67,6 @@ const MainSection = ({
       setUsername(tg.initDataUnsafe.user.username || "Пользователь");
     }
   }, []);
-  // Пример инициализации пользователя, фото и пр.
   useEffect(() => {
     const initializeUser = async () => {
       const isFirstLogin = !localStorage.getItem("firstLogin");
@@ -95,7 +96,7 @@ const MainSection = ({
               setAvatar(userPhoto);
             }
           } else {
-            setAvatar(existingUser.data.photo_url || Avatar);
+            setAvatar(existingUser.data.photo_url || defaultAvatar);
           }
         } catch (error) {
           console.error("Error initializing user:", error);
@@ -104,8 +105,8 @@ const MainSection = ({
       }
     };
     initializeUser();
-  }, []);
-  // Остальная логика MainSection, например, начисление дохода
+  }, [defaultAvatar]);
+  // Логика накопленного дохода
   const MAX_ACCUMULATED_INCOME = 1000000;
   const [accumulatedIncome, setAccumulatedIncome] = useState(0);
   const [showIncomePopup, setShowIncomePopup] = useState(
@@ -214,11 +215,7 @@ const MainSection = ({
             <li className="main-menu__item">
               <NavLink to={routeSets()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img
-                    src="https://image.tw1.ru/image/card.webp"
-                    alt=""
-                    style={{ width: "58px" }}
-                  />
+                  <img src={cardImg} alt="Сет" style={{ width: "58px" }} />
                 </div>
                 <p className="main-menu__title">Сет</p>
               </NavLink>
@@ -226,11 +223,7 @@ const MainSection = ({
             <li className="main-menu__item">
               <NavLink to={routeTasks()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img
-                    src="https://image.tw1.ru/image/vopros.webp"
-                    alt=""
-                    style={{ width: "46px" }}
-                  />
+                  <img src={taskImg} alt="Задания" style={{ width: "46px" }} />
                 </div>
                 <p className="main-menu__title">Задания</p>
               </NavLink>
@@ -238,11 +231,7 @@ const MainSection = ({
             <li className="main-menu__item">
               <NavLink to={routeBonus()} className="main-menu__card">
                 <div className="main-menu__img f-center-center">
-                  <img
-                    src="https://image.tw1.ru/image/sunduk.webp"
-                    alt=""
-                    style={{ width: "47px" }}
-                  />
+                  <img src={bonusImg} alt="Бонус" style={{ width: "47px" }} />
                 </div>
                 <p className="main-menu__title">Бонус</p>
               </NavLink>
@@ -254,7 +243,7 @@ const MainSection = ({
             <li className="main-params__item">
               <div className="main-params__card f-center">
                 <div className="main-params__icon f-center-center">
-                  <img src={TimeIcon} alt="" />
+                  <img src={timeIcon} alt="time" />
                 </div>
                 {showAchievement && (
                   <p className="main-params__title">
@@ -269,7 +258,7 @@ const MainSection = ({
             <li className="main-params__item">
               <div className="main-params__card f-center">
                 <div className="main-params__icon f-center-center">
-                  <img src={MoneyIcon} alt="" />
+                  <img src={moneyIcon} alt="money" />
                 </div>
                 {showAchievement && (
                   <p className="main-params__title">{coins}</p>
@@ -318,14 +307,21 @@ const MainSection = ({
               }}
             >
               <img
-                src={MoneyIcon}
+                src={moneyIcon}
                 alt="coins"
                 className="income-popup__icon"
-                style={{ width: "24px", height: "24px" }}
+                style={{
+                  width: "24px",
+                  height: "24px",
+                }}
               />
               <p
                 className="income-popup__text"
-                style={{ fontSize: "18px", fontWeight: 500, color: "#333" }}
+                style={{
+                  fontSize: "18px",
+                  fontWeight: 500,
+                  color: "#333",
+                }}
               >
                 {Math.floor(accumulatedIncome)} / {MAX_ACCUMULATED_INCOME}
               </p>
