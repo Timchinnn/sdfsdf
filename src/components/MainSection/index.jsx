@@ -84,24 +84,24 @@ const MainSection = ({
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    const fetchUserLevel = async () => {
-      const tg = window.Telegram.WebApp;
-      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        try {
-          const telegram_id = tg.initDataUnsafe.user.id;
-          const response = await userInitService.getUserLevel(telegram_id);
-          setLevel(response.data.level);
-          setCurrentExp(response.data.currentExperience);
-          setExpForNextLevel(response.data.experienceToNextLevel);
-        } catch (error) {
-          console.error("Error fetching user level:", error);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUserLevel = async () => {
+  //     const tg = window.Telegram.WebApp;
+  //     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+  //       try {
+  //         const telegram_id = tg.initDataUnsafe.user.id;
+  //         const response = await userInitService.getUserLevel(telegram_id);
+  //         setLevel(response.data.level);
+  //         setCurrentExp(response.data.currentExperience);
+  //         setExpForNextLevel(response.data.experienceToNextLevel);
+  //       } catch (error) {
+  //         console.error("Error fetching user level:", error);
+  //       }
+  //     }
+  //   };
 
-    fetchUserLevel();
-  }, []);
+  //   fetchUserLevel();
+  // }, []);
   useEffect(() => {
     // Получаем данные пользователя из Telegram WebApp
     const tg = window.Telegram.WebApp;
@@ -214,32 +214,32 @@ const MainSection = ({
   useEffect(() => {
     setCoins(propCoins);
   }, [propCoins]);
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const tg = window.Telegram.WebApp;
-      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        try {
-          const telegram_id = tg.initDataUnsafe.user.id;
-          const response = await userInitService.getUser(telegram_id);
-          if (response.data && response.data.coins) {
-            setCoins(response.data.coins);
-          }
-          const hourlyIncomeResponse = await userInitService.getHourlyIncome(
-            telegram_id
-          );
-          if (
-            hourlyIncomeResponse.data &&
-            hourlyIncomeResponse.data.hourly_income
-          ) {
-            setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
-          }
-        } catch (error) {
-          console.error("Error fetching");
-        }
-      }
-    };
-    fetchUserData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const tg = window.Telegram.WebApp;
+  //     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+  //       try {
+  //         const telegram_id = tg.initDataUnsafe.user.id;
+  //         const response = await userInitService.getUser(telegram_id);
+  //         if (response.data && response.data.coins) {
+  //           setCoins(response.data.coins);
+  //         }
+  //         const hourlyIncomeResponse = await userInitService.getHourlyIncome(
+  //           telegram_id
+  //         );
+  //         if (
+  //           hourlyIncomeResponse.data &&
+  //           hourlyIncomeResponse.data.hourly_income
+  //         ) {
+  //           setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching");
+  //       }
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, []);
   const handleOpenSettings = () => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
