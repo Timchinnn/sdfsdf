@@ -24,7 +24,7 @@ const MainPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSpinner(false);
-    }, 7000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
   // const swiperRef = useRef(null);
