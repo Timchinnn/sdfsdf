@@ -21,10 +21,12 @@ import MainCarousel from "components/MainCarousel";
 const MainPage = () => {
   const [activeShopPopup, setActiveShopPopup] = useState(false);
   const [showSpinner, setShowSpinner] = useState(true);
+  const [userDataLoaded, setUserDataLoaded] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSpinner(false);
-    }, 3000);
+      setUserDataLoaded(true);
+    }, 7000);
     return () => clearTimeout(timer);
   }, []);
   // const swiperRef = useRef(null);
@@ -113,7 +115,11 @@ const MainPage = () => {
           {showSpinner && <Spinner loading={true} size={50} />}
           {!showSpinner && (
             <>
-              <MainSection hourlyIncome={hourlyIncome} coins={coins} />
+              <MainSection
+                hourlyIncome={hourlyIncome}
+                coins={coins}
+                loaded={userDataLoaded}
+              />
               <div className="main-game">
                 <MainCarousel
                   getActiveSlide={3}

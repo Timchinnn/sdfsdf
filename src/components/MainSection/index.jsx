@@ -15,7 +15,11 @@ import SettingsPopup from "components/SettingsPopup";
 import { userInitService } from "services/api";
 import axios from "axios";
 
-const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
+const MainSection = ({
+  hourlyIncome: propHourlyIncome,
+  coins: propCoins,
+  loaded,
+}) => {
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
   const telegramId = tg ? tg.id : null;
   const [coins, setCoins] = useState(propCoins || 0);
@@ -27,6 +31,28 @@ const MainSection = ({ hourlyIncome: propHourlyIncome, coins: propCoins }) => {
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
   const [showAchievement, setShowAchievement] = useState(false);
   const [avatar, setAvatar] = useState(Avatar); // Импортированное дефолтное изображение
+  useEffect(() => {
+    if (loaded) {
+      // Загрузка данных пользователя с сервера
+      fetchUserData();
+      // Загрузка данных об уровне пользователя
+      fetchUserLevel();
+    }
+  }, [loaded]);
+  const fetchUserLevel = async () => {
+    const tg = window.Telegram.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      try {
+        const telegram_id = tg.initDataUnsafe.user.id;
+        const response = await userInitService.getUserLevel(telegram_id);
+        setLevel(response.data.level);
+        setCurrentExp(response.data.currentExperience);
+        setExpForNextLevel(response.data.experienceToNextLevel);
+      } catch (error) {
+        console.error("Error fetching user level:", error);
+      }
+    }
+  };
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowAchievement(true);
