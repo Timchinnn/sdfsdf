@@ -38,7 +38,7 @@ const TasksPage = () => {
     setUserDataLoaded(true);
     const timer = setTimeout(() => {
       setShowSpinner(false);
-    }, 7000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
   // Получение аватара пользователя
