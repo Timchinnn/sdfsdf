@@ -233,7 +233,7 @@ const PeoplePage = () => {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
         setShowSpinner(false);
-      }, 300);
+      }, 1300);
       return () => clearTimeout(timer);
     }
   }, [
