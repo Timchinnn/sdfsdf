@@ -10,7 +10,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/scss";
 import InfoIcon from "assets/img/icons8-info-48.png";
 import QuestionMarkImg from "assets/img/question-mark.png";
-// import DefaultImg from "assets/img/default-img.png";
 import MobileNav from "components/MobileNav";
 import ShopPopup from "components/ShopPopup";
 import { useSelector } from "react-redux";
@@ -24,9 +23,9 @@ const cardImg = "https://image.tw1.ru/image/card.webp";
 const taskImg = "https://image.tw1.ru/image/vopros.webp";
 const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
 const PeoplePage = () => {
-  const [showInfo, setShowInfo] = useState({}); // const [policePhotos, setPolicePhotos] = useState([]);
+  const [showInfo, setShowInfo] = useState({});
   const [cardSets, setCardSets] = useState([]);
-  const [cardSetData, setCardSetData] = useState({}); // Store cards for each set
+  const [cardSetData, setCardSetData] = useState({});
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [activePopup, setActivePopup] = useState(false);
   const [userCards, setUserCards] = useState([]);
@@ -34,24 +33,40 @@ const PeoplePage = () => {
   const [responseTime, setResponseTime] = useState(null);
   const imageQuality = useSelector((state) => state.imageQuality);
 
-  // Добавляем состояния для спиннера и загрузки данных
-  const [showSpinner, setShowSpinner] = useState(true);
-  const [userDataLoaded, setUserDataLoaded] = useState(false);
-  const [userAvatar, setUserAvatar] = useState(null);
-
   // Состояния для данных пользователя
+  const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
-  // Инициализация загрузки данных
+
+  // Состояния для отслеживания загрузки данных
+  const [userPhotoLoaded, setUserPhotoLoaded] = useState(false);
+  const [userCoinsLoaded, setUserCoinsLoaded] = useState(false);
+  const [userLevelLoaded, setUserLevelLoaded] = useState(false);
+  const [cardSetsLoaded, setCardSetsLoaded] = useState(false);
+  const [userCardsLoaded, setUserCardsLoaded] = useState(false);
+  const [responseTimeLoaded, setResponseTimeLoaded] = useState(false);
+
+  // Состояние для спиннера
+  const [showSpinner, setShowSpinner] = useState(true);
+  // Измеряем время ответа сервера при загрузке компонента
   useEffect(() => {
-    setUserDataLoaded(true);
-    const timer = setTimeout(() => {
-      setShowSpinner(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    const measureResponseTime = async () => {
+      const startTime = performance.now();
+      try {
+        const response = await fetch("https://api.zoomayor.io/api/cards");
+        const endTime = performance.now();
+        const time = endTime - startTime;
+        setResponseTime(time);
+      } catch (error) {
+        console.error("Ошибка при измерении времени ответа:", error);
+      } finally {
+        setResponseTimeLoaded(true);
+      }
+    };
+    measureResponseTime();
   }, []);
   // Получение аватара пользователя
   useEffect(() => {
@@ -61,13 +76,11 @@ const PeoplePage = () => {
         try {
           const telegram_id = tg.initDataUnsafe.user.id;
           const userPhoto = tg.initDataUnsafe.user.photo_url;
-
           const existingUser = await userInitService.getUser(telegram_id);
           const lastPhotoUpdate = existingUser.data?.last_photo_update;
           const now = new Date();
           const lastUpdate = lastPhotoUpdate ? new Date(lastPhotoUpdate) : null;
           const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-
           if (
             !lastPhotoUpdate ||
             !lastUpdate ||
@@ -87,12 +100,11 @@ const PeoplePage = () => {
           setUserAvatar(null);
         }
       }
+      setUserPhotoLoaded(true);
     };
 
-    if (userDataLoaded) {
-      initializeUserPhoto();
-    }
-  }, [userDataLoaded]);
+    initializeUserPhoto();
+  }, []);
   // Получение монет и почасового дохода
   useEffect(() => {
     const fetchUserCoins = async () => {
@@ -117,47 +129,121 @@ const PeoplePage = () => {
           console.error("Ошибка при получении данных пользователя:", error);
         }
       }
+      setUserCoinsLoaded(true);
     };
     fetchUserCoins();
   }, []);
   // Получение уровня и опыта пользователя
   useEffect(() => {
-    if (userDataLoaded) {
-      const fetchUserLevel = async () => {
+    const fetchUserLevel = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const response = await userInitService.getUserLevel(telegram_id);
+          setLevel(response.data.level);
+          setCurrentExp(response.data.currentExperience);
+          setExpForNextLevel(response.data.experienceToNextLevel);
+        } catch (error) {
+          console.error("Ошибка при получении уровня пользователя:", error);
+        }
+      }
+      setUserLevelLoaded(true);
+    };
+    fetchUserLevel();
+  }, []);
+  // Получение наборов карт
+  useEffect(() => {
+    const fetchCardSets = async () => {
+      try {
+        const response = await cardSetsService.getAllCardSets();
+        // Фильтруем наборы, оставляя лишь те, в которых set_type === "citizen"
+        const citizenSets = response.data.filter(
+          (set) => set.set_type === "citizen"
+        );
+        setCardSets(citizenSets);
+        // Далее получаем карточки и награды для каждого набора
+        const setData = {};
         const tg = window.Telegram.WebApp;
-        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-          try {
-            const telegram_id = tg.initDataUnsafe.user.id;
-            const response = await userInitService.getUserLevel(telegram_id);
-            setLevel(response.data.level);
-            setCurrentExp(response.data.currentExperience);
-            setExpForNextLevel(response.data.experienceToNextLevel);
-          } catch (error) {
-            console.error("Ошибка при получении уровня пользователя:", error);
+        const telegram_id = tg.initDataUnsafe?.user?.id;
+        for (const set of citizenSets) {
+          const cardsResponse = await cardSetsService.getSetCards(set.id);
+          const rewardsResponse = await cardSetsService.getSetRewards(set.id);
+          set.rewards = rewardsResponse.data.rewards;
+          setData[set.id] = cardsResponse.data;
+          if (telegram_id) {
+            try {
+              await cardSetsService.checkSetCompletion(set.id, telegram_id);
+            } catch (completionError) {
+              if (
+                completionError.response &&
+                completionError.response.status === 400
+              ) {
+                console.error(
+                  "Набор не завершён:",
+                  completionError.response.data.error
+                );
+              } else {
+                console.error(
+                  "Ошибка при проверке завершения набора:",
+                  completionError
+                );
+              }
+            }
           }
         }
-      };
-      fetchUserLevel();
-    }
-  }, [userDataLoaded]);
-
-  // Измеряем время ответа сервера при загрузке компонента
-  useEffect(() => {
-    // Измеряем время ответа сервера при загрузке компонента
-    const measureResponseTime = async () => {
-      const startTime = performance.now();
-      try {
-        const response = await fetch("https://api.zoomayor.io/api/cards");
-        const endTime = performance.now();
-        const time = endTime - startTime;
-        setResponseTime(time);
+        setCardSetData(setData);
       } catch (error) {
-        console.error("Ошибка при измерении времени ответа:", error);
+        console.error("Error fetching card sets:", error);
       }
+      setCardSetsLoaded(true);
     };
-    measureResponseTime();
+    fetchCardSets();
   }, []);
-
+  // Получение карт пользователя
+  useEffect(() => {
+    const fetchUserCards = async () => {
+      try {
+        const tg = window.Telegram.WebApp;
+        const telegram_id = tg.initDataUnsafe?.user?.id;
+        if (!telegram_id) {
+          console.error("Telegram ID not found");
+          setUserCardsLoaded(true);
+          return;
+        }
+        const response = await userCardsService.getUserCards(telegram_id);
+        setUserCards(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+      setUserCardsLoaded(true);
+    };
+    fetchUserCards();
+  }, []);
+  // Проверка загрузки всех данных и отключение спиннера
+  useEffect(() => {
+    if (
+      userPhotoLoaded &&
+      userCoinsLoaded &&
+      userLevelLoaded &&
+      cardSetsLoaded &&
+      userCardsLoaded &&
+      responseTimeLoaded
+    ) {
+      // Добавляем небольшую задержку для плавности
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [
+    userPhotoLoaded,
+    userCoinsLoaded,
+    userLevelLoaded,
+    cardSetsLoaded,
+    userCardsLoaded,
+    responseTimeLoaded,
+  ]);
   // Добавить функцию для определения URL изображения
   const getImageUrl = (imageUrl) => {
     if (!imageUrl || imageUrl === QuestionMarkImg) return imageUrl;
@@ -187,109 +273,25 @@ const PeoplePage = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const fetchCardSets = async () => {
-      try {
-        const response = await cardSetsService.getAllCardSets();
-        // Фильтруем наборы, оставляя лишь те, в которых set_type === "citizen"
-        const citizenSets = response.data.filter(
-          (set) => set.set_type === "citizen"
-        );
-        setCardSets(citizenSets);
-        // Далее получаем карточки и награды для каждого набора
-        const setData = {};
-        const tg = window.Telegram.WebApp;
-        const telegram_id = tg.initDataUnsafe?.user?.id;
-        for (const set of citizenSets) {
-          const cardsResponse = await cardSetsService.getSetCards(set.id);
-          const rewardsResponse = await cardSetsService.getSetRewards(set.id);
-          set.rewards = rewardsResponse.data.rewards;
-          setData[set.id] = cardsResponse.data;
-          if (telegram_id) {
-            try {
-              const completionResponse =
-                await cardSetsService.checkSetCompletion(set.id, telegram_id);
-            } catch (completionError) {
-              if (
-                completionError.response &&
-                completionError.response.status === 400
-              ) {
-                console.error(
-                  "Набор не завершён:",
-                  completionError.response.data.error
-                );
-              } else {
-                console.error(
-                  "Ошибка при проверке завершения набора:",
-                  completionError
-                );
-              }
-            }
-          }
-        }
-        setCardSetData(setData);
-      } catch (error) {
-        console.error("Error fetching card sets:", error);
-      }
-    };
-    fetchCardSets();
-  }, []);
-
-  // Получение карт пользователя
-  useEffect(() => {
-    const fetchUserCards = async () => {
-      try {
-        const tg = window.Telegram.WebApp;
-        const telegram_id = tg.initDataUnsafe?.user?.id;
-        if (!telegram_id) {
-          console.error("Telegram ID not found");
-          return;
-        }
-        const response = await userCardsService.getUserCards(telegram_id);
-        setUserCards(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchUserCards();
-  }, []);
-
-  // Получение фотографий полиции
-  // useEffect(() => {
-  //   const fetchPhotos = async () => {
-  //     try {
-  //       const policeData = await peopleService.getPolicePhotos();
-  //       setPolicePhotos(policeData);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchPhotos();
-  // }, []);
-
   const handleAccordionClick = (id) => {
     setOpenAccordion(openAccordion === id ? null : id);
   };
-
   const handleOpenPopup = (photo) => {
     document.documentElement.classList.add("fixed");
     setSelectedPhoto({
       ...photo,
       image:
         userCards && userCards.some((card) => card.id === photo.id)
-          ? getImageUrl(photo.image) // Use getImageUrl helper for quality selection
+          ? getImageUrl(photo.image)
           : QuestionMarkImg,
     });
     setActivePopup(true);
   };
-
   const handleClosePopup = () => {
     document.documentElement.classList.remove("fixed");
     setActivePopup(false);
-    setShowInfo({}); // Reset all info popups
+    setShowInfo({});
   };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       const popup = document.querySelector(".info-popup");
@@ -297,6 +299,7 @@ const PeoplePage = () => {
       if (
         popup &&
         !popup.contains(event.target) &&
+        infoIcon &&
         !infoIcon.contains(event.target)
       ) {
         setShowInfo({});
@@ -305,13 +308,13 @@ const PeoplePage = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   return (
     <section className="city">
       <div className="container">
         <div className="city-inner">
-          {showSpinner && <Spinner loading={true} size={50} />}
-          {!showSpinner && (
+          {showSpinner ? (
+            <Spinner loading={true} size={50} />
+          ) : (
             <>
               <MainSection
                 hourlyIncome={hourlyIncome}
@@ -319,7 +322,7 @@ const PeoplePage = () => {
                 level={level}
                 currentExp={currentExp}
                 expForNextLevel={expForNextLevel}
-                loaded={userDataLoaded}
+                loaded={true}
                 userAvatar={userAvatar}
                 defaultAvatar={Avatar}
                 timeIcon={TimeIcon}
@@ -384,7 +387,7 @@ const PeoplePage = () => {
                                 ))}
                             <button
                               className="info-popup__close"
-                              onClick={() => setShowInfo(false)}
+                              onClick={() => setShowInfo({})}
                             >
                               <p>✕</p>
                             </button>
