@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { userInitService } from "services/api";
+import Spinner from "components/Spinner";
 
 import routeMain from "./routes";
 import MainSection from "components/MainSection";
@@ -19,7 +20,13 @@ import MainCarousel from "components/MainCarousel";
 
 const MainPage = () => {
   const [activeShopPopup, setActiveShopPopup] = useState(false);
-
+  const [showSpinner, setShowSpinner] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSpinner(false);
+    }, 7000);
+    return () => clearTimeout(timer);
+  }, []);
   // const swiperRef = useRef(null);
 
   // slideChange
@@ -103,15 +110,20 @@ const MainPage = () => {
     <section className="main">
       <div className="container">
         <div className="friends-inner">
-          <MainSection hourlyIncome={hourlyIncome} coins={coins} />
-          <div className="main-game">
-            <MainCarousel
-              getActiveSlide={3}
-              handleOpenPopup={(photo) => handleOpenPopup(photo)}
-              shouldUpdate={shouldUpdateCarousel}
-              onUpdateComplete={() => setShouldUpdateCarousel(false)}
-            />
-          </div>
+          {showSpinner && <Spinner loading={true} size={50} />}
+          {!showSpinner && (
+            <>
+              <MainSection hourlyIncome={hourlyIncome} coins={coins} />
+              <div className="main-game">
+                <MainCarousel
+                  getActiveSlide={3}
+                  handleOpenPopup={(photo) => handleOpenPopup(photo)}
+                  shouldUpdate={shouldUpdateCarousel}
+                  onUpdateComplete={() => setShouldUpdateCarousel(false)}
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
       <ShopPopup
