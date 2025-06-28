@@ -60,10 +60,10 @@ const SetsPage = () => {
           }
 
           // Данные загружены
-          setUserDataLoaded(true);
 
           // Скрываем спиннер после небольшой задержки
           setTimeout(() => {
+            setUserDataLoaded(true);
             setShowSpinner(false);
           }, 1000);
         } catch (error) {
