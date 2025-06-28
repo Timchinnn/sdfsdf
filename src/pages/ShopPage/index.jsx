@@ -48,25 +48,34 @@ const ShopPage = () => {
   const [filteredItems, setFilteredItems] = useState([]);
   const imageQuality = useSelector((state) => state.imageQuality);
   const [responseTime, setResponseTime] = useState(null);
-
-  // Добавляем состояния для спиннера и загрузки данных
-  const [showSpinner, setShowSpinner] = useState(true);
-  const [userDataLoaded, setUserDataLoaded] = useState(false);
-  const [userAvatar, setUserAvatar] = useState(null);
-
   // Состояния для данных пользователя
+  const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
-  // Инициализация загрузки данных
+  const [username, setUsername] = useState("Пользователь");
+  // Состояния для отслеживания загрузки данных
+  const [userPhotoLoaded, setUserPhotoLoaded] = useState(false);
+  const [userCoinsLoaded, setUserCoinsLoaded] = useState(false);
+  const [userLevelLoaded, setUserLevelLoaded] = useState(false);
+  const [shopCardsLoaded, setShopCardsLoaded] = useState(false);
+  const [shopSetsLoaded, setShopSetsLoaded] = useState(false);
+  const [shirtsLoaded, setShirtsLoaded] = useState(false);
+  const [responseTimeLoaded, setResponseTimeLoaded] = useState(false);
+  const [usernameLoaded, setUsernameLoaded] = useState(false);
+  const [filteredItemsLoaded, setFilteredItemsLoaded] = useState(false);
+  // Состояние для спиннера
+  const [showSpinner, setShowSpinner] = useState(true);
+  // Получаем username из Telegram API
   useEffect(() => {
-    setUserDataLoaded(true);
-    const timer = setTimeout(() => {
-      setShowSpinner(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    const tg = window.Telegram.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const tgUsername = tg.initDataUnsafe.user.username || "Пользователь";
+      setUsername(tgUsername);
+    }
+    setUsernameLoaded(true);
   }, []);
   // Получение аватара пользователя
   useEffect(() => {
@@ -76,13 +85,11 @@ const ShopPage = () => {
         try {
           const telegram_id = tg.initDataUnsafe.user.id;
           const userPhoto = tg.initDataUnsafe.user.photo_url;
-
           const existingUser = await userInitService.getUser(telegram_id);
           const lastPhotoUpdate = existingUser.data?.last_photo_update;
           const now = new Date();
           const lastUpdate = lastPhotoUpdate ? new Date(lastPhotoUpdate) : null;
           const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-
           if (
             !lastPhotoUpdate ||
             !lastUpdate ||
@@ -102,12 +109,10 @@ const ShopPage = () => {
           setUserAvatar(null);
         }
       }
+      setUserPhotoLoaded(true);
     };
-
-    if (userDataLoaded) {
-      initializeUserPhoto();
-    }
-  }, [userDataLoaded]);
+    initializeUserPhoto();
+  }, []);
   // Получение монет и почасового дохода
   useEffect(() => {
     const fetchUserCoins = async () => {
@@ -132,33 +137,31 @@ const ShopPage = () => {
           console.error("Ошибка при получении данных пользователя:", error);
         }
       }
+      setUserCoinsLoaded(true);
     };
     fetchUserCoins();
   }, []);
   // Получение уровня и опыта пользователя
   useEffect(() => {
-    if (userDataLoaded) {
-      const fetchUserLevel = async () => {
-        const tg = window.Telegram.WebApp;
-        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-          try {
-            const telegram_id = tg.initDataUnsafe.user.id;
-            const response = await userInitService.getUserLevel(telegram_id);
-            setLevel(response.data.level);
-            setCurrentExp(response.data.currentExperience);
-            setExpForNextLevel(response.data.experienceToNextLevel);
-          } catch (error) {
-            console.error("Ошибка при получении уровня пользователя:", error);
-          }
+    const fetchUserLevel = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const response = await userInitService.getUserLevel(telegram_id);
+          setLevel(response.data.level);
+          setCurrentExp(response.data.currentExperience);
+          setExpForNextLevel(response.data.experienceToNextLevel);
+        } catch (error) {
+          console.error("Ошибка при получении уровня пользователя:", error);
         }
-      };
-      fetchUserLevel();
-    }
-  }, [userDataLoaded]);
-
+      }
+      setUserLevelLoaded(true);
+    };
+    fetchUserLevel();
+  }, []);
   // Измеряем время ответа сервера при загрузке компонента
   useEffect(() => {
-    // Измеряем время ответа сервера при загрузке компонента
     const measureResponseTime = async () => {
       const startTime = performance.now();
       try {
@@ -169,10 +172,125 @@ const ShopPage = () => {
       } catch (error) {
         console.error("Ошибка при измерении времени ответа:", error);
       }
+      setResponseTimeLoaded(true);
     };
     measureResponseTime();
   }, []);
-
+  // Загрузка карт магазина
+  useEffect(() => {
+    const fetchShopCards = async () => {
+      try {
+        const response = await shopCardService.getAllShopCards();
+        setShopCards(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке карт магазина:", error);
+      }
+      setShopCardsLoaded(true);
+    };
+    fetchShopCards();
+  }, []);
+  // Загрузка рубашек
+  useEffect(() => {
+    const fetchShirts = async () => {
+      try {
+        const response = await axios.get("/shirts");
+        setShirts(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке рубашек:", error);
+      }
+      setShirtsLoaded(true);
+    };
+    fetchShirts();
+  }, []);
+  // Загрузка наборов магазина
+  useEffect(() => {
+    const fetchShopSets = async () => {
+      try {
+        const response = await shopSetService.getAllShopSets();
+        setShopSets(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке наборов:", error);
+      }
+      setShopSetsLoaded(true);
+    };
+    fetchShopSets();
+  }, []);
+  // Фильтрация элементов после загрузки всех данных
+  useEffect(() => {
+    if (shopCardsLoaded && shopSetsLoaded && shirtsLoaded) {
+      const fetchPhotos = async () => {
+        try {
+          // Fetch all items
+          const allItems = [
+            ...shopCards.map((card) => ({
+              id: card.card_id,
+              title: card.name,
+              price: card.price,
+              type: "cards",
+              image: card.image_url || DefaultImg,
+            })),
+            ...shopSets.map((set) => ({
+              id: set.id,
+              title: set.name,
+              price: set.price,
+              type: "sets",
+              image: set.image_url || DefaultImg,
+            })),
+            ...shirts.map((shirt) => ({
+              id: shirt.id,
+              title: shirt.name,
+              price: shirt.price,
+              type: "shirts",
+              image: shirt.image_url || DefaultImg,
+            })),
+          ];
+          setFilteredItems(allItems); // Set all items by default
+          setFilteredItemsLoaded(true);
+        } catch (error) {
+          console.error(error);
+          setFilteredItemsLoaded(true);
+        }
+      };
+      fetchPhotos();
+    }
+  }, [
+    shopSets,
+    shirts,
+    shopCards,
+    shopCardsLoaded,
+    shopSetsLoaded,
+    shirtsLoaded,
+  ]);
+  // Проверка загрузки всех данных и отключение спиннера
+  useEffect(() => {
+    if (
+      userPhotoLoaded &&
+      userCoinsLoaded &&
+      userLevelLoaded &&
+      shopCardsLoaded &&
+      shopSetsLoaded &&
+      shirtsLoaded &&
+      responseTimeLoaded &&
+      usernameLoaded &&
+      filteredItemsLoaded
+    ) {
+      // Добавляем небольшую задержку для плавности
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [
+    userPhotoLoaded,
+    userCoinsLoaded,
+    userLevelLoaded,
+    shopCardsLoaded,
+    shopSetsLoaded,
+    shirtsLoaded,
+    responseTimeLoaded,
+    usernameLoaded,
+    filteredItemsLoaded,
+  ]);
   // Добавить функцию getImageUrl
   const getImageUrl = (imageUrl) => {
     if (!imageUrl || typeof imageUrl !== "string") return imageUrl;
@@ -209,94 +327,6 @@ const ShopPage = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const fetchShopCards = async () => {
-      try {
-        const response = await shopCardService.getAllShopCards();
-        setShopCards(response.data);
-      } catch (error) {
-        console.error("Ошибка при загрузке карт магазина:", error);
-      }
-    };
-    fetchShopCards();
-  }, []);
-
-  // const refreshPurchasedShirts = async () => {
-  //        console.log("Обновление купленных рубашек..."); // Добавьте этот лог
-  //        try {
-  //            const tg = window.Telegram.WebApp;
-  //            if (tg?.initDataUnsafe?.user?.id) {
-  //                const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/shirts`);
-  //                if (response.data && response.data.shirts) {
-  //                    setShirts(response.data.shirts); // Обновляем состояние рубашек
-  //                    console.log("Купленные рубашки обновлены:", response.data.shirts); // Лог для проверки
-  //                }
-  //            }
-  //        } catch (error) {
-  //            console.error("Ошибка при обновлении купленных рубашек:", error);
-  //        }
-  //    };
-
-  useEffect(() => {
-    const fetchShirts = async () => {
-      try {
-        const response = await axios.get("/shirts");
-        setShirts(response.data);
-      } catch (error) {
-        console.error("Ошибка при загрузке рубашек:", error);
-      }
-    };
-    fetchShirts();
-  }, []);
-
-  useEffect(() => {
-    const fetchShopSets = async () => {
-      try {
-        const response = await shopSetService.getAllShopSets();
-        setShopSets(response.data);
-      } catch (error) {
-        console.error("Ошибка при загрузке наборов:", error);
-      }
-    };
-    fetchShopSets();
-  }, []);
-
-  useEffect(() => {
-    const fetchPhotos = async () => {
-      try {
-        // Fetch all items
-        const allItems = [
-          ...shopCards.map((card) => ({
-            id: card.card_id,
-            title: card.name,
-            price: card.price,
-            type: "cards",
-            image: card.image_url || DefaultImg,
-          })),
-          ...shopSets.map((set) => ({
-            id: set.id,
-            title: set.name,
-            price: set.price,
-            type: "sets",
-            image: set.image_url || DefaultImg,
-          })),
-          ...shirts.map((shirt) => ({
-            id: shirt.id,
-            title: shirt.name,
-            price: shirt.price,
-            type: "shirts",
-            image: shirt.image_url || DefaultImg,
-          })),
-        ];
-        setFilteredItems(allItems); // Set all items by defaultа
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchPhotos();
-  }, [shopSets, shirts, shopCards]);
-
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
@@ -330,7 +360,6 @@ const ShopPage = () => {
     );
     setFilteredItems(filtered);
   };
-
   const handleOpenPopup = (item) => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
@@ -340,22 +369,18 @@ const ShopPage = () => {
       image: getImageUrl(item.image),
     });
   };
-
   const handleClosePopup = () => {
     document.documentElement.classList.remove("fixed");
     setActivePopup(false);
   };
-
   const handleOpenPopupCarousel = () => {
     document.documentElement.classList.add("fixed");
     setActivePopupCarousel(true);
   };
-
   const handleClosePopupCarousel = () => {
     document.documentElement.classList.remove("fixed");
     setActivePopupCarousel(false);
   };
-
   const handleBuySet = async (setId) => {
     try {
       const response = await axios.get(`/shop-sets/${setId}`);
@@ -378,20 +403,16 @@ const ShopPage = () => {
       console.error("Ошибка при получении информации о наборе:", error);
     }
   };
-
   // Фильтрация по цене и типу
   const [priceFrom, setPriceFrom] = useState("");
   const [priceTo, setPriceTo] = useState("");
   const [filterType, setFilterType] = useState("all");
-
   const handlePriceFromChange = (e) => {
     setPriceFrom(e.target.value);
   };
-
   const handlePriceToChange = (e) => {
     setPriceTo(e.target.value);
   };
-
   const handleFilter = () => {
     // Получаем все элементы
     const allItems = [
@@ -428,17 +449,14 @@ const ShopPage = () => {
     setFilteredItems(filtered);
     setActivePopupFilter(false);
   };
-
   const handleReset = () => {
     setPriceFrom("");
     setPriceTo("");
     setFilteredItems(filteredItems);
     setActivePopupFilter(false);
   };
-
   // Ref и обработчик кликов вне модального окна фильтра
   const filterRef = useRef(null);
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (filterRef.current && !filterRef.current.contains(event.target)) {
@@ -451,18 +469,17 @@ const ShopPage = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
   const handleOpenFilter = () => {
     document.documentElement.classList.add("fixed");
     setActivePopupFilter(true);
   };
-
   return (
     <section className="shop">
       <div className="container">
         <div className="shop-inner">
-          {showSpinner && <Spinner loading={true} size={50} />}
-          {!showSpinner && (
+          {showSpinner ? (
+            <Spinner loading={true} size={50} />
+          ) : (
             <>
               <MainSection
                 hourlyIncome={hourlyIncome}
@@ -470,7 +487,7 @@ const ShopPage = () => {
                 level={level}
                 currentExp={currentExp}
                 expForNextLevel={expForNextLevel}
-                loaded={userDataLoaded}
+                loaded={true}
                 userAvatar={userAvatar}
                 defaultAvatar={Avatar}
                 timeIcon={TimeIcon}
@@ -478,6 +495,7 @@ const ShopPage = () => {
                 cardImg={cardImg}
                 taskImg={taskImg}
                 bonusImg={bonusImg}
+                username={username}
               />
               <div className="shop-block">
                 <h2 className="section-content__title shop-block__title">
