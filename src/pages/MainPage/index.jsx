@@ -26,6 +26,46 @@ const MainPage = () => {
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
+  const [userAvatar, setUserAvatar] = useState(null); // Изначально null
+  useEffect(() => {
+    const initializeUserPhoto = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const userPhoto = tg.initDataUnsafe.user.photo_url;
+
+          const existingUser = await userInitService.getUser(telegram_id);
+          const lastPhotoUpdate = existingUser.data?.last_photo_update;
+          const now = new Date();
+          const lastUpdate = lastPhotoUpdate ? new Date(lastPhotoUpdate) : null;
+          const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
+
+          if (
+            !lastPhotoUpdate ||
+            !lastUpdate ||
+            now - lastUpdate >= twoDaysInMs
+          ) {
+            if (userPhoto) {
+              await userInitService.updateUserPhoto(telegram_id, userPhoto);
+              setUserAvatar(userPhoto);
+            } else {
+              setUserAvatar(null); // Если фото нет, оставляем null
+            }
+          } else {
+            setUserAvatar(existingUser.data.photo_url || null);
+          }
+        } catch (error) {
+          console.error("Error initializing user photo:", error);
+          setUserAvatar(null);
+        }
+      }
+    };
+
+    if (userDataLoaded) {
+      initializeUserPhoto();
+    }
+  }, [userDataLoaded]);
   useEffect(() => {
     setUserDataLoaded(true);
     const timer = setTimeout(() => {
@@ -119,8 +159,8 @@ const MainPage = () => {
                 currentExp={currentExp}
                 expForNextLevel={expForNextLevel}
                 loaded={userDataLoaded}
-                // Передаём все изображения в MainSection через пропсы
-                defaultAvatar={Avatar}
+                userAvatar={userAvatar} // Передаем актуальный аватар пользователя (может быть null)
+                defaultAvatar={Avatar} // Передаем дефолтное изображение
                 timeIcon={TimeIcon}
                 moneyIcon={MoneyIcon}
                 cardImg={cardImg}

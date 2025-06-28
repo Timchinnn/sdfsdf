@@ -12,12 +12,13 @@ const MainSection = ({
   currentExp,
   expForNextLevel,
   loaded,
-  defaultAvatar, // переданный аватар
-  timeIcon, // переданный timeIcon
-  moneyIcon, // переданный moneyIcon
-  cardImg, // переданное изображение для "Сета"
-  taskImg, // переданное изображение для "Заданий"
-  bonusImg, // переданное изображение для "Бонуса"
+  userAvatar, // Добавляем новый проп для аватара из Telegram
+  defaultAvatar, // Дефолтное изображение
+  timeIcon,
+  moneyIcon,
+  cardImg,
+  taskImg,
+  bonusImg,
 }) => {
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
   const telegramId = tg ? tg.id : null;
@@ -26,7 +27,7 @@ const MainSection = ({
   const [activePopup, setActivePopup] = useState(false);
   const [username, setUsername] = useState("");
   const [showAchievement, setShowAchievement] = useState(false);
-  const [avatar, setAvatar] = useState(defaultAvatar);
+  const [avatar, setAvatar] = useState(userAvatar || defaultAvatar);
   // Получение данных пользователя с сервера
   useEffect(() => {
     if (loaded) {
@@ -75,29 +76,27 @@ const MainSection = ({
         try {
           const telegram_id = tg.initDataUnsafe.user.id;
           const username = tg.initDataUnsafe.user.username || "Пользователь";
-          const userPhoto = tg.initDataUnsafe.user.photo_url;
+          // const userPhoto = tg.initDataUnsafe.user.photo_url;
           const existingUser = await userInitService.getUser(telegram_id);
           if (!existingUser.data || isFirstLogin) {
             await userInitService.initUser(telegram_id, username);
             localStorage.setItem("firstLogin", "true");
-            if (userPhoto) {
-              await userInitService.updateUserPhoto(telegram_id, userPhoto);
-              setAvatar(userPhoto);
-            }
+            // if (userPhoto) {
+            //   await userInitService.updateUserPhoto(telegram_id, userPhoto);
+            //   setAvatar(userPhoto);
+            // }
           }
           setUsername(username);
           const lastPhotoUpdate = existingUser.data?.last_photo_update;
-          const now = new Date();
-          const lastUpdate = new Date(lastPhotoUpdate);
-          const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-          if (!lastPhotoUpdate || now - lastUpdate >= twoDaysInMs) {
-            if (userPhoto) {
-              await userInitService.updateUserPhoto(telegram_id, userPhoto);
-              setAvatar(userPhoto);
-            }
-          } else {
-            setAvatar(existingUser.data.photo_url || defaultAvatar);
-          }
+
+          // if (!lastPhotoUpdate || now - lastUpdate >= twoDaysInMs) {
+          //   if (userPhoto) {
+          //     await userInitService.updateUserPhoto(telegram_id, userPhoto);
+          //     setAvatar(userPhoto);
+          //   }
+          // } else {
+          //   setAvatar(existingUser.data.photo_url || defaultAvatar);
+          // }
         } catch (error) {
           console.error("Error initializing user:", error);
           setUsername("Пользователь");
