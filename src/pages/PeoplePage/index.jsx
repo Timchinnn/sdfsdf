@@ -10,6 +10,7 @@ import QuestionMarkImg from "assets/img/question-mark.png";
 // import DefaultImg from "assets/img/default-img.png";
 import MobileNav from "components/MobileNav";
 import ShopPopup from "components/ShopPopup";
+import { useSelector } from "react-redux";
 
 const PeoplePage = () => {
   const [showInfo, setShowInfo] = useState({}); // const [policePhotos, setPolicePhotos] = useState([]);
@@ -20,6 +21,56 @@ const PeoplePage = () => {
   const [activePopup, setActivePopup] = useState(false);
   const [userCards, setUserCards] = useState([]);
   const [openAccordion, setOpenAccordion] = useState(null);
+  const [responseTime, setResponseTime] = useState(null);
+  const imageQuality = useSelector((state) => state.imageQuality);
+
+  // Добавить после других useEffect
+  useEffect(() => {
+    // Измеряем время ответа сервера при загрузке компонента
+    const measureResponseTime = async () => {
+      const startTime = performance.now();
+      try {
+        const response = await fetch("https://api.zoomayor.io/api/cards");
+        const endTime = performance.now();
+        const time = endTime - startTime;
+        setResponseTime(time);
+      } catch (error) {
+        console.error("Ошибка при измерении времени ответа:", error);
+      }
+    };
+    measureResponseTime();
+  }, []);
+
+  // Добавить функцию для определения URL изображения
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl || imageUrl === QuestionMarkImg) return imageUrl;
+
+    // Проверяем настройки качества изображений
+    if (imageQuality === "high") {
+      // Всегда высокое качество
+      return `https://api.zoomayor.io${imageUrl}`;
+    } else if (imageQuality === "low") {
+      // Всегда низкое качество
+      const hasExtension = /\.[^.]+$/.test(imageUrl);
+      return `https://api.zoomayor.io${
+        hasExtension
+          ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
+          : imageUrl + "bad.webp"
+      }`;
+    } else {
+      // Автоматический режим - зависит от времени ответа
+      if (responseTime > 300) {
+        const hasExtension = /\.[^.]+$/.test(imageUrl);
+        return `https://api.zoomayor.io${
+          hasExtension
+            ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
+            : imageUrl + "bad.webp"
+        }`;
+      } else {
+        return `https://api.zoomayor.io${imageUrl}`;
+      }
+    }
+  };
   useEffect(() => {
     const fetchCardSets = async () => {
       try {
@@ -101,13 +152,14 @@ const PeoplePage = () => {
   const handleAccordionClick = (id) => {
     setOpenAccordion(openAccordion === id ? null : id);
   };
+
   const handleOpenPopup = (photo) => {
     document.documentElement.classList.add("fixed");
     setSelectedPhoto({
       ...photo,
       image:
         userCards && userCards.some((card) => card.id === photo.id)
-          ? photo.image
+          ? getImageUrl(photo.image) // Use getImageUrl helper for quality selection
           : QuestionMarkImg,
     });
     setActivePopup(true);
@@ -250,7 +302,7 @@ const PeoplePage = () => {
                                     userCards.some(
                                       (userCard) => userCard.id === card.id
                                     )
-                                      ? `https://api.zoomayor.io${card.image}`
+                                      ? getImageUrl(card.image)
                                       : QuestionMarkImg
                                   }
                                   alt={card.title}

@@ -7,9 +7,16 @@ export const setCardBack = (style) => ({
   payload: style,
 });
 export const setLanguage = (language) => {
-  localStorage.setItem("language", language); // Сохраняем при изменении
+  localStorage.setItem("language", language); // Сохраняем при измененииыв
   return {
     type: "SET_LANGUAGE",
     payload: language,
+  };
+};
+export const setImageQuality = (quality) => {
+  // Убираем сохранение в localStorage
+  return {
+    type: "SET_IMAGE_QUALITY",
+    payload: quality,
   };
 };

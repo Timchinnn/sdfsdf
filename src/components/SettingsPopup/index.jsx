@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 // import DefaultImg from "assets/img/default-card.png";
 // import Style1CardBack from "assets/img/card1.png";
 // import Style2CardBack from "assets/img/card2.png";
-import { setTheme, setCardBack, setLanguage } from "../../redux/actions";
+import {
+  setTheme,
+  setCardBack,
+  setLanguage,
+  setImageQuality,
+} from "../../redux/actions";
 import { routeAdmin } from "pages/AdminPanel";
 import { NavLink } from "react-router-dom";
 import { cardBackService } from "services/api";
@@ -13,6 +18,8 @@ import Spinner from "../Spinner";
 // import { setTheme } from "../../redux/actions";
 
 const SettingsPopup = ({ setActivePopup, activePopup }) => {
+  const imageQuality = useSelector((state) => state.imageQuality);
+
   const dispatch = useDispatch();
   const [purchasedShirts, setPurchasedShirts] = useState([]);
 
@@ -45,6 +52,22 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     setSelectLang(savedLanguage === "en" ? 2 : 1);
     handleLanguageChange(savedLanguage); // Добавляем вызов для загрузки переводов
   }, [dispatch]);
+  const fetchPurchasedShirts = async () => {
+    try {
+      const tg = window.Telegram.WebApp;
+      if (tg?.initDataUnsafe?.user?.id) {
+        const response = await axios.get(
+          `/user/${tg.initDataUnsafe.user.id}/shirts`
+        );
+        if (response.data && response.data.shirts) {
+          console.log(response.data.shirts);
+          setPurchasedShirts(response.data.shirts);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching purchased shirts:", error);
+    }
+  };
   useEffect(() => {
     const fetchPurchasedShirts = async () => {
       try {
@@ -54,6 +77,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
             `/user/${tg.initDataUnsafe.user.id}/shirts`
           );
           if (response.data && response.data.shirts) {
+            console.log(response.data.shirts);
             setPurchasedShirts(response.data.shirts);
           }
         }
@@ -198,7 +222,11 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   //     document.body.classList.add("dark");
   //   }
   const tg = window.Telegram.WebApp;
-
+  const handleSelectClick = () => {
+    // Вызываем функцию для получения купленных рубашек при клике
+    fetchPurchasedShirts();
+    setModalStep(4); // Переход на шаг 4
+  };
   return (
     <div
       ref={settingsPopupRef}
@@ -251,11 +279,12 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 <p className="modal-settings__title">Рубашка карты</p>
                 <div
                   className="modal-settings__select"
-                  onClick={() => setModalStep(4)}
+                  onClick={handleSelectClick}
                 >
                   <span>
-                    {cardBacks.find((cb) => cb.image === cardBackStyle)?.name ||
-                      "Default"}
+                    {purchasedShirts.find(
+                      (shirt) => shirt.image_url === cardBackStyle
+                    )?.name || "Default"}
                   </span>{" "}
                   <svg
                     width="8"
@@ -278,6 +307,33 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                   onClick={() => setModalStep(2)}
                 >
                   Русский
+                  <svg
+                    width="8"
+                    height="14"
+                    viewBox="0 0 8 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.96826 6.71191C7.96826 6.89502 7.89502 7.05615 7.75586 7.19531L1.95508 12.8716C1.82324 13.0034 1.66211 13.0693 1.47168 13.0693C1.09814 13.0693 0.805176 12.7837 0.805176 12.4028C0.805176 12.2124 0.878418 12.0513 0.995605 11.9268L6.32764 6.71191L0.995605 1.49707C0.878418 1.37256 0.805176 1.2041 0.805176 1.021C0.805176 0.640137 1.09814 0.354492 1.47168 0.354492C1.66211 0.354492 1.82324 0.42041 1.95508 0.544922L7.75586 6.22852C7.89502 6.36035 7.96826 6.52881 7.96826 6.71191Z"
+                      fill="#AAB2BD"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div className="modal-settings__item f-center-jcsb">
+                <p className="modal-settings__title">Качество изображений</p>
+                <div
+                  className="modal-settings__select"
+                  onClick={() => setModalStep(5)} // Новый шаг для выбора качества
+                >
+                  <span>
+                    {imageQuality === "auto"
+                      ? "Автоматически"
+                      : imageQuality === "high"
+                      ? "Высокое"
+                      : "Низкое"}
+                  </span>{" "}
                   <svg
                     width="8"
                     height="14"
@@ -560,6 +616,118 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 onClick={() => setModalStep(1)}
               >
                 Применить
+              </button>
+            </div>
+          </>
+        )}
+        {modalStep === 5 && (
+          <>
+            <h3 className="modal-title">Качество изображений</h3>
+            <div className="modal-quality">
+              <div
+                className="modal-lang__item f-center-jcsb"
+                onClick={() => {
+                  dispatch(setImageQuality("auto"));
+                  setModalStep(1);
+                }}
+              >
+                <div className="modal-lang__content">
+                  <p className="modal-lang__content-title">Автоматически</p>
+                  <p className="modal-lang__content-subtitle">
+                    Выбирается в зависимости от скорости соединения
+                  </p>
+                </div>
+                <span
+                  className={`modal-lang__select ${
+                    imageQuality === "auto" ? "active" : ""
+                  }`}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6.7403 17.0108C7.31573 17.0108 7.75862 16.7748 8.06896 16.3028L17.1465 2.2597C17.2565 2.09159 17.3373 1.92996 17.389 1.77478C17.4407 1.61961 17.4666 1.46444 17.4666 1.30927C17.4666 0.927802 17.3405 0.614224 17.0884 0.368535C16.8362 0.122845 16.5129 0 16.1185 0C15.847 0 15.6207 0.0549569 15.4397 0.164871C15.2586 0.268319 15.084 0.449353 14.9159 0.707974L6.70151 13.7231L2.49246 8.38901C2.18858 8.00754 1.81358 7.81681 1.36746 7.81681C0.97306 7.81681 0.646551 7.94289 0.387931 8.19504C0.12931 8.4472 0 8.76724 0 9.15517C0 9.32974 0.0290948 9.49784 0.0872845 9.65948C0.15194 9.82112 0.255388 9.98599 0.397629 10.1541L5.42133 16.3416C5.7834 16.7877 6.22306 17.0108 6.7403 17.0108Z"
+                      fill="#71B21D"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div
+                className="modal-lang__item f-center-jcsb"
+                onClick={() => {
+                  dispatch(setImageQuality("high"));
+                  setModalStep(1);
+                }}
+              >
+                <div className="modal-lang__content">
+                  <p className="modal-lang__content-title">Высокое качество</p>
+                  <p className="modal-lang__content-subtitle">
+                    Может замедлить работу при плохом соединении
+                  </p>
+                </div>
+                <span
+                  className={`modal-lang__select ${
+                    imageQuality === "high" ? "active" : ""
+                  }`}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6.7403 17.0108C7.31573 17.0108 7.75862 16.7748 8.06896 16.3028L17.1465 2.2597C17.2565 2.09159 17.3373 1.92996 17.389 1.77478C17.4407 1.61961 17.4666 1.46444 17.4666 1.30927C17.4666 0.927802 17.3405 0.614224 17.0884 0.368535C16.8362 0.122845 16.5129 0 16.1185 0C15.847 0 15.6207 0.0549569 15.4397 0.164871C15.2586 0.268319 15.084 0.449353 14.9159 0.707974L6.70151 13.7231L2.49246 8.38901C2.18858 8.00754 1.81358 7.81681 1.36746 7.81681C0.97306 7.81681 0.646551 7.94289 0.387931 8.19504C0.12931 8.4472 0 8.76724 0 9.15517C0 9.32974 0.0290948 9.49784 0.0872845 9.65948C0.15194 9.82112 0.255388 9.98599 0.397629 10.1541L5.42133 16.3416C5.7834 16.7877 6.22306 17.0108 6.7403 17.0108Z"
+                      fill="#71B21D"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div
+                className="modal-lang__item f-center-jcsb"
+                onClick={() => {
+                  dispatch(setImageQuality("low"));
+                  setModalStep(1);
+                }}
+              >
+                <div className="modal-lang__content">
+                  <p className="modal-lang__content-title">Низкое качество</p>
+                  <p className="modal-lang__content-subtitle">
+                    Рекомендуется для медленного соединения
+                  </p>
+                </div>
+                <span
+                  className={`modal-lang__select ${
+                    imageQuality === "low" ? "active" : ""
+                  }`}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6.7403 17.0108C7.31573 17.0108 7.75862 16.7748 8.06896 16.3028L17.1465 2.2597C17.2565 2.09159 17.3373 1.92996 17.389 1.77478C17.4407 1.61961 17.4666 1.46444 17.4666 1.30927C17.4666 0.927802 17.3405 0.614224 17.0884 0.368535C16.8362 0.122845 16.5129 0 16.1185 0C15.847 0 15.6207 0.0549569 15.4397 0.164871C15.2586 0.268319 15.084 0.449353 14.9159 0.707974L6.70151 13.7231L2.49246 8.38901C2.18858 8.00754 1.81358 7.81681 1.36746 7.81681C0.97306 7.81681 0.646551 7.94289 0.387931 8.19504C0.12931 8.4472 0 8.76724 0 9.15517C0 9.32974 0.0290948 9.49784 0.0872845 9.65948C0.15194 9.82112 0.255388 9.98599 0.397629 10.1541L5.42133 16.3416C5.7834 16.7877 6.22306 17.0108 6.7403 17.0108Z"
+                      fill="#71B21D"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div className="modal-nav">
+              <button
+                type="button"
+                className="modal-btn"
+                onClick={() => setModalStep(1)}
+              >
+                Назад
               </button>
             </div>
           </>
