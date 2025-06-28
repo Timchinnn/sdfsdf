@@ -11,6 +11,7 @@ const Spinner = ({
   const spinnerStyle = {
     ...cssOverride,
     width: size,
+    marginTop: "62vw",
     height: size,
     borderColor: color,
     borderTopColor: "transparent",
