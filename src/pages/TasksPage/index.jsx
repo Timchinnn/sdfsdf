@@ -22,24 +22,33 @@ const TasksPage = () => {
   const [AdController, setAdController] = useState(null);
   const [ads, setAds] = useState([]); // Добавляем состояние для рекламы
 
-  // Добавляем состояния для спиннера и загрузки данных
-  const [showSpinner, setShowSpinner] = useState(true);
-  const [userDataLoaded, setUserDataLoaded] = useState(false);
-  const [userAvatar, setUserAvatar] = useState(null);
-
   // Состояния для данных пользователя
+  const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
-  // Инициализация загрузки данных
+  const [username, setUsername] = useState("Пользователь");
+
+  // Состояния для отслеживания загрузки данных
+  const [userPhotoLoaded, setUserPhotoLoaded] = useState(false);
+  const [userCoinsLoaded, setUserCoinsLoaded] = useState(false);
+  const [userLevelLoaded, setUserLevelLoaded] = useState(false);
+  const [adsLoaded, setAdsLoaded] = useState(false);
+  const [adControllerLoaded, setAdControllerLoaded] = useState(false);
+  const [usernameLoaded, setUsernameLoaded] = useState(false);
+
+  // Состояние для спиннера
+  const [showSpinner, setShowSpinner] = useState(true);
+  // Получаем username из Telegram API
   useEffect(() => {
-    setUserDataLoaded(true);
-    const timer = setTimeout(() => {
-      setShowSpinner(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    const tg = window.Telegram.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const tgUsername = tg.initDataUnsafe.user.username || "Пользователь";
+      setUsername(tgUsername);
+    }
+    setUsernameLoaded(true);
   }, []);
   // Получение аватара пользователя
   useEffect(() => {
@@ -49,13 +58,11 @@ const TasksPage = () => {
         try {
           const telegram_id = tg.initDataUnsafe.user.id;
           const userPhoto = tg.initDataUnsafe.user.photo_url;
-
           const existingUser = await userInitService.getUser(telegram_id);
           const lastPhotoUpdate = existingUser.data?.last_photo_update;
           const now = new Date();
           const lastUpdate = lastPhotoUpdate ? new Date(lastPhotoUpdate) : null;
           const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-
           if (
             !lastPhotoUpdate ||
             !lastUpdate ||
@@ -75,12 +82,10 @@ const TasksPage = () => {
           setUserAvatar(null);
         }
       }
+      setUserPhotoLoaded(true);
     };
-
-    if (userDataLoaded) {
-      initializeUserPhoto();
-    }
-  }, [userDataLoaded]);
+    initializeUserPhoto();
+  }, []);
   // Получение монет и почасового дохода
   useEffect(() => {
     const fetchUserCoins = async () => {
@@ -105,31 +110,31 @@ const TasksPage = () => {
           console.error("Ошибка при получении данных пользователя:", error);
         }
       }
+      setUserCoinsLoaded(true);
     };
     fetchUserCoins();
   }, []);
   // Получение уровня и опыта пользователя
   useEffect(() => {
-    if (userDataLoaded) {
-      const fetchUserLevel = async () => {
-        const tg = window.Telegram.WebApp;
-        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-          try {
-            const telegram_id = tg.initDataUnsafe.user.id;
-            const response = await userInitService.getUserLevel(telegram_id);
-            setLevel(response.data.level);
-            setCurrentExp(response.data.currentExperience);
-            setExpForNextLevel(response.data.experienceToNextLevel);
-          } catch (error) {
-            console.error("Ошибка при получении уровня пользователя:", error);
-          }
+    const fetchUserLevel = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const response = await userInitService.getUserLevel(telegram_id);
+          setLevel(response.data.level);
+          setCurrentExp(response.data.currentExperience);
+          setExpForNextLevel(response.data.experienceToNextLevel);
+        } catch (error) {
+          console.error("Ошибка при получении уровня пользователя:", error);
         }
-      };
-      fetchUserLevel();
-    }
-  }, [userDataLoaded]);
+      }
+      setUserLevelLoaded(true);
+    };
+    fetchUserLevel();
+  }, []);
+  // Загрузка рекламы
   useEffect(() => {
-    // Загружаем рекламу при монтировании компонента
     const fetchAds = async () => {
       try {
         const response = await adsService.getAllAds();
@@ -137,9 +142,12 @@ const TasksPage = () => {
       } catch (error) {
         console.error("Ошибка при загрузке рекламы:", error);
       }
+      setAdsLoaded(true);
     };
     fetchAds();
-    // Инициализация SDK рекламы
+  }, []);
+  // Инициализация SDK рекламы
+  useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://sad.adsgram.ai/js/sad.min.js";
     script.async = true;
@@ -148,12 +156,41 @@ const TasksPage = () => {
         blockId: "9521",
       });
       setAdController(controller);
+      setAdControllerLoaded(true);
+    };
+    script.onerror = () => {
+      console.error("Ошибка при загрузке скрипта рекламы");
+      setAdControllerLoaded(true); // Отмечаем как загруженный даже при ошибке, чтобы не блокировать UI
     };
     document.head.appendChild(script);
     return () => {
       document.head.removeChild(script);
     };
   }, []);
+  // Проверка загрузки всех данных и отключение спиннера
+  useEffect(() => {
+    if (
+      userPhotoLoaded &&
+      userCoinsLoaded &&
+      userLevelLoaded &&
+      adsLoaded &&
+      adControllerLoaded &&
+      usernameLoaded
+    ) {
+      // Добавляем небольшую задержку для плавности
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [
+    userPhotoLoaded,
+    userCoinsLoaded,
+    userLevelLoaded,
+    adsLoaded,
+    adControllerLoaded,
+    usernameLoaded,
+  ]);
   const showRewardedAd = async (adId) => {
     try {
       const result = await AdController.show();
@@ -208,8 +245,9 @@ const TasksPage = () => {
     <section className="tasks">
       <div className="container">
         <div className="tasks-inner">
-          {showSpinner && <Spinner loading={true} size={50} />}
-          {!showSpinner && (
+          {showSpinner ? (
+            <Spinner loading={true} size={50} />
+          ) : (
             <>
               <MainSection
                 hourlyIncome={hourlyIncome}
@@ -217,7 +255,7 @@ const TasksPage = () => {
                 level={level}
                 currentExp={currentExp}
                 expForNextLevel={expForNextLevel}
-                loaded={userDataLoaded}
+                loaded={true}
                 userAvatar={userAvatar}
                 defaultAvatar={Avatar}
                 timeIcon={TimeIcon}
@@ -225,6 +263,7 @@ const TasksPage = () => {
                 cardImg={cardImg}
                 taskImg={taskImg}
                 bonusImg={bonusImg}
+                username={username}
               />
               <div className="tasks-block">
                 <div className="tasks-head">

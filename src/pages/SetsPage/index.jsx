@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import routeSets from "./routes";
 import MainSection from "components/MainSection";
-import Spinner from "components/Spinner"; // Добавляем импорт спиннера
-import { userInitService } from "services/api"; // Импортируем сервис для API
+import Spinner from "components/Spinner";
+import { userInitService } from "services/api";
 import MobileNav from "components/MobileNav";
 // Импортируем необходимые локальные изображения
 import Avatar from "assets/img/avatar.png";
@@ -13,71 +13,31 @@ const cardImg = "https://image.tw1.ru/image/card.webp";
 const taskImg = "https://image.tw1.ru/image/vopros.webp";
 const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
 const SetsPage = () => {
-  // Добавляем состояния для спиннера и загрузки данных
-  const [showSpinner, setShowSpinner] = useState(true);
-  const [userDataLoaded, setUserDataLoaded] = useState(false);
+  // Состояния для данных пользователя
+  const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
-  const [userAvatar, setUserAvatar] = useState(null);
-  // Эффект для загрузки данных пользователя
+  const [username, setUsername] = useState("Пользователь");
+  // Состояния для отслеживания загрузки данных
+  const [userPhotoLoaded, setUserPhotoLoaded] = useState(false);
+  const [userCoinsLoaded, setUserCoinsLoaded] = useState(false);
+  const [userLevelLoaded, setUserLevelLoaded] = useState(false);
+  const [usernameLoaded, setUsernameLoaded] = useState(false);
+  // Состояние для спиннера
+  const [showSpinner, setShowSpinner] = useState(true);
+  // Получаем username из Telegram API
   useEffect(() => {
-    const fetchUserData = async () => {
-      const tg = window.Telegram.WebApp;
-      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        try {
-          const telegram_id = tg.initDataUnsafe.user.id;
-
-          // Получаем данные пользователя
-          const userResponse = await userInitService.getUser(telegram_id);
-          if (userResponse.data && userResponse.data.coins) {
-            setCoins(userResponse.data.coins);
-          }
-
-          // Получаем почасовой доход
-          const hourlyIncomeResponse = await userInitService.getHourlyIncome(
-            telegram_id
-          );
-          if (
-            hourlyIncomeResponse.data &&
-            hourlyIncomeResponse.data.hourly_income
-          ) {
-            setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
-          }
-
-          // Получаем уровень пользователя
-          const levelResponse = await userInitService.getUserLevel(telegram_id);
-          setLevel(levelResponse.data.level);
-          setCurrentExp(levelResponse.data.currentExperience);
-          setExpForNextLevel(levelResponse.data.experienceToNextLevel);
-
-          // Устанавливаем аватар пользователя
-          const userPhoto = tg.initDataUnsafe.user.photo_url;
-          if (userPhoto) {
-            setUserAvatar(userPhoto);
-          }
-
-          // Данные загружены
-          setUserDataLoaded(true);
-
-          // Скрываем спиннер после небольшой задержки
-          setTimeout(() => {
-            setShowSpinner(false);
-          }, 1000);
-        } catch (error) {
-          console.error("Error fetching userf");
-          setShowSpinner(false);
-        }
-      } else {
-        setShowSpinner(false);
-      }
-    };
-
-    fetchUserData();
+    const tg = window.Telegram.WebApp;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const tgUsername = tg.initDataUnsafe.user.username || "Пользователь";
+      setUsername(tgUsername);
+    }
+    setUsernameLoaded(true);
   }, []);
-  // Добавляем эффект для загрузки фото пользователя, аналогично MainPage
+  // Получение аватара пользователя
   useEffect(() => {
     const initializeUserPhoto = async () => {
       const tg = window.Telegram.WebApp;
@@ -90,7 +50,6 @@ const SetsPage = () => {
           const now = new Date();
           const lastUpdate = lastPhotoUpdate ? new Date(lastPhotoUpdate) : null;
           const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-
           if (
             !lastPhotoUpdate ||
             !lastUpdate ||
@@ -106,22 +65,83 @@ const SetsPage = () => {
             setUserAvatar(existingUser.data.photo_url || null);
           }
         } catch (error) {
-          console.error("Error initializing user photo:", error);
+          console.error("Ошибка при инициализации фото пользователя:", error);
           setUserAvatar(null);
         }
       }
+      setUserPhotoLoaded(true);
     };
-
-    if (userDataLoaded) {
-      initializeUserPhoto();
+    initializeUserPhoto();
+  }, []);
+  // Получение монет и почасового дохода
+  useEffect(() => {
+    const fetchUserCoins = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const response = await userInitService.getUser(telegram_id);
+          if (response.data && response.data.coins) {
+            setCoins(response.data.coins);
+          }
+          const hourlyIncomeResponse = await userInitService.getHourlyIncome(
+            telegram_id
+          );
+          if (
+            hourlyIncomeResponse.data &&
+            hourlyIncomeResponse.data.hourly_income
+          ) {
+            setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
+          }
+        } catch (error) {
+          console.error("Ошибка при получении данных пользователя:", error);
+        }
+      }
+      setUserCoinsLoaded(true);
+    };
+    fetchUserCoins();
+  }, []);
+  // Получение уровня и опыта пользователя
+  useEffect(() => {
+    const fetchUserLevel = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const response = await userInitService.getUserLevel(telegram_id);
+          setLevel(response.data.level);
+          setCurrentExp(response.data.currentExperience);
+          setExpForNextLevel(response.data.experienceToNextLevel);
+        } catch (error) {
+          console.error("Ошибка при получении уровня пользователя:", error);
+        }
+      }
+      setUserLevelLoaded(true);
+    };
+    fetchUserLevel();
+  }, []);
+  // Проверка загрузки всех данных и отключение спиннера
+  useEffect(() => {
+    if (
+      userPhotoLoaded &&
+      userCoinsLoaded &&
+      userLevelLoaded &&
+      usernameLoaded
+    ) {
+      // Добавляем небольшую задержку для плавности
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
     }
-  }, [userDataLoaded]);
+  }, [userPhotoLoaded, userCoinsLoaded, userLevelLoaded, usernameLoaded]);
   return (
     <section className="sets">
       <div className="container">
         <div className="tasks-inner">
-          {showSpinner && <Spinner loading={true} size={50} />}
-          {!showSpinner && (
+          {showSpinner ? (
+            <Spinner loading={true} size={50} />
+          ) : (
             <>
               <MainSection
                 hourlyIncome={hourlyIncome}
@@ -129,14 +149,15 @@ const SetsPage = () => {
                 level={level}
                 currentExp={currentExp}
                 expForNextLevel={expForNextLevel}
-                loaded={userDataLoaded}
+                loaded={true}
                 userAvatar={userAvatar}
-                defaultAvatar={Avatar} // Передаем дефолтное изображение
+                defaultAvatar={Avatar}
                 timeIcon={TimeIcon}
                 moneyIcon={MoneyIcon}
                 cardImg={cardImg}
                 taskImg={taskImg}
                 bonusImg={bonusImg}
+                username={username}
               />
               <div
                 className="block-style"
