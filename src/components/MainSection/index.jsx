@@ -79,7 +79,7 @@ const MainSection = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowAchievement(true);
-    }, 500);
+    }, 0);
 
     return () => clearTimeout(timer);
   }, []);
