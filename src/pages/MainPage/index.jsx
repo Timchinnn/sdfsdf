@@ -67,8 +67,9 @@ const MainPage = () => {
     }
   }, [userDataLoaded]);
   useEffect(() => {
-    setUserDataLoaded(true);
     const timer = setTimeout(() => {
+      setUserDataLoaded(true);
+
       setShowSpinner(false);
     }, 1000);
     return () => clearTimeout(timer);
