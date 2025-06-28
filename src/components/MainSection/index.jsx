@@ -272,11 +272,11 @@ const MainSection = ({
                 </div>
 
                 <p className="main-head__level">
-                  Уровень города {showAchievement && level}
+                  Уровень города {loaded && level}
                 </p>
 
                 <div className="main-head__progress">
-                  {showAchievement && (
+                  {loaded && (
                     <div
                       className="main-head__progress-bar"
                       style={{
