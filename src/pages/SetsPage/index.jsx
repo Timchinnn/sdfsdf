@@ -68,7 +68,7 @@ const SetsPage = () => {
             setShowSpinner(false);
           }, 1000);
         } catch (error) {
-          console.error("Error fetching user");
+          console.error("Error fetching userf");
           setShowSpinner(false);
         }
       } else {
