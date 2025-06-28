@@ -62,8 +62,8 @@ const ShopPage = () => {
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
   // Инициализация загрузки данных
   useEffect(() => {
+    setUserDataLoaded(true);
     const timer = setTimeout(() => {
-      setUserDataLoaded(true);
       setShowSpinner(false);
     }, 1000);
     return () => clearTimeout(timer);
