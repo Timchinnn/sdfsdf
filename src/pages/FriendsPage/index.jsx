@@ -36,7 +36,7 @@ const FriendsPage = () => {
     setUserDataLoaded(true);
     const timer = setTimeout(() => {
       setShowSpinner(false);
-    }, 2000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
   // Получение аватара пользователя

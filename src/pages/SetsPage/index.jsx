@@ -1,4 +1,3 @@
-jsx;
 import React, { useState, useEffect } from "react";
 import routeSets from "./routes";
 import MainSection from "components/MainSection";
