@@ -26,7 +26,7 @@ const MainSection = ({
   const [hourlyIncome, setHourlyIncome] = useState(propHourlyIncome || 0);
   const [activePopup, setActivePopup] = useState(false);
   const [username, setUsername] = useState("");
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
   const [showAchievement, setShowAchievement] = useState(false);
@@ -79,7 +79,7 @@ const MainSection = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowAchievement(true);
-    }, 1000);
+    }, 0);
 
     return () => clearTimeout(timer);
   }, []);
