@@ -1,295 +1,162 @@
-import React from "react";
+jsx;
+import React, { useState, useEffect } from "react";
 import routeSets from "./routes";
 import MainSection from "components/MainSection";
-
-// import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/scss";
-
-// import DefaultImg from "assets/img/default-img.png";
-// import CoinIcon from "assets/img/coin-icon.svg";
-// import StarIcon from "assets/img/star-icon.svg";
-
+import Spinner from "components/Spinner"; // Добавляем импорт спиннера
+import { userInitService } from "services/api"; // Импортируем сервис для API
 import MobileNav from "components/MobileNav";
-
+// Импортируем необходимые локальные изображения
+import Avatar from "assets/img/avatar.png";
+import TimeIcon from "assets/img/time-icon.svg";
+import MoneyIcon from "assets/img/money-icon.svg";
+// Определяем URL-ы для остальных изображений
+const cardImg = "https://image.tw1.ru/image/card.webp";
+const taskImg = "https://image.tw1.ru/image/vopros.webp";
+const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
 const SetsPage = () => {
-  //   const [openAccordion, setOpenAccordion] = useState(null);
+  // Добавляем состояния для спиннера и загрузки данных
+  const [showSpinner, setShowSpinner] = useState(true);
+  const [userDataLoaded, setUserDataLoaded] = useState(false);
+  const [hourlyIncome, setHourlyIncome] = useState(0);
+  const [coins, setCoins] = useState(0);
+  const [level, setLevel] = useState("");
+  const [currentExp, setCurrentExp] = useState(0);
+  const [expForNextLevel, setExpForNextLevel] = useState(1000);
+  const [userAvatar, setUserAvatar] = useState(null);
+  // Эффект для загрузки данных пользователя
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
 
-  //   const handleAccordionClick = (id) => {
-  //     // Открываем выбранный аккордеон, а остальные закрываем
-  //     setOpenAccordion(openAccordion === id ? null : id);
-  //   };
+          // Получаем данные пользователя
+          const userResponse = await userInitService.getUser(telegram_id);
+          if (userResponse.data && userResponse.data.coins) {
+            setCoins(userResponse.data.coins);
+          }
 
+          // Получаем почасовой доход
+          const hourlyIncomeResponse = await userInitService.getHourlyIncome(
+            telegram_id
+          );
+          if (
+            hourlyIncomeResponse.data &&
+            hourlyIncomeResponse.data.hourly_income
+          ) {
+            setHourlyIncome(hourlyIncomeResponse.data.hourly_income);
+          }
+
+          // Получаем уровень пользователя
+          const levelResponse = await userInitService.getUserLevel(telegram_id);
+          setLevel(levelResponse.data.level);
+          setCurrentExp(levelResponse.data.currentExperience);
+          setExpForNextLevel(levelResponse.data.experienceToNextLevel);
+
+          // Устанавливаем аватар пользователя
+          const userPhoto = tg.initDataUnsafe.user.photo_url;
+          if (userPhoto) {
+            setUserAvatar(userPhoto);
+          }
+
+          // Данные загружены
+          setUserDataLoaded(true);
+
+          // Скрываем спиннер после небольшой задержки
+          setTimeout(() => {
+            setShowSpinner(false);
+          }, 1000);
+        } catch (error) {
+          console.error("Error fetching user");
+          setShowSpinner(false);
+        }
+      } else {
+        setShowSpinner(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+  // Добавляем эффект для загрузки фото пользователя, аналогично MainPage
+  useEffect(() => {
+    const initializeUserPhoto = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        try {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const userPhoto = tg.initDataUnsafe.user.photo_url;
+          const existingUser = await userInitService.getUser(telegram_id);
+          const lastPhotoUpdate = existingUser.data?.last_photo_update;
+          const now = new Date();
+          const lastUpdate = lastPhotoUpdate ? new Date(lastPhotoUpdate) : null;
+          const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
+
+          if (
+            !lastPhotoUpdate ||
+            !lastUpdate ||
+            now - lastUpdate >= twoDaysInMs
+          ) {
+            if (userPhoto) {
+              await userInitService.updateUserPhoto(telegram_id, userPhoto);
+              setUserAvatar(userPhoto);
+            } else {
+              setUserAvatar(null);
+            }
+          } else {
+            setUserAvatar(existingUser.data.photo_url || null);
+          }
+        } catch (error) {
+          console.error("Error initializing user photo:", error);
+          setUserAvatar(null);
+        }
+      }
+    };
+
+    if (userDataLoaded) {
+      initializeUserPhoto();
+    }
+  }, [userDataLoaded]);
   return (
     <section className="sets">
       <div className="container">
         <div className="tasks-inner">
-          <MainSection />
-          <div
-            className="block-style"
-            style={{ textAlign: "center", padding: "20px", marginTop: "6px" }}
-          >
-            Скоро
-          </div>
-          {/* <ul className="city-list">
-                        <li className="city-list__item block-style">
-                            <div className={`city-list__title f-jcsb ${openAccordion === 1 ? 'active' : ''}`} onClick={()=> handleAccordionClick(1)}>
-                                <div className="sets-offer">
-                                    Сет «Культура»
-                                    <ul className="friends-params f-center">
-                                        <li className="friends-params__item f-center">
-                                            <img src={StarIcon} alt="" />
-                                            500 EXP
-                                        </li>
-                                        <li className="friends-params__item f-center">
-                                            <img src={CoinIcon} alt="" />
-                                            2000
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="city-list__more f-center">
-                                    <div className="city-list__count">
-                                        5 из 12
-                                    </div>
-                                    <div className="city-list__arrow">
-                                        <svg width="15" height="9" viewBox="0 0 15 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.6592 1.56103L8.23438 8.13525C8.08496 8.29297 7.88574 8.38428 7.66992 8.38428C7.4624 8.38428 7.25488 8.29297 7.11377 8.13525L0.688966 1.56103C0.547853 1.42822 0.464845 1.2373 0.464845 1.02148C0.464845 0.589842 0.788575 0.266112 1.22022 0.266112C1.42774 0.266112 1.62695 0.340819 1.75977 0.481932L7.66992 6.5249L13.5884 0.481933C13.7129 0.34082 13.9121 0.266113 14.1279 0.266113C14.5596 0.266113 14.8833 0.589844 14.8833 1.02148C14.8833 1.2373 14.8003 1.42822 14.6592 1.56103Z" fill="#AAB2BD"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="city-list__content" style={{
-                                maxHeight: openAccordion === 1 ? '500px' : '0px', paddingTop: openAccordion === 1 ? '24px' : '0px',
-                                paddingBottom: openAccordion === 1 ? '10px' : '0px', 
-                            }}>
-                                <div className="city-slider">
-                                    <Swiper
-                                        spaceBetween={8}
-                                        slidesPerView={'auto'}
-                                        
-                                        >
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                                                            <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                    </Swiper>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="city-list__item block-style">
-                            <div className={`city-list__title f-jcsb ${openAccordion === 2 ? 'active' : ''}`} onClick={()=> handleAccordionClick(2)}>
-                                <div className="sets-offer">
-                                Сет «Экономика»
-                                    <ul className="friends-params f-center">
-                                        <li className="friends-params__item f-center">
-                                            <img src={StarIcon} alt="" />
-                                            500 EXP
-                                        </li>
-                                        <li className="friends-params__item f-center">
-                                            <img src={CoinIcon} alt="" />
-                                            2000
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="city-list__more f-center">
-                                    <div className="city-list__count">
-                                        5 из 12
-                                    </div>
-                                    <div className="city-list__arrow">
-                                        <svg width="15" height="9" viewBox="0 0 15 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.6592 1.56103L8.23438 8.13525C8.08496 8.29297 7.88574 8.38428 7.66992 8.38428C7.4624 8.38428 7.25488 8.29297 7.11377 8.13525L0.688966 1.56103C0.547853 1.42822 0.464845 1.2373 0.464845 1.02148C0.464845 0.589842 0.788575 0.266112 1.22022 0.266112C1.42774 0.266112 1.62695 0.340819 1.75977 0.481932L7.66992 6.5249L13.5884 0.481933C13.7129 0.34082 13.9121 0.266113 14.1279 0.266113C14.5596 0.266113 14.8833 0.589844 14.8833 1.02148C14.8833 1.2373 14.8003 1.42822 14.6592 1.56103Z" fill="#AAB2BD"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="city-list__content" style={{
-                                maxHeight: openAccordion === 2 ? '500px' : '0px', paddingTop: openAccordion === 2 ? '24px' : '0px',
-                                paddingBottom: openAccordion === 2 ? '10px' : '0px', 
-                            }}>
-                                <div className="city-slider">
-                                    <Swiper
-                                        spaceBetween={8}
-                                        slidesPerView={'auto'}
-                                        
-                                        >
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                        <SwiperSlide>
-                                            <div className="city-slider__item">
-                                                <div className="city-slider__card">
-                                                    <p className="city-slider__image">
-                                                        <img src={DefaultImg} alt="" />
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </SwiperSlide>
-                                    </Swiper>
-                                </div>
-                            </div>
-                        </li>
-                    </ul> */}
+          {showSpinner && <Spinner loading={true} size={50} />}
+          {!showSpinner && (
+            <>
+              <MainSection
+                hourlyIncome={hourlyIncome}
+                coins={coins}
+                level={level}
+                currentExp={currentExp}
+                expForNextLevel={expForNextLevel}
+                loaded={userDataLoaded}
+                userAvatar={userAvatar}
+                defaultAvatar={Avatar} // Передаем дефолтное изображение
+                timeIcon={TimeIcon}
+                moneyIcon={MoneyIcon}
+                cardImg={cardImg}
+                taskImg={taskImg}
+                bonusImg={bonusImg}
+              />
+              <div
+                className="block-style"
+                style={{
+                  textAlign: "center",
+                  padding: "20px",
+                  marginTop: "6px",
+                }}
+              >
+                Скоро
+              </div>
+              {/* Здесь будет остальной контент после раскомментирования */}
+            </>
+          )}
         </div>
       </div>
       <MobileNav />
     </section>
   );
 };
-
 export { routeSets };
-
 export default SetsPage;
