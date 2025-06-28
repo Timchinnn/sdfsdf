@@ -1,8 +1,7 @@
 const initialState = {
   theme: true,
   cardBack: "default",
-  language: localStorage.getItem("language") || "ru",
-  imageQuality: "auto", // Всегда начинаем с auto при запуске
+  language: localStorage.getItem("language") || "ru", // Добавляем начальное значение языкаы
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -20,11 +19,6 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         language: action.payload,
-      };
-    case "SET_IMAGE_QUALITY":
-      return {
-        ...state,
-        imageQuality: action.payload,
       };
     default:
       return state;

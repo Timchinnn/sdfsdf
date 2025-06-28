@@ -15,14 +15,7 @@ import { useSelector } from "react-redux";
 const ShopPage = () => {
   const cardBackStyle = useSelector((state) => state.cardBack);
   const tgUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || "";
-  const isSpecialUser =
-    tgUserId === 7241281378 ||
-    tgUserId === 467518658 ||
-    tgUserId === 6243418179 ||
-    tgUserId === 6568811367 ||
-    tgUserId === 6391586511;
-  console.log("tgUserId:", tgUserId);
-  console.log("isSpecialUser:", isSpecialUser);
+  const isSpecialUser = tgUserId === 7241281378 || tgUserId === 467518658;
   const [activePopup, setActivePopup] = useState(false);
 
   const [activePopupCarousel, setActivePopupCarousel] = useState(false);
@@ -33,61 +26,6 @@ const ShopPage = () => {
   const [shopSets, setShopSets] = useState([]);
   const [shirts, setShirts] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
-  const imageQuality = useSelector((state) => state.imageQuality);
-  const [responseTime, setResponseTime] = useState(null);
-  // Добавить useEffect для измерения времени ответа
-  useEffect(() => {
-    // Измеряем время ответа сервера при загрузке компонента
-    const measureResponseTime = async () => {
-      const startTime = performance.now();
-      try {
-        const response = await fetch("https://api.zoomayor.io/api/cards");
-        const endTime = performance.now();
-        const time = endTime - startTime;
-        setResponseTime(time);
-      } catch (error) {
-        console.error("Ошибка при измерении времени ответа:", error);
-      }
-    };
-    measureResponseTime();
-  }, []);
-  // Добавить функцию getImageUrl
-  const getImageUrl = (imageUrl) => {
-    if (!imageUrl || typeof imageUrl !== "string") return imageUrl;
-    if (
-      imageUrl === DefaultImg ||
-      imageUrl === MoneyImg ||
-      imageUrl === EnergytImg
-    )
-      return imageUrl;
-    if (imageUrl.startsWith("http")) return imageUrl;
-
-    // Проверяем настройки качества изображений
-    if (imageQuality === "high") {
-      // Всегда высокое качество
-      return `https://api.zoomayor.io${imageUrl}`;
-    } else if (imageQuality === "low") {
-      // Всегда низкое качество
-      const hasExtension = /\.[^.]+$/.test(imageUrl);
-      return `https://api.zoomayor.io${
-        hasExtension
-          ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
-          : imageUrl + "bad.webp"
-      }`;
-    } else {
-      // Автоматический режим - зависит от времени ответа
-      if (responseTime > 300) {
-        const hasExtension = /\.[^.]+$/.test(imageUrl);
-        return `https://api.zoomayor.io${
-          hasExtension
-            ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
-            : imageUrl + "bad.webp"
-        }`;
-      } else {
-        return `https://api.zoomayor.io${imageUrl}`;
-      }
-    }
-  };
   useEffect(() => {
     const fetchShopCards = async () => {
       try {
@@ -99,21 +37,6 @@ const ShopPage = () => {
     };
     fetchShopCards();
   }, []);
-  // const refreshPurchasedShirts = async () => {
-  //        console.log("Обновление купленных рубашек..."); // Добавьте этот лог
-  //        try {
-  //            const tg = window.Telegram.WebApp;
-  //            if (tg?.initDataUnsafe?.user?.id) {
-  //                const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/shirts`);
-  //                if (response.data && response.data.shirts) {
-  //                    setShirts(response.data.shirts); // Обновляем состояние рубашек
-  //                    console.log("Купленные рубашки обновлены:", response.data.shirts); // Лог для проверки
-  //                }
-  //            }
-  //        } catch (error) {
-  //            console.error("Ошибка при обновлении купленных рубашек:", error);
-  //        }
-  //    };
   useEffect(() => {
     const fetchShirts = async () => {
       try {
@@ -164,7 +87,7 @@ const ShopPage = () => {
             image: shirt.image_url || DefaultImg,
           })),
         ];
-        setFilteredItems(allItems); // Set all items by defaultа
+        setFilteredItems(allItems); // Set all items by default
       } catch (error) {
         console.error(error);
       }
@@ -209,11 +132,7 @@ const ShopPage = () => {
   const handleOpenPopup = (item) => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
-    // Создаем копию объекта с обработанным URL изображения
-    setSelectedId({
-      ...item,
-      image: getImageUrl(item.image),
-    });
+    setSelectedId(item);
   };
   const handleClosePopup = () => {
     document.documentElement.classList.remove("fixed");
@@ -398,10 +317,13 @@ const ShopPage = () => {
                                 onClick={() => handleBuySet(set.id)}
                               >
                                 <img
-                                  style={{ width: "100% !important" }}
-                                  src={getImageUrl(set.image)}
+                                  src={
+                                    cardBackStyle
+                                      ? `https://api.zoomayor.io${cardBackStyle}`
+                                      : DefaultImg
+                                  }
                                   alt={set.title}
-                                  className="shop-card__Img1"
+                                  className="shop-card__Img"
                                 />
                               </div>
                               <h3 className="shop-list__title">{set.title}</h3>
@@ -436,9 +358,9 @@ const ShopPage = () => {
                                 onClick={() => handleOpenPopup(card)}
                               >
                                 <img
-                                  src={getImageUrl(card.image)}
+                                  src={`https://api.zoomayor.io${card.image}`}
                                   alt={card.title}
-                                  className="shop-card__Img1"
+                                  className="shop-card__Img"
                                 />
                               </div>
                               <div className="shop-list__content">
@@ -480,12 +402,12 @@ const ShopPage = () => {
                                     type: "shirt",
                                     id: shirt.id,
                                     name: shirt.title,
-                                    image: getImageUrl(shirt.image), // Используем image_url вместо image
+                                    image: shirt.image, // Используем image_url вместо image
                                   })
                                 }
                               >
                                 <img
-                                  src={getImageUrl(shirt.image)}
+                                  src={`https://api.zoomayor.io${shirt.image}`}
                                   alt={shirt.title}
                                 />
                               </div>

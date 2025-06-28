@@ -8,8 +8,6 @@ import InfoIcon from "assets/img/icons8-info-48.png";
 import QuestionMarkImg from "assets/img/question-mark.png";
 import MobileNav from "components/MobileNav";
 import ShopPopup from "components/ShopPopup";
-import { useSelector } from "react-redux";
-
 const CityPage = () => {
   const [showInfo, setShowInfo] = useState({});
   const [cardSets, setCardSets] = useState([]);
@@ -18,61 +16,11 @@ const CityPage = () => {
   const [activePopup, setActivePopup] = useState(false);
   const [userCards, setUserCards] = useState([]);
   const [openAccordion, setOpenAccordion] = useState(null);
-  const [responseTime, setResponseTime] = useState(null);
-  const imageQuality = useSelector((state) => state.imageQuality);
-
-  // Добавить после других useEffect
-  useEffect(() => {
-    // Измеряем время ответа сервера при загрузке компонента
-    const measureResponseTime = async () => {
-      const startTime = performance.now();
-      try {
-        const response = await fetch("https://api.zoomayor.io/api/cards");
-        const endTime = performance.now();
-        const time = endTime - startTime;
-        setResponseTime(time);
-      } catch (error) {
-        console.error("Ошибка при измерении времени ответа:", error);
-      }
-    };
-    measureResponseTime();
-  }, []);
-
-  // Добавить функцию для определения URL изображения
-  const getImageUrl = (imageUrl) => {
-    if (!imageUrl || imageUrl === QuestionMarkImg) return imageUrl;
-
-    // Проверяем настройки качества изображений
-    if (imageQuality === "high") {
-      // Всегда высокое качество
-      return `https://api.zoomayor.io${imageUrl}`;
-    } else if (imageQuality === "low") {
-      // Всегда низкое качество
-      const hasExtension = /\.[^.]+$/.test(imageUrl);
-      return `https://api.zoomayor.io${
-        hasExtension
-          ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
-          : imageUrl + "bad.webp"
-      }`;
-    } else {
-      // Автоматический режим - зависит от времени ответа
-      if (responseTime > 300) {
-        const hasExtension = /\.[^.]+$/.test(imageUrl);
-        return `https://api.zoomayor.io${
-          hasExtension
-            ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
-            : imageUrl + "bad.webp"
-        }`;
-      } else {
-        return `https://api.zoomayor.io${imageUrl}`;
-      }
-    }
-  };
   useEffect(() => {
     const fetchCardSets = async () => {
       try {
         const response = await cardSetsService.getAllCardSets();
-        // Фильтруем наборы, оставляя лишь те, в которых set_type === "city"d
+        // Фильтруем наборы, оставляя лишь те, в которых set_type === "city"
         const citySets = response.data.filter((set) => set.set_type === "city");
         setCardSets(citySets);
         // Далее для каждого набора получаем карточки и награды
@@ -125,7 +73,7 @@ const CityPage = () => {
       ...photo,
       image:
         userCards && userCards.some((card) => card.id === photo.id)
-          ? getImageUrl(photo.image) // Use getImageUrl helper for quality selection
+          ? photo.image
           : QuestionMarkImg,
     });
     setActivePopup(true);
@@ -267,7 +215,7 @@ const CityPage = () => {
                                     userCards.some(
                                       (userCard) => userCard.id === card.id
                                     )
-                                      ? getImageUrl(card.image)
+                                      ? `https://api.zoomayor.io${card.image}`
                                       : QuestionMarkImg
                                   }
                                   alt={card.title}
