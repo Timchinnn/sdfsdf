@@ -1,41 +1,33 @@
 import React, { useState, useEffect } from "react";
 import ReactFlipCard from "reactjs-flip-card";
-// import styles from 'styles.'
-
-// import Avatar from 'assets/img/avatar.png';
-// import CardsIcon from 'assets/img/cards-icon.png';
-// import TaskIcon from 'assets/img/task-icon.png';
-// import BonusIcon from 'assets/img/bonus-icon.png';
-// import TimeIcon from 'assets/img/time-icon.svg';
-// import MoneyIcon from 'assets/img/money-icon.svg';
-// import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
-// import { routeTasks } from "pages/TasksPage";
-// import { routeSets } from "pages/SetsPage";
-// import { routeBonus } from "pages/BonusPage";
-// import SettingsPopup from "components/SettingsPopup";
-import { peopleService } from "services/api";
 import { useSelector } from "react-redux";
 import DefaultImg from "assets/img/default-card.png";
 import Style1CardBack from "assets/img/card1.png";
 import Style2CardBack from "assets/img/card2.png";
-// import DefaultImg1 from "assets/img/4210629.png";
 import DefaultImg2 from "assets/img/42106291.png";
 import DefaultImg3 from "assets/img/4210629.png";
 import "./styles.scss";
-
-// Отсутствует определение cardBackStyles
 const cardBackStyles = {
   default: { image: DefaultImg },
   style1: { image: Style1CardBack },
   style2: { image: Style2CardBack },
 };
-// import ProdImg from "assets/img/prod-img.png";
 const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const [isSwipeLocked, setIsSwipeLocked] = useState(false);
-  // Minimum distance required for swipe
   const minSwipeDistance = 50;
+  const imageQuality = useSelector((state) => state.imageQuality);
+  const responseTime = useSelector((state) => state.responseTime);
+  const cardBackStyle = useSelector((state) => state.cardBack);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [cards, setCards] = useState([]);
+  useEffect(() => {
+    if (selectedSet && selectedSet.cards) {
+      setCards(selectedSet.cards);
+    }
+  }, [selectedSet]);
   const onTouchStart = (e) => {
     if (isSwipeLocked) return;
     setTouchEnd(null);
@@ -57,32 +49,16 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
       prevSlide();
     }
   };
-  const cardBackStyle = useSelector((state) => state.cardBack);
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(null);
-  const [cards, setCards] = useState([]);
-  // Загружаем карты из выбранного набора
-  useEffect(() => {
-    if (selectedSet && selectedSet.cards) {
-      setCards(selectedSet.cards);
-    }
-  }, [selectedSet]);
   const prevSlide = () => {
     setActiveSlide((prev) => (prev - 1 + cards.length) % cards.length);
   };
   const nextSlide = () => {
     setActiveSlide((prev) => (prev + 1) % cards.length);
   };
-
-  // const prevSlide = () => {
-  //   setActiveSlide((prev) => (prev - 1 + data.length) % data.length);
-  // };
-
   const getStyles = (index) => {
     const currentIndex = activeSlide % cards.length;
     const prevIndex = (activeSlide - 1 + cards.length) % cards.length;
     const nextIndex = (activeSlide + 1) % cards.length;
-
     if (index === currentIndex) {
       return {
         opacity: 1,
@@ -118,30 +94,41 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
       };
     }
   };
-
-  const [photos, setPhotos] = useState([]);
-  const [selectedPhotos, setSelectedPhotos] = useState({});
-
-  useEffect(() => {
-    const fetchPhotos = async () => {
-      try {
-        const policeData = await peopleService.getPolicePhotos();
-        setPhotos(policeData);
-      } catch (error) {
-        console.error(error);
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl || typeof imageUrl !== "string") return imageUrl;
+    if (
+      imageUrl === DefaultImg ||
+      imageUrl === Style1CardBack ||
+      imageUrl === Style2CardBack
+    )
+      return imageUrl;
+    if (imageUrl.startsWith("http")) return imageUrl;
+    // Проверяем настройки качества изображений
+    if (imageQuality === "high") {
+      // Всегда высокое качество
+      return `https://api.zoomayor.io${imageUrl}`;
+    } else if (imageQuality === "low") {
+      // Всегда низкое качество
+      const hasExtension = /\.[^.]+$/.test(imageUrl);
+      return `https://api.zoomayor.io${
+        hasExtension
+          ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
+          : imageUrl + "bad.webp"
+      }`;
+    } else {
+      // Автоматический режим - зависит от времени ответа
+      if (responseTime > 300) {
+        const hasExtension = /\.[^.]+$/.test(imageUrl);
+        return `https://api.zoomayor.io${
+          hasExtension
+            ? imageUrl.replace(/(\.[^.]+)$/, "bad$1")
+            : imageUrl + "bad.webp"
+        }`;
+      } else {
+        return `https://api.zoomayor.io${imageUrl}`;
       }
-    };
-    fetchPhotos();
-  }, []);
-  useEffect(() => {
-    if (photos.length > 0) {
-      const newSelectedPhotos = cards.reduce((acc, item) => {
-        acc[item.id] = photos[Math.floor(Math.random() * photos.length)];
-        return acc;
-      }, {});
-      setSelectedPhotos(newSelectedPhotos);
     }
-  }, [photos]);
+  };
   const handleImageClick = (index) => {
     setActiveIndex(index === activeIndex ? null : index);
     const selectedCard = cards[index];
@@ -198,7 +185,6 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          {" "}
           <div className="main-nav__play" onClick={prevSlide}>
             <img
               src={DefaultImg2}
@@ -233,14 +219,14 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
                     frontComponent={
                       <div className="main-slider__image">
                         <img
-                          src={
+                          src={getImageUrl(
                             cardBackStyle
                               ? cardBackStyle.startsWith("/img")
-                                ? `https://api.zoomayor.io${cardBackStyle}`
+                                ? cardBackStyle
                                 : cardBackStyles[cardBackStyle]?.image ||
                                   cardBackStyles.default.image
                               : cardBackStyles.default.image
-                          }
+                          )}
                           alt=""
                           style={{
                             "@media (max-width: 529px)": {
@@ -255,7 +241,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
                     backComponent={
                       <div className="main-slider__image">
                         <img
-                          src={`https://api.zoomayor.io${item.image}`}
+                          src={getImageUrl(item.image)}
                           alt={item.title || ""}
                           style={{
                             "@media (max-width: 529px)": {
@@ -286,44 +272,7 @@ const MainCarouselSet = ({ getActiveSlide, handleOpenPopup, selectedSet }) => {
           </div>
         </div>
       </div>
-      {/* <div className="main-nav f-center-jcsb">
-        <div className="main-nav__offer f-center">
-          <div className="main-nav__icon">
-            <svg
-              width="14"
-              height="21"
-              viewBox="0 0 14 21"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0.416992 11.7002C0.416992 11.4893 0.504883 11.3047 0.663086 11.1113L8.86328 0.951172C9.49609 0.168945 10.4893 0.678711 10.1289 1.63672L7.44824 8.84375H12.5459C12.9326 8.84375 13.2139 9.10742 13.2139 9.47656C13.2139 9.67871 13.1348 9.86328 12.9766 10.0654L4.76758 20.2256C4.13477 20.999 3.1416 20.4893 3.50195 19.5312L6.18262 12.333H1.08496C0.698242 12.333 0.416992 12.0605 0.416992 11.7002Z"
-                fill="#FFD321"
-              />
-            </svg>
-          </div>
-          <div className="main-nav__progress">
-            <div className="main-nav__progress-bar"></div>
-          </div>
-          <div className="main-nav__clock f-center">
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 15 15"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7.28516 14.126C3.38867 14.126 0.223633 10.9609 0.223633 7.06445C0.223633 3.16797 3.38867 0.00292969 7.28516 0.00292969C11.1816 0.00292969 14.3467 3.16797 14.3467 7.06445C14.3467 10.9609 11.1816 14.126 7.28516 14.126ZM7.28516 12.7314C10.4229 12.7314 12.959 10.2021 12.959 7.06445C12.959 3.92676 10.4229 1.39062 7.28516 1.39062C4.14746 1.39062 1.61133 3.92676 1.61133 7.06445C1.61133 10.2021 4.14746 12.7314 7.28516 12.7314ZM3.82617 7.91211C3.51855 7.91211 3.28613 7.67285 3.28613 7.37207C3.28613 7.06445 3.51855 6.83203 3.82617 6.83203H6.73828V2.8877C6.73828 2.58691 6.97754 2.34766 7.27832 2.34766C7.58594 2.34766 7.8252 2.58691 7.8252 2.8877V7.37207C7.8252 7.67285 7.58594 7.91211 7.27832 7.91211H3.82617Z"
-                fill="#AAB2BD"
-              />
-            </svg>
-            56:23:55
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
-
 export default MainCarouselSet;
