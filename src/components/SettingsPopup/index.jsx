@@ -62,18 +62,18 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     }
   };
   const [translatedCardBackName, setTranslatedCardBackName] = useState("");
-  // useEffect(() => {
-  //   const getTranslatedName = async () => {
-  //     const cardBackName = purchasedShirts.find(
-  //       (shirt) => shirt.image_url === cardBackStyle
-  //     )?.name;
-  //     const translatedName = cardBackName
-  //       ? await translateServerResponse(cardBackName)
-  //       : "Default";
-  //     setTranslatedCardBackName(translatedName);
-  //   };
-  //   getTranslatedName();
-  // }, [cardBackStyle, purchasedShirts]);
+  useEffect(() => {
+    const getTranslatedName = async () => {
+      const cardBackName = purchasedShirts.find(
+        (shirt) => shirt.image_url === cardBackStyle
+      )?.name;
+      const translatedName = cardBackName
+        ? await translateServerResponse(cardBackName)
+        : "Default";
+      setTranslatedCardBackName(translatedName);
+    };
+    getTranslatedName();
+  }, [cardBackStyle, purchasedShirts]);
 
   const [isLoading, setIsLoading] = useState(true);
   const settingsPopupRef = useRef(null);
@@ -90,18 +90,6 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
           if (response.data.style) {
             setCardBackStyle(response.data.style);
             dispatch(setCardBack(response.data.style));
-            // Translate card back name
-            const cardBackName = purchasedShirts.find(
-              (shirt) => shirt.image_url === response.data.style
-            )?.name;
-            if (cardBackName) {
-              const translatedName = await translateServerResponse(
-                cardBackName
-              );
-              setTranslatedCardBackName(translatedName);
-            } else {
-              setTranslatedCardBackName("Default");
-            }
           }
         }
         // Load saved language
@@ -119,7 +107,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       }
     };
     loadData();
-  }, [dispatch, cardBackStyle, purchasedShirts]);
+  }, [dispatch]);
   const handleLanguageChange = async (langCode) => {
     if (langCode === "ru") {
       setSelectLang(1);
