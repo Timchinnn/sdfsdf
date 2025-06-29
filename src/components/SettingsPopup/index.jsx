@@ -251,9 +251,11 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                     onClick={handleSelectClick}
                   >
                     <span>
-                      {purchasedShirts.find(
-                        (shirt) => shirt.image_url === cardBackStyle
-                      )?.name || "Default"}
+                      {translations[
+                        purchasedShirts.find(
+                          (shirt) => shirt.image_url === cardBackStyle
+                        )?.name
+                      ] || translations.default}
                     </span>
                     <svg
                       width="8"
