@@ -1,25 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import "./styles.scss";
-
 import DefaultImg from "assets/img/default-img.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import QuestionMarkImg from "assets/img/question-mark.png";
-
 import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
-
+import Spinner from "components/Spinner";
 const ShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { setActivePopup, onButtonClick } = props;
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
+      setLoading(false);
     }, 100);
     return () => clearTimeout(timer);
   }, []);
-  const { setActivePopup, onButtonClick } = props; // Добавляем onButtonClick в props
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -27,7 +25,6 @@ const ShopPopup = (props) => {
         setActivePopup(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
@@ -36,7 +33,7 @@ const ShopPopup = (props) => {
       props.handleClosePopup();
     }
     if (onButtonClick) {
-      onButtonClick(); // Вызываем callback при клике на кнопку
+      onButtonClick();
     }
   };
   useEffect(() => {
@@ -67,112 +64,103 @@ const ShopPopup = (props) => {
             />
           </svg>
         </button>
-        <div className="shop-popup__inner">
-          <div className="shop-popup__image">
-            {/* <img
-              src={
-                props.selectedPhoto
-                  ? `${props.selectedPhoto.image}`
-                  : DefaultImg
-              }
-              alt={props.selectedPhoto?.title || ""}
-            /> */}
-            {/* <img
-              src={
-                item.id === "set" || item.id === "energy" || item.id === "money"
-                  ? item.image
-                  : `${item.image}`
-              }
-              alt=""
-              className="shop-card__Img"
-            /> */}
-            {showImage && (
-              <img
-                src={
-                  props.selectedPhoto
-                    ? props.selectedPhoto.id === "set" ||
-                      props.selectedPhoto.id === "energy" ||
-                      props.selectedPhoto.id === "money" ||
-                      props.selectedPhoto.image === QuestionMarkImg ||
-                      props.selectedPhoto.image.startsWith(
-                        "https://api.zoomayor.io"
-                      )
-                      ? props.selectedPhoto.image
-                      : `https://api.zoomayor.io${props.selectedPhoto.image}`
-                    : DefaultImg
-                }
-                alt={props.selectedPhoto?.title || ""}
-              />
-            )}
+        {loading ? (
+          <div className="shop-popup__spinner">
+            <Spinner loading={true} size={50} />
           </div>
-          <div className="shop-popup__content">
-            {props.selectedPhoto &&
-            props.selectedPhoto.image === QuestionMarkImg ? (
-              <h3 className="shop-popup__title">Карта не открыта</h3>
-            ) : (
-              <>
-                <h3 className="shop-popup__title">
-                  {props.selectedPhoto ? props.selectedPhoto.title : ""}
-                </h3>
-                <p className="shop-popup__text">
-                  {props.selectedPhoto ? props.selectedPhoto.description : ""}
-                  {props.selectedPhoto &&
-                    props.selectedPhoto.type === "energy_boost" && (
-                      <span style={{ marginLeft: "5px" }}>
-                        ⚡ {props.selectedPhoto.energy || 100}
-                      </span>
-                    )}
-                </p>
-                <div className="shop-popup__earn">
-                  <div className="main-params__card f-center-center">
-                    <div className="main-params__icon f-center-center">
-                      <img src={TimeIcon} alt="" />
+        ) : (
+          <div className="shop-popup__inner">
+            <div className="shop-popup__image">
+              {showImage && (
+                <img
+                  src={
+                    props.selectedPhoto
+                      ? props.selectedPhoto.id === "set" ||
+                        props.selectedPhoto.id === "energy" ||
+                        props.selectedPhoto.id === "money" ||
+                        props.selectedPhoto.image === QuestionMarkImg ||
+                        props.selectedPhoto.image.startsWith(
+                          "https://api.zoomayor.io"
+                        )
+                        ? props.selectedPhoto.image
+                        : `https://api.zoomayor.io${props.selectedPhoto.image}`
+                      : DefaultImg
+                  }
+                  alt={props.selectedPhoto?.title || ""}
+                />
+              )}
+            </div>
+            <div className="shop-popup__content">
+              {props.selectedPhoto &&
+              props.selectedPhoto.image === QuestionMarkImg ? (
+                <h3 className="shop-popup__title">Карта не открыта</h3>
+              ) : (
+                <>
+                  <h3 className="shop-popup__title">
+                    {props.selectedPhoto ? props.selectedPhoto.title : ""}
+                  </h3>
+                  <p className="shop-popup__text">
+                    {props.selectedPhoto ? props.selectedPhoto.description : ""}
+                    {props.selectedPhoto &&
+                      props.selectedPhoto.type === "energy_boost" && (
+                        <span style={{ marginLeft: "5px" }}>
+                          ⚡ {props.selectedPhoto.energy || 100}
+                        </span>
+                      )}
+                  </p>
+                  <div className="shop-popup__earn">
+                    <div className="main-params__card f-center-center">
+                      <div className="main-params__icon f-center-center">
+                        <img src={TimeIcon} alt="" />
+                      </div>
+                      <p className="main-params__title">
+                        {props.selectedPhoto?.hourly_income
+                          ? typeof props.selectedPhoto.hourly_income ===
+                            "number"
+                            ? props.selectedPhoto.hourly_income.toFixed(2)
+                            : props.selectedPhoto.hourly_income
+                          : "0.00"}{" "}
+                        K/H
+                      </p>
                     </div>
-                    <p className="main-params__title">
-                      {props.selectedPhoto?.hourly_income
-                        ? typeof props.selectedPhoto.hourly_income === "number"
-                          ? props.selectedPhoto.hourly_income.toFixed(2)
-                          : props.selectedPhoto.hourly_income
-                        : "0.00"}{" "}
-                      K/H
-                    </p>
                   </div>
+                </>
+              )}
+            </div>
+            {props.selectedPhoto &&
+              props.selectedPhoto.image !== QuestionMarkImg && (
+                <div className="shop-popup__params">
+                  <ul className="friends-params f-center-center">
+                    <li className="friends-params__item f-center">
+                      <img src={StarIcon} alt="" />
+                      {props.selectedPhoto
+                        ? props.selectedPhoto.experience
+                        : ""}
+                    </li>
+                    <li className="friends-params__item f-center">
+                      <img src={CoinIcon} alt="" />
+                      {props.selectedPhoto ? props.selectedPhoto.price : ""}
+                    </li>
+                  </ul>
                 </div>
-              </>
-            )}
+              )}
+            <button
+              type="button"
+              className="shop-popup__btn"
+              onClick={() => {
+                if (props.main) {
+                  handleButtonClick();
+                } else {
+                  props.handleClosePopup();
+                }
+              }}
+            >
+              {!props.main ? "Купить" : "Ок"}
+            </button>
           </div>
-          {props.selectedPhoto &&
-            props.selectedPhoto.image !== QuestionMarkImg && (
-              <div className="shop-popup__params">
-                <ul className="friends-params f-center-center">
-                  <li className="friends-params__item f-center">
-                    <img src={StarIcon} alt="" />
-                    {props.selectedPhoto ? props.selectedPhoto.experience : ""}
-                  </li>
-                  <li className="friends-params__item f-center">
-                    <img src={CoinIcon} alt="" />
-                    {props.selectedPhoto ? props.selectedPhoto.price : ""}
-                  </li>
-                </ul>
-              </div>
-            )}
-          <button
-            type="button"
-            className="shop-popup__btn"
-            onClick={() => {
-              if (props.main) {
-                handleButtonClick();
-              } else {
-                props.handleClosePopup();
-              }
-            }}
-          >
-            {!props.main ? "Купить" : "Ок"}
-          </button>
-        </div>
+        )}
       </div>
     </div>
   );
 };
-
 export default ShopPopup;
