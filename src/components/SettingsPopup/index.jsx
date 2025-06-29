@@ -195,7 +195,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     >
       {" "}
       {isLoading ? (
-        <div className="modal-spinner">
+        <div className="modal-spinner" style={{ marginBottom: "50vw" }}>
           <Spinner loading={true} size={50} />
         </div>
       ) : (
