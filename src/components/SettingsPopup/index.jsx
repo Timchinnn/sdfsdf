@@ -547,6 +547,8 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
               <div
                 className="modal-cardback"
                 style={{
+                  display: "flex",
+                  marginTop: "20px",
                   overflowX: "auto",
                   scrollbarWidth: "none",
                   whiteSpace: "nowrap",
