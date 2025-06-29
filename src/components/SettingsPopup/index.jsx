@@ -52,6 +52,29 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     highQualityDescription: "Может замедлить работу при плохом соединении",
     lowQualityDescription: "Рекомендуется для медленного соединения",
   });
+  const translateServerResponse = async (text) => {
+    try {
+      const translatedText = await translateText(text, language);
+      return translatedText;
+    } catch (error) {
+      console.error("Ошибка при переводе текста с сервера:", error);
+      return text;
+    }
+  };
+  const [translatedCardBackName, setTranslatedCardBackName] = useState("");
+  useEffect(() => {
+    const getTranslatedName = async () => {
+      const cardBackName = purchasedShirts.find(
+        (shirt) => shirt.image_url === cardBackStyle
+      )?.name;
+      const translatedName = cardBackName
+        ? await translateServerResponse(cardBackName)
+        : "Default";
+      setTranslatedCardBackName(translatedName);
+    };
+    getTranslatedName();
+  }, [cardBackStyle, purchasedShirts]);
+
   const [isLoading, setIsLoading] = useState(true);
   const settingsPopupRef = useRef(null);
   useEffect(() => {
@@ -250,13 +273,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                     className="modal-settings__select"
                     onClick={handleSelectClick}
                   >
-                    <span>
-                      {translations[
-                        purchasedShirts.find(
-                          (shirt) => shirt.image_url === cardBackStyle
-                        )?.name
-                      ] || translations.default}
-                    </span>
+                    <span>{translatedCardBackName}</span>
                     <svg
                       width="8"
                       height="14"
