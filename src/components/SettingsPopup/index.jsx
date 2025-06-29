@@ -1,30 +1,55 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./styles.scss";
 import { useDispatch, useSelector } from "react-redux";
-// import DefaultImg from "assets/img/default-card.png";
-// import Style1CardBack from "assets/img/card1.png";
-// import Style2CardBack from "assets/img/card2.png";
+import { routeAdmin } from "pages/AdminPanel";
+import { NavLink } from "react-router-dom";
+import { cardBackService } from "services/api";
+import axios from "../../axios-controller";
+import Spinner from "../Spinner";
 import {
   setTheme,
   setCardBack,
   setLanguage,
   setImageQuality,
 } from "../../redux/actions";
-import { routeAdmin } from "pages/AdminPanel";
-import { NavLink } from "react-router-dom";
-import { cardBackService } from "services/api";
-import axios from "../../axios-controller";
-import Spinner from "../Spinner";
-// import { setTheme } from "../../redux/actions";
-
 const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const imageQuality = useSelector((state) => state.imageQuality);
-
   const dispatch = useDispatch();
   const [purchasedShirts, setPurchasedShirts] = useState([]);
-
   const [cardBackStyle, setCardBackStyle] = useState("default");
   const [cardBacks, setCardBacks] = useState([]);
+  const [settingsVibration, setSettingsVibration] = useState(false);
+  const [settingsNight, setSettingsNight] = useState(
+    useSelector((state) => state.theme)
+  );
+  const language = useSelector((state) => state.language);
+  const [modalStep, setModalStep] = useState(1);
+  const [seletLang, setSelectLang] = useState(() => {
+    const savedLang = localStorage.getItem("language");
+    return savedLang === "en" ? 2 : savedLang === "ru" ? 1 : 1;
+  });
+  const [translations, setTranslations] = useState({
+    vibration: "Вибрация",
+    nightMode: "Ночной режим",
+    cardBack: "Рубашка карты",
+    language: "Язык",
+    deleteAccount: "Удалить аккаунт",
+    saveAndContinue: "Сохранить и продолжить",
+    imageQuality: "Качество изображений",
+    automatic: "Автоматически",
+    high: "Высокое качество",
+    low: "Низкое качество",
+    backToSettings: "Назад",
+    russian: "Русский",
+    english: "Английский",
+    italian: "Итальянский",
+    spanish: "Испанский",
+    german: "Немецкий",
+    confirmDeleteAccount:
+      "Вы уверенны, что хотите стереть все данные на нашем сервисе?",
+    keepAccount: "Оставить аккаунт",
+    deleteData: "Стереть все данные",
+  });
+  const settingsPopupRef = useRef(null);
   useEffect(() => {
     const loadUserCardBack = async () => {
       try {
@@ -39,18 +64,16 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
           }
         }
       } catch (error) {
-        console.error("Error loading card back style:", error);
+        console.error("Ошибка при загрузке стиля рубашки карты:", error);
       }
     };
-
     loadUserCardBack();
   }, [dispatch]);
   useEffect(() => {
-    // Загружаем сохраненный язык при монтировании
     const savedLanguage = localStorage.getItem("language") || "ru";
     dispatch(setLanguage(savedLanguage));
     setSelectLang(savedLanguage === "en" ? 2 : 1);
-    handleLanguageChange(savedLanguage); // Добавляем вызов для загрузки переводов
+    handleLanguageChange(savedLanguage);
   }, [dispatch]);
   const fetchPurchasedShirts = async () => {
     try {
@@ -60,31 +83,14 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
           `/user/${tg.initDataUnsafe.user.id}/shirts`
         );
         if (response.data && response.data.shirts) {
-          console.log(response.data.shirts);
           setPurchasedShirts(response.data.shirts);
         }
       }
     } catch (error) {
-      console.error("Error fetching purchased shirts:", error);
+      console.error("Ошибка при получении купленных рубашек:", error);
     }
   };
   useEffect(() => {
-    const fetchPurchasedShirts = async () => {
-      try {
-        const tg = window.Telegram.WebApp;
-        if (tg?.initDataUnsafe?.user?.id) {
-          const response = await axios.get(
-            `/user/${tg.initDataUnsafe.user.id}/shirts`
-          );
-          if (response.data && response.data.shirts) {
-            console.log(response.data.shirts);
-            setPurchasedShirts(response.data.shirts);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching purchased shirts:", error);
-      }
-    };
     fetchPurchasedShirts();
   }, []);
   useEffect(() => {
@@ -93,10 +99,9 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         const response = await cardBackService.getAllCardBacks();
         setCardBacks(response.data);
       } catch (error) {
-        console.error("Error fetching card backs:", error);
+        console.error("Ошибка при загрузке рубашек карт:", error);
       }
     };
-
     fetchCardBacks();
   }, []);
   const handleCardBackChange = async (style) => {
@@ -106,42 +111,32 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       const tg = window.Telegram.WebApp;
       if (tg?.initDataUnsafe?.user?.id) {
         const userId = tg.initDataUnsafe.user.id;
-        // Update the API endpoint to use the correct path
-        await cardBackService.updateUserCardBack(userId, {
-          style: style,
-        });
+        await cardBackService.updateUserCardBack(userId, { style });
       }
     } catch (error) {
-      console.error("Error updating card back:", error);
+      console.error("Ошибка при обновлении рубашки карты:", error);
     }
   };
-  const darkTheme = useSelector((state) => state.theme);
-
-  // const cardBackStyles = [
-  //   {
-  //     id: "default",
-  //     image: DefaultImg,
-  //   },
-  //   {
-  //     id: "style1",
-  //     image: Style1CardBack,
-  //   },
-  //   {
-  //     id: "style2",
-  //     image: Style2CardBack,
-  //   },
-  // ];
-  const [settingsVibration, setSettingsVibration] = useState(false);
-  const [settingsNight, setSettingsNight] = useState(darkTheme);
-  const language = useSelector((state) => state.language);
-
-  const [modalStep, setModalStep] = useState(1);
-  const [seletLang, setSelectLang] = useState(() => {
-    const savedLang = localStorage.getItem("language");
-    return savedLang === "en" ? 2 : savedLang === "ru" ? 1 : 1;
-  });
-  const [translations, setTranslations] = useState({});
-
+  const handleLanguageChange = async (langCode) => {
+    if (langCode === "ru") {
+      setSelectLang(1);
+      dispatch(setLanguage("ru"));
+      localStorage.setItem("language", "ru");
+    } else if (langCode === "en") {
+      setSelectLang(2);
+      dispatch(setLanguage("en"));
+      localStorage.setItem("language", "en");
+    }
+    try {
+      const translatedTexts = {};
+      for (const [key, text] of Object.entries(translations)) {
+        translatedTexts[key] = await translateText(text, langCode);
+      }
+      setTranslations(translatedTexts);
+    } catch (error) {
+      console.error("Ошибка при переводе текстов:", error);
+    }
+  };
   const translateText = async (text, targetLang) => {
     try {
       const response = await axios.post("/translate", {
@@ -153,42 +148,10 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       }
       return text;
     } catch (error) {
-      console.error("Translation error:", error);
+      console.error("Ошибка при переводе:", error);
       return text;
     }
   };
-  const handleLanguageChange = async (langCode) => {
-    // Устанавливаем язык и сохраняем в localStorage
-    if (langCode === "ru") {
-      setSelectLang(1);
-      dispatch(setLanguage("ru"));
-      localStorage.setItem("language", "ru");
-    } else if (langCode === "en") {
-      setSelectLang(2);
-      dispatch(setLanguage("en"));
-      localStorage.setItem("language", "en");
-    }
-    // Тексты для перевода
-    const textsToTranslate = {
-      vibration: "Вибрация",
-      nightMode: "Ночной режим",
-      cardBack: "Рубашка карты",
-      language: "Язык",
-      deleteAccount: "Удалить аккаунт",
-      saveAndContinue: "Сохранить и продолжить",
-    };
-    try {
-      const translatedTexts = {};
-      for (const [key, text] of Object.entries(textsToTranslate)) {
-        translatedTexts[key] = await translateText(text, langCode);
-      }
-      setTranslations(translatedTexts);
-    } catch (error) {
-      console.error("Error translating texts:", error);
-    }
-  };
-  const settingsPopupRef = useRef(null);
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -199,33 +162,24 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
         setActivePopup(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setActivePopup]);
-
   const handleClickPopupClose = () => {
     setActivePopup(false);
     document.documentElement.classList.remove("fixed");
     setModalStep(1);
   };
-
   const setThemeMode = () => {
     setSettingsNight(!settingsNight);
     dispatch(setTheme(!settingsNight));
   };
-
-  // if (settingsNight === true) {
-  //     document.body.classList.add("dark");
-  //   }
   const tg = window.Telegram.WebApp;
   const handleSelectClick = () => {
-    // Вызываем функцию для получения купленных рубашек при клике
     fetchPurchasedShirts();
-    setModalStep(4); // Переход на шаг 4
+    setModalStep(4);
   };
   return (
     <div
@@ -249,11 +203,9 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                   </>
                 )}
               </div>
-              {/* <Spinner /> */}
               <div className="modal-settings__item f-center-jcsb">
                 <p className="modal-settings__title">
-                  {" "}
-                  {translations.vibration || "Вибрация"}
+                  {translations.vibration}
                 </p>
                 <div
                   className={`modal-settings__toggle ${
@@ -265,7 +217,9 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 </div>
               </div>
               <div className="modal-settings__item f-center-jcsb">
-                <p className="modal-settings__title">Ночной режим</p>
+                <p className="modal-settings__title">
+                  {translations.nightMode}
+                </p>
                 <div
                   className={`modal-settings__toggle ${
                     settingsNight ? "active" : ""
@@ -276,7 +230,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 </div>
               </div>
               <div className="modal-settings__item f-center-jcsb">
-                <p className="modal-settings__title">Рубашка карты</p>
+                <p className="modal-settings__title">{translations.cardBack}</p>
                 <div
                   className="modal-settings__select"
                   onClick={handleSelectClick}
@@ -285,7 +239,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                     {purchasedShirts.find(
                       (shirt) => shirt.image_url === cardBackStyle
                     )?.name || "Default"}
-                  </span>{" "}
+                  </span>
                   <svg
                     width="8"
                     height="14"
@@ -301,12 +255,12 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 </div>
               </div>
               <div className="modal-settings__item f-center-jcsb">
-                <p className="modal-settings__title">Язык</p>
+                <p className="modal-settings__title">{translations.language}</p>
                 <div
                   className="modal-settings__lang f-center"
                   onClick={() => setModalStep(2)}
                 >
-                  Русский
+                  {translations.russian}
                   <svg
                     width="8"
                     height="14"
@@ -322,18 +276,20 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 </div>
               </div>
               <div className="modal-settings__item f-center-jcsb">
-                <p className="modal-settings__title">Качество изображений</p>
+                <p className="modal-settings__title">
+                  {translations.imageQuality}
+                </p>
                 <div
                   className="modal-settings__select"
-                  onClick={() => setModalStep(5)} // Новый шаг для выбора качества
+                  onClick={() => setModalStep(5)}
                 >
                   <span>
                     {imageQuality === "auto"
-                      ? "Автоматически"
+                      ? translations.automatic
                       : imageQuality === "high"
-                      ? "Высокое"
-                      : "Низкое"}
-                  </span>{" "}
+                      ? translations.high
+                      : translations.low}
+                  </span>
                   <svg
                     width="8"
                     height="14"
@@ -354,7 +310,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
               className="modal-settings__delete"
               onClick={() => setModalStep(3)}
             >
-              Удалить аккаунт
+              {translations.deleteAccount}
             </button>
             <div className="modal-nav">
               <button
@@ -362,22 +318,26 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 className="modal-btn"
                 onClick={handleClickPopupClose}
               >
-                Сохранить и продолжить
+                {translations.saveAndContinue}
               </button>
             </div>
           </>
         )}
         {modalStep === 2 && (
           <>
-            <h3 className="modal-title">Язык</h3>
+            <h3 className="modal-title">{translations.language}</h3>
             <div className="modal-lang">
               <div
                 className="modal-lang__item f-center-jcsb"
                 onClick={() => handleLanguageChange("ru")}
               >
                 <div className="modal-lang__content">
-                  <p className="modal-lang__content-title">Russian</p>
-                  <p className="modal-lang__content-subtitle">Русский</p>
+                  <p className="modal-lang__content-title">
+                    {translations.russian}
+                  </p>
+                  <p className="modal-lang__content-subtitle">
+                    {translations.russian}
+                  </p>
                 </div>
                 <span
                   className={`modal-lang__select ${
@@ -403,8 +363,12 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 onClick={() => handleLanguageChange("en")}
               >
                 <div className="modal-lang__content">
-                  <p className="modal-lang__content-title">English</p>
-                  <p className="modal-lang__content-subtitle">Русский</p>
+                  <p className="modal-lang__content-title">
+                    {translations.english}
+                  </p>
+                  <p className="modal-lang__content-subtitle">
+                    {translations.english}
+                  </p>
                 </div>
                 <span
                   className={`modal-lang__select ${
@@ -430,8 +394,12 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 onClick={() => setSelectLang(3)}
               >
                 <div className="modal-lang__content">
-                  <p className="modal-lang__content-title">Italian</p>
-                  <p className="modal-lang__content-subtitle">Italiano</p>
+                  <p className="modal-lang__content-title">
+                    {translations.italian}
+                  </p>
+                  <p className="modal-lang__content-subtitle">
+                    {translations.italian}
+                  </p>
                 </div>
                 <span
                   className={`modal-lang__select ${
@@ -457,8 +425,12 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 onClick={() => setSelectLang(4)}
               >
                 <div className="modal-lang__content">
-                  <p className="modal-lang__content-title">Spanish</p>
-                  <p className="modal-lang__content-subtitle">Español</p>
+                  <p className="modal-lang__content-title">
+                    {translations.spanish}
+                  </p>
+                  <p className="modal-lang__content-subtitle">
+                    {translations.spanish}
+                  </p>
                 </div>
                 <span
                   className={`modal-lang__select ${
@@ -484,8 +456,12 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 onClick={() => setSelectLang(5)}
               >
                 <div className="modal-lang__content">
-                  <p className="modal-lang__content-title">German</p>
-                  <p className="modal-lang__content-subtitle">Deutsch</p>
+                  <p className="modal-lang__content-title">
+                    {translations.german}
+                  </p>
+                  <p className="modal-lang__content-subtitle">
+                    {translations.german}
+                  </p>
                 </div>
                 <span
                   className={`modal-lang__select ${
@@ -513,46 +489,42 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 className="modal-btn"
                 onClick={handleClickPopupClose}
               >
-                Сохранить и продолжить
+                {translations.saveAndContinue}
               </button>
               <button
                 type="button"
                 className="modal-btn modal-btn_default"
                 onClick={handleClickPopupClose}
               >
-                Сбросить
+                {translations.backToSettings}
               </button>
             </div>
           </>
         )}
         {modalStep === 3 && (
           <>
-            <h3 className="modal-title">
-              Вы уверенны, что хотите стереть
-              <br />
-              все данные на нашем сервисе?
-            </h3>
+            <h3 className="modal-title">{translations.confirmDeleteAccount}</h3>
             <div className="modal-nav">
               <button
                 type="button"
                 className="modal-btn"
                 onClick={handleClickPopupClose}
               >
-                Оставить аккаунт
+                {translations.keepAccount}
               </button>
               <button
                 type="button"
                 className="modal-btn modal-btn_delete"
                 onClick={handleClickPopupClose}
               >
-                Стереть все данные
+                {translations.deleteData}
               </button>
             </div>
           </>
         )}
         {modalStep === 4 && (
           <>
-            <h3 className="modal-title">Выбор рубашки</h3>
+            <h3 className="modal-title">{translations.cardBack}</h3>
             <div
               className="modal-cardback"
               style={{
@@ -561,7 +533,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 whiteSpace: "nowrap",
               }}
             >
-              {/* Regular card backs */}
+              {/* Стандартные рубашки карт */}
               {cardBacks.map((cardBack) => (
                 <div
                   key={cardBack.id}
@@ -584,7 +556,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                   />
                 </div>
               ))}
-              {/* Purchased shirts */}
+              {/* Купленные рубашки */}
               {purchasedShirts.map((shirt) => (
                 <div
                   key={shirt.id}
@@ -608,21 +580,20 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 </div>
               ))}
             </div>
-
             <div className="modal-nav">
               <button
                 type="button"
                 className="modal-btn"
                 onClick={() => setModalStep(1)}
               >
-                Применить
+                {translations.saveAndContinue}
               </button>
             </div>
           </>
         )}
         {modalStep === 5 && (
           <>
-            <h3 className="modal-title">Качество изображений</h3>
+            <h3 className="modal-title">{translations.imageQuality}</h3>
             <div className="modal-quality">
               <div
                 className="modal-lang__item f-center-jcsb"
@@ -632,9 +603,11 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 }}
               >
                 <div className="modal-lang__content">
-                  <p className="modal-lang__content-title">Автоматически</p>
+                  <p className="modal-lang__content-title">
+                    {translations.automatic}
+                  </p>
                   <p className="modal-lang__content-subtitle">
-                    Выбирается в зависимости от скорости соединения
+                    {translations.automaticDescription}
                   </p>
                 </div>
                 <span
@@ -664,9 +637,11 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 }}
               >
                 <div className="modal-lang__content">
-                  <p className="modal-lang__content-title">Высокое качество</p>
+                  <p className="modal-lang__content-title">
+                    {translations.high}
+                  </p>
                   <p className="modal-lang__content-subtitle">
-                    Может замедлить работу при плохом соединении
+                    {translations.highQualityDescription}
                   </p>
                 </div>
                 <span
@@ -696,9 +671,11 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 }}
               >
                 <div className="modal-lang__content">
-                  <p className="modal-lang__content-title">Низкое качество</p>
+                  <p className="modal-lang__content-title">
+                    {translations.low}
+                  </p>
                   <p className="modal-lang__content-subtitle">
-                    Рекомендуется для медленного соединения
+                    {translations.lowQualityDescription}
                   </p>
                 </div>
                 <span
@@ -727,7 +704,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
                 className="modal-btn"
                 onClick={() => setModalStep(1)}
               >
-                Назад
+                {translations.backToSettings}
               </button>
             </div>
           </>
