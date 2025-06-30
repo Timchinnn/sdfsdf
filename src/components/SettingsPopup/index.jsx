@@ -62,7 +62,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     }
   };
   const [translatedCardBackName, setTranslatedCardBackName] = useState("");
-  useEffect(() => {
+useEffect(() => {
     const getTranslatedName = async () => {
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
@@ -73,7 +73,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       setTranslatedCardBackName(translatedName);
     };
     getTranslatedName();
-  }, [cardBackStyle, purchasedShirts]);
+  }, [cardBackStyle, purchasedShirts, language]);
 
   const [isLoading, setIsLoading] = useState(true);
   const settingsPopupRef = useRef(null);
