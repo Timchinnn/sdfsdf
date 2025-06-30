@@ -85,6 +85,7 @@ useEffect(() => {
         dispatch(setLanguage(savedLanguage));
         setSelectLang(savedLanguage === "en" ? 2 : 1);
         await handleLanguageChange(savedLanguage);
+        
         // Load user card back and purchased shirts first
         const tg = window.Telegram.WebApp;
         let cardBackStyleValue = "default";
@@ -94,31 +95,32 @@ useEffect(() => {
             cardBackService.getUserCardBack(tg.initDataUnsafe.user.id),
             fetchPurchasedShirts()
           ]);
+          
           if (cardBackResponse.data.style) {
             cardBackStyleValue = cardBackResponse.data.style;
             setCardBackStyle(cardBackStyleValue);
             dispatch(setCardBack(cardBackStyleValue));
           }
-          // Set translated name before spinner disappears
+          // Get card back name and translate it before setting loading to false
           const cardBackName = purchasedShirts.find(
             (shirt) => shirt.image_url === cardBackStyleValue
           )?.name;
-          
-          const translatedName = cardBackName
-             await translateServerResponse(cardBackName)
-            
-          setTranslatedCardBackName(translatedName);
+          if (cardBackName) {
+            const translatedName = await translateServerResponse(cardBackName);
+            setTranslatedCardBackName(translatedName);
+          }
         }
+        
         // Load card backs
         await fetchCardBacks();
         setIsLoading(false);
       } catch (error) {
-        console.error("Error")
+        console.error("Error");
         setIsLoading(false);
       }
     };
     loadData();
-  }, [dispatch]);
+}, [dispatch]);
   const handleLanguageChange = async (langCode) => {
     if (langCode === "ru") {
       setSelectLang(1);
