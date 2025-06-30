@@ -68,8 +68,8 @@ useEffect(() => {
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
       const translatedName = cardBackName
-        ? await translateServerResponse(cardBackName)
-        : "Default";
+         await translateServerResponse(cardBackName)
+        
       setTranslatedCardBackName(translatedName);
     };
     getTranslatedName();
