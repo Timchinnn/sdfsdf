@@ -121,14 +121,14 @@ useEffect(() => {
     };
     loadData();
 }, [dispatch]);
-  const handleLanguageChange = async (langCode) => {
+const handleLanguageChange = async (langCode) => {
     if (langCode === "ru") {
       setSelectLang(1);
       dispatch(setLanguage("ru"));
       localStorage.setItem("language", "ru");
     } else if (langCode === "en") {
       setSelectLang(2);
-      dispatch(setLanguage("en"));
+      dispatch(setLanguage("en")); 
       localStorage.setItem("language", "en");
     }
     try {
@@ -137,8 +137,9 @@ useEffect(() => {
       for (const [key, text] of Object.entries(translations)) {
         translatedTexts[key] = await translateText(text, langCode);
       }
-      setTranslations(translatedTexts);
+      await setTranslations(translatedTexts);
       setIsLoading(false);
+      setModalStep(1); // Перемещено после обновления переводов
     } catch (error) {
       console.error("Ошибка при переводе текстов:", error);
       setIsLoading(false);
