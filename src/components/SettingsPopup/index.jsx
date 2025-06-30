@@ -80,36 +80,40 @@ useEffect(() => {
 useEffect(() => {
     const loadData = async () => {
       try {
-        setIsLoading(true);
         // Load saved language
         const savedLanguage = localStorage.getItem("language") || "ru";
         dispatch(setLanguage(savedLanguage));
         setSelectLang(savedLanguage === "en" ? 2 : 1);
         await handleLanguageChange(savedLanguage);
-        // Load user card back
+        // Load user card back and purchased shirts first
         const tg = window.Telegram.WebApp;
+        let cardBackStyleValue = "default";
+        
         if (tg?.initDataUnsafe?.user?.id) {
-          const response = await cardBackService.getUserCardBack(
-            tg.initDataUnsafe.user.id
-          );
-          if (response.data.style) {
-            setCardBackStyle(response.data.style);
-            dispatch(setCardBack(response.data.style));
+          const [cardBackResponse, purchasedResponse] = await Promise.all([
+            cardBackService.getUserCardBack(tg.initDataUnsafe.user.id),
+            fetchPurchasedShirts()
+          ]);
+          if (cardBackResponse.data.style) {
+            cardBackStyleValue = cardBackResponse.data.style;
+            setCardBackStyle(cardBackStyleValue);
+            dispatch(setCardBack(cardBackStyleValue));
           }
+          // Set translated name before spinner disappears
+          const cardBackName = purchasedShirts.find(
+            (shirt) => shirt.image_url === cardBackStyleValue
+          )?.name;
+          
+          const translatedName = cardBackName
+            ? await translateServerResponse(cardBackName)
+            : "Default";
+          setTranslatedCardBackName(translatedName);
         }
-        // Load purchased shirts and translate card back name
-        await fetchPurchasedShirts();
-        const cardBackName = purchasedShirts.find(
-          (shirt) => shirt.image_url === cardBackStyle
-        )?.name;
-        const translatedName = cardBackName
-          ? await translateServerResponse(cardBackName)
-          : "Default";
-        setTranslatedCardBackName(translatedName);
         // Load card backs
         await fetchCardBacks();
         setIsLoading(false);
       } catch (error) {
+        console.error("Error
         setIsLoading(false);
       }
     };
