@@ -67,10 +67,10 @@ useEffect(() => {
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
-      const translatedName = cardBackName
-         await translateServerResponse(cardBackName)
-        
-      setTranslatedCardBackName(translatedName);
+      if (cardBackName) {
+        const translatedName = await translateServerResponse(cardBackName);
+        setTranslatedCardBackName(translatedName);
+      }
     };
     getTranslatedName();
   }, [cardBackStyle, purchasedShirts, language]);
