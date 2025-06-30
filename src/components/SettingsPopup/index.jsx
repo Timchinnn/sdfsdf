@@ -77,10 +77,15 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const settingsPopupRef = useRef(null);
-  useEffect(() => {
+useEffect(() => {
     const loadData = async () => {
       try {
         setIsLoading(true);
+        // Load saved language
+        const savedLanguage = localStorage.getItem("language") || "ru";
+        dispatch(setLanguage(savedLanguage));
+        setSelectLang(savedLanguage === "en" ? 2 : 1);
+        await handleLanguageChange(savedLanguage);
         // Load user card back
         const tg = window.Telegram.WebApp;
         if (tg?.initDataUnsafe?.user?.id) {
@@ -92,13 +97,15 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
             dispatch(setCardBack(response.data.style));
           }
         }
-        // Load saved language
-        const savedLanguage = localStorage.getItem("language") || "ru";
-        dispatch(setLanguage(savedLanguage));
-        setSelectLang(savedLanguage === "en" ? 2 : 1);
-        await handleLanguageChange(savedLanguage);
-        // Load purchased shirts
+        // Load purchased shirts and translate card back name
         await fetchPurchasedShirts();
+        const cardBackName = purchasedShirts.find(
+          (shirt) => shirt.image_url === cardBackStyle
+        )?.name;
+        const translatedName = cardBackName
+          ? await translateServerResponse(cardBackName)
+          : "Default";
+        setTranslatedCardBackName(translatedName);
         // Load card backs
         await fetchCardBacks();
         setIsLoading(false);
