@@ -95,6 +95,7 @@ useEffect(() => {
             const cardBackName = purchasedShirts.find(
               (shirt) => shirt.image_url === response.data.style
             )?.name;
+            console.log(cardBackName)
             if (cardBackName) {
               const translatedName = await translateServerResponse(cardBackName);
               setTranslatedCardBackName(translatedName);
