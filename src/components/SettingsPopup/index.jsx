@@ -21,6 +21,8 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const [settingsNight, setSettingsNight] = useState(
     useSelector((state) => state.theme)
   );
+  const [selectedLanguage, setSelectedLanguage] = useState(language);
+
   const language = useSelector((state) => state.language);
   const [modalStep, setModalStep] = useState(1);
   const [seletLang, setSelectLang] = useState(() => {
@@ -122,15 +124,17 @@ useEffect(() => {
     loadData();
 }, [dispatch]);
   const handleLanguageChange = async (langCode) => {
-    if (langCode === "ru") {
-      setSelectLang(1);
-      dispatch(setLanguage("ru"));
-      localStorage.setItem("language", "ru");
-    } else if (langCode === "en") {
-      setSelectLang(2);
-      dispatch(setLanguage("en"));
-      localStorage.setItem("language", "en");
-    }
+  if (langCode === "ru") {
+    setSelectLang(1);
+    dispatch(setLanguage("ru"));
+    setSelectedLanguage("ru");
+    localStorage.setItem("language", "ru");
+  } else if (langCode === "en") {
+    setSelectLang(2);
+    dispatch(setLanguage("en"));
+    setSelectedLanguage("en");
+    localStorage.setItem("language", "en");
+  }
     try {
       setIsLoading(true);
       const translatedTexts = {};
@@ -301,15 +305,10 @@ useEffect(() => {
                     </svg>
                   </div>
                 </div>
-                <div className="modal-settings__item f-center-jcsb">
-                  <p className="modal-settings__title">
-                    {translations.language}
-                  </p>
-                  <div
-                    className="modal-settings__lang f-center"
-                    onClick={() => setModalStep(2)}
-                  >
-                    {translations.russian}
+<div className="modal-settings__item f-center-jcsb">
+  <p className="modal-settings__title">{translations.language}</p>
+  <div className="modal-settings__lang f-center" onClick={() => setModalStep(2)}>
+    {selectedLanguage === "ru" ? translations.russian : translations.english}
                     <svg
                       width="8"
                       height="14"
