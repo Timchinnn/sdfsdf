@@ -105,8 +105,8 @@ useEffect(() => {
           )?.name;
           
           const translatedName = cardBackName
-            ? await translateServerResponse(cardBackName)
-            : "Default";
+             await translateServerResponse(cardBackName)
+            
           setTranslatedCardBackName(translatedName);
         }
         // Load card backs
