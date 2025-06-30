@@ -21,9 +21,8 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
   const [settingsNight, setSettingsNight] = useState(
     useSelector((state) => state.theme)
   );
-  const [selectedLanguage, setSelectedLanguage] = useState(language);
-
-  const language = useSelector((state) => state.language);
+const language = useSelector((state) => state.language) || 'ru';
+const [selectedLanguage, setSelectedLanguage] = useState(language);
   const [modalStep, setModalStep] = useState(1);
   const [seletLang, setSelectLang] = useState(() => {
     const savedLang = localStorage.getItem("language");
