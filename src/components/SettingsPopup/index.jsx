@@ -62,26 +62,39 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     }
   };
   const [translatedCardBackName, setTranslatedCardBackName] = useState("");
+  // useEffect(() => {
+  //   const getTranslatedName = async () => {
+  //     const cardBackName = purchasedShirts.find(
+  //       (shirt) => shirt.image_url === cardBackStyle
+  //     )?.name;
+  //     // console.log(cardBackName)
+  //     const translatedName = cardBackName
+  //       ? await translateServerResponse(cardBackName)
+  //       : "Default";
+  //     setTranslatedCardBackName(translatedName);
+  //   };
+  //   getTranslatedName();
+  // }, [cardBackStyle, purchasedShirts]);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const settingsPopupRef = useRef(null);
   useEffect(() => {
-    const getTranslatedName = async () => {
+    const loadData = async () => {
+      
+      try {
+
+        setIsLoading(true);
+        const getTranslatedName = async () => {
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
-      console.log(cardBackName)
+      // console.log(cardBackName)
       const translatedName = cardBackName
         ? await translateServerResponse(cardBackName)
         : "Default";
       setTranslatedCardBackName(translatedName);
     };
     getTranslatedName();
-  }, [cardBackStyle, purchasedShirts]);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const settingsPopupRef = useRef(null);
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setIsLoading(true);
         // Load user card back
         const tg = window.Telegram.WebApp;
         if (tg?.initDataUnsafe?.user?.id) {
@@ -108,7 +121,7 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
       }
     };
     loadData();
-  }, [dispatch]);
+  }, [dispatch,cardBackStyle, purchasedShirts]);
   const handleLanguageChange = async (langCode) => {
     if (langCode === "ru") {
       setSelectLang(1);
