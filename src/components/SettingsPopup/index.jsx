@@ -113,7 +113,7 @@ useEffect(() => {
         await fetchCardBacks();
         setIsLoading(false);
       } catch (error) {
-        console.error("Error
+        console.error("Error")
         setIsLoading(false);
       }
     };
