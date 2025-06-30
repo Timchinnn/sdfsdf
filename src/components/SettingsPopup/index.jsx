@@ -62,14 +62,18 @@ const SettingsPopup = ({ setActivePopup, activePopup }) => {
     }
   };
   const [translatedCardBackName, setTranslatedCardBackName] = useState("");
-  useEffect(() => {
+useEffect(() => {
     const getTranslatedName = async () => {
+      if (!cardBackStyle || !purchasedShirts.length) return;
+      
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
-      const translatedName = cardBackName
-        ? await translateServerResponse(cardBackName)
-        : "Default";
+      if (!cardBackName) {
+        setTranslatedCardBackName(cardBackStyle === 'default' ? 'Стандартная' : 'Default');
+        return;
+      }
+      const translatedName = await translateServerResponse(cardBackName);
       setTranslatedCardBackName(translatedName);
     };
     getTranslatedName();
