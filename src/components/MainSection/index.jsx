@@ -42,6 +42,7 @@ const MainSection = ({
   bonus: "Бонус",
   level: "Уровень города",
   mayor: "/ Мэр",
+  collect: "Забрать",
   // Добавьте другие переводы по мере необходимости
 });
 const updateTranslations = (language) => {
@@ -52,6 +53,7 @@ const updateTranslations = (language) => {
       bonus: "Бонус",
       level: "Уровень города",
       mayor: "/ Мэр",
+      collect: "Забрать",
       // Добавьте другие переводы для русского языка
     });
   } else if (language === "en") {
@@ -61,6 +63,7 @@ const updateTranslations = (language) => {
       bonus: "Bonus",
       level: "City Level",
       mayor: "/ Mayor",
+      collect: "Collect",
       // Добавьте другие переводы для английского языка
     });
   }
@@ -295,7 +298,7 @@ const updateTranslations = (language) => {
               }}
               disabled={accumulatedIncome === 0}
             >
-              Забрать
+              {translations.collect}
             </button>
           </div>
         </div>
