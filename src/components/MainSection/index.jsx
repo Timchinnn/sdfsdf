@@ -5,6 +5,7 @@ import { routeSets } from "pages/SetsPage";
 import { routeBonus } from "pages/BonusPage";
 import SettingsPopup from "components/SettingsPopup";
 import { userInitService } from "services/api";
+import { useSelector } from "react-redux";
 const MainSection = ({
   hourlyIncome: propHourlyIncome,
   coins: propCoins,
