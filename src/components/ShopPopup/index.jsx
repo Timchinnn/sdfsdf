@@ -6,7 +6,12 @@ import QuestionMarkImg from "assets/img/question-mark.png";
 import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
 import Spinner from "components/Spinner";
-const ShopPopup = (props) => {
+import axios from "../../axios-controller";
+import { useSelector } from 'react-redux';
+
+const ShopPopup = (props) => {  
+  const language = useSelector((state) => state.language);
+
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
   const [loading, setLoading] = useState(true);
