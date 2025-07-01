@@ -6,36 +6,41 @@ import QuestionMarkImg from "assets/img/question-mark.png";
 import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
 import Spinner from "components/Spinner";
-import { useSelector } from "react-redux"; // Импортируем useSelector
 const ShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
   const [loading, setLoading] = useState(true);
   const { setActivePopup, onButtonClick } = props;
-  const [translations, setTranslations] = useState({
-    titleClosedCard: "Карта не открыта",
-    buy: "Купить",
-    ok: "Ок",
-  });
-  const language = useSelector((state) => state.language); // Получаем текущий язык из Redux
-  useEffect(() => {
-    const updateTranslations = (lang) => {
-      if (lang === "ru") {
-        setTranslations({
-          titleClosedCard: "Карта не открыта",
-          buy: "Купить",
-          ok: "Ок",
-        });
-      } else if (lang === "en") {
-        setTranslations({
-          titleClosedCard: "Card not opened",
-          buy: "Buy",
-          ok: "Ok",
-        });
-      }
-    };
-    updateTranslations(language); // Обновляем переводы при изменении языка
-  }, [language]);
+  const [translatedTitle, setTranslatedTitle] = useState("");
+const [translatedDescription, setTranslatedDescription] = useState("");
+  const translateText = async (text, targetLang) => {
+  try {
+    const response = await axios.post("/translate", {
+      texts: [text],
+      targetLanguageCode: targetLang,
+    });
+    if (response.data && response.data[0]) {
+      return response.data[0].text; 
+    }
+    return text; 
+  } catch (error) {
+    console.error("Ошибка при переводе:", error);
+    return text; 
+  }
+};
+useEffect(() => {
+  const translateSelectedPhoto = async () => {
+    if (props.selectedPhoto) {
+      const title = props.selectedPhoto.title || "";
+      const description = props.selectedPhoto.description || "";
+      const translatedTitle = await translateText(title, language);
+      const translatedDescription = await translateText(description, language);
+      setTranslatedTitle(translatedTitle);
+      setTranslatedDescription(translatedDescription);
+    }
+  };
+  translateSelectedPhoto();
+}, [props.selectedPhoto, language]);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
@@ -61,25 +66,14 @@ const ShopPopup = (props) => {
       onButtonClick();
     }
   };
+  useEffect(() => {
+    if (props.selectedPhoto && props.selectedPhoto.image === QuestionMarkImg) {
+      console.log(QuestionMarkImg);
+    }
+  }, [props.selectedPhoto]);
   const imageUrl = props.selectedPhoto?.image
     ? `https://api.zoomayor.io${props.selectedPhoto.image}`
     : DefaultImg;
-  // Функция для перевода заголовка и описания
-  const translateText = (text) => {
-    if (language === "ru") {
-      return text; // Оставляем текст без изменений для русского
-    } else if (language === "en") {
-      // Здесь можно добавить логику для перевода текста
-      // Например, если у вас есть объект с переводами для заголовков и описаний
-      const translationsMap = {
-        "Сет": "Set",
-        "Задания": "Tasks",
-        "Бонус": "Bonus",
-        // Добавьте другие переводы
-      };
-      return translationsMap[text] || text; // Возвращаем перевод или оригинал, если перевод не найден
-    }
-  };
   return (
     <div ref={popupRef} className={`shop-popup ${props.active ? "show" : ""}`}>
       <div className="shop-popup__wrapper">
@@ -88,7 +82,17 @@ const ShopPopup = (props) => {
           className="shop-popup__close"
           onClick={handleButtonClick}
         >
-          {/* Иконка закрытия */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={20}
+            height={20}
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
+              fill="#AAB2BD"
+            />
+          </svg>
         </button>
         {loading ? (
           <div className="shop-popup__spinner">
@@ -99,21 +103,40 @@ const ShopPopup = (props) => {
             <div className="shop-popup__image">
               {showImage && (
                 <img
-                  src={imageUrl}
+                  src={
+                    props.selectedPhoto
+                      ? props.selectedPhoto.id === "set" ||
+                        props.selectedPhoto.id === "energy" ||
+                        props.selectedPhoto.id === "money" ||
+                        props.selectedPhoto.image === QuestionMarkImg ||
+                        props.selectedPhoto.image.startsWith(
+                          "https://api.zoomayor.io"
+                        )
+                        ? props.selectedPhoto.image
+                        : `https://api.zoomayor.io${props.selectedPhoto.image}`
+                      : DefaultImg
+                  }
                   alt={props.selectedPhoto?.title || ""}
                 />
               )}
             </div>
             <div className="shop-popup__content">
-              {props.selectedPhoto && props.selectedPhoto.image === QuestionMarkImg ? (
-                <h3 className="shop-popup__title">{translations.titleClosedCard}</h3>
+              {props.selectedPhoto &&
+              props.selectedPhoto.image === QuestionMarkImg ? (
+                <h3 className="shop-popup__title">Карта не открыта</h3>
               ) : (
                 <>
                   <h3 className="shop-popup__title">
-                    {props.selectedPhoto ? translateText(props.selectedPhoto.title) : ""}
+                    {props.selectedPhoto ? {translatedTitle} : ""}
                   </h3>
                   <p className="shop-popup__text">
-                    {props.selectedPhoto ? translateText(props.selectedPhoto.description) : ""}
+                    {props.selectedPhoto ? {translatedDescription} : ""}
+                    {props.selectedPhoto &&
+                      props.selectedPhoto.type === "energy_boost" && (
+                        <span style={{ marginLeft: "5px" }}>
+                          ⚡ {props.selectedPhoto.energy || 100}
+                        </span>
+                      )}
                   </p>
                   <div className="shop-popup__earn">
                     <div className="main-params__card f-center-center">
@@ -122,7 +145,8 @@ const ShopPopup = (props) => {
                       </div>
                       <p className="main-params__title">
                         {props.selectedPhoto?.hourly_income
-                          ? typeof props.selectedPhoto.hourly_income === "number"
+                          ? typeof props.selectedPhoto.hourly_income ===
+                            "number"
                             ? props.selectedPhoto.hourly_income.toFixed(2)
                             : props.selectedPhoto.hourly_income
                           : "0.00"}{" "}
@@ -133,26 +157,35 @@ const ShopPopup = (props) => {
                 </>
               )}
             </div>
-            {props.selectedPhoto && props.selectedPhoto.image !== QuestionMarkImg && (
-              <div className="shop-popup__params">
-                <ul className="friends-params f-center-center">
-                  <li className="friends-params__item f-center">
-                    <img src={StarIcon} alt="" />
-                    {props.selectedPhoto ? props.selectedPhoto.experience : ""}
-                  </li>
-                  <li className="friends-params__item f-center">
-                    <img src={CoinIcon} alt="" />
-                    {props.selectedPhoto ? props.selectedPhoto.price : ""}
-                  </li>
-                </ul>
-              </div>
-            )}
+            {props.selectedPhoto &&
+              props.selectedPhoto.image !== QuestionMarkImg && (
+                <div className="shop-popup__params">
+                  <ul className="friends-params f-center-center">
+                    <li className="friends-params__item f-center">
+                      <img src={StarIcon} alt="" />
+                      {props.selectedPhoto
+                        ? props.selectedPhoto.experience
+                        : ""}
+                    </li>
+                    <li className="friends-params__item f-center">
+                      <img src={CoinIcon} alt="" />
+                      {props.selectedPhoto ? props.selectedPhoto.price : ""}
+                    </li>
+                  </ul>
+                </div>
+              )}
             <button
               type="button"
               className="shop-popup__btn"
-              onClick={handleButtonClick}
+              onClick={() => {
+                if (props.main) {
+                  handleButtonClick();
+                } else {
+                  props.handleClosePopup();
+                }
+              }}
             >
-              {!props.main ? translations.buy : translations.ok} {/* Используем переводы для кнопки */}
+              {!props.main ? "Купить" : "Ок"}
             </button>
           </div>
         )}
