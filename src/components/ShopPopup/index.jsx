@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 
 const ShopPopup = (props) => {  
   const language = useSelector((state) => state.language);
+  const [isTranslating, setIsTranslating] = useState(false); // Состояние для отслеживания загрузки
 
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
