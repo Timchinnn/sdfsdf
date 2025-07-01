@@ -132,10 +132,10 @@ useEffect(() => {
               ) : (
                 <>
                   <h3 className="shop-popup__title">
-                    {props.selectedPhoto ? {translatedTitle} : ""}
+                    {props.selectedPhoto ? translatedTitle : ""}
                   </h3>
                   <p className="shop-popup__text">
-                    {props.selectedPhoto ? {translatedDescription} : ""}
+                    {props.selectedPhoto ? translatedDescription : ""}
                     {props.selectedPhoto &&
                       props.selectedPhoto.type === "energy_boost" && (
                         <span style={{ marginLeft: "5px" }}>
