@@ -21,6 +21,7 @@ const MainSection = ({
   bonusImg,
   username, // Получаем username из пропсов
 }) => {
+  const language = useSelector((state) => state.language);
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
   const telegramId = tg ? tg.id : null;
   const [coins, setCoins] = useState(propCoins || 0);
@@ -34,6 +35,37 @@ const MainSection = ({
   const [showIncomePopup, setShowIncomePopup] = useState(
     () => !sessionStorage.getItem("incomePopupShown")
   );
+  const [translations, setTranslations] = useState({
+  sets: "Сет",
+  tasks: "Задания",
+  bonus: "Бонус",
+  level: "Уровень города",
+  mayor: "/ Мэр",
+  // Добавьте другие переводы по мере необходимости
+});
+const updateTranslations = (language) => {
+  if (language === "ru") {
+    setTranslations({
+      sets: "Сет",
+      tasks: "Задания",
+      bonus: "Бонус",
+      level: "Уровень города",
+      mayor: "/ Мэр",
+      // Добавьте другие переводы для русского языка
+    });
+  } else if (language === "en") {
+    setTranslations({
+      sets: "Set",
+      tasks: "Tasks",
+      bonus: "Bonus",
+      level: "City Level",
+      mayor: "/ Mayor",
+      // Добавьте другие переводы для английского языка
+    });
+  }
+};useEffect(() => {
+  updateTranslations(language);
+}, [language]);
   useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");
@@ -100,9 +132,9 @@ const MainSection = ({
               </div>
               <div className="main-head__content">
                 <div className="main-head__user">
-                  {username} <span>/ Мэр</span>
+                  {username} <span>{translations.mayor}</span>
                 </div>
-                <p className="main-head__level">Уровень города {level}</p>
+                <p className="main-head__level">{translations.level} {level}</p>
                 <div className="main-head__progress">
                   <div
                     className="main-head__progress-bar"
