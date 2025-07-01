@@ -33,19 +33,36 @@ const [translatedDescription, setTranslatedDescription] = useState("");
     return text; 
   }
 };
-useEffect(() => {
-  const translateSelectedPhoto = async () => {
-    if (props.selectedPhoto) {
-      const title = props.selectedPhoto.title || "";
-      const description = props.selectedPhoto.description || "";
-      const translatedTitle = await translateText(title, language);
-      const translatedDescription = await translateText(description, language);
-      setTranslatedTitle(translatedTitle);
-      setTranslatedDescription(translatedDescription);
-    }
-  };
-  translateSelectedPhoto();
-}, [props.selectedPhoto, language]);
+  useEffect(() => { 
+    const translateText = async (text, targetLang) => { 
+      try { 
+        const response = await axios.post("/translate", { 
+          texts: [text], 
+          targetLanguageCode: targetLang, 
+        }); 
+        if (response.data && response.data[0]) { 
+          return response.data[0].text; 
+        } 
+        return text; 
+      } catch (error) { 
+        console.error("Ошибка при переводе:", error); 
+        return text; 
+      } 
+    };
+    const translateSelectedPhoto = async () => {
+      if (props.selectedPhoto) {
+        const title = props.selectedPhoto.title || "";
+        const description = props.selectedPhoto.description || "";
+        setIsTranslating(true); // Начинаем загрузку
+        const translatedTitle = await translateText(title, language);
+        const translatedDescription = await translateText(description, language);
+        setTranslatedTitle(translatedTitle);
+        setTranslatedDescription(translatedDescription);
+        setIsTranslating(false); // Завершаем загрузку
+      }
+    };
+    translateSelectedPhoto();
+  }, [props.selectedPhoto, language]);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
@@ -99,11 +116,11 @@ useEffect(() => {
             />
           </svg>
         </button>
-        {loading ? (
-          <div className="shop-popup__spinner">
-            <Spinner loading={true} size={50} />
-          </div>
-        ) : (
+{isTranslating  ? ( 
+          <div className="shop-popup__spinner"> 
+            <Spinner loading={true} size={50} /> 
+          </div> 
+        ) : ( 
           <div className="shop-popup__inner">
             <div className="shop-popup__image">
               {showImage && (
