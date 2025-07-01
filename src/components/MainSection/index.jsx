@@ -171,7 +171,7 @@ const updateTranslations = (language) => {
                 <div className="main-menu__img f-center-center">
                   <img src={cardImg} alt="Сет" style={{ width: "58px" }} />
                 </div>
-                <p className="main-menu__title">Сет</p>
+                <p className="main-menu__title">{translations.sets}</p>
               </NavLink>
             </li>
             <li className="main-menu__item">
@@ -179,7 +179,7 @@ const updateTranslations = (language) => {
                 <div className="main-menu__img f-center-center">
                   <img src={taskImg} alt="Задания" style={{ width: "46px" }} />
                 </div>
-                <p className="main-menu__title">Задания</p>
+                <p className="main-menu__title">{translations.tasks}</p>
               </NavLink>
             </li>
             <li className="main-menu__item">
@@ -187,7 +187,7 @@ const updateTranslations = (language) => {
                 <div className="main-menu__img f-center-center">
                   <img src={bonusImg} alt="Бонус" style={{ width: "47px" }} />
                 </div>
-                <p className="main-menu__title">Бонус</p>
+                <p className="main-menu__title">{translations.bonus}</p>
               </NavLink>
             </li>
           </ul>
