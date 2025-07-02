@@ -21,8 +21,6 @@ const MainSection = ({
   taskImg,
   bonusImg,
   username, // Получаем username из пропсов
-    onTranslationsLoaded,
-
 }) => {
   const language = useSelector((state) => state.language);
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
@@ -47,8 +45,6 @@ const MainSection = ({
   collect: "Забрать",
   // Добавьте другие переводы по мере необходимости
 });
-const [translationsLoaded, setTranslationsLoaded] = useState(false);
-
 const updateTranslations = (language) => {
   if (language === "ru") {
     setTranslations({
@@ -70,15 +66,10 @@ const updateTranslations = (language) => {
       collect: "Collect",
       // Добавьте другие переводы для английского языка
     });
-  }  setTranslationsLoaded(true);
-
-};   
-useEffect(() => {
-    updateTranslations(language);
-    if (onTranslationsLoaded) {
-      onTranslationsLoaded(true);
-    }
-  }, [language, onTranslationsLoaded]);
+  }
+};useEffect(() => {
+  updateTranslations(language);
+}, [language]);
   useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");

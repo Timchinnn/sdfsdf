@@ -36,10 +36,6 @@ const MainPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
-    const [translationsLoaded, setTranslationsLoaded] = useState(false);
-  const handleTranslationsLoaded = (loaded) => {
-    setTranslationsLoaded(loaded);
-  };
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -134,13 +130,12 @@ const MainPage = () => {
     fetchUserLevel();
   }, []);
   // Проверка загрузки всех данных и отключение спиннера
-useEffect(() => {
+  useEffect(() => {
     if (
       userPhotoLoaded &&
       userCoinsLoaded &&
       userLevelLoaded &&
-      usernameLoaded &&
-      translationsLoaded
+      usernameLoaded
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
@@ -148,7 +143,7 @@ useEffect(() => {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [userPhotoLoaded, userCoinsLoaded, userLevelLoaded, usernameLoaded, translationsLoaded]);
+  }, [userPhotoLoaded, userCoinsLoaded, userLevelLoaded, usernameLoaded]);
   const handleOpenPopup = (photo) => {
     document.documentElement.classList.add("fixed");
     setSelectedPhoto(photo);
@@ -197,7 +192,6 @@ useEffect(() => {
                 taskImg={taskImg}
                 bonusImg={bonusImg}
                 username={username}
-                onTranslationsLoaded={handleTranslationsLoaded}
               />
               <div className="main-game">
                 <MainCarousel
