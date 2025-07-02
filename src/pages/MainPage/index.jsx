@@ -134,12 +134,13 @@ const MainPage = () => {
     fetchUserLevel();
   }, []);
   // Проверка загрузки всех данных и отключение спиннера
-  useEffect(() => {
+useEffect(() => {
     if (
       userPhotoLoaded &&
       userCoinsLoaded &&
       userLevelLoaded &&
-      usernameLoaded
+      usernameLoaded &&
+      translationsLoaded
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
@@ -147,7 +148,7 @@ const MainPage = () => {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [userPhotoLoaded, userCoinsLoaded, userLevelLoaded, usernameLoaded]);
+  }, [userPhotoLoaded, userCoinsLoaded, userLevelLoaded, usernameLoaded, translationsLoaded]);
   const handleOpenPopup = (photo) => {
     document.documentElement.classList.add("fixed");
     setSelectedPhoto(photo);
