@@ -72,10 +72,13 @@ const updateTranslations = (language) => {
     });
   }  setTranslationsLoaded(true);
 
-};  useEffect(() => {
+};   
+useEffect(() => {
     updateTranslations(language);
-    onTranslationsLoaded(translationsLoaded);
-  }, [language, onTranslationsLoaded, translationsLoaded]);
+    if (onTranslationsLoaded) {
+      onTranslationsLoaded(true);
+    }
+  }, [language, onTranslationsLoaded]);
   useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");
