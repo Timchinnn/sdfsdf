@@ -21,6 +21,8 @@ const MainSection = ({
   taskImg,
   bonusImg,
   username, // Получаем username из пропсов
+    onTranslationsLoaded,
+
 }) => {
   const language = useSelector((state) => state.language);
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
@@ -36,40 +38,44 @@ const MainSection = ({
   const [showIncomePopup, setShowIncomePopup] = useState(
     () => !sessionStorage.getItem("incomePopupShown")
   );
-const [translations, setTranslations] = useState({
-  sets: "",
-  tasks: "",
-  bonus: "",
-  level: "",
-  mayor: "",
-  collect: "",
+  const [translations, setTranslations] = useState({
+  sets: "Сет",
+  tasks: "Задания",
+  bonus: "Бонус",
+  level: "Уровень города",
+  mayor: "/ Мэр",
+  collect: "Забрать",
+  // Добавьте другие переводы по мере необходимости
 });
 const [translationsLoaded, setTranslationsLoaded] = useState(false);
+
 const updateTranslations = (language) => {
   if (language === "ru") {
     setTranslations({
       sets: "Сет",
-      tasks: "Задания", 
+      tasks: "Задания",
       bonus: "Бонус",
       level: "Уровень города",
       mayor: "/ Мэр",
       collect: "Забрать",
+      // Добавьте другие переводы для русского языка
     });
   } else if (language === "en") {
     setTranslations({
       sets: "Set",
       tasks: "Tasks",
-      bonus: "Bonus", 
+      bonus: "Bonus",
       level: "City Level",
       mayor: "/ Mayor",
       collect: "Collect",
+      // Добавьте другие переводы для английского языка
     });
-  }
-  setTranslationsLoaded(true);
-};
-useEffect(() => {
-  updateTranslations(language);
-}, [language]);
+  }  setTranslationsLoaded(true);
+
+};  useEffect(() => {
+    updateTranslations(language);
+    onTranslationsLoaded(translationsLoaded);
+  }, [language, onTranslationsLoaded, translationsLoaded]);
   useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");

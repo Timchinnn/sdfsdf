@@ -36,6 +36,10 @@ const MainPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+    const [translationsLoaded, setTranslationsLoaded] = useState(false);
+  const handleTranslationsLoaded = (loaded) => {
+    setTranslationsLoaded(loaded);
+  };
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -130,26 +134,20 @@ const MainPage = () => {
     fetchUserLevel();
   }, []);
   // Проверка загрузки всех данных и отключение спиннера
-useEffect(() => {
-  if (
-    userPhotoLoaded &&
-    userCoinsLoaded && 
-    userLevelLoaded &&
-    usernameLoaded &&
-    translationsLoaded // Добавляем проверку загрузки переводов
-  ) {
-    const timer = setTimeout(() => {
-      setShowSpinner(false);
-    }, 300);
-    return () => clearTimeout(timer);
-  }
-}, [
-  userPhotoLoaded,
-  userCoinsLoaded,
-  userLevelLoaded,
-  usernameLoaded,
-  translationsLoaded // Добавляем в зависимости
-]);
+  useEffect(() => {
+    if (
+      userPhotoLoaded &&
+      userCoinsLoaded &&
+      userLevelLoaded &&
+      usernameLoaded
+    ) {
+      // Добавляем небольшую задержку для плавности
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [userPhotoLoaded, userCoinsLoaded, userLevelLoaded, usernameLoaded]);
   const handleOpenPopup = (photo) => {
     document.documentElement.classList.add("fixed");
     setSelectedPhoto(photo);
@@ -183,23 +181,23 @@ useEffect(() => {
             <Spinner loading={true} size={50} />
           ) : (
             <>
-<MainSection
-  hourlyIncome={hourlyIncome}
-  coins={coins}
-  level={level}
-  currentExp={currentExp}
-  expForNextLevel={expForNextLevel}
-  loaded={true}
-  translationsLoaded={translationsLoaded} // Добавляем проп
-  userAvatar={userAvatar}
-  defaultAvatar={Avatar}
-  timeIcon={TimeIcon}
-  moneyIcon={MoneyIcon}
-  cardImg={cardImg}
-  taskImg={taskImg}
-  bonusImg={bonusImg}
-  username={username}
-/>
+              <MainSection
+                hourlyIncome={hourlyIncome}
+                coins={coins}
+                level={level}
+                currentExp={currentExp}
+                expForNextLevel={expForNextLevel}
+                loaded={true}
+                userAvatar={userAvatar}
+                defaultAvatar={Avatar}
+                timeIcon={TimeIcon}
+                moneyIcon={MoneyIcon}
+                cardImg={cardImg}
+                taskImg={taskImg}
+                bonusImg={bonusImg}
+                username={username}
+                onTranslationsLoaded={handleTranslationsLoaded}
+              />
               <div className="main-game">
                 <MainCarousel
                   getActiveSlide={3}
