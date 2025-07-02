@@ -130,20 +130,26 @@ const MainPage = () => {
     fetchUserLevel();
   }, []);
   // Проверка загрузки всех данных и отключение спиннера
-  useEffect(() => {
-    if (
-      userPhotoLoaded &&
-      userCoinsLoaded &&
-      userLevelLoaded &&
-      usernameLoaded
-    ) {
-      // Добавляем небольшую задержку для плавности
-      const timer = setTimeout(() => {
-        setShowSpinner(false);
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [userPhotoLoaded, userCoinsLoaded, userLevelLoaded, usernameLoaded]);
+useEffect(() => {
+  if (
+    userPhotoLoaded &&
+    userCoinsLoaded && 
+    userLevelLoaded &&
+    usernameLoaded &&
+    translationsLoaded // Добавляем проверку загрузки переводов
+  ) {
+    const timer = setTimeout(() => {
+      setShowSpinner(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }
+}, [
+  userPhotoLoaded,
+  userCoinsLoaded,
+  userLevelLoaded,
+  usernameLoaded,
+  translationsLoaded // Добавляем в зависимости
+]);
   const handleOpenPopup = (photo) => {
     document.documentElement.classList.add("fixed");
     setSelectedPhoto(photo);
@@ -177,22 +183,23 @@ const MainPage = () => {
             <Spinner loading={true} size={50} />
           ) : (
             <>
-              <MainSection
-                hourlyIncome={hourlyIncome}
-                coins={coins}
-                level={level}
-                currentExp={currentExp}
-                expForNextLevel={expForNextLevel}
-                loaded={true}
-                userAvatar={userAvatar}
-                defaultAvatar={Avatar}
-                timeIcon={TimeIcon}
-                moneyIcon={MoneyIcon}
-                cardImg={cardImg}
-                taskImg={taskImg}
-                bonusImg={bonusImg}
-                username={username}
-              />
+<MainSection
+  hourlyIncome={hourlyIncome}
+  coins={coins}
+  level={level}
+  currentExp={currentExp}
+  expForNextLevel={expForNextLevel}
+  loaded={true}
+  translationsLoaded={translationsLoaded} // Добавляем проп
+  userAvatar={userAvatar}
+  defaultAvatar={Avatar}
+  timeIcon={TimeIcon}
+  moneyIcon={MoneyIcon}
+  cardImg={cardImg}
+  taskImg={taskImg}
+  bonusImg={bonusImg}
+  username={username}
+/>
               <div className="main-game">
                 <MainCarousel
                   getActiveSlide={3}
