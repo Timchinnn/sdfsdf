@@ -334,6 +334,7 @@ const [translations, setTranslations] = useState({
     userCardsLoaded,
     responseTimeLoaded,
     usernameLoaded,
+    isTranslating
   ]);
   // Функция для определения URL изображения
   const getImageUrl = (imageUrl) => {
