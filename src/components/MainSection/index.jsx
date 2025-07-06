@@ -20,7 +20,8 @@ const MainSection = ({
   cardImg,
   taskImg,
   bonusImg,
-  username, // Получаем username из пропсов
+  username,
+  translations, // Получаем username из пропсов
 }) => {
   const language = useSelector((state) => state.language);
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
