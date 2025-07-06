@@ -21,7 +21,14 @@ const MainSection = ({
   taskImg,
   bonusImg,
   username,
-  translations, // Получаем username из пропсов
+  translations = {
+    sets: 'Сет',
+    tasks: 'Задания',
+    bonus: 'Бонус',
+    level: 'Уровень города',
+    mayor: '/ Мэр',
+    collect: 'Забрать'
+  },  // Получаем username из пропсов
 }) => {
   const language = useSelector((state) => state.language);
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
