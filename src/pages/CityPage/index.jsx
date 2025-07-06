@@ -235,7 +235,7 @@ const CityPage = () => {
             try {
               await cardSetsService.checkSetCompletion(set.id, telegram_id);
             } catch (error) {
-              console.error("Ошибка при проверке завершения набора:", error);
+              console.error("Ошибка при проверке завершения наборач:", error);
             }
           }
         }
