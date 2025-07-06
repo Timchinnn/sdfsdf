@@ -95,31 +95,31 @@ useEffect(() => {
     dispatch(setImageQuality("auto"));
   }, [dispatch]);
 
-  useEffect(() => {
-    const measureResponseTime = async () => {
-      const startTime = performance.now();
-      try {
-        const response = await fetch("https://api.zoomayor.io/api/cards");
-        const endTime = performance.now();
-        const time = endTime - startTime;
-        setResponseTime(time);
-        if (time > 300) {
-          // console.log(time);
+  // useEffect(() => {
+  //   const measureResponseTime = async () => {
+  //     const startTime = performance.now();
+  //     try {
+  //       const response = await fetch("https://api.zoomayor.io/api/cards");
+  //       const endTime = performance.now();
+  //       const time = endTime - startTime;
+  //       setResponseTime(time);
+  //       if (time > 300) {
+  //         // console.log(time);
 
-          const tg = window.Telegram.WebApp;
-          tg.showPopup({
-            title: "Внимание",
-            message:
-              "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
-            buttons: [{ type: "ok" }],
-          });
-        }
-      } catch (error) {
-        console.error("Ошибка при измерении времени ответа:", error);
-      }
-    };
-    measureResponseTime();
-  }, []);
+  //         const tg = window.Telegram.WebApp;
+  //         tg.showPopup({
+  //           title: "Внимание",
+  //           message:
+  //             "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+  //           buttons: [{ type: "ok" }],
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Ошибка при измерении времени ответа:", error);
+  //     }
+  //   };
+  //   measureResponseTime();
+  // }, []);
   const getCardBackImage = () => {
     if (!cardBackStyle) return cardBackStyles.default.image;
 
