@@ -53,6 +53,43 @@ const CityPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+    const [translations, setTranslations] = useState({
+      sets: "Сет",
+      tasks: "Задания", 
+      bonus: "Бонус",
+      level: "Уровень города",
+      mayor: "/ Мэр",
+      collect: "Забрать",
+      slowConnectionTitle: "Внимание",
+      slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+    });
+    // Get language from Redux store
+    const language = useSelector((state) => state.language);
+      useEffect(() => {
+        if (language === "ru") {
+          setTranslations({
+            sets: "Сет",
+            tasks: "Задания",
+            bonus: "Бонус", 
+            level: "Уровень города",
+            mayor: "/ Мэр",
+            collect: "Забрать",
+            slowConnectionTitle: "Внимание",
+            slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+          });
+        } else if (language === "en") {
+          setTranslations({
+            sets: "Set",
+            tasks: "Tasks", 
+            bonus: "Bonus",
+            level: "City Level",
+            mayor: "/ Mayor",
+            collect: "Collect",
+            slowConnectionTitle: "Attention",
+            slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance.",
+          });
+        }
+      }, [language]);
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -328,6 +365,8 @@ const CityPage = () => {
                 taskImg={taskImg}
                 bonusImg={bonusImg}
                 username={username}
+                                                translations={translations}
+
               />
               <ul className="city-list">
                 {cardSets.map((set) => (
