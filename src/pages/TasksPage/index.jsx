@@ -224,6 +224,39 @@ const TasksPage = () => {
       document.head.removeChild(script);
     };
   }, []);
+  const [translations1, setTranslations1] = useState({});
+  const [isTranslating, setIsTranslating] = useState(false);
+  
+  useEffect(() => {
+    const translateAdContent = async () => {
+      if (ads.length > 0) {
+        setIsTranslating(true);
+        const translatedContent = {};
+        for (const ad of ads) {
+          translatedContent[ad.id] = await translateText(ad.title, language);
+          translatedContent[`${ad.id}_desc`] = await translateText(ad.description, language);
+        }
+        setTranslations1(translatedContent);
+        setIsTranslating(false);
+      }
+    };
+    translateAdContent();
+  }, [ads, language]);
+  const translateText = async (text, targetLang) => {
+    try {
+      const response = await axios.post("/translate", {
+        texts: [text],
+        targetLanguageCode: targetLang,
+      });
+      if (response.data && response.data[0]) {
+        return response.data[0].text;
+      }
+      return text;
+    } catch (error) {
+      console.error("Ошибка при переводе:", error);
+      return text;
+    }
+  };
   // Проверка загрузки всех данных и отключение спиннера
   useEffect(() => {
     if (
@@ -232,7 +265,9 @@ const TasksPage = () => {
       userLevelLoaded &&
       adsLoaded &&
       adControllerLoaded &&
-      usernameLoaded
+      usernameLoaded &&
+            !isTranslating
+
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
@@ -247,6 +282,7 @@ const TasksPage = () => {
     adsLoaded,
     adControllerLoaded,
     usernameLoaded,
+    isTranslating,
   ]);
   const showRewardedAd = async (adId) => {
     try {
@@ -390,8 +426,8 @@ const TasksPage = () => {
                             />
                           </div>
                           <div className="tasks-list__content">
-                            <h3 className="tasks-list__title">{ad.title}</h3>
-                            <p>{ad.description}</p>
+                            <h3 className="tasks-list__title">{translations1[ad.id] || ad.title}</h3>
+                            <p>{translations1[`${ad.id}_desc`] || ad.description}</p>
                             <ul className="friends-params f-center">
                               {ad.reward_value > 0 && (
                                 <li className="friends-params__item f-center">
