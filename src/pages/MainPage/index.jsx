@@ -50,6 +50,26 @@ const MainPage = () => {
   });
   // Get language from Redux store
   const language = useSelector((state) => state.language);
+  // const [isLoadingCardBack, setIsLoadingCardBack] = useState(true);
+    const [cardBackStyle, setCardBackStyle] = useState(null);
+    
+    // const swiperRef = useRef(null);
+    useEffect(() => {
+        const loadCardBack = async () => {
+            try {
+                const tg = window.Telegram.WebApp;
+                if (tg?.initDataUnsafe?.user?.id) {
+                    const response = await cardBackService.getUserCardBack(tg.initDataUnsafe.user.id);
+                    if (response.data.style) {
+                        setCardBackStyle(response.data.style);
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading card back:", error);
+            } 
+        };
+        loadCardBack();
+    }, []);
   // Update translations when language changes
   useEffect(() => {
     if (language === "ru") {
@@ -242,6 +262,8 @@ const MainPage = () => {
                   shouldUpdate={shouldUpdateCarousel}
                   onUpdateComplete={() => setShouldUpdateCarousel(false)}
                   translations={translations}
+                                                  cardBackStyle={cardBackStyle} 
+
                 />
               </div>
             </>

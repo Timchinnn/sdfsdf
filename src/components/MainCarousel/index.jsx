@@ -25,6 +25,7 @@ const MainCarousel = ({
   shouldUpdate,
   onUpdateComplete,
     translations,
+    cardBackStyle,
 }) => {
   const [isButtonLocked, setIsButtonLocked] = useState(false);
   const imageQuality = useSelector((state) => state.imageQuality);
@@ -32,7 +33,7 @@ const MainCarousel = ({
   const [nextOpenTime, setNextOpenTime] = useState({});
   const [remainingTime, setRemainingTime] = useState({});
   const [openedCards, setOpenedCards] = useState({});
-  const cardBackStyle = useSelector((state) => state.cardBack);
+  // const cardBackStyle = useSelector((state) => state.cardBack);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const [isSwipeLocked, setIsSwipeLocked] = useState(false);
