@@ -6,6 +6,8 @@ import {
   cardSetsService,
   userInitService,
 } from "services/api";
+import axios from "../../axios-controller";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/scss";
 import InfoIcon from "assets/img/icons8-info-48.png";
