@@ -426,45 +426,45 @@ const CityPage = () => {
                         <img src={InfoIcon} alt="" className="infoIcon" />
                       </div>
                       {showInfo[set.id] && (
-                        <div className="info-popup">
-                          <div className="info-popup__content">
-                            <p style={{ marginRight: "19px" }}>
-                              Информация о {set.name}
-                            </p>
-                            {set.rewards &&
-                              set.rewards
-                                .filter(
-                                  (reward) =>
-                                    reward.value !== 0 && reward.value !== ""
-                                )
-                                .map((reward, index) => (
-                                  <div
-                                    key={index}
-                                    style={{ marginBottom: "10px" }}
-                                  >
-                                    <p>
-                                      Тип награды:{" "}
-                                      {reward.type === "experience"
-                                        ? "Опыт"
-                                        : reward.type === "hourly_income"
-                                        ? "Доход в час"
-                                        : reward.type === "coins"
-                                        ? "Монеты"
-                                        : reward.type === "card"
-                                        ? "Карта"
-                                        : reward.type}
-                                    </p>
-                                    <p>Значение: {reward.value}</p>
-                                  </div>
-                                ))}
-                            <button
-                              className="info-popup__close"
-                              onClick={() => setShowInfo({})}
-                            >
-                              <p>✕</p>
-                            </button>
-                          </div>
-                        </div>
+<div className="info-popup">
+  <div className="info-popup__content">
+    <p style={{ marginRight: "19px" }}>
+      {translations.infoAbout} {translations1[set.id] || set.name}
+    </p>
+    {set.rewards &&
+      set.rewards
+        .filter(
+          (reward) =>
+            reward.value !== 0 && reward.value !== ""
+        )
+        .map((reward, index) => (
+          <div
+            key={index}
+            style={{ marginBottom: "10px" }}
+          >
+            <p>
+              {translations.rewardType}{" "}
+              {reward.type === "experience"
+                ? translations.experience
+                : reward.type === "hourly_income"
+                ? translations.hourlyIncome  
+                : reward.type === "coins"
+                ? translations.coins
+                : reward.type === "card"
+                ? translations.card
+                : reward.type}
+            </p>
+            <p>{translations.value}: {reward.value}</p>
+          </div>
+        ))}
+    <button
+      className="info-popup__close"
+      onClick={() => setShowInfo({})}
+    >
+      <p>✕</p>
+    </button>
+  </div>
+</div>
                       )}
                       <div className="city-list__more f-center">
                         <div className="city-list__count">
