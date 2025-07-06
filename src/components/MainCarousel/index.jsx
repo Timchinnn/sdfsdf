@@ -64,21 +64,26 @@ const MainCarousel = ({
   //   };
   //   updateTranslations(language);
   // }, [language]);
-  useEffect(() => {
+useEffect(() => {
     const measureResponseTime = async () => {
       const startTime = performance.now();
       try {
         const response = await fetch("https://api.zoomayor.io/api/cards");
         const endTime = performance.now();
         const time = endTime - startTime;
-        if (time > 300) {
-          const tg = window.Telegram.WebApp;
-          tg.showPopup({
-            title: translations.slowConnectionTitle,
-            message: translations.slowConnectionMessage,
-            buttons: [{ type: "ok" }],
-          });
-        }
+        
+        // Show popup after 5 seconds if response time is slow
+        setTimeout(() => {
+          if (time > 300) {
+            const tg = window.Telegram.WebApp;
+            tg.showPopup({
+              title: translations.slowConnectionTitle,
+              message: translations.slowConnectionMessage,
+              buttons: [{ type: "ok" }],
+            });
+          }
+        }, 5000);
+        
       } catch (error) {
         console.error("Ошибка при измерении времени ответа:", error);
       }
