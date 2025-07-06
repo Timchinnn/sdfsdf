@@ -40,6 +40,51 @@ const BonusPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+    const [translations, setTranslations] = useState({
+      sets: "Сет",
+      tasks: "Задания", 
+      bonus: "Бонус",
+      level: "Уровень города",
+      mayor: "/ Мэр",
+    code: "Код",
+    enterCodeAndGetBonus: "Введите код и получите бонус",
+    activationHistory: "История активаций",
+    activated: "Активирован",
+    activating: "Активация...",
+    apply: "Применить"
+  });
+    const language = useSelector((state) => state.language);
+  useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+        sets: "Сет",
+      tasks: "Задания", 
+      bonus: "Бонус",
+      level: "Уровень города",
+      mayor: "/ Мэр",
+        code: "Код",
+        enterCodeAndGetBonus: "Введите код и получите бонус",
+        activationHistory: "История активаций", 
+        activated: "Активирован",
+        activating: "Активация...",
+        apply: "Применить"
+      });
+    } else if (language === "en") {
+      setTranslations({
+        sets: "Set",
+            tasks: "Tasks",
+            bonus: "Bonus",
+            level: "City Level", 
+            mayor: "/ Mayor",
+        code: "Code",
+        enterCodeAndGetBonus: "Enter code and get bonus",
+        activationHistory: "Activation History",
+        activated: "Activated",
+        activating: "Activating...", 
+        apply: "Apply"
+      });
+    }
+  }, [language]);
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -227,13 +272,14 @@ const BonusPage = () => {
                 taskImg={taskImg}
                 bonusImg={bonusImg}
                 username={username}
+                translations={translations}
               />
               <div className="bonus-wrap">
                 <div className="bonus-promo block-style">
                   <div className="section-content">
-                    <h2 className="section-content__title">Код</h2>
+                    <h2 className="section-content__title">{translations.code}</h2>
                     <p className="section-content__text">
-                      Введите код и получите бонус
+                      {translations.enterCodeAndGetBonus}
                     </p>
                   </div>
                   <div className="bonus-promo__code">
@@ -253,14 +299,14 @@ const BonusPage = () => {
                       onClick={handleActivateCode}
                       disabled={isLoading || !code}
                     >
-                      {isLoading ? "Активация..." : "Применить"}
+                      {isLoading ? translations.activating : translations.apply}
                     </button>
                   </div>
                 </div>
                 <div className="bonus-more">
                   <div className="friends-block__head f-center-jcsb">
                     <h2 className="section-content__title">
-                      История активаций
+                      {translations.activationHistory}
                     </h2>
                   </div>
                   <ul className="friends-list">
