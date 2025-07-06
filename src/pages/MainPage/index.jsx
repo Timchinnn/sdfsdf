@@ -44,7 +44,9 @@ const MainPage = () => {
     bonus: "Бонус",
     level: "Уровень города",
     mayor: "/ Мэр",
-    collect: "Забрать"
+    collect: "Забрать",
+    slowConnectionTitle: "Внимание",
+    slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
   });
   // Get language from Redux store
   const language = useSelector((state) => state.language);
@@ -57,7 +59,9 @@ const MainPage = () => {
         bonus: "Бонус", 
         level: "Уровень города",
         mayor: "/ Мэр",
-        collect: "Забрать"
+        collect: "Забрать",
+        slowConnectionTitle: "Внимание",
+        slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
       });
     } else if (language === "en") {
       setTranslations({
@@ -66,7 +70,9 @@ const MainPage = () => {
         bonus: "Bonus",
         level: "City Level",
         mayor: "/ Mayor",
-        collect: "Collect"
+        collect: "Collect",
+        slowConnectionTitle: "Attention",
+        slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance.",
       });
     }
   }, [language]);
@@ -235,6 +241,7 @@ const MainPage = () => {
                   handleOpenPopup={handleOpenPopup}
                   shouldUpdate={shouldUpdateCarousel}
                   onUpdateComplete={() => setShouldUpdateCarousel(false)}
+                  translations={translations}
                 />
               </div>
             </>

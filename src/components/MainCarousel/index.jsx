@@ -24,6 +24,7 @@ const MainCarousel = ({
   handleOpenPopup,
   shouldUpdate,
   onUpdateComplete,
+    translations,
 }) => {
   const [isButtonLocked, setIsButtonLocked] = useState(false);
   const imageQuality = useSelector((state) => state.imageQuality);
@@ -39,30 +40,30 @@ const MainCarousel = ({
   const minSwipeDistance = 50;
   const [responseTime, setResponseTime] = useState(null);
   const dispatch = useDispatch();
- const [translations, setTranslations] = useState({
-    collect: "Забрать",
-    slowConnectionTitle: "Внимание",
-    slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
-  });
-  const language = useSelector((state) => state.language);
-  useEffect(() => {
-    const updateTranslations = (lang) => {
-      if (lang === "ru") {
-        setTranslations({
-          collect: "Забрать",
-          slowConnectionTitle: "Внимание",
-          slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
-        });
-      } else if (lang === "en") {
-        setTranslations({
-          collect: "Collect",
-          slowConnectionTitle: "Attention",
-          slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance.",
-        });
-      }
-    };
-    updateTranslations(language);
-  }, [language]);
+//  const [translations, setTranslations] = useState({
+//     collect: "Забрать",
+//     slowConnectionTitle: "Внимание",
+//     slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+//   });
+  // const language = useSelector((state) => state.language);
+  // useEffect(() => {
+  //   const updateTranslations = (lang) => {
+  //     if (lang === "ru") {
+  //       setTranslations({
+  //         collect: "Забрать",
+  //         slowConnectionTitle: "Внимание",
+  //         slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+  //       });
+  //     } else if (lang === "en") {
+  //       setTranslations({
+  //         collect: "Collect",
+  //         slowConnectionTitle: "Attention",
+  //         slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance.",
+  //       });
+  //     }
+  //   };
+  //   updateTranslations(language);
+  // }, [language]);
   useEffect(() => {
     const measureResponseTime = async () => {
       const startTime = performance.now();
