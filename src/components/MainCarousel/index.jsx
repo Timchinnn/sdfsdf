@@ -74,7 +74,7 @@ useEffect(() => {
         
         // Show popup after 5 seconds if response time is slow
         setTimeout(() => {
-          if (time > 100) {
+          if (time > 300) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: translations.slowConnectionTitle,
@@ -82,7 +82,7 @@ useEffect(() => {
               buttons: [{ type: "ok" }],
             });
           }
-        }, 5000);
+        }, 4000);
         
       } catch (error) {
         console.error("Ошибка при измерении времени ответа:", error);
