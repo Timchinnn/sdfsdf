@@ -402,7 +402,7 @@ const [translations, setTranslations] = useState({
     <section className="city">
       <div className="container">
         <div className="city-inner">
-          {showSpinner && isTranslating ? (
+          {showSpinner ? (
             <Spinner loading={true} size={50} />
           ) : (
             <>
