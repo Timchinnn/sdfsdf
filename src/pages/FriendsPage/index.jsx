@@ -7,6 +7,8 @@ import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
 import MobileNav from "components/MobileNav";
 import Spinner from "components/Spinner";
+import { useSelector } from "react-redux";
+
 // Импортируем необходимые локальные изображения
 import Avatar from "assets/img/avatar.png";
 import TimeIcon from "assets/img/time-icon.svg";
