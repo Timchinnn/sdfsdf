@@ -309,7 +309,7 @@ const [translations, setTranslations] = useState({
     translateSetNames();
   }, [cardSets, language]);
   // Проверка загрузки всех данных и отключение спиннера
-  useEffect(() => {
+useEffect(() => {
     if (
       userPhotoLoaded &&
       userCoinsLoaded &&
@@ -317,7 +317,8 @@ const [translations, setTranslations] = useState({
       cardSetsLoaded &&
       userCardsLoaded &&
       responseTimeLoaded &&
-      usernameLoaded 
+      usernameLoaded &&
+      !isTranslating // Add check for translation loading state
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
@@ -333,6 +334,7 @@ const [translations, setTranslations] = useState({
     userCardsLoaded,
     responseTimeLoaded,
     usernameLoaded,
+    isTranslating, // Add isTranslating to dependencies
   ]);
   // Функция для определения URL изображения
   const getImageUrl = (imageUrl) => {
