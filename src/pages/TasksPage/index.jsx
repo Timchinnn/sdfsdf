@@ -12,6 +12,8 @@ import MobileNav from "components/MobileNav";
 import Spinner from "components/Spinner";
 // Импортируем необходимые локальные изображения
 import Avatar from "assets/img/avatar.png";
+import { useSelector } from "react-redux";
+
 import TimeIcon from "assets/img/time-icon.svg";
 import MoneyIcon from "assets/img/money-icon.svg";
 // Определяем URL-ы для остальных изображений, которые используются в MainSection
@@ -41,6 +43,61 @@ const TasksPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+   const [translations, setTranslations] = useState({
+     sets: "Сет",
+      tasks: "Задания", 
+      bonus: "Бонус",
+      level: "Уровень города",
+      mayor: "/ Мэр",
+    rewardReceived: "Награда получена!",
+    rewardForAd: "Вы получили награду за просмотр рекламы!",
+    excellent: "Отлично!",
+    error: "Ошибка",
+    rewardError: "Не удалось получить награду. Попробуйте позже.",
+    taskRewards: "Награды за задания",
+    subscribeToTelegram: "Подписаться на телеграм канал https://t.me/zoomayor",
+    start: "Начать",
+    watch: "Смотреть"
+  });
+  // Get language from Redux store
+  const language = useSelector((state) => state.language);
+  useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+         sets: "Сет",
+      tasks: "Задания", 
+      bonus: "Бонус",
+      level: "Уровень города",
+      mayor: "/ Мэр",
+        rewardReceived: "Награда получена!",
+        rewardForAd: "Вы получили награду за просмотр рекламы!",
+        excellent: "Отлично!",
+        error: "Ошибка",
+        rewardError: "Не удалось получить награду. Попробуйте позже.",
+        taskRewards: "Награды за задания",
+        subscribeToTelegram: "Подписаться на телеграм канал https://t.me/zoomayor",
+        start: "Начать",
+        watch: "Смотреть"
+      });
+    } else if (language === "en") {
+      setTranslations({
+         sets: "Set",
+            tasks: "Tasks",
+            bonus: "Bonus",
+            level: "City Level", 
+            mayor: "/ Mayor",
+        rewardReceived: "Reward received!",
+        rewardForAd: "You received a reward for watching the ad!",
+        excellent: "Excellent!",
+        error: "Error",
+        rewardError: "Failed to receive reward. Please try again later.",
+        taskRewards: "Task Rewards",
+        subscribeToTelegram: "Subscribe to Telegram channel https://t.me/zoomayor",
+        start: "Start",
+        watch: "Watch"
+      });
+    }
+  }, [language]);
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -215,12 +272,12 @@ const TasksPage = () => {
         if (response.data.success) {
           // Показываем уведомление об успехе
           tg.showPopup({
-            title: "Награда получена!",
-            message: `Вы получили награду за просмотр рекламы!`,
+            title: translations.rewardReceived,
+            message: translations.rewardForAd,
             buttons: [
               {
                 type: "ok",
-                text: "Отлично!",
+                text: translations.excellent,
               },
             ],
           });
@@ -230,8 +287,8 @@ const TasksPage = () => {
       console.error("Подробная ошибка:", error);
       // Показываем ошибку пользователю
       window.Telegram.WebApp.showPopup({
-        title: "Ошибка",
-        message: "Не удалось получить награду. Попробуйте позже.",
+        title: translations.error,
+        message: translations.rewardError,
         buttons: [
           {
             type: "ok",
@@ -264,12 +321,13 @@ const TasksPage = () => {
                 taskImg={taskImg}
                 bonusImg={bonusImg}
                 username={username}
+                translations={translations}
               />
               <div className="tasks-block">
                 <div className="tasks-head">
                   <div className="section-content">
                     <h2 className="section-content__title">
-                      Награды за задания
+                        {translations.taskRewards}
                     </h2>
                   </div>
                 </div>
@@ -286,7 +344,7 @@ const TasksPage = () => {
                         </div>
                         <div className="tasks-list__content">
                           <h3 className="tasks-list__title">
-                            Подписаться на телеграм канал https://t.me/zoomayor
+                              {translations.subscribeToTelegram}
                           </h3>
                           <ul className="friends-params f-center">
                             <li className="friends-params__item f-center">
@@ -308,7 +366,8 @@ const TasksPage = () => {
                           window.open("https://t.me/zoomayor", "_blank")
                         }
                       >
-                        Начать
+                                                {translations.start}
+
                       </button>
                     </div>
                   </li>
@@ -371,7 +430,8 @@ const TasksPage = () => {
                           style={{ marginTop: "0" }}
                           onClick={() => showRewardedAd(ad.id)}
                         >
-                          Смотреть
+                                                    {translations.watch}
+
                         </button>
                       </div>
                     </li>
