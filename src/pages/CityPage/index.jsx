@@ -57,7 +57,7 @@ const CityPage = () => {
   const [showSpinner, setShowSpinner] = useState(true);
       const [translations1, setTranslations1] = useState({})
 
-    const [translations, setTranslations] = useState({
+const [translations, setTranslations] = useState({
       sets: "Сет",
       tasks: "Задания", 
       bonus: "Бонус",
@@ -66,6 +66,13 @@ const CityPage = () => {
       collect: "Забрать",
       slowConnectionTitle: "Внимание",
       slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+      infoAbout: "Информация о",
+      rewardType: "Тип награды",
+      experience: "Опыт",
+      hourlyIncome: "Доход в час",
+      coins: "Монеты", 
+      card: "Карта",
+      value: "Значение"
     });
     // Get language from Redux store
     const language = useSelector((state) => state.language);
