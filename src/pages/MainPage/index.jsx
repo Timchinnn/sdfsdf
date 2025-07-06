@@ -50,6 +50,8 @@ const MainPage = () => {
   });
   // Get language from Redux store
   const language = useSelector((state) => state.language);
+  const [cardBackImageLoaded, setCardBackImageLoaded] = useState(false);
+
   // Update translations when language changes
   useEffect(() => {
     if (language === "ru") {
@@ -171,12 +173,29 @@ const MainPage = () => {
   }, []);
   // Проверка загрузки всех данных и отключение спиннера
   useEffect(() => {
-    if (
-      userPhotoLoaded &&
-      userCoinsLoaded &&
-      userLevelLoaded &&
-      usernameLoaded
-    ) {
+  const cardBackStyle = useSelector((state) => state.cardBack);
+  const img = new Image();
+  
+  img.onload = () => {
+    setCardBackImageLoaded(true);
+  };
+  
+  img.src = cardBackStyle?.startsWith('/img') 
+    ? `https://api.zoomayor.io${cardBackStyle}`
+    : cardBackStyles[cardBackStyle]?.image || cardBackStyles.default.image;
+    
+  return () => {
+    img.onload = null;
+  };
+}, []);
+  useEffect(() => {
+if (
+  userPhotoLoaded &&
+  userCoinsLoaded && 
+  userLevelLoaded &&
+  usernameLoaded &&
+  cardBackImageLoaded
+) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
         setShowSpinner(false);
