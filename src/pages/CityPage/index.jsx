@@ -80,25 +80,39 @@ const [translations, setTranslations] = useState({
       useEffect(() => {
         if (language === "ru") {
           setTranslations({
-            sets: "Сет",
-            tasks: "Задания",
-            bonus: "Бонус", 
-            level: "Уровень города",
-            mayor: "/ Мэр",
-            collect: "Забрать",
-            slowConnectionTitle: "Внимание",
-            slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+                  sets: "Сет",
+      tasks: "Задания", 
+      bonus: "Бонус",
+      level: "Уровень города",
+      mayor: "/ Мэр",
+      collect: "Забрать",
+      slowConnectionTitle: "Внимание",
+      slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+      infoAbout: "Информация о",
+      rewardType: "Тип награды",
+      experience: "Опыт",
+      hourlyIncome: "Доход в час",
+      coins: "Монеты", 
+      card: "Карта",
+      value: "Значение"
           });
         } else if (language === "en") {
           setTranslations({
             sets: "Set",
-            tasks: "Tasks", 
+            tasks: "Tasks",
             bonus: "Bonus",
-            level: "City Level",
+            level: "City Level", 
             mayor: "/ Mayor",
             collect: "Collect",
             slowConnectionTitle: "Attention",
             slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance.",
+            infoAbout: "Information about",
+            rewardType: "Reward type",
+            experience: "Experience",
+            hourlyIncome: "Hourly income",
+            coins: "Coins",
+            card: "Card",
+            value: "Value"
           });
         }
       }, [language]);
