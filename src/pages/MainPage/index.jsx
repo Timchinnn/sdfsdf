@@ -36,6 +36,38 @@ const MainPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+  const [translations, setTranslations] = useState({
+    sets: "Сет",
+    tasks: "Задания", 
+    bonus: "Бонус",
+    level: "Уровень города",
+    mayor: "/ Мэр",
+    collect: "Забрать"
+  });
+  // Get language from Redux store
+  const language = useSelector((state) => state.language);
+  // Update translations when language changes
+  useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+        sets: "Сет",
+        tasks: "Задания",
+        bonus: "Бонус", 
+        level: "Уровень города",
+        mayor: "/ Мэр",
+        collect: "Забрать"
+      });
+    } else if (language === "en") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Tasks", 
+        bonus: "Bonus",
+        level: "City Level",
+        mayor: "/ Mayor",
+        collect: "Collect"
+      });
+    }
+  }, [language]);
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -192,6 +224,8 @@ const MainPage = () => {
                 taskImg={taskImg}
                 bonusImg={bonusImg}
                 username={username}
+                                translations={translations}
+
               />
               <div className="main-game">
                 <MainCarousel

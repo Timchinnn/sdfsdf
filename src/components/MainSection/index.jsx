@@ -36,40 +36,40 @@ const MainSection = ({
   const [showIncomePopup, setShowIncomePopup] = useState(
     () => !sessionStorage.getItem("incomePopupShown")
   );
-  const [translations, setTranslations] = useState({
-  sets: "Сет",
-  tasks: "Задания",
-  bonus: "Бонус",
-  level: "Уровень города",
-  mayor: "/ Мэр",
-  collect: "Забрать",
-  // Добавьте другие переводы по мере необходимости
-});
-const updateTranslations = (language) => {
-  if (language === "ru") {
-    setTranslations({
-      sets: "Сет",
-      tasks: "Задания",
-      bonus: "Бонус",
-      level: "Уровень города",
-      mayor: "/ Мэр",
-      collect: "Забрать",
-      // Добавьте другие переводы для русского языка
-    });
-  } else if (language === "en") {
-    setTranslations({
-      sets: "Set",
-      tasks: "Tasks",
-      bonus: "Bonus",
-      level: "City Level",
-      mayor: "/ Mayor",
-      collect: "Collect",
-      // Добавьте другие переводы для английского языка
-    });
-  }
-};useEffect(() => {
-  updateTranslations(language);
-}, [language]);
+//   const [translations, setTranslations] = useState({
+//   sets: "Сет",
+//   tasks: "Задания",
+//   bonus: "Бонус",
+//   level: "Уровень города",
+//   mayor: "/ Мэр",
+//   collect: "Забрать",
+//   // Добавьте другие переводы по мере необходимости
+// });
+// const updateTranslations = (language) => {
+//   if (language === "ru") {
+//     setTranslations({
+//       sets: "Сет",
+//       tasks: "Задания",
+//       bonus: "Бонус",
+//       level: "Уровень города",
+//       mayor: "/ Мэр",
+//       collect: "Забрать",
+//       // Добавьте другие переводы для русского языка
+//     });
+//   } else if (language === "en") {
+//     setTranslations({
+//       sets: "Set",
+//       tasks: "Tasks",
+//       bonus: "Bonus",
+//       level: "City Level",
+//       mayor: "/ Mayor",
+//       collect: "Collect",
+//       // Добавьте другие переводы для английского языка
+//     });
+//   }
+// };useEffect(() => {
+//   updateTranslations(language);
+// }, [language]);
   useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");
