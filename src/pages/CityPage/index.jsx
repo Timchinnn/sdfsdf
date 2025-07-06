@@ -55,6 +55,8 @@ const CityPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+      const [translations1, setTranslations1] = useState({})
+
     const [translations, setTranslations] = useState({
       sets: "Сет",
       tasks: "Задания", 
@@ -279,7 +281,7 @@ const CityPage = () => {
         for (const set of cardSets) {
           translatedNames[set.id] = await translateText(set.name, language);
         }
-        setTranslations(translatedNames);
+        setTranslations1(translatedNames);
         setIsTranslating(false);
       }
     };
@@ -409,7 +411,7 @@ const CityPage = () => {
                         openAccordion === set.id ? "active" : ""
                       }`}
                     >
-<p style={{ width: "80px" }}>{translations[set.id] || set.name}</p>
+<p style={{ width: "80px" }}>{translations1[set.id] || set.name}</p>
                       <div
                         className="info-icon"
                         style={{ display: "flex" }}
