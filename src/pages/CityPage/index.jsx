@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import routeCity from "./routes";
 import MainSection from "components/MainSection";
-import axios from "../../axios-controller";
-
 import {
   userCardsService,
   cardSetsService,
@@ -67,21 +65,7 @@ const CityPage = () => {
     });
     // Get language from Redux store
     const language = useSelector((state) => state.language);
-      const translateText = async (text, targetLang) => {
-    try {
-      const response = await axios.post("/translate", {
-        texts: [text],
-        targetLanguageCode: targetLang,
-      });
-      if (response.data && response.data[0]) {
-        return response.data[0].text;
-      }
-      return text;
-    } catch (error) {
-      console.error("Translation error:", error);
-      return text;
-    }
-  };
+    
       useEffect(() => {
         if (language === "ru") {
           setTranslations({
@@ -237,7 +221,7 @@ const CityPage = () => {
             try {
               await cardSetsService.checkSetCompletion(set.id, telegram_id);
             } catch (error) {
-              console.error("Ошибка при проверке завершения наборач:", error);
+              console.error("Ошибка при проверке завершения набора:", error);
             }
           }
         }
@@ -249,24 +233,6 @@ const CityPage = () => {
     };
     fetchCardSets();
   }, []);
-  useEffect(() => {
-    const translateSetNames = async () => {
-      if (cardSets.length > 0) {
-        const translatedSets = {};
-        for (const set of cardSets) {
-          if (set.name) {
-            const translatedName = await translateText(set.name, language);
-            translatedSets[set.id] = translatedName;
-          }
-        }
-        setTranslations(translatedSets);
-      }
-    };
-    
-    if (language) {
-      translateSetNames();
-    }
-  }, [cardSets, language]);
   // Получение карточек пользователя
   useEffect(() => {
     const fetchUserCards = async () => {
