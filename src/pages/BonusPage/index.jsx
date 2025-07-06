@@ -53,7 +53,9 @@ const BonusPage = () => {
     activationHistory: "История активаций",
     activated: "Активирован",
     activating: "Активация...",
-    apply: "Применить"
+    apply: "Применить",
+            enterCode: "Введите код"
+
   });
     const language = useSelector((state) => state.language);
   useEffect(() => {
@@ -69,7 +71,9 @@ const BonusPage = () => {
         activationHistory: "История активаций", 
         activated: "Активирован",
         activating: "Активация...",
-        apply: "Применить"
+        apply: "Применить",
+                enterCode: "Введите код"
+
       });
     } else if (language === "en") {
       setTranslations({
@@ -83,7 +87,9 @@ const BonusPage = () => {
         activationHistory: "Activation History",
         activated: "Activated",
         activating: "Activating...", 
-        apply: "Apply"
+        apply: "Apply",
+                enterCode: "Enter code"
+
       });
     }
   }, [language]);
@@ -289,7 +295,7 @@ const BonusPage = () => {
                       <input
                         type="text"
                         name="promo"
-                        placeholder="Введите код"
+                        placeholder={translations.enterCode}
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
                         disabled={isLoading}
