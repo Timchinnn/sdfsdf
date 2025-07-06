@@ -13,6 +13,7 @@ import Spinner from "components/Spinner";
 // Импортируем необходимые локальные изображения
 import Avatar from "assets/img/avatar.png";
 import { useSelector } from "react-redux";
+import axios from "../../axios-controller";
 
 import TimeIcon from "assets/img/time-icon.svg";
 import MoneyIcon from "assets/img/money-icon.svg";
