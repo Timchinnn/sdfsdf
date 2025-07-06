@@ -54,6 +54,67 @@ const PeoplePage = () => {
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
   // Получаем username из Telegram API
+  const [translations1, setTranslations1] = useState({})
+  
+  const [translations, setTranslations] = useState({
+        sets: "Сет",
+        tasks: "Задания", 
+        bonus: "Бонус",
+        level: "Уровень города",
+        mayor: "/ Мэр",
+        collect: "Забрать",
+        slowConnectionTitle: "Внимание",
+        slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+        infoAbout: "Информация о",
+        rewardType: "Тип награды",
+        experience: "Опыт",
+        hourlyIncome: "Доход в час",
+        coins: "Монеты", 
+        card: "Карта",
+        value: "Значение"
+      });
+      // Get language from Redux store
+      const language = useSelector((state) => state.language);
+      
+        useEffect(() => {
+          if (language === "ru") {
+            setTranslations({
+                    sets: "Сет",
+        tasks: "Задания", 
+        bonus: "Бонус",
+        level: "Уровень города",
+        mayor: "/ Мэр",
+        collect: "Забрать",
+        slowConnectionTitle: "Внимание",
+        slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+        infoAbout: "Информация о",
+        rewardType: "Тип награды",
+        experience: "Опыт",
+        hourlyIncome: "Доход в час",
+        coins: "Монеты", 
+        card: "Карта",
+        value: "Значение"
+            });
+          } else if (language === "en") {
+            setTranslations({
+              sets: "Set",
+              tasks: "Tasks",
+              bonus: "Bonus",
+              level: "City Level", 
+              mayor: "/ Mayor",
+              collect: "Collect",
+              slowConnectionTitle: "Attention",
+              slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance.",
+              infoAbout: "Information about",
+              rewardType: "Reward type",
+              experience: "Experience",
+              hourlyIncome: "Hourly income",
+              coins: "Coins",
+              card: "Card",
+              value: "Value"
+            });
+          }
+        }, [language]);
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -231,6 +292,36 @@ const PeoplePage = () => {
     };
     fetchUserCards();
   }, []);
+    const [isTranslating, setIsTranslating] = useState(false);
+    const translateText = async (text, targetLang) => {
+      try {
+        const response = await axios.post("/translate", {
+          texts: [text],
+          targetLanguageCode: targetLang,
+        });
+        if (response.data && response.data[0]) {
+          return response.data[0].text;
+        }
+        return text;
+      } catch (error) {
+        console.error("Ошибка при переводе:", error);
+        return text;
+      }
+    };
+    useEffect(() => {
+      const translateSetNames = async () => {
+        if (cardSets.length > 0) {
+          setIsTranslating(true);
+          const translatedNames = {};
+          for (const set of cardSets) {
+            translatedNames[set.id] = await translateText(set.name, language);
+          }
+          setTranslations1(translatedNames);
+          setIsTranslating(false);
+        }
+      };
+      translateSetNames();
+    }, [cardSets, language]);
   // Проверка загрузки всех данных и отключение спиннера
   useEffect(() => {
     if (
@@ -240,7 +331,9 @@ const PeoplePage = () => {
       cardSetsLoaded &&
       userCardsLoaded &&
       responseTimeLoaded &&
-      usernameLoaded // Добавляем проверку загрузки username
+      usernameLoaded &&
+      !isTranslating // Add check for translation loading state
+ // Добавляем проверку загрузки username
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
@@ -255,7 +348,8 @@ const PeoplePage = () => {
     cardSetsLoaded,
     userCardsLoaded,
     responseTimeLoaded,
-    usernameLoaded, // Добавляем в зависимости
+    usernameLoaded, 
+    isTranslating,// Добавляем в зависимости
   ]);
   // Добавить функцию для определения URL изображения
   const getImageUrl = (imageUrl) => {
@@ -343,7 +437,8 @@ const PeoplePage = () => {
                 cardImg={cardImg}
                 taskImg={taskImg}
                 bonusImg={bonusImg}
-                username={username} // Передаем username в MainSection
+                username={username}
+                translations={translations} // Передаем username в MainSection
               />
               <ul className="city-list">
                 {cardSets.map((set) => (
@@ -353,7 +448,7 @@ const PeoplePage = () => {
                         openAccordion === set.id ? "active" : ""
                       }`}
                     >
-                      <p style={{ width: "80px" }}>{set.name}</p>
+<p style={{ width: "80px" }}>{translations1[set.id] || set.name}</p>
                       <div
                         className="info-icon"
                         style={{ display: "flex" }}
@@ -368,45 +463,45 @@ const PeoplePage = () => {
                         <img src={InfoIcon} alt="" className="infoIcon" />
                       </div>
                       {showInfo[set.id] && (
-                        <div className="info-popup">
-                          <div className="info-popup__content">
-                            <p style={{ marginRight: "19px" }}>
-                              Информация о {set.name}
-                            </p>
-                            {set.rewards &&
-                              set.rewards
-                                .filter(
-                                  (reward) =>
-                                    reward.value !== 0 && reward.value !== ""
-                                )
-                                .map((reward, index) => (
-                                  <div
-                                    key={index}
-                                    style={{ marginBottom: "10px" }}
-                                  >
-                                    <p>
-                                      Тип награды:{" "}
-                                      {reward.type === "experience"
-                                        ? "Опыт"
-                                        : reward.type === "hourly_income"
-                                        ? "Доход в час"
-                                        : reward.type === "coins"
-                                        ? "Монеты"
-                                        : reward.type === "card"
-                                        ? "Карта"
-                                        : reward.type}
-                                    </p>
-                                    <p>Значение: {reward.value}</p>
-                                  </div>
-                                ))}
-                            <button
-                              className="info-popup__close"
-                              onClick={() => setShowInfo({})}
-                            >
-                              <p>✕</p>
-                            </button>
-                          </div>
-                        </div>
+  <div className="info-popup">
+  <div className="info-popup__content">
+    <p style={{ marginRight: "19px" }}>
+      {translations.infoAbout} {translations1[set.id] || set.name}
+    </p>
+    {set.rewards &&
+      set.rewards
+        .filter(
+          (reward) =>
+            reward.value !== 0 && reward.value !== ""
+        )
+        .map((reward, index) => (
+          <div
+            key={index}
+            style={{ marginBottom: "10px" }}
+          >
+            <p>
+              {translations.rewardType}{" "}
+              {reward.type === "experience"
+                ? translations.experience
+                : reward.type === "hourly_income"
+                ? translations.hourlyIncome  
+                : reward.type === "coins"
+                ? translations.coins
+                : reward.type === "card"
+                ? translations.card
+                : reward.type}
+            </p>
+            <p>{translations.value}: {reward.value}</p>
+          </div>
+        ))}
+    <button
+      className="info-popup__close"
+      onClick={() => setShowInfo({})}
+    >
+      <p>✕</p>
+    </button>
+  </div>
+</div>
                       )}
                       <div className="city-list__more f-center">
                         <div className="city-list__count">
