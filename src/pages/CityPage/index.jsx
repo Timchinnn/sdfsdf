@@ -253,6 +253,36 @@ const CityPage = () => {
     };
     fetchUserCards();
   }, []);
+  const [isTranslating, setIsTranslating] = useState(false);
+  const translateText = async (text, targetLang) => {
+    try {
+      const response = await axios.post("/translate", {
+        texts: [text],
+        targetLanguageCode: targetLang,
+      });
+      if (response.data && response.data[0]) {
+        return response.data[0].text;
+      }
+      return text;
+    } catch (error) {
+      console.error("Ошибка при переводе:", error);
+      return text;
+    }
+  };
+  useEffect(() => {
+    const translateSetNames = async () => {
+      if (cardSets.length > 0) {
+        setIsTranslating(true);
+        const translatedNames = {};
+        for (const set of cardSets) {
+          translatedNames[set.id] = await translateText(set.name, language);
+        }
+        setTranslations(translatedNames);
+        setIsTranslating(false);
+      }
+    };
+    translateSetNames();
+  }, [cardSets, language]);
   // Проверка загрузки всех данных и отключение спиннера
   useEffect(() => {
     if (
@@ -377,7 +407,7 @@ const CityPage = () => {
                         openAccordion === set.id ? "active" : ""
                       }`}
                     >
-                      <p style={{ width: "80px" }}>{set.name}</p>
+<p style={{ width: "80px" }}>{translations[set.id] || set.name}</p>
                       <div
                         className="info-icon"
                         style={{ display: "flex" }}
