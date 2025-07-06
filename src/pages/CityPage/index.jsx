@@ -318,7 +318,6 @@ const [translations, setTranslations] = useState({
       userCardsLoaded &&
       responseTimeLoaded &&
       usernameLoaded &&
-      isTranslating
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
@@ -334,7 +333,6 @@ const [translations, setTranslations] = useState({
     userCardsLoaded,
     responseTimeLoaded,
     usernameLoaded,
-    isTranslating
   ]);
   // Функция для определения URL изображения
   const getImageUrl = (imageUrl) => {
