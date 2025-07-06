@@ -38,6 +38,51 @@ const FriendsPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+   const [translations, setTranslations] = useState({
+      sets: "Сет", 
+      tasks: "Задания",  
+      bonus: "Бонус", 
+      level: "Уровень города", 
+      mayor: "/ Мэр", 
+    referralSystem: "Реферальная система",
+    copyLink: "копируйте ссылку и отправьте другу",
+    invite: "Пригласить",
+    yourFriends: "Ваши друзья",
+    viewAll: "Смотреть всех"
+  });
+  
+  // Get language from Redux store
+  const language = useSelector((state) => state.language);
+  useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+          sets: "Сет", 
+      tasks: "Задания",  
+      bonus: "Бонус", 
+      level: "Уровень города", 
+      mayor: "/ Мэр", 
+        referralSystem: "Реферальная система",
+        copyLink: "копируйте ссылку и отправьте другу",
+        invite: "Пригласить", 
+        yourFriends: "Ваши друзья",
+        viewAll: "Смотреть всех"
+      });
+    } else if (language === "en") {
+      setTranslations({
+                    sets: "Set", 
+            tasks: "Tasks", 
+            bonus: "Bonus", 
+            level: "City Level",  
+            mayor: "/ Mayor", 
+
+        referralSystem: "Referral System",
+        copyLink: "copy the link and send to friend",
+        invite: "Invite",
+        yourFriends: "Your Friends", 
+        viewAll: "View All"
+      });
+    }
+  }, [language]);
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -213,14 +258,15 @@ const FriendsPage = () => {
                 taskImg={taskImg}
                 bonusImg={bonusImg}
                 username={username}
+                translations={translations}
               />
               <div className="friends-referal block-style">
                 <div className="section-content">
                   <h2 className="section-content__title">
-                    Реферальная система
+                    {translations.referralSystem}
                   </h2>
                   <p className="section-content__text">
-                    копируйте ссылку и отправьте другу
+                    {translations.copyLink}
                   </p>
                 </div>
                 <div className="friends-referal__url">
@@ -256,13 +302,13 @@ const FriendsPage = () => {
                   className="friends-referal__btn"
                   onClick={copyToClipboard}
                 >
-                  Пригласить
+                  {translations.invite}
                 </button>
               </div>
               <div className="friends-block">
                 <div className="friends-block__head f-center-jcsb">
-                  <h2 className="section-content__title">Ваши друзья</h2>
-                  <div className="friends-block__head-more">Смотреть всех</div>
+                  <h2 className="section-content__title">{translations.yourFriends}</h2>
+                  <div className="friends-block__head-more">{translations.viewAll}</div>
                 </div>
                 <ul className="friends-list">
                   {Array.isArray(referrals) &&
