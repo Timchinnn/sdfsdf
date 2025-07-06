@@ -20,7 +20,8 @@ const MainSection = ({
   cardImg,
   taskImg,
   bonusImg,
-  username, // Получаем username из пропсов
+  username,
+   onTranslationsLoaded // Получаем username из пропсов
 }) => {
   const language = useSelector((state) => state.language);
   const tg = window.Telegram?.WebApp?.initDataUnsafe?.user;
@@ -67,9 +68,13 @@ const updateTranslations = (language) => {
       // Добавьте другие переводы для английского языка
     });
   }
-};useEffect(() => {
+};
+useEffect(() => {
   updateTranslations(language);
-}, [language]);
+  if (onTranslationsLoaded) {
+    onTranslationsLoaded();
+  }
+}, [language, onTranslationsLoaded]);
   useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");
