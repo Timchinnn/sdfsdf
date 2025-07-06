@@ -317,7 +317,8 @@ const [translations, setTranslations] = useState({
       cardSetsLoaded &&
       userCardsLoaded &&
       responseTimeLoaded &&
-      usernameLoaded
+      usernameLoaded &&
+      isTranslating
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
