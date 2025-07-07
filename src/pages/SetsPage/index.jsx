@@ -4,6 +4,8 @@ import MainSection from "components/MainSection";
 import Spinner from "components/Spinner";
 import { userInitService } from "services/api";
 import MobileNav from "components/MobileNav";
+import { useSelector } from "react-redux";
+
 // Импортируем необходимые локальные изображения
 import Avatar from "assets/img/avatar.png";
 import TimeIcon from "assets/img/time-icon.svg";
@@ -28,6 +30,38 @@ const SetsPage = () => {
   const [usernameLoaded, setUsernameLoaded] = useState(false);
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+  const [translations, setTranslations] = useState({
+        sets: "Сет",
+        tasks: "Задания", 
+        bonus: "Бонус",
+        level: "Уровень города",
+        mayor: "/ Мэр",
+
+      });
+      // Get language from Redux store
+      const language = useSelector((state) => state.language);
+      
+        useEffect(() => {
+          if (language === "ru") {
+            setTranslations({
+                    sets: "Сет",
+        tasks: "Задания", 
+        bonus: "Бонус",
+        level: "Уровень города",
+        mayor: "/ Мэр",
+
+            });
+          } else if (language === "en") {
+            setTranslations({
+              sets: "Set",
+              tasks: "Tasks",
+              bonus: "Bonus",
+              level: "City Level", 
+              mayor: "/ Mayor",
+              
+            });
+          }
+        }, [language]);
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -158,6 +192,8 @@ const SetsPage = () => {
                 taskImg={taskImg}
                 bonusImg={bonusImg}
                 username={username}
+                                                                translations={translations}
+
               />
               <div
                 className="block-style"
