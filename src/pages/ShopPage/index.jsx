@@ -332,7 +332,7 @@ const ShopPage = () => {
         
         // Translate card names
         for (const card of shopCards) {
-          translatedNames[`card_${card.id}`] = await translateText(card.title, language);
+          translatedNames[`card_${card.id}`] = await translateText(card.name, language);
         }
         
         // Translate shirt names
@@ -341,6 +341,7 @@ const ShopPage = () => {
         }
         
         setTranslations1(translatedNames);
+        console.log(translatedNames)
         setIsTranslating(false);
       }
     };
