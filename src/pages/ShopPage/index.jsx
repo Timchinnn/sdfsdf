@@ -335,7 +335,7 @@ const ShopPage = () => {
           translatedNames[`card_${card.id}`] = await translateText(card.name, language);
         }
         
-        // Translate shirt namesl
+        // Translate shirt names
         for (const shirt of shirts) {
           translatedNames[`shirt_${shirt.id}`] = await translateText(shirt.name, language);
         }
@@ -711,7 +711,7 @@ const ShopPage = () => {
                                   </div>
                                   <div className="shop-list__content">
  <h3 className="shop-list__title">
-                                        {translations1[`card_${card.card_id}`] || card.title}
+                                        {translations1[`card_${card.id}`] || card.title}
                                     </h3>
                                     <div className="shop-list__price f-center">
                                       <img src={CoinIcon} alt="" />
