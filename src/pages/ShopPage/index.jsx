@@ -342,6 +342,7 @@ const ShopPage = () => {
         
         setTranslations1(translatedNames);
         console.log(translatedNames)
+        console.log(translations1)
         setIsTranslating(false);
       }
     };
