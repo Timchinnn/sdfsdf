@@ -335,7 +335,7 @@ const ShopPage = () => {
           translatedNames[`card_${card.id}`] = await translateText(card.name, language);
         }
         
-        // Translate shirt names
+        // Translate shirt namesl
         for (const shirt of shirts) {
           translatedNames[`shirt_${shirt.id}`] = await translateText(shirt.name, language);
         }
