@@ -78,6 +78,9 @@ const ShopPage = () => {
           mayor: "/ Мэр",
           comingSoon: "Скоро",
           shop: 'Магазин',
+              cardSets: "Наборы карт",
+    cards: "Карты", 
+    cardBacks: "Рубашки карт",
   
         });
         // Get language from Redux store
@@ -93,6 +96,9 @@ const ShopPage = () => {
           mayor: "/ Мэр",
                               comingSoon: "Скоро",
                                         shop: 'Магазин',
+                                                      cardSets: "Наборы карт",
+    cards: "Карты", 
+    cardBacks: "Рубашки карт",
 
   
               });
@@ -105,6 +111,9 @@ const ShopPage = () => {
                 mayor: "/ Mayor",
                               comingSoon: "Coming Soon",
                                         shop: 'Shop',
+                                         cardSets: "Card Sets",
+        cards: "Cards",
+        cardBacks: "Card Backs",
 
                 
               });
@@ -641,7 +650,7 @@ const ShopPage = () => {
                         {filteredItems.filter((item) => item.type === "sets")
                           .length > 0 && (
                           <h2 className="section-content__title">
-                            Наборы карт
+                            {translations.cardSets}
                           </h2>
                         )}
                         <ul
@@ -682,7 +691,8 @@ const ShopPage = () => {
                         </ul>
                         {filteredItems.filter((item) => item.type === "cards")
                           .length > 0 && (
-                          <h2 className="section-content__title">Карты</h2>
+                          <h2 className="section-content__title">                            {translations.cards}
+</h2>
                         )}
                         <ul
                           className="shop-list f-jcsb"
@@ -726,7 +736,7 @@ const ShopPage = () => {
                         {filteredItems.filter((item) => item.type === "shirts")
                           .length > 0 && (
                           <h2 className="section-content__title">
-                            Рубашки карт
+                            {translations.cardBacks}
                           </h2>
                         )}
                         <ul
@@ -786,7 +796,8 @@ const ShopPage = () => {
                       marginTop: "6px",
                     }}
                   >
-                    Скоро
+                                                {translations.comingSoon}
+
                   </div>
                 )}
               </div>
