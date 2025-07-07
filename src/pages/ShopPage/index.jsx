@@ -342,7 +342,6 @@ const ShopPage = () => {
         
         setTranslations1(translatedNames);
         console.log(translatedNames)
-        console.log(translations1)
         setIsTranslating(false);
       }
     };
@@ -712,7 +711,7 @@ const ShopPage = () => {
                                   </div>
                                   <div className="shop-list__content">
  <h3 className="shop-list__title">
-                                        {translations1[`card_${card.id}`] || card.title}
+                                        {translations1[`card_${card.card_id}`] || card.title}
                                     </h3>
                                     <div className="shop-list__price f-center">
                                       <img src={CoinIcon} alt="" />
