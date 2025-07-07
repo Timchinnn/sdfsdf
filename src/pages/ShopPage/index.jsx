@@ -68,6 +68,41 @@ const ShopPage = () => {
   const [filteredItemsLoaded, setFilteredItemsLoaded] = useState(false);
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+   const [translations, setTranslations] = useState({
+          sets: "Сет",
+          tasks: "Задания", 
+          bonus: "Бонус",
+          level: "Уровень города",
+          mayor: "/ Мэр",
+          comingSoon: "Скоро",
+  
+        });
+        // Get language from Redux store
+        const language = useSelector((state) => state.language);
+        
+          useEffect(() => {
+            if (language === "ru") {
+              setTranslations({
+                      sets: "Сет",
+          tasks: "Задания", 
+          bonus: "Бонус",
+          level: "Уровень города",
+          mayor: "/ Мэр",
+                              comingSoon: "Скоро",
+  
+              });
+            } else if (language === "en") {
+              setTranslations({
+                sets: "Set",
+                tasks: "Tasks",
+                bonus: "Bonus",
+                level: "City Level", 
+                mayor: "/ Mayor",
+                              comingSoon: "Coming Soon",
+                
+              });
+            }
+          }, [language]);
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -496,6 +531,7 @@ const ShopPage = () => {
                 taskImg={taskImg}
                 bonusImg={bonusImg}
                 username={username}
+                translations={translations}
               />
               <div className="shop-block">
                 <h2 className="section-content__title shop-block__title">
