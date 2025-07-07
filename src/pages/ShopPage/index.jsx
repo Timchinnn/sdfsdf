@@ -68,6 +68,8 @@ const ShopPage = () => {
   const [filteredItemsLoaded, setFilteredItemsLoaded] = useState(false);
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+  const [translations1, setTranslations1] = useState({});
+
    const [translations, setTranslations] = useState({
           sets: "Сет",
           tasks: "Задания", 
@@ -302,6 +304,50 @@ const ShopPage = () => {
     shirtsLoaded,
   ]);
   // Проверка загрузки всех данных и отключение спиннера
+    const translateText = async (text, targetLang) => {
+    try {
+      const response = await axios.post("/translate", {
+        texts: [text],
+        targetLanguageCode: targetLang,
+      });
+      if (response.data && response.data[0]) {
+        return response.data[0].text;
+      }
+      return text;
+    } catch (error) {
+      console.error("Ошибка при переводе:", error);
+      return text;
+    }
+  };
+  useEffect(() => {
+    const translateSetNames = async () => {
+      if (shopSets.length > 0 && shopCards.length > 0 && shirts.length > 0) {
+        setIsTranslating(true);
+        const translatedNames = {};
+        
+        // Translate set names
+        for (const set of shopSets) {
+          translatedNames[`set_${set.id}`] = await translateText(set.name, language);
+        }
+        
+        // Translate card names
+        for (const card of shopCards) {
+          translatedNames[`card_${card.id}`] = await translateText(card.name, language);
+        }
+        
+        // Translate shirt names
+        for (const shirt of shirts) {
+          translatedNames[`shirt_${shirt.id}`] = await translateText(shirt.name, language);
+        }
+        
+        setTranslations1(translatedNames);
+        setIsTranslating(false);
+      }
+    };
+    translateSetNames();
+  }, [shopSets, shopCards, shirts, language]);
+    const [isTranslating, setIsTranslating] = useState(false);
+  
   useEffect(() => {
     if (
       userPhotoLoaded &&
@@ -312,7 +358,8 @@ const ShopPage = () => {
       shirtsLoaded &&
       responseTimeLoaded &&
       usernameLoaded &&
-      filteredItemsLoaded
+      filteredItemsLoaded&&
+      !isTranslating
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
@@ -329,7 +376,7 @@ const ShopPage = () => {
     shirtsLoaded,
     responseTimeLoaded,
     usernameLoaded,
-    filteredItemsLoaded,
+    filteredItemsLoaded,isTranslating,
   ]);
   // Добавить функцию getImageUrl
   const getImageUrl = (imageUrl) => {
@@ -622,7 +669,7 @@ const ShopPage = () => {
                                     />
                                   </div>
                                   <h3 className="shop-list__title">
-                                    {set.title}
+{translations1[`set_${set.id}`] || set.name}
                                   </h3>
                                   <div className="shop-list__price f-center">
                                     <img src={CoinIcon} alt="" />
@@ -663,7 +710,7 @@ const ShopPage = () => {
                                   </div>
                                   <div className="shop-list__content">
                                     <h3 className="shop-list__title">
-                                      {card.title}
+{translations1[`card_${card.id}`] || card.title}
                                     </h3>
                                     <div className="shop-list__price f-center">
                                       <img src={CoinIcon} alt="" />
@@ -714,7 +761,7 @@ const ShopPage = () => {
                                   </div>
                                   <div className="shop-list__content">
                                     <h3 className="shop-list__title">
-                                      {shirt.title}
+{translations1[`shirt_${shirt.id}`] || shirt.title}
                                     </h3>
                                     <div className="shop-list__price f-center">
                                       <img src={CoinIcon} alt="" />
