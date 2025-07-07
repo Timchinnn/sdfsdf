@@ -36,6 +36,7 @@ const SetsPage = () => {
         bonus: "Бонус",
         level: "Уровень города",
         mayor: "/ Мэр",
+        comingSoon: "Скоро",
 
       });
       // Get language from Redux store
@@ -49,6 +50,7 @@ const SetsPage = () => {
         bonus: "Бонус",
         level: "Уровень города",
         mayor: "/ Мэр",
+                            comingSoon: "Скоро",
 
             });
           } else if (language === "en") {
@@ -58,6 +60,7 @@ const SetsPage = () => {
               bonus: "Bonus",
               level: "City Level", 
               mayor: "/ Mayor",
+                            comingSoon: "Coming Soon",
               
             });
           }
@@ -203,7 +206,8 @@ const SetsPage = () => {
                   marginTop: "6px",
                 }}
               >
-                Скоро
+                                {translations.comingSoon}
+
               </div>
               {/* Здесь будет остальной контент после раскомментирования */}
             </>
