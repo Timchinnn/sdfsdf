@@ -710,7 +710,7 @@ const ShopPage = () => {
                                     />
                                   </div>
                                   <div className="shop-list__content">
- <h3 className="shop-list__title"                                     onClick={() => console.log("Card ID:", card.id)}
+ <h3 className="shop-list__title"                                     onClick={() => console.log("Card ID:", card)}
 >
                                         {translations1[`card_${card.id}`] || card.title}
                                     </h3>
