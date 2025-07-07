@@ -75,6 +75,7 @@ const ShopPage = () => {
           level: "Уровень города",
           mayor: "/ Мэр",
           comingSoon: "Скоро",
+          shop: 'Магазин',
   
         });
         // Get language from Redux store
@@ -89,6 +90,8 @@ const ShopPage = () => {
           level: "Уровень города",
           mayor: "/ Мэр",
                               comingSoon: "Скоро",
+                                        shop: 'Магазин',
+
   
               });
             } else if (language === "en") {
@@ -99,6 +102,8 @@ const ShopPage = () => {
                 level: "City Level", 
                 mayor: "/ Mayor",
                               comingSoon: "Coming Soon",
+                                        shop: 'Shop',
+
                 
               });
             }
@@ -535,7 +540,8 @@ const ShopPage = () => {
               />
               <div className="shop-block">
                 <h2 className="section-content__title shop-block__title">
-                  Магазин
+                                  {translations.shop}
+
                 </h2>
                 {isSpecialUser ? (
                   <>
