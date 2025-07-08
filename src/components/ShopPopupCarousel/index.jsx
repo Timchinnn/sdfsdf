@@ -64,6 +64,8 @@ useEffect(() => {
         
         setTranslatedTitle(translatedTitleResponse);
         setTranslatedDescription(translatedDescResponse);
+        console.log(translatedTitleResponse);
+        console.log(translatedDescResponse);
       } catch (error) {
         console.error("Ошибка при переводе:", error);
         setTranslatedTitle(title);
