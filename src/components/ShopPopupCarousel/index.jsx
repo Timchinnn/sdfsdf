@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 
 import "./styles.scss";
 import axios from "../../axios-controller";
-import { useSelector } from 'react-redux';
 
 // import DefaultImg from "assets/img/default-img.png";
 import TimeIcon from "assets/img/time-icon.svg";
@@ -19,10 +18,8 @@ const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
   // const [expCard, setExpCard] = useState(false);
   // const [totalEnergy, setTotalEnergy] = useState(0);
   // const [totalCoins, setTotalCoins] = useState(0);
-const [selectedCard, setSelectedCard] = useState(null);
-  const [translatedTitle, setTranslatedTitle] = useState("");
-  const [translatedDescription, setTranslatedDescription] = useState("");
-  const [isTranslating, setIsTranslating] = useState(false);  // const { setActivePopup } = props;
+  const [selectedCard, setSelectedCard] = useState(null);
+  // const { setActivePopup } = props;
   const handleOpenPopup = (cardData) => {
     document.documentElement.classList.add("fixed");
     setActivePopup(true);
@@ -33,49 +30,6 @@ const [selectedCard, setSelectedCard] = useState(null);
   //     document.documentElement.classList.remove("fixed");
   //     setActivePopup(false);
   //   };
-const language = useSelector((state) => state.language);
-const translateText = async (text, targetLang) => {
-  try {
-    const response = await axios.post("/translate", {
-      texts: [text],
-      targetLanguageCode: targetLang,
-    });
-    if (response.data && response.data[0]) {
-      return response.data[0].text;
-    }
-    return text;
-  } catch (error) {
-    console.error("Ошибка при переводе:", error);
-    return text;
-  }
-};
-useEffect(() => {
-  const translateTexts = async () => {
-    if (selectedCard || props.selectedSet) {
-      setIsTranslating(true);
-      const title = selectedCard ? selectedCard.title : props.selectedSet?.title || "";
-      const description = selectedCard ? selectedCard.description : props.selectedSet?.description || "";
-      
-      try {
-        const [translatedTitleResponse, translatedDescResponse] = await Promise.all([
-          translateText(title, language),
-          translateText(description, language)
-        ]);
-        
-        setTranslatedTitle(translatedTitleResponse);
-        setTranslatedDescription(translatedDescResponse);
-        console.log(translatedTitleResponse);
-        console.log(translatedDescResponse);
-      } catch (error) {
-        console.error("Ошибка при переводе:", error);
-        setTranslatedTitle(title);
-        setTranslatedDescription(description);
-      }
-      setIsTranslating(false);
-    }
-  };
-  translateTexts();
-}, [selectedCard, props.selectedSet, language]);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -157,14 +111,14 @@ useEffect(() => {
           {/* </div> */}
           <div className="shop-popup__content">
             <h3 className="shop-popup__title">
-              {translatedTitle || (selectedCard
-                  ? selectedCard.title
-                  : props.selectedSet?.title || "")}
+              {selectedCard
+                ? selectedCard.title
+                : props.selectedSet?.title || ""}
             </h3>
             <p className="shop-popup__text">
-              {translatedDescription || (selectedCard
-                  ? selectedCard.description
-                  : props.selectedSet?.description || "")}
+              {selectedCard
+                ? selectedCard.description
+                : props.selectedSet?.description || ""}
             </p>
             <div className="shop-popup__earn">
               <div className="main-params__card f-center-center">
