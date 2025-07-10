@@ -15,6 +15,8 @@ const CardShopPopup = (props) => {
   const [translatedDescription, setTranslatedDescription] = useState("");
   const [isTranslating, setIsTranslating] = useState(false);
   const language = useSelector((state) => state.language);  
+    const [showSpinner, setShowSpinner] = useState(true);
+  
     const translateText = async (text, targetLang) => {
     try {
       const response = await axios.post("/translate", {
@@ -52,6 +54,21 @@ const CardShopPopup = (props) => {
     };
     translateContent();
   }, [props.selectedPhoto, language]);
+  useEffect(() => {
+      if (
+
+        !isTranslating // Add check for translation loading state
+      ) {
+        // Добавляем небольшую задержку для плавности
+        const timer = setTimeout(() => {
+          setShowSpinner(false);
+        }, 300);
+        return () => clearTimeout(timer);
+      }
+    }, [
+
+      isTranslating, // Add isTranslating to dependencies
+    ]);
   useEffect(() => {
     // Если нужно показывать изображение сразу, можно убрать задержку или уменьшить время
     const timer = setTimeout(() => {
@@ -105,6 +122,9 @@ const CardShopPopup = (props) => {
     : DefaultImg;
   return (
     <div ref={popupRef} className={`shop-popup ${props.active ? "show" : ""}`}>
+                {showSpinner ? (
+            <Spinner loading={true} size={50} />
+          ) : (
       <div className="shop-popup__wrapper">
         <button
           type="button"
@@ -210,7 +230,7 @@ const CardShopPopup = (props) => {
             {!props.main ? "Купить" : "Ок"}
           </button>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 };
