@@ -27,7 +27,7 @@ const [isTranslating, setIsTranslating] = useState(false);
 useEffect(() => {
     if (
 
-      !isTranslating // Add check for translation loading state
+      !isTranslating // Add check for translfation loading state
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
