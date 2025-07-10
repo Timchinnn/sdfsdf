@@ -13,6 +13,7 @@ const ShirtShopPopup = (props) => {
     const [translatedTitle, setTranslatedTitle] = useState("");
   const language = useSelector((state) => state.language);
     const [showSpinner, setShowSpinner] = useState(true);
+    const [isTranslating, setIsTranslating] = useState(false);
   
   const translateText = async (text, targetLang) => {
     try {
@@ -38,9 +39,14 @@ const ShirtShopPopup = (props) => {
   useEffect(() => {
     const translateTitle = async () => {
       if (props.selectedPhoto?.name) {
+        
         const translated = await translateText(props.selectedPhoto.name, language);
         setTranslatedTitle(translated);
+                setIsTranslating(true);
+
       }
+              setIsTranslating(false);
+
     };
     translateTitle();
   }, [props.selectedPhoto?.name, language]);
