@@ -11,10 +11,9 @@ const ShirtShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
     const [translatedTitle, setTranslatedTitle] = useState("");
+      const [isTranslating, setIsTranslating] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(true);
   const language = useSelector((state) => state.language);
-    const [showSpinner, setShowSpinner] = useState(true);
-    const [isTranslating, setIsTranslating] = useState(false);
-  
   const translateText = async (text, targetLang) => {
     try {
       const response = await axios.post("/translate", {
@@ -36,20 +35,25 @@ const ShirtShopPopup = (props) => {
     }, 50);
     return () => clearTimeout(timer);
   }, []);
-  useEffect(() => {
+useEffect(() => {
     const translateTitle = async () => {
       if (props.selectedPhoto?.name) {
-        
+        setIsTranslating(true);
         const translated = await translateText(props.selectedPhoto.name, language);
         setTranslatedTitle(translated);
-                setIsTranslating(true);
-
+        setIsTranslating(false);
       }
-              // setIsTranslating(false);
-
     };
     translateTitle();
   }, [props.selectedPhoto?.name, language]);
+  useEffect(() => {
+    if (!isTranslating) {
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isTranslating]);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
@@ -67,21 +71,6 @@ const ShirtShopPopup = (props) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
-  useEffect(() => {
-      if (
-
-        !isTranslating // Add check for translation loading state
-      ) {
-        // Добавляем небольшую задержку для плавности
-        const timer = setTimeout(() => {
-          setShowSpinner(false);
-        }, 800);
-        return () => clearTimeout(timer);
-      }
-    }, [
-
-      isTranslating, // Add isTranslating to dependencies
-    ]);
   const handleButtonClick = async () => {
     try {
       const tg = window.Telegram.WebApp;
