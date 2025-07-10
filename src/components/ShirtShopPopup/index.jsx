@@ -4,10 +4,15 @@ import DefaultImg from "assets/img/default-img.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
 import axios from "../../axios-controller";
+import { useSelector } from 'react-redux';
 
 const ShirtShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
+    const [translatedTitle, setTranslatedTitle] = useState("");
+  const [translatedDescription, setTranslatedDescription] = useState("");
+  const [isTranslating, setIsTranslating] = useState(false);
+  const language = useSelector((state) => state.language);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
@@ -25,6 +30,43 @@ const ShirtShopPopup = (props) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
+  const translateText = async (text, targetLang) => {
+    try {
+      const response = await axios.post("/translate", {
+        texts: [text],
+        targetLanguageCode: targetLang,
+      });
+      if (response.data && response.data[0]) {
+        return response.data[0].text;
+      }
+      return text;
+    } catch (error) {
+      console.error("Ошибка при переводе:", error);
+      return text;
+    }
+  };
+  useEffect(() => {
+    const translateContent = async () => {
+      if (props.selectedPhoto) {
+        setIsTranslating(true);
+        try {
+          const [translatedTitleText, translatedDescText] = await Promise.all([
+            translateText(props.selectedPhoto.title || "", language),
+            translateText(props.selectedPhoto.description || "", language)
+          ]);
+          
+          setTranslatedTitle(translatedTitleText);
+          setTranslatedDescription(translatedDescText);
+        } catch (error) {
+          console.error("Translation error:", error);
+          setTranslatedTitle(props.selectedPhoto.title || "");
+          setTranslatedDescription(props.selectedPhoto.description || "");
+        }
+        setIsTranslating(false);
+      }
+    };
+    translateContent();
+  }, [props.selectedPhoto, language]);
   const handleButtonClick = async () => {
     try {
       const tg = window.Telegram.WebApp;
