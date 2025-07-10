@@ -9,6 +9,7 @@ import MainCarouselSet from "components/MainCarouselSet";
 
 import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
+import Spinner from "components/Spinner";
 
 const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
   const popupRef = useRef(null);
@@ -22,6 +23,22 @@ const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
   const [translatedTitle, setTranslatedTitle] = useState("");
 const [translatedDescription, setTranslatedDescription] = useState("");
 const [isTranslating, setIsTranslating] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(true);
+useEffect(() => {
+    if (
+
+      !isTranslating // Add check for translation loading state
+    ) {
+      // Добавляем небольшую задержку для плавности
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [
+
+    isTranslating, // Add isTranslating to dependencies
+  ]);
   // const { setActivePopup } = props;
   const handleOpenPopup = (cardData) => {
     document.documentElement.classList.add("fixed");
@@ -118,6 +135,9 @@ useEffect(() => {
       className={`shop-popup ${props.active ? "show" : ""}`}
       style={{ padding: "0 7px" }}
     >
+      {showSpinner ? (
+                  <Spinner loading={true} size={50} />
+                ) : (
       <div className="shop-popup__wrapper">
         <button
           type="button"
@@ -214,7 +234,7 @@ useEffect(() => {
             {!props.main ? "Купить" : "Ок"}
           </button>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 };
