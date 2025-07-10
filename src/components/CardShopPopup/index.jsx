@@ -6,10 +6,52 @@ import QuestionMarkImg from "assets/img/question-mark.png";
 import StarIcon from "assets/img/star-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
 import axios from "../../axios-controller";
-
+import { useSelector } from 'react-redux';
+import Spinner from "components/Spinner";
 const CardShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
+  const [translatedTitle, setTranslatedTitle] = useState("");
+  const [translatedDescription, setTranslatedDescription] = useState("");
+  const [isTranslating, setIsTranslating] = useState(false);
+  const language = useSelector((state) => state.language);  
+    const translateText = async (text, targetLang) => {
+    try {
+      const response = await axios.post("/translate", {
+        texts: [text],
+        targetLanguageCode: targetLang,
+      });
+      if (response.data && response.data[0]) {
+        return response.data[0].text;
+      }
+      return text;
+    } catch (error) {
+      console.error("Ошибка при переводе:", error);
+      return text;
+    }
+  };
+  useEffect(() => {
+    const translateContent = async () => {
+      if (props.selectedPhoto) {
+        setIsTranslating(true);
+        try {
+          const [translatedTitleText, translatedDescText] = await Promise.all([
+            translateText(props.selectedPhoto.title || "", language),
+            translateText(props.selectedPhoto.description || "", language)
+          ]);
+          
+          setTranslatedTitle(translatedTitleText);
+          setTranslatedDescription(translatedDescText);
+        } catch (error) {
+          console.error("Translation error:", error);
+          setTranslatedTitle(props.selectedPhoto.title || "");
+          setTranslatedDescription(props.selectedPhoto.description || "");
+        }
+        setIsTranslating(false);
+      }
+    };
+    translateContent();
+  }, [props.selectedPhoto, language]);
   useEffect(() => {
     // Если нужно показывать изображение сразу, можно убрать задержку или уменьшить время
     const timer = setTimeout(() => {
@@ -104,19 +146,19 @@ const CardShopPopup = (props) => {
             ) : (
               <>
                 {/* Заголовок карточки */}
-                <h3 className="shop-popup__title">
-                  {props.selectedPhoto ? props.selectedPhoto.title : ""}
-                </h3>
+ <h3 className="shop-popup__title">
+                    {translatedTitle}
+                  </h3>
                 {/* Описание карточки */}
-                <p className="shop-popup__text">
-                  {props.selectedPhoto ? props.selectedPhoto.description : ""}
-                  {props.selectedPhoto &&
-                    props.selectedPhoto.type === "energy_boost" && (
-                      <span style={{ marginLeft: "5px" }}>
-                        ⚡ {props.selectedPhoto.energy || 100}
-                      </span>
-                    )}
-                </p>
+                  <p className="shop-popup__text">
+                    {translatedDescription}
+                    {props.selectedPhoto &&
+                      props.selectedPhoto.type === "energy_boost" && (
+                        <span style={{ marginLeft: "5px" }}>
+                          ⚡ {props.selectedPhoto.energy || 100}
+                        </span>
+                      )}
+                  </p>
                 {/* Дополнительная информация (например, заработок/час) */}
                 <div className="shop-popup__earn">
                   <div className="main-params__card f-center-center">
