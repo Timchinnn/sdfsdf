@@ -10,9 +10,37 @@ const ShirtShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
     const [translatedTitle, setTranslatedTitle] = useState("");
-  const [translatedDescription, setTranslatedDescription] = useState("");
-  const [isTranslating, setIsTranslating] = useState(false);
   const language = useSelector((state) => state.language);
+  const translateText = async (text, targetLang) => {
+    try {
+      const response = await axios.post("/translate", {
+        texts: [text],
+        targetLanguageCode: targetLang,
+      });
+      if (response.data && response.data[0]) {
+        return response.data[0].text;
+      }
+      return text;
+    } catch (error) {
+      console.error("Ошибка при переводе:", error);
+      return text;
+    }
+  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowImage(true);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
+  useEffect(() => {
+    const translateTitle = async () => {
+      if (props.selectedPhoto?.name) {
+        const translated = await translateText(props.selectedPhoto.name, language);
+        setTranslatedTitle(translated);
+      }
+    };
+    translateTitle();
+  }, [props.selectedPhoto?.name, language]);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
@@ -30,43 +58,6 @@ const ShirtShopPopup = (props) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
-  const translateText = async (text, targetLang) => {
-    try {
-      const response = await axios.post("/translate", {
-        texts: [text],
-        targetLanguageCode: targetLang,
-      });
-      if (response.data && response.data[0]) {
-        return response.data[0].text;
-      }
-      return text;
-    } catch (error) {
-      console.error("Ошибка при переводе:", error);
-      return text;
-    }
-  };
-  useEffect(() => {
-    const translateContent = async () => {
-      if (props.selectedPhoto) {
-        setIsTranslating(true);
-        try {
-          const [translatedTitleText, translatedDescText] = await Promise.all([
-            translateText(props.selectedPhoto.title || "", language),
-            translateText(props.selectedPhoto.description || "", language)
-          ]);
-          
-          setTranslatedTitle(translatedTitleText);
-          setTranslatedDescription(translatedDescText);
-        } catch (error) {
-          console.error("Translation error:", error);
-          setTranslatedTitle(props.selectedPhoto.title || "");
-          setTranslatedDescription(props.selectedPhoto.description || "");
-        }
-        setIsTranslating(false);
-      }
-    };
-    translateContent();
-  }, [props.selectedPhoto, language]);
   const handleButtonClick = async () => {
     try {
       const tg = window.Telegram.WebApp;
@@ -156,7 +147,7 @@ const ShirtShopPopup = (props) => {
           </div>
           <div className="shop-popup__content">
             <h3 className="shop-popup__title">
-              {props.selectedPhoto ? props.selectedPhoto.name : ""}
+              {translatedTitle || props.selectedPhoto?.name || ""}
             </h3>
             <div className="shop-popup__params">
               <ul className="friends-params f-center-center">
