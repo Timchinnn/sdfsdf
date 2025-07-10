@@ -5,12 +5,15 @@ import TimeIcon from "assets/img/time-icon.svg";
 import CoinIcon from "assets/img/coin-icon.svg";
 import axios from "../../axios-controller";
 import { useSelector } from 'react-redux';
+import Spinner from "components/Spinner";
 
 const ShirtShopPopup = (props) => {
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
     const [translatedTitle, setTranslatedTitle] = useState("");
   const language = useSelector((state) => state.language);
+    const [showSpinner, setShowSpinner] = useState(true);
+  
   const translateText = async (text, targetLang) => {
     try {
       const response = await axios.post("/translate", {
@@ -58,6 +61,21 @@ const ShirtShopPopup = (props) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setActivePopup]);
+  useEffect(() => {
+      if (
+
+        !isTranslating // Add check for translation loading state
+      ) {
+        // Добавляем небольшую задержку для плавности
+        const timer = setTimeout(() => {
+          setShowSpinner(false);
+        }, 300);
+        return () => clearTimeout(timer);
+      }
+    }, [
+
+      isTranslating, // Add isTranslating to dependencies
+    ]);
   const handleButtonClick = async () => {
     try {
       const tg = window.Telegram.WebApp;
@@ -112,6 +130,9 @@ const ShirtShopPopup = (props) => {
   };
   return (
     <div ref={popupRef} className={`shop-popup ${props.active ? "show" : ""}`}>
+                {showSpinner ? (
+                  <Spinner loading={true} size={50} />
+                ) : (
       <div className="shop-popup__wrapper">
         <button
           type="button"
@@ -166,7 +187,7 @@ const ShirtShopPopup = (props) => {
             {!props.main ? "Купить" : "Ок"}
           </button>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 };
