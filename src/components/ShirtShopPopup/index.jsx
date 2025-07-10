@@ -45,7 +45,7 @@ const ShirtShopPopup = (props) => {
                 setIsTranslating(true);
 
       }
-              setIsTranslating(false);
+              // setIsTranslating(false);
 
     };
     translateTitle();
@@ -75,7 +75,7 @@ const ShirtShopPopup = (props) => {
         // Добавляем небольшую задержку для плавности
         const timer = setTimeout(() => {
           setShowSpinner(false);
-        }, 300);
+        }, 800);
         return () => clearTimeout(timer);
       }
     }, [
