@@ -122,28 +122,78 @@ useEffect(() => {
     };
     loadData();
 }, [dispatch]);
-  const handleLanguageChange = async (langCode) => {
-  if (langCode === "ru") {
-    setSelectLang(1);
-    dispatch(setLanguage("ru"));
-    setSelectedLanguage("ru");
-    localStorage.setItem("language", "ru");
-  } else if (langCode === "en") {
-    setSelectLang(2);
-    dispatch(setLanguage("en"));
-    setSelectedLanguage("en");
-    localStorage.setItem("language", "en");
-  }
+const handleLanguageChange = async (langCode) => {
+    // Update language state and localStorage
+    if (langCode === "ru") {
+      setSelectLang(1);
+      dispatch(setLanguage("ru"));
+      setSelectedLanguage("ru");
+      localStorage.setItem("language", "ru");
+      
+      // Set Russian translations
+      setTranslations({
+        vibration: "Вибрация",
+        nightMode: "Ночной режим", 
+        cardBack: "Рубашка карты",
+        language: "Язык",
+        deleteAccount: "Удалить аккаунт",
+        saveAndContinue: "Сохранить и продолжить",
+        imageQuality: "Качество изображений",
+        automatic: "Автоматически",
+        high: "Высокое качество",
+        low: "Низкое качество",
+        backToSettings: "Назад",
+        russian: "Русский",
+        english: "Английский",
+        italian: "Итальянский", 
+        spanish: "Испанский",
+        german: "Немецкий",
+        confirmDeleteAccount: "Вы уверенны, что хотите стереть все данные на нашем сервисе?",
+        keepAccount: "Оставить аккаунт",
+        deleteData: "Стереть все данные",
+        automaticDescription: "Выбирается в зависимости от скорости соединения",
+        highQualityDescription: "Может замедлить работу при плохом соединении",
+        lowQualityDescription: "Рекомендуется для медленного соединения"
+      });
+      
+    } else if (langCode === "en") {
+      setSelectLang(2);
+      dispatch(setLanguage("en")); 
+      setSelectedLanguage("en");
+      localStorage.setItem("language", "en");
+      // Set English translations
+      setTranslations({
+        vibration: "Vibration",
+        nightMode: "Night Mode",
+        cardBack: "Card Back",
+        language: "Language", 
+        deleteAccount: "Delete Account",
+        saveAndContinue: "Save and Continue",
+        imageQuality: "Image Quality",
+        automatic: "Automatic",
+        high: "High Quality",
+        low: "Low Quality",
+        backToSettings: "Back",
+        russian: "Russian",
+        english: "English",
+        italian: "Italian",
+        spanish: "Spanish", 
+        german: "German",
+        confirmDeleteAccount: "Are you sure you want to delete all data on our service?",
+        keepAccount: "Keep Account",
+        deleteData: "Delete All Data",
+        automaticDescription: "Selected based on connection speed",
+        highQualityDescription: "May slow down with poor connection",
+        lowQualityDescription: "Recommended for slow connection"
+      });
+    }
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const translatedTexts = {};
-      for (const [key, text] of Object.entries(translations)) {
-        translatedTexts[key] = await translateText(text, langCode);
-      }
-      setTranslations(translatedTexts);
+      // Allow time for translations to update
+      await new Promise(resolve => setTimeout(resolve, 100));
       setIsLoading(false);
     } catch (error) {
-      console.error("Ошибка при переводе текстов:", error);
+      console.error("Error updating language:", error);
       setIsLoading(false);
     }
   };
