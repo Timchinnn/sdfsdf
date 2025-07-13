@@ -33,11 +33,11 @@ import { ReactComponent as ShopActiveDark } from "assets/img/shop-active-dark.sv
 const MobileNav = () => {
    const language = useSelector((state) => state.language);
   const [translations, setTranslations] = useState({
-    game: "Игра",
-    city: "Город", 
-    residents: "Жители",
-    friends: "Друзья",
-    shop: "Магазин"
+    game: "",
+    city: "", 
+    residents: "",
+    friends: "",
+    shop: ""
   });
   useEffect(() => {
     if (language === "ru") {
