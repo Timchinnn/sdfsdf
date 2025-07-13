@@ -9,7 +9,7 @@ import { routePeople } from "pages/PeoplePage";
 import { useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
 
-// Импортируем как React компоненты
+// Импортируем как React компонентыс
 import { ReactComponent as GameDefaultWhite } from "assets/img/game-default.svg";
 import { ReactComponent as GameActiveWhite } from "assets/img/game-active.svg";
 import { ReactComponent as GameDefaultDark } from "assets/img/game-default-dark.svg";
