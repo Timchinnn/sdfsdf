@@ -6,6 +6,7 @@ import { routeCity } from "pages/CityPage";
 import { routeFriends } from "pages/FriendsPage";
 import { routeShop } from "pages/ShopPage";
 import { routePeople } from "pages/PeoplePage";
+import { useSelector } from "react-redux";
 
 // Импортируем как React компоненты
 import { ReactComponent as GameDefaultWhite } from "assets/img/game-default.svg";
@@ -30,6 +31,33 @@ import { ReactComponent as ShopDefaultDark } from "assets/img/shop-default-dark.
 import { ReactComponent as ShopActiveDark } from "assets/img/shop-active-dark.svg";
 
 const MobileNav = () => {
+   const language = useSelector((state) => state.language);
+  const [translations, setTranslations] = useState({
+    game: "Игра",
+    city: "Город", 
+    residents: "Жители",
+    friends: "Друзья",
+    shop: "Магазин"
+  });
+  useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+        game: "Игра",
+        city: "Город",
+        residents: "Жители", 
+        friends: "Друзья",
+        shop: "Магазин"
+      });
+    } else if (language === "en") {
+      setTranslations({
+        game: "Game",
+        city: "City",
+        residents: "Residents",
+        friends: "Friends", 
+        shop: "Shop"
+      });
+    }
+  }, [language]);
   return (
     <div className="mobile-nav">
       <ul className="mobile-menu f-center-jcsb">
@@ -55,7 +83,7 @@ const MobileNav = () => {
                 />
               </div>
             </div>
-            <p className="mobile-menu__title">Игра</p>
+            <p className="mobile-menu__title">{translations.game}</p>
           </NavLink>
         </li>
         <li className="mobile-menu__item">
@@ -72,7 +100,7 @@ const MobileNav = () => {
                 </div>
               </div>
             </div>
-            <p className="mobile-menu__title">Город</p>
+            <p className="mobile-menu__title">{translations.city}</p>
           </NavLink>
         </li>
         <li className="mobile-menu__item">
@@ -87,7 +115,7 @@ const MobileNav = () => {
                 <PeopleActiveDark className="mobile-menu__icon_dark-active" />
               </div>
             </div>
-            <p className="mobile-menu__title">Жители</p>
+            <p className="mobile-menu__title">{translations.residents}</p>
           </NavLink>
         </li>
         <li className="mobile-menu__item">
@@ -102,7 +130,7 @@ const MobileNav = () => {
                 <FriendsActiveDark className="mobile-menu__icon_dark-active" />
               </div>
             </div>
-            <p className="mobile-menu__title">Друзья</p>
+            <p className="mobile-menu__title">{translations.friends}</p>
           </NavLink>
         </li>
         <li className="mobile-menu__item">
@@ -117,7 +145,7 @@ const MobileNav = () => {
                 <ShopActiveDark className="mobile-menu__icon_dark-active" />
               </div>
             </div>
-            <p className="mobile-menu__title">Магазин</p>
+            <p className="mobile-menu__title">{translations.shop}</p>
           </NavLink>
         </li>
       </ul>
