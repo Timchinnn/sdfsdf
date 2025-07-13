@@ -14,6 +14,10 @@ const ShirtShopPopup = (props) => {
       const [isTranslating, setIsTranslating] = useState(false);
   const [showSpinner, setShowSpinner] = useState(true);
   const language = useSelector((state) => state.language);
+    const [translations, setTranslations] = useState({
+    buy: "Купить",
+    ok: "Ок"
+  });
   const translateText = async (text, targetLang) => {
     try {
       const response = await axios.post("/translate", {
@@ -29,6 +33,19 @@ const ShirtShopPopup = (props) => {
       return text;
     }
   };
+    useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+        buy: "Купить",
+        ok: "Ок"
+      });
+    } else if (language === "en") {
+      setTranslations({
+        buy: "Buy",
+        ok: "Ok"
+      });
+    }
+  }, [language]);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowImage(true);
@@ -179,7 +196,7 @@ useEffect(() => {
             className="shop-popup__btn"
             onClick={handleButtonClick}
           >
-            {!props.main ? "Купить" : "Ок"}
+            {!props.main ? translations.buy : translations.ok}
           </button>
         </div>
       </div>)}

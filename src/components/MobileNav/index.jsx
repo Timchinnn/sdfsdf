@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.scss";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { routeMain } from "pages/MainPage";
@@ -7,7 +7,6 @@ import { routeFriends } from "pages/FriendsPage";
 import { routeShop } from "pages/ShopPage";
 import { routePeople } from "pages/PeoplePage";
 import { useSelector } from "react-redux";
-import React, { useState, useEffect } from "react";
 
 // Импортируем как React компонентыс
 import { ReactComponent as GameDefaultWhite } from "assets/img/game-default.svg";

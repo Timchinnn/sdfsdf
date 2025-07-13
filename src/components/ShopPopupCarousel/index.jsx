@@ -24,6 +24,23 @@ const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
 const [translatedDescription, setTranslatedDescription] = useState("");
 const [isTranslating, setIsTranslating] = useState(false);
   const [showSpinner, setShowSpinner] = useState(true);
+    const [translations, setTranslations] = useState({
+    buy: "Купить",
+    ok: "Ок"
+  });
+    useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+        buy: "Купить",
+        ok: "Ок"
+      });
+    } else if (language === "en") {
+      setTranslations({
+        buy: "Buy",
+        ok: "Ok"
+      });
+    }
+  }, [language]);
 useEffect(() => {
     if (
 
@@ -231,7 +248,7 @@ useEffect(() => {
             className="shop-popup__btn"
             onClick={handleButtonClick}
           >
-            {!props.main ? "Купить" : "Ок"}
+            {!props.main ? translations.buy : translations.ok}
           </button>
         </div>
       </div>)}

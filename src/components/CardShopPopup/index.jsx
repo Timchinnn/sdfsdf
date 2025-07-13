@@ -15,6 +15,10 @@ const CardShopPopup = (props) => {
   const [translatedDescription, setTranslatedDescription] = useState("");
   const [isTranslating, setIsTranslating] = useState(false);
   const language = useSelector((state) => state.language);  
+    const [translations, setTranslations] = useState({
+    buy: "Купить",
+    ok: "Ок"
+  });
     const [showSpinner, setShowSpinner] = useState(true);
   
     const translateText = async (text, targetLang) => {
@@ -32,6 +36,19 @@ const CardShopPopup = (props) => {
       return text;
     }
   };
+    useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+        buy: "Купить",
+        ok: "Ок"
+      });
+    } else if (language === "en") {
+      setTranslations({
+        buy: "Buy",
+        ok: "Ok"
+      });
+    }
+  }, [language]);
   useEffect(() => {
     const translateContent = async () => {
       if (props.selectedPhoto) {
@@ -227,7 +244,7 @@ const CardShopPopup = (props) => {
               }
             }}
           >
-            {!props.main ? "Купить" : "Ок"}
+            {!props.main ? translations.buy : translations.ok}
           </button>
         </div>
       </div>)}
