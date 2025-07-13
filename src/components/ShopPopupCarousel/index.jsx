@@ -13,6 +13,8 @@ import Spinner from "components/Spinner";
 
 const ShopPopupCarousel = ({ setActivePopup, onButtonClick, ...props }) => {
   const popupRef = useRef(null);
+    const language = useSelector((state) => state.language);
+
   // const [nameCard, setNameCard] = useState(false);
   // const [DescrCard, setDescrCard] = useState(false);
   // const [priceCard, setPriceCard] = useState(false);
@@ -67,7 +69,6 @@ useEffect(() => {
   //     document.documentElement.classList.remove("fixed");
   //     setActivePopup(false);
   //   };
-  const language = useSelector((state) => state.language);
 const translateText = async (text, targetLang) => {
   try {
     const response = await axios.post("/translate", {

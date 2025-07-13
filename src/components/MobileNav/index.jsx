@@ -32,12 +32,14 @@ import { ReactComponent as ShopActiveDark } from "assets/img/shop-active-dark.sv
 
 const MobileNav = () => {
    const language = useSelector((state) => state.language);
+     const [isTranslationsLoaded, setIsTranslationsLoaded] = useState(false);
+
   const [translations, setTranslations] = useState({
-    game: "",
-    city: "", 
-    residents: "",
-    friends: "",
-    shop: ""
+    game: "Игра",
+    city: "Город", 
+    residents: "Жители",
+    friends: "Друзья",
+    shop: "Магазин"
   });
   useEffect(() => {
     if (language === "ru") {
@@ -56,10 +58,14 @@ const MobileNav = () => {
         friends: "Friends", 
         shop: "Shop"
       });
+            setIsTranslationsLoaded(true);
+
     }
   }, [language]);
   return (
     <div className="mobile-nav">
+            {isTranslationsLoaded && (
+
       <ul className="mobile-menu f-center-jcsb">
         <li className="mobile-menu__item">
           <NavLink
@@ -148,7 +154,8 @@ const MobileNav = () => {
             <p className="mobile-menu__title">{translations.shop}</p>
           </NavLink>
         </li>
-      </ul>
+      </ul>      )}
+
     </div>
   );
 };
