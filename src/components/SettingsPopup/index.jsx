@@ -186,17 +186,97 @@ const handleLanguageChange = async (langCode) => {
         highQualityDescription: "May slow down with poor connection",
         lowQualityDescription: "Recommended for slow connection"
       });
+    } else if (langCode === "it") {
+      setSelectLang(3);
+      dispatch(setLanguage("it")); 
+      setSelectedLanguage("it");
+      localStorage.setItem("language", "it");
+      // Set Italian translations
+      setTranslations({
+        vibration: "Vibrazione",
+        nightMode: "Modalità notte",
+        cardBack: "Dorso della carta",
+        language: "Lingua",
+        deleteAccount: "Elimina account",
+        saveAndContinue: "Salva e continua",
+        imageQuality: "Qualità immagine",
+        automatic: "Automatico",
+        high: "Alta qualità",
+        low: "Bassa qualità", 
+        backToSettings: "Indietro",
+        russian: "Russo",
+        english: "Inglese",
+        italian: "Italiano",
+        spanish: "Spagnolo",
+        german: "Tedesco",
+        confirmDeleteAccount: "Sei sicuro di voler cancellare tutti i dati sul nostro servizio?",
+        keepAccount: "Mantieni account",
+        deleteData: "Cancella tutti i dati",
+        automaticDescription: "Selezionato in base alla velocità di connessione",
+        highQualityDescription: "Potrebbe rallentare con una connessione scarsa",
+        lowQualityDescription: "Consigliato per connessione lenta"
+      });
+    } else if (langCode === "es") {
+      setSelectLang(4);
+      dispatch(setLanguage("es"));
+      setSelectedLanguage("es");
+      localStorage.setItem("language", "es");
+      // Set Spanish translations
+      setTranslations({
+        vibration: "Vibración",
+        nightMode: "Modo nocturno",
+        cardBack: "Reverso de carta",
+        language: "Idioma",
+        deleteAccount: "Eliminar cuenta",
+        saveAndContinue: "Guardar y continuar",
+        imageQuality: "Calidad de imagen",
+        automatic: "Automático",
+        high: "Alta calidad",
+        low: "Baja calidad",
+        backToSettings: "Atrás",
+        russian: "Ruso",
+        english: "Inglés",
+        italian: "Italiano",
+        spanish: "Español",
+        german: "Alemán",
+        confirmDeleteAccount: "¿Estás seguro de que quieres borrar todos los datos en nuestro servicio?",
+        keepAccount: "Mantener cuenta",
+        deleteData: "Borrar todos los datos",
+        automaticDescription: "Seleccionado según la velocidad de conexión",
+        highQualityDescription: "Puede ralentizarse con mala conexión",
+        lowQualityDescription: "Recomendado para conexión lenta"
+      });
+    } else if (langCode === "de") {
+      setSelectLang(5);
+      dispatch(setLanguage("de"));
+      setSelectedLanguage("de");
+      localStorage.setItem("language", "de");
+      // Set German translations
+      setTranslations({
+        vibration: "Vibration",
+        nightMode: "Nachtmodus",
+        cardBack: "Kartenrückseite",
+        language: "Sprache",
+        deleteAccount: "Konto löschen",
+        saveAndContinue: "Speichern und fortfahren",
+        imageQuality: "Bildqualität",
+        automatic: "Automatisch",
+        high: "Hohe Qualität",
+        low: "Niedrige Qualität",
+        backToSettings: "Zurück",
+        russian: "Russisch",
+        english: "Englisch",
+        italian: "Italienisch",
+        spanish: "Spanisch",
+        german: "Deutsch",
+        confirmDeleteAccount: "Sind Sie sicher, dass Sie alle Daten in unserem Service löschen möchten?",
+        keepAccount: "Konto behalten",
+        deleteData: "Alle Daten löschen",
+        automaticDescription: "Basierend auf Verbindungsgeschwindigkeit ausgewählt",
+        highQualityDescription: "Kann bei schlechter Verbindung langsamer werden",
+        lowQualityDescription: "Empfohlen für langsame Verbindung"
+      });
     }
-    setIsLoading(true);
-    try {
-      // Allow time for translations to update
-      await new Promise(resolve => setTimeout(resolve, 100));
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error updating language:", error);
-      setIsLoading(false);
-    }
-  };
   const translateText = async (text, targetLang) => {
     try {
       const response = await axios.post("/translate", {
