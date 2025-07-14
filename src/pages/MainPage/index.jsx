@@ -71,28 +71,61 @@ const MainPage = () => {
         loadCardBack();
     }, []);
   // Update translations when language changes
-  useEffect(() => {
+useEffect(() => {
     if (language === "ru") {
       setTranslations({
         sets: "Сет",
-        tasks: "Задания",
-        bonus: "Бонус", 
+        tasks: "Задания", 
+        bonus: "Бонус",
         level: "Уровень города",
         mayor: "/ Мэр",
         collect: "Забрать",
         slowConnectionTitle: "Внимание",
-        slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+        slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности."
       });
     } else if (language === "en") {
       setTranslations({
         sets: "Set",
-        tasks: "Tasks", 
+        tasks: "Tasks",
         bonus: "Bonus",
         level: "City Level",
-        mayor: "/ Mayor",
+        mayor: "/ Mayor", 
         collect: "Collect",
         slowConnectionTitle: "Attention",
-        slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance.",
+        slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance."
+      });
+    } else if (language === "it") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Compiti",
+        bonus: "Bonus",
+        level: "Livello città",
+        mayor: "/ Sindaco",
+        collect: "Raccogli",
+        slowConnectionTitle: "Attenzione",
+        slowConnectionMessage: "È stata rilevata una connessione lenta. La qualità dell'immagine verrà ridotta per migliorare le prestazioni."
+      });
+    } else if (language === "es") {
+      setTranslations({
+        sets: "Conjunto",
+        tasks: "Tareas",
+        bonus: "Bono",
+        level: "Nivel de ciudad",
+        mayor: "/ Alcalde",
+        collect: "Recoger",
+        slowConnectionTitle: "Atención",
+        slowConnectionMessage: "Se ha detectado una conexión lenta. La calidad de la imagen se reducirá para mejorar el rendimiento."
+      });
+    } else if (language === "de") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Aufgaben",
+        bonus: "Bonus",
+        level: "Stadtlevel",
+        mayor: "/ Bürgermeister",
+        collect: "Sammeln",
+        slowConnectionTitle: "Achtung",
+        slowConnectionMessage: "Eine langsame Verbindung wurde erkannt. Die Bildqualität wird reduziert, um die Leistung zu verbessern."
       });
     }
   }, [language]);
