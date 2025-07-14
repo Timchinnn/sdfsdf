@@ -567,7 +567,7 @@ const handleLanguageChange = async (langCode) => {
                 </div>
                 <div
                   className="modal-lang__item f-center-jcsb"
-                  onClick={() => setSelectLang(3)}
+                  onClick={() => handleLanguageChange("it")}
                 >
                   <div className="modal-lang__content">
                     <p className="modal-lang__content-title">
@@ -598,7 +598,7 @@ const handleLanguageChange = async (langCode) => {
                 </div>
                 <div
                   className="modal-lang__item f-center-jcsb"
-                  onClick={() => setSelectLang(4)}
+                  onClick={() => handleLanguageChange("es")}
                 >
                   <div className="modal-lang__content">
                     <p className="modal-lang__content-title">
@@ -629,7 +629,7 @@ const handleLanguageChange = async (langCode) => {
                 </div>
                 <div
                   className="modal-lang__item f-center-jcsb"
-                  onClick={() => setSelectLang(5)}
+                  onClick={() => handleLanguageChange("de")}
                 >
                   <div className="modal-lang__content">
                     <p className="modal-lang__content-title">
