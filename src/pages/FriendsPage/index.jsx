@@ -55,14 +55,14 @@ const FriendsPage = () => {
   
   // Get language from Redux store
   const language = useSelector((state) => state.language);
-  useEffect(() => {
+useEffect(() => {
     if (language === "ru") {
       setTranslations({
-          sets: "Сет", 
-      tasks: "Задания",  
-      bonus: "Бонус", 
-      level: "Уровень города", 
-      mayor: "/ Мэр", 
+        sets: "Сет", 
+        tasks: "Задания",  
+        bonus: "Бонус", 
+        level: "Уровень города", 
+        mayor: "/ Мэр", 
         referralSystem: "Реферальная система",
         copyLink: "копируйте ссылку и отправьте другу",
         invite: "Пригласить", 
@@ -71,17 +71,55 @@ const FriendsPage = () => {
       });
     } else if (language === "en") {
       setTranslations({
-                    sets: "Set", 
-            tasks: "Tasks", 
-            bonus: "Bonus", 
-            level: "City Level",  
-            mayor: "/ Mayor", 
-
+        sets: "Set", 
+        tasks: "Tasks", 
+        bonus: "Bonus", 
+        level: "City Level",  
+        mayor: "/ Mayor",
         referralSystem: "Referral System",
         copyLink: "copy the link and send to friend",
         invite: "Invite",
         yourFriends: "Your Friends", 
         viewAll: "View All"
+      });
+    } else if (language === "it") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Compiti",
+        bonus: "Bonus", 
+        level: "Livello città",
+        mayor: "/ Sindaco",
+        referralSystem: "Sistema di referral",
+        copyLink: "copia il link e invialo a un amico",
+        invite: "Invita",
+        yourFriends: "I tuoi amici",
+        viewAll: "Vedi tutti"
+      });
+    } else if (language === "es") {
+      setTranslations({
+        sets: "Conjunto",
+        tasks: "Tareas",
+        bonus: "Bono",
+        level: "Nivel de ciudad",
+        mayor: "/ Alcalde",
+        referralSystem: "Sistema de referidos",
+        copyLink: "copia el enlace y envíalo a un amigo",
+        invite: "Invitar",
+        yourFriends: "Tus amigos",
+        viewAll: "Ver todos"
+      });
+    } else if (language === "de") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Aufgaben",
+        bonus: "Bonus",
+        level: "Stadtlevel",
+        mayor: "/ Bürgermeister",
+        referralSystem: "Empfehlungssystem",
+        copyLink: "Link kopieren und an Freund senden",
+        invite: "Einladen",
+        yourFriends: "Deine Freunde",
+        viewAll: "Alle anzeigen"
       });
     }
   }, [language]);
