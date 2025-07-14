@@ -41,27 +41,50 @@ const MobileNav = () => {
     friends: "Друзья",
     shop: "Магазин"
   });
-  useEffect(() => {
-    if (language === "ru") {
-      setTranslations({
-        game: "Игра",
-        city: "Город",
-        residents: "Жители", 
-        friends: "Друзья",
-        shop: "Магазин"
-      });
-    } else if (language === "en") {
-      setTranslations({
-        game: "Game",
-        city: "City",
-        residents: "Residents",
-        friends: "Friends", 
-        shop: "Shop"
-      });
-            setIsTranslationsLoaded(true);
-
-    }
-  }, [language]);
+useEffect(() => {
+  if (language === "ru") {
+    setTranslations({
+      game: "Игра",
+      city: "Город",
+      residents: "Жители", 
+      friends: "Друзья",
+      shop: "Магазин"
+    });
+  } else if (language === "en") {
+    setTranslations({
+      game: "Game",
+      city: "City",
+      residents: "Residents",
+      friends: "Friends", 
+      shop: "Shop"
+    });
+  } else if (language === "it") {
+    setTranslations({
+      game: "Gioco",
+      city: "Città",
+      residents: "Residenti",
+      friends: "Amici",
+      shop: "Negozio"
+    });
+  } else if (language === "es") {
+    setTranslations({
+      game: "Juego",
+      city: "Ciudad", 
+      residents: "Residentes",
+      friends: "Amigos",
+      shop: "Tienda"
+    });
+  } else if (language === "de") {
+    setTranslations({
+      game: "Spiel",
+      city: "Stadt",
+      residents: "Bewohner",
+      friends: "Freunde", 
+      shop: "Geschäft"
+    });
+  }
+  setIsTranslationsLoaded(true);
+}, [language]);
   return (
     <div className="mobile-nav">
             {isTranslationsLoaded && (
