@@ -12,7 +12,44 @@ import { useSelector } from 'react-redux';
 const ShopPopup = (props) => {  
   const language = useSelector((state) => state.language);
   const [isTranslating, setIsTranslating] = useState(false); // Состояние для отслеживания загрузки
-
+ const [translations, setTranslations] = useState({
+    cardNotOpened: "Карта не открыта",
+    buy: "Купить",
+    ok: "Ок"
+  });
+  useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+        cardNotOpened: "Карта не открыта",
+        buy: "Купить", 
+        ok: "Ок"
+      });
+    } else if (language === "en") {
+      setTranslations({
+        cardNotOpened: "Card not opened",
+        buy: "Buy",
+        ok: "Ok"
+      });
+    } else if (language === "it") {
+      setTranslations({
+        cardNotOpened: "Carta non aperta",
+        buy: "Compra",
+        ok: "Ok"
+      });
+    } else if (language === "es") {
+      setTranslations({
+        cardNotOpened: "Carta no abierta",
+        buy: "Comprar",
+        ok: "Ok" 
+      });
+    } else if (language === "de") {
+      setTranslations({
+        cardNotOpened: "Karte nicht geöffnet",
+        buy: "Kaufen",
+        ok: "Ok"
+      });
+    }
+  }, [language]);
   const popupRef = useRef(null);
   const [showImage, setShowImage] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -146,7 +183,7 @@ const [translatedDescription, setTranslatedDescription] = useState("");
             <div className="shop-popup__content">
               {props.selectedPhoto &&
               props.selectedPhoto.image === QuestionMarkImg ? (
-                <h3 className="shop-popup__title">Карта не открыта</h3>
+                <h3 className="shop-popup__title">{translations.cardNotOpened}</h3>
               ) : (
                 <>
                   <h3 className="shop-popup__title">
