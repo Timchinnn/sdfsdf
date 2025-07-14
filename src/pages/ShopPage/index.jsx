@@ -86,39 +86,74 @@ const ShopPage = () => {
         // Get language from Redux store
         const language = useSelector((state) => state.language);
         
-          useEffect(() => {
-            if (language === "ru") {
-              setTranslations({
-                      sets: "Сет",
-          tasks: "Задания", 
-          bonus: "Бонус",
-          level: "Уровень города",
-          mayor: "/ Мэр",
-                              comingSoon: "Скоро",
-                                        shop: 'Магазин',
-                                                      cardSets: "Наборы карт",
-    cards: "Карты", 
-    cardBacks: "Рубашки карт",
-
-  
-              });
-            } else if (language === "en") {
-              setTranslations({
-                sets: "Set",
-                tasks: "Tasks",
-                bonus: "Bonus",
-                level: "City Level", 
-                mayor: "/ Mayor",
-                              comingSoon: "Coming Soon",
-                                        shop: 'Shop',
-                                         cardSets: "Card Sets",
+useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
+        sets: "Сет",
+        tasks: "Задания", 
+        bonus: "Бонус",
+        level: "Уровень города",
+        mayor: "/ Мэр",
+        comingSoon: "Скоро",
+        shop: 'Магазин',
+        cardSets: "Наборы карт",
+        cards: "Карты", 
+        cardBacks: "Рубашки карт",
+      });
+    } else if (language === "en") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Tasks",
+        bonus: "Bonus", 
+        level: "City Level",
+        mayor: "/ Mayor",
+        comingSoon: "Coming Soon",
+        shop: 'Shop',
+        cardSets: "Card Sets",
         cards: "Cards",
         cardBacks: "Card Backs",
-
-                
-              });
-            }
-          }, [language]);
+      });
+    } else if (language === "it") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Compiti",
+        bonus: "Bonus",
+        level: "Livello città",
+        mayor: "/ Sindaco",
+        comingSoon: "Prossimamente",
+        shop: 'Negozio',
+        cardSets: "Set di carte",
+        cards: "Carte",
+        cardBacks: "Dorsi delle carte",
+      });
+    } else if (language === "es") {
+      setTranslations({
+        sets: "Conjunto",
+        tasks: "Tareas",
+        bonus: "Bono",
+        level: "Nivel de ciudad",
+        mayor: "/ Alcalde",
+        comingSoon: "Próximamente",
+        shop: 'Tienda',
+        cardSets: "Conjuntos de cartas",
+        cards: "Cartas",
+        cardBacks: "Reversos de cartas",
+      });
+    } else if (language === "de") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Aufgaben",
+        bonus: "Bonus",
+        level: "Stadtlevel",
+        mayor: "/ Bürgermeister",
+        comingSoon: "Demnächst",
+        shop: 'Shop',
+        cardSets: "Kartensets",
+        cards: "Karten",
+        cardBacks: "Kartenrücken",
+      });
+    }
+  }, [language]);
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
