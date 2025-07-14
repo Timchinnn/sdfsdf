@@ -42,16 +42,15 @@ const SetsPage = () => {
       // Get language from Redux store
       const language = useSelector((state) => state.language);
       
-        useEffect(() => {
+useEffect(() => {
           if (language === "ru") {
             setTranslations({
                     sets: "Сет",
-        tasks: "Задания", 
-        bonus: "Бонус",
-        level: "Уровень города",
-        mayor: "/ Мэр",
-                            comingSoon: "Скоро",
-
+                    tasks: "Задания", 
+                    bonus: "Бонус",
+                    level: "Уровень города",
+                    mayor: "/ Мэр",
+                    comingSoon: "Скоро",
             });
           } else if (language === "en") {
             setTranslations({
@@ -60,8 +59,34 @@ const SetsPage = () => {
               bonus: "Bonus",
               level: "City Level", 
               mayor: "/ Mayor",
-                            comingSoon: "Coming Soon",
-              
+              comingSoon: "Coming Soon",
+            });
+          } else if (language === "it") {
+            setTranslations({
+              sets: "Set",
+              tasks: "Compiti",
+              bonus: "Bonus",
+              level: "Livello città",
+              mayor: "/ Sindaco", 
+              comingSoon: "Prossimamente",
+            });
+          } else if (language === "es") {
+            setTranslations({
+              sets: "Conjunto",
+              tasks: "Tareas",
+              bonus: "Bono",
+              level: "Nivel de ciudad",
+              mayor: "/ Alcalde",
+              comingSoon: "Próximamente",
+            });
+          } else if (language === "de") {
+            setTranslations({
+              sets: "Set",
+              tasks: "Aufgaben",
+              bonus: "Bonus", 
+              level: "Stadtlevel",
+              mayor: "/ Bürgermeister",
+              comingSoon: "Demnächst",
             });
           }
         }, [language]);
