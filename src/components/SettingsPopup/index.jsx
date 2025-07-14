@@ -123,14 +123,12 @@ useEffect(() => {
     loadData();
 }, [dispatch]);
 const handleLanguageChange = async (langCode) => {
-    // Update language state and localStorage
     if (langCode === "ru") {
       setSelectLang(1);
       dispatch(setLanguage("ru"));
       setSelectedLanguage("ru");
       localStorage.setItem("language", "ru");
       
-      // Set Russian translations
       setTranslations({
         vibration: "Вибрация",
         nightMode: "Ночной режим", 
@@ -145,8 +143,8 @@ const handleLanguageChange = async (langCode) => {
         backToSettings: "Назад",
         russian: "Русский",
         english: "Английский",
-        italian: "Итальянский", 
-        spanish: "Испанский",
+        italian: "Итальянский",
+        spanish: "Испанский", 
         german: "Немецкий",
         confirmDeleteAccount: "Вы уверенны, что хотите стереть все данные на нашем сервисе?",
         keepAccount: "Оставить аккаунт",
@@ -161,7 +159,7 @@ const handleLanguageChange = async (langCode) => {
       dispatch(setLanguage("en")); 
       setSelectedLanguage("en");
       localStorage.setItem("language", "en");
-      // Set English translations
+      
       setTranslations({
         vibration: "Vibration",
         nightMode: "Night Mode",
@@ -177,7 +175,7 @@ const handleLanguageChange = async (langCode) => {
         russian: "Russian",
         english: "English",
         italian: "Italian",
-        spanish: "Spanish", 
+        spanish: "Spanish",
         german: "German",
         confirmDeleteAccount: "Are you sure you want to delete all data on our service?",
         keepAccount: "Keep Account",
@@ -188,24 +186,24 @@ const handleLanguageChange = async (langCode) => {
       });
     } else if (langCode === "it") {
       setSelectLang(3);
-      dispatch(setLanguage("it")); 
+      dispatch(setLanguage("it")); // Добавлен dispatch
       setSelectedLanguage("it");
       localStorage.setItem("language", "it");
-      // Set Italian translations
+      
       setTranslations({
         vibration: "Vibrazione",
         nightMode: "Modalità notte",
         cardBack: "Dorso della carta",
         language: "Lingua",
         deleteAccount: "Elimina account",
-        saveAndContinue: "Salva e continua",
+        saveAndContinue: "Salva e continua", 
         imageQuality: "Qualità immagine",
         automatic: "Automatico",
         high: "Alta qualità",
-        low: "Bassa qualità", 
+        low: "Bassa qualità",
         backToSettings: "Indietro",
         russian: "Russo",
-        english: "Inglese",
+        english: "Inglese", 
         italian: "Italiano",
         spanish: "Spagnolo",
         german: "Tedesco",
@@ -218,10 +216,10 @@ const handleLanguageChange = async (langCode) => {
       });
     } else if (langCode === "es") {
       setSelectLang(4);
-      dispatch(setLanguage("es"));
+      dispatch(setLanguage("es")); // Добавлен dispatch
       setSelectedLanguage("es");
       localStorage.setItem("language", "es");
-      // Set Spanish translations
+      
       setTranslations({
         vibration: "Vibración",
         nightMode: "Modo nocturno",
@@ -231,7 +229,7 @@ const handleLanguageChange = async (langCode) => {
         saveAndContinue: "Guardar y continuar",
         imageQuality: "Calidad de imagen",
         automatic: "Automático",
-        high: "Alta calidad",
+        high: "Alta calidad", 
         low: "Baja calidad",
         backToSettings: "Atrás",
         russian: "Ruso",
@@ -248,10 +246,10 @@ const handleLanguageChange = async (langCode) => {
       });
     } else if (langCode === "de") {
       setSelectLang(5);
-      dispatch(setLanguage("de"));
+      dispatch(setLanguage("de")); // Добавлен dispatch
       setSelectedLanguage("de");
       localStorage.setItem("language", "de");
-      // Set German translations
+      
       setTranslations({
         vibration: "Vibration",
         nightMode: "Nachtmodus",
@@ -276,7 +274,8 @@ const handleLanguageChange = async (langCode) => {
         highQualityDescription: "Kann bei schlechter Verbindung langsamer werden",
         lowQualityDescription: "Empfohlen für langsame Verbindung"
       });
-    }}
+    }
+}
   const translateText = async (text, targetLang) => {
     try {
       const response = await axios.post("/translate", {
