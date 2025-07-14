@@ -78,45 +78,99 @@ const PeoplePage = () => {
       // Get language from Redux store
       const language = useSelector((state) => state.language);
       
-        useEffect(() => {
-          if (language === "ru") {
-            setTranslations({
-                    sets: "Сет",
-        tasks: "Задания", 
-        bonus: "Бонус",
-        level: "Уровень города",
-        mayor: "/ Мэр",
-        collect: "Забрать",
-        slowConnectionTitle: "Внимание",
-        slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
-        infoAbout: "Информация о",
-        rewardType: "Тип награды",
-        experience: "Опыт",
-        hourlyIncome: "Доход в час",
-        coins: "Монеты", 
-        card: "Карта",
-        value: "Значение"
-            });
-          } else if (language === "en") {
-            setTranslations({
-              sets: "Set",
-              tasks: "Tasks",
-              bonus: "Bonus",
-              level: "City Level", 
-              mayor: "/ Mayor",
-              collect: "Collect",
-              slowConnectionTitle: "Attention",
-              slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance.",
-              infoAbout: "Information about",
-              rewardType: "Reward type",
-              experience: "Experience",
-              hourlyIncome: "Hourly income",
-              coins: "Coins",
-              card: "Card",
-              value: "Value"
-            });
-          }
-        }, [language]);
+ useEffect(() => {
+  if (language === "ru") {
+    setTranslations({
+      sets: "Сет",
+      tasks: "Задания", 
+      bonus: "Бонус",
+      level: "Уровень города",
+      mayor: "/ Мэр",
+      collect: "Забрать",
+      slowConnectionTitle: "Внимание",
+      slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+      infoAbout: "Информация о",
+      rewardType: "Тип награды",
+      experience: "Опыт",
+      hourlyIncome: "Доход в час",
+      coins: "Монеты", 
+      card: "Карта",
+      value: "Значение"
+    });
+  } else if (language === "en") {
+    setTranslations({
+      sets: "Set",
+      tasks: "Tasks",
+      bonus: "Bonus",
+      level: "City Level", 
+      mayor: "/ Mayor",
+      collect: "Collect",
+      slowConnectionTitle: "Attention",
+      slowConnectionMessage: "A slow connection has been detected. The image quality will be reduced to improve performance.",
+      infoAbout: "Information about",
+      rewardType: "Reward type",
+      experience: "Experience",
+      hourlyIncome: "Hourly income",
+      coins: "Coins",
+      card: "Card",
+      value: "Value"
+    });
+  } else if (language === "it") {
+    setTranslations({
+      sets: "Set",
+      tasks: "Compiti",
+      bonus: "Bonus",
+      level: "Livello città",
+      mayor: "/ Sindaco",
+      collect: "Raccogli",
+      slowConnectionTitle: "Attenzione",
+      slowConnectionMessage: "È stata rilevata una connessione lenta. La qualità dell'immagine verrà ridotta per migliorare le prestazioni.",
+      infoAbout: "Informazioni su",
+      rewardType: "Tipo di ricompensa",
+      experience: "Esperienza",
+      hourlyIncome: "Reddito orario",
+      coins: "Monete",
+      card: "Carta",
+      value: "Valore"
+    });
+  } else if (language === "es") {
+    setTranslations({
+      sets: "Conjunto",
+      tasks: "Tareas",
+      bonus: "Bono",
+      level: "Nivel de ciudad",
+      mayor: "/ Alcalde",
+      collect: "Recoger",
+      slowConnectionTitle: "Atención",
+      slowConnectionMessage: "Se ha detectado una conexión lenta. La calidad de la imagen se reducirá para mejorar el rendimiento.",
+      infoAbout: "Información sobre",
+      rewardType: "Tipo de recompensa",
+      experience: "Experiencia",
+      hourlyIncome: "Ingresos por hora",
+      coins: "Monedas",
+      card: "Tarjeta",
+      value: "Valor"
+    });
+  } else if (language === "de") {
+    setTranslations({
+      sets: "Set",
+      tasks: "Aufgaben",
+      bonus: "Bonus",
+      level: "Stadtlevel",
+      mayor: "/ Bürgermeister",
+      collect: "Sammeln",
+      slowConnectionTitle: "Achtung",
+      slowConnectionMessage: "Eine langsame Verbindung wurde erkannt. Die Bildqualität wird reduziert, um die Leistung zu verbessern.",
+      infoAbout: "Informationen über",
+      rewardType: "Belohnungstyp",
+      experience: "Erfahrung",
+      hourlyIncome: "Stundeneinkommen", 
+      coins: "Münzen",
+      card: "Karte",
+      value: "Wert"
+    });
+  }
+}, [language]);
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
