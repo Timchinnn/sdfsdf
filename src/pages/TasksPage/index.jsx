@@ -62,14 +62,14 @@ const TasksPage = () => {
   });
   // Get language from Redux store
   const language = useSelector((state) => state.language);
-  useEffect(() => {
+useEffect(() => {
     if (language === "ru") {
       setTranslations({
          sets: "Сет",
-      tasks: "Задания", 
-      bonus: "Бонус",
-      level: "Уровень города",
-      mayor: "/ Мэр",
+         tasks: "Задания", 
+         bonus: "Бонус",
+         level: "Уровень города",
+         mayor: "/ Мэр",
         rewardReceived: "Награда получена!",
         rewardForAd: "Вы получили награду за просмотр рекламы!",
         excellent: "Отлично!",
@@ -83,10 +83,10 @@ const TasksPage = () => {
     } else if (language === "en") {
       setTranslations({
          sets: "Set",
-            tasks: "Tasks",
-            bonus: "Bonus",
-            level: "City Level", 
-            mayor: "/ Mayor",
+         tasks: "Tasks",
+         bonus: "Bonus",
+         level: "City Level", 
+         mayor: "/ Mayor",
         rewardReceived: "Reward received!",
         rewardForAd: "You received a reward for watching the ad!",
         excellent: "Excellent!",
@@ -96,6 +96,57 @@ const TasksPage = () => {
         subscribeToTelegram: "Subscribe to Telegram channel https://t.me/zoomayor",
         start: "Start",
         watch: "Watch"
+      });
+    } else if (language === "it") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Compiti",
+        bonus: "Bonus",
+        level: "Livello città",
+        mayor: "/ Sindaco",
+        rewardReceived: "Premio ricevuto!",
+        rewardForAd: "Hai ricevuto un premio per aver guardato l'annuncio!",
+        excellent: "Eccellente!",
+        error: "Errore",
+        rewardError: "Impossibile ricevere il premio. Riprova più tardi.",
+        taskRewards: "Premi per le attività",
+        subscribeToTelegram: "Iscriviti al canale Telegram https://t.me/zoomayor",
+        start: "Inizia",
+        watch: "Guarda"
+      });
+    } else if (language === "es") {
+      setTranslations({
+        sets: "Conjunto",
+        tasks: "Tareas",
+        bonus: "Bono",
+        level: "Nivel de ciudad",
+        mayor: "/ Alcalde",
+        rewardReceived: "¡Recompensa recibida!",
+        rewardForAd: "¡Has recibido una recompensa por ver el anuncio!",
+        excellent: "¡Excelente!",
+        error: "Error",
+        rewardError: "No se pudo recibir la recompensa. Por favor, inténtalo más tarde.",
+        taskRewards: "Recompensas de tareas",
+        subscribeToTelegram: "Suscríbete al canal de Telegram https://t.me/zoomayor",
+        start: "Comenzar",
+        watch: "Ver"
+      });
+    } else if (language === "de") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Aufgaben",
+        bonus: "Bonus",
+        level: "Stadtlevel",
+        mayor: "/ Bürgermeister",
+        rewardReceived: "Belohnung erhalten!",
+        rewardForAd: "Sie haben eine Belohnung für das Ansehen der Werbung erhalten!",
+        excellent: "Ausgezeichnet!",
+        error: "Fehler",
+        rewardError: "Belohnung konnte nicht empfangen werden. Bitte versuchen Sie es später erneut.",
+        taskRewards: "Aufgabenbelohnungen",
+        subscribeToTelegram: "Abonniere den Telegram-Kanal https://t.me/zoomayor",
+        start: "Starten",
+        watch: "Ansehen"
       });
     }
   }, [language]);
