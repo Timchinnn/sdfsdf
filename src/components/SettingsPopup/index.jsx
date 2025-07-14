@@ -276,7 +276,7 @@ const handleLanguageChange = async (langCode) => {
         highQualityDescription: "Kann bei schlechter Verbindung langsamer werden",
         lowQualityDescription: "Empfohlen für langsame Verbindung"
       });
-    }
+    }}
   const translateText = async (text, targetLang) => {
     try {
       const response = await axios.post("/translate", {
