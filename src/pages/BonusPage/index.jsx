@@ -58,38 +58,81 @@ const BonusPage = () => {
 
   });
     const language = useSelector((state) => state.language);
-  useEffect(() => {
+useEffect(() => {
     if (language === "ru") {
       setTranslations({
         sets: "Сет",
-      tasks: "Задания", 
-      bonus: "Бонус",
-      level: "Уровень города",
-      mayor: "/ Мэр",
+        tasks: "Задания", 
+        bonus: "Бонус",
+        level: "Уровень города",
+        mayor: "/ Мэр",
         code: "Код",
         enterCodeAndGetBonus: "Введите код и получите бонус",
-        activationHistory: "История активаций", 
+        activationHistory: "История активаций",
         activated: "Активирован",
         activating: "Активация...",
         apply: "Применить",
-                enterCode: "Введите код"
-
+        enterCode: "Введите код"
       });
     } else if (language === "en") {
       setTranslations({
         sets: "Set",
-            tasks: "Tasks",
-            bonus: "Bonus",
-            level: "City Level", 
-            mayor: "/ Mayor",
+        tasks: "Tasks",
+        bonus: "Bonus",
+        level: "City Level",
+        mayor: "/ Mayor",
         code: "Code",
         enterCodeAndGetBonus: "Enter code and get bonus",
         activationHistory: "Activation History",
         activated: "Activated",
-        activating: "Activating...", 
+        activating: "Activating...",
         apply: "Apply",
-                enterCode: "Enter code"
-
+        enterCode: "Enter code"
+      });
+    } else if (language === "it") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Compiti",
+        bonus: "Bonus",
+        level: "Livello città",
+        mayor: "/ Sindaco",
+        code: "Codice",
+        enterCodeAndGetBonus: "Inserisci il codice e ottieni il bonus",
+        activationHistory: "Cronologia attivazioni",
+        activated: "Attivato",
+        activating: "Attivazione...",
+        apply: "Applica",
+        enterCode: "Inserisci codice"
+      });
+    } else if (language === "es") {
+      setTranslations({
+        sets: "Conjunto",
+        tasks: "Tareas",
+        bonus: "Bono",
+        level: "Nivel de ciudad",
+        mayor: "/ Alcalde",
+        code: "Código",
+        enterCodeAndGetBonus: "Ingresa el código y obtén el bono",
+        activationHistory: "Historial de activaciones",
+        activated: "Activado",
+        activating: "Activando...",
+        apply: "Aplicar",
+        enterCode: "Ingresa el código"
+      });
+    } else if (language === "de") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Aufgaben",
+        bonus: "Bonus",
+        level: "Stadtlevel",
+        mayor: "/ Bürgermeister",
+        code: "Code",
+        enterCodeAndGetBonus: "Code eingeben und Bonus erhalten",
+        activationHistory: "Aktivierungsverlauf",
+        activated: "Aktiviert",
+        activating: "Aktivierung...",
+        apply: "Anwenden",
+        enterCode: "Code eingeben"
       });
     }
   }, [language]);
