@@ -447,6 +447,7 @@ useEffect(() => {
         [index]: selectedCard,
       });
       await userCardsService.addCardToUser(telegram_id, selectedCard.id);
+      console.log(selectedCard)
 
       if (selectedCard.type === "energy_boost") {
         const boostValue = Number(selectedCard.energy) || 100;
