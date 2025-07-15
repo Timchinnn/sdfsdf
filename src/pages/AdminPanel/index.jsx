@@ -15,6 +15,7 @@ const AdminPanel = () => {
     try {
       const response = await axios.get('/admin/new-users');
       setNewUsers(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error('Ошибка при получении новых пользователей:', error);
     }
