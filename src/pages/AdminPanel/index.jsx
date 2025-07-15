@@ -10,9 +10,12 @@ const AdminPanel = () => {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const correctPassword = "admin123"; // В реальном приложении храните хеш пароля
+    const [newCards, setNewCards] = useState([]);
+
     const [newUsers, setNewUsers] = useState([]);
-      useEffect(() => {
+  useEffect(() => {
     fetchNewUsers();
+    fetchNewCards();
   }, []);
  const fetchNewUsers = async () => {
     try {
@@ -21,6 +24,14 @@ const AdminPanel = () => {
       console.log(response.data)
     } catch (error) {
       console.error('Ошибка при получении новых пользователей:', error);
+    }
+  };
+    const fetchNewCards = async () => {
+    try {
+      const response = await axios.get('/api/admin/new-cards');
+      setNewCards(response.data);
+    } catch (error) {
+      console.error('Ошибка при получении новых карт:', error);
     }
   };
   const handleLogin = () => {
@@ -71,6 +82,12 @@ const AdminPanel = () => {
 
         </div>
       </div>
+             <div className={styles.mainContent}>
+          <div className={styles.content}>
+            <h2>Новые карты за последние 24 часа ({newCards.length})</h2>
+
+          </div>
+        </div>
       </div>
     </div>
   );
