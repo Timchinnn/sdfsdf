@@ -67,7 +67,7 @@ const AdminPanel = () => {
         </div>
     <div className={styles.mainContent}>
         <div className={styles.content}>
-          <h2>Новые пользователи за последние 24 часа ({newUsers.length})</h2>
+          <p>Новые пользователи за последние 24 часа ({newUsers.length})</p>
 
         </div>
       </div>
