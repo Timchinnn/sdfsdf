@@ -28,7 +28,7 @@ const AdminPanel = () => {
   };
     const fetchNewCards = async () => {
     try {
-      const response = await axios.get('/api/admin/new-cards');
+      const response = await axios.get('/admin/new-cards');
       setNewCards(response.data);
     } catch (error) {
       console.error('Ошибка при получении новых карт:', error);
