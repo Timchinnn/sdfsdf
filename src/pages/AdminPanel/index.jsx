@@ -4,6 +4,8 @@ import routeAdmin from "./route";
 import { NavLink } from "react-router-dom";
 import { routeCardManagement } from "pages/CardManagement";
 import { routeShopManagement } from "pages/ShopManagement";
+import axios from "../../axios-controller";
+
 const AdminPanel = () => {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
