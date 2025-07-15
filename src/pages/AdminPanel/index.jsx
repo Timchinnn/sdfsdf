@@ -65,18 +65,20 @@ const AdminPanel = () => {
             </div>
           </NavLink>
         </div>
-        <div className={styles.mainContent}>
-          <div className={styles.content}>
-            <h2>Новые пользователи за последние 24 часа</h2>
+    <div className={styles.mainContent}>
+        <div className={styles.content}>
+          <h2>Новые пользователи за последние 24 часа ({newUsers.length})</h2>
+          {newUsers.length > 0 ? (
             <ul>
               {newUsers.map((user) => (
-                <li key={user.id}>
-                  {user.username} - {user.telegram_id}
-                </li>
+                <li key={user.id}>{user.username}</li>
               ))}
             </ul>
-          </div>
+          ) : (
+            <p>Новых пользователей нет</p>
+          )}
         </div>
+      </div>
       </div>
     </div>
   );
