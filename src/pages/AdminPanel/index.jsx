@@ -9,7 +9,7 @@ import axios from "../../axios-controller";
 const AdminPanel = () => {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const correctPassword = "admin123"; // В реальном приложении храните хеш пароляd
+  const correctPassword = "admin123"; // В реальном приложении храните хеш пароля
     const [newUsers, setNewUsers] = useState([]);
       useEffect(() => {
     fetchNewUsers();
