@@ -11,6 +11,9 @@ const AdminPanel = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const correctPassword = "admin123"; // В реальном приложении храните хеш пароляd
     const [newUsers, setNewUsers] = useState([]);
+      useEffect(() => {
+    fetchNewUsers();
+  }, []);
  const fetchNewUsers = async () => {
     try {
       const response = await axios.get('/admin/new-users');
