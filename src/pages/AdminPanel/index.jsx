@@ -8,6 +8,15 @@ const AdminPanel = () => {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const correctPassword = "admin123"; // В реальном приложении храните хеш пароля
+    const [newUsers, setNewUsers] = useState([]);
+ const fetchNewUsers = async () => {
+    try {
+      const response = await axios.get('/admin/new-users');
+      setNewUsers(response.data);
+    } catch (error) {
+      console.error('Ошибка при получении новых пользователей:', error);
+    }
+  };
   const handleLogin = () => {
     if (password === correctPassword) {
       setIsAuthenticated(true);
@@ -49,6 +58,18 @@ const AdminPanel = () => {
               <p>Добавление/редактирование содержимого магазина</p>
             </div>
           </NavLink>
+        </div>
+        <div className={styles.mainContent}>
+          <div className={styles.content}>
+            <h2>Новые пользователи за последние 24 часа</h2>
+            <ul>
+              {newUsers.map((user) => (
+                <li key={user.id}>
+                  {user.username} - {user.telegram_id}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
