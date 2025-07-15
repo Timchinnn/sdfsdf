@@ -68,15 +68,7 @@ const AdminPanel = () => {
     <div className={styles.mainContent}>
         <div className={styles.content}>
           <h2>Новые пользователи за последние 24 часа ({newUsers.length})</h2>
-          {newUsers.length > 0 ? (
-            <ul>
-              {newUsers.map((user) => (
-                <li key={user.id}>{user.username}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>Новых пользователей нет</p>
-          )}
+
         </div>
       </div>
       </div>
