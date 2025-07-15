@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import styles from "./AdminPanel.module.css";
 import routeAdmin from "./route";
 import { NavLink } from "react-router-dom";
