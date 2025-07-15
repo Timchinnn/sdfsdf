@@ -7,7 +7,7 @@ import { routeShopManagement } from "pages/ShopManagement";
 const AdminPanel = () => {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const correctPassword = "admin123"; // В реальном приложении храните хеш пароля
+  const correctPassword = "admin123"; // В реальном приложении храните хеш пароляd
     const [newUsers, setNewUsers] = useState([]);
  const fetchNewUsers = async () => {
     try {
