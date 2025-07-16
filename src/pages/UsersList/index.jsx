@@ -47,12 +47,7 @@ const UsersList = () => {
                 <td>{user.id}</td>
                 <td>{user.telegram_id}</td>
                 <td>{user.username || 'N/A'}</td>
-                <td>{new Date(user.last_active).toLocaleString()}</td>
-                <td>
-                  <span className={`${styles.status} ${styles[user.status]}`}>
-                    {user.status}
-                  </span>
-                </td>
+
               </tr>
             ))}
           </tbody>
