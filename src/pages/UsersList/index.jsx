@@ -13,6 +13,7 @@ const UsersList = () => {
         const response = await axios.get('/admin/all-users');
         setUsers(response.data);
         setLoading(false);
+        console.log(response.data)
       } catch (err) {
         console.error("Error fetching users:", err);
         setError("Failed to load users");
