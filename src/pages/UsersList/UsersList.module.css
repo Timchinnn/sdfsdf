@@ -9,7 +9,7 @@
   color: #333;
 }
 .tableContainer {
-  overflow-x: auto;
+  overflow-x: auto;    color: black;
 }
 .table {
   width: 100%;
