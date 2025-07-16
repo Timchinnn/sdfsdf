@@ -30,8 +30,8 @@
   display: flex;
   justify-content: center;
   height: 200px;
-  width: 200px;
-  border-radius: 10px;
+    width: 13%;
+    min-width: 164px;  border-radius: 10px;
   align-items: center;
   padding: 15px;
 }
