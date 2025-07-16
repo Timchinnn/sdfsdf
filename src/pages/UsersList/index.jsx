@@ -34,11 +34,15 @@ const UsersList = () => {
       <div className={styles.tableContainer}>
         <table className={styles.table}>
           <thead>
-            <tr>
+             <tr>
               <th>ID</th>
               <th>Telegram ID</th>
               <th>Username</th>
-
+              <th>Баланс</th>
+              <th>Опыт</th>
+              <th>Доход в час</th>
+              <th>Уровень</th>
+              <th>Рефералы</th>
             </tr>
           </thead>
           <tbody>
@@ -47,7 +51,11 @@ const UsersList = () => {
                 <td>{user.id}</td>
                 <td>{user.telegram_id}</td>
                 <td>{user.username || 'N/A'}</td>
-
+                <td>{user.coins || 0}</td>
+                <td>{user.experience || 0}</td>
+                <td>{user.hourly_income || 0}</td>
+                <td>{user.level || 1}</td>
+                <td>{user.referrals?.length || 0}</td>
               </tr>
             ))}
           </tbody>
