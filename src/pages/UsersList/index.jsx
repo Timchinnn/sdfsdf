@@ -51,11 +51,11 @@ const UsersList = () => {
                 <td>{user.id}</td>
                 <td>{user.telegram_id}</td>
                 <td>{user.username || 'N/A'}</td>
-                <td>{user.coins || 0}</td>
+                <td>{user.balance}</td>
                 <td>{user.experience || 0}</td>
                 <td>{user.hourly_income || 0}</td>
                 <td>{user.level || 1}</td>
-                <td>{user.referrals?.length || 0}</td>
+                <td>{user.referrals}</td>
               </tr>
             ))}
           </tbody>
