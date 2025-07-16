@@ -145,6 +145,8 @@ const AppContent = () => {
 
           <Route exact path={routeBonusPage()} component={BonusPage} />
           <Route exact path={routePeoplePage()} component={PeoplePage} />
+                    <Route exact path="/users-list" component={UsersList} />
+
           <Redirect
             to={{
               pathname: routeMainPage(),

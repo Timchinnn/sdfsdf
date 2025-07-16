@@ -10,7 +10,7 @@ const UsersList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('/api/admin/all-users');
+        const response = await axios.get('/admin/all-users');
         setUsers(response.data);
         setLoading(false);
       } catch (err) {

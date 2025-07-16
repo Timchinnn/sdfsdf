@@ -90,6 +90,13 @@ const AdminPanel = () => {
 
           </div>
         </div>
+                <div className={styles.mainContent}>
+          <NavLink to="/users-list">
+            <div className={styles.content}>
+              <p>Список пользователей</p>
+            </div>
+          </NavLink>
+        </div>
       </div>
     </div>
   );
