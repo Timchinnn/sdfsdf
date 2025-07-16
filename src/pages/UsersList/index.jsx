@@ -37,8 +37,7 @@ const UsersList = () => {
               <th>ID</th>
               <th>Telegram ID</th>
               <th>Username</th>
-              <th>Last Active</th>
-              <th>Status</th>
+
             </tr>
           </thead>
           <tbody>
