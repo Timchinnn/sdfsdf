@@ -23,6 +23,9 @@
   width: 100%;
   height: 100%;
   justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
 }
 .mainContent {
   background-color: green;
