@@ -48,6 +48,8 @@ import AddEditShopSet from "pages/AddEditShopSet";
 import { routeAddEditShopSet } from "pages/AddEditShopSet";
 import AddEditShopShirt from "pages/AddEditShopShirt";
 import { routeAddEditShopShirt } from "pages/AddEditShopShirt";
+import UsersList from "pages/UsersList";
+
 const AppContent = () => {
   const theme = useSelector((state) => state.theme);
 
