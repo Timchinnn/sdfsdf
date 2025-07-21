@@ -5,6 +5,8 @@ import routeUsersList from "./routes";
 import Spinner from "components/Spinner";
 const UsersList = () => {
   const [users, setUsers] = useState([]);
+    const [userStatuses, setUserStatuses] = useState({});
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
@@ -12,8 +14,15 @@ const UsersList = () => {
       try {
         const response = await axios.get('/admin/all-users');
         setUsers(response.data);
+        const initialStatuses = {};
+        response.data.forEach(user => {
+          initialStatuses[user.telegram_id] = {
+            banned: false,
+            deleted: false
+          };
+        });
+        setUserStatuses(initialStatuses);
         setLoading(false);
-        console.log(response.data)
       } catch (err) {
         console.error("Error fetching users:", err);
         setError("Failed to load users");
@@ -57,10 +66,17 @@ const UsersList = () => {
                 <td>{user.level || 1}</td>
                 <td>{user.referrals}</td>
                 <td>
-                  <button
+                 <button
                     onClick={async () => {
                       try {
                         await axios.put(`/admin/ban-user/${user.telegram_id}`);
+                        setUserStatuses(prev => ({
+                          ...prev,
+                          [user.telegram_id]: {
+                            ...prev[user.telegram_id],
+                            banned: true
+                          }
+                        }));
                         alert('Пользователь забанен');
                       } catch (err) {
                         console.error('Ошибка при бане пользователя:', err);
@@ -70,19 +86,26 @@ const UsersList = () => {
                     style={{
                       marginRight: '5px',
                       padding: '5px 10px',
-                      background: '#ff9800',
+                      background: userStatuses[user.telegram_id]?.banned ? '#666' : '#ff9800',
                       color: 'white',
                       border: 'none',
                       borderRadius: '4px',
                       cursor: 'pointer'
                     }}
                   >
-                    Бан
+                    {userStatuses[user.telegram_id]?.banned ? 'Забанен' : 'Бан'}
                   </button>
                   <button
                     onClick={async () => {
                       try {
                         await axios.put(`/admin/delete-user/${user.telegram_id}`);
+                        setUserStatuses(prev => ({
+                          ...prev,
+                          [user.telegram_id]: {
+                            ...prev[user.telegram_id],
+                            deleted: true
+                          }
+                        }));
                         alert('Пользователь удален');
                       } catch (err) {
                         console.error('Ошибка при удалении пользователя:', err);
@@ -91,14 +114,14 @@ const UsersList = () => {
                     }}
                     style={{
                       padding: '5px 10px',
-                      background: '#f44336',
-                      color: 'white',
+                      background: userStatuses[user.telegram_id]?.deleted ? '#666' : '#f44336',
+                      color: 'white', 
                       border: 'none',
                       borderRadius: '4px',
                       cursor: 'pointer'
                     }}
                   >
-                    Удалить
+                    {userStatuses[user.telegram_id]?.deleted ? 'Удален' : 'Удалить'}
                   </button>
                 </td>
               </tr>
