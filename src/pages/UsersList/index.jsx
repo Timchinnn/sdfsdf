@@ -9,16 +9,20 @@ const UsersList = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  useEffect(() => {
+
+
+useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('/admin/all-users');
         setUsers(response.data);
+        
+        // Initialize user statuses based on API response
         const initialStatuses = {};
         response.data.forEach(user => {
           initialStatuses[user.telegram_id] = {
-            banned: false,
-            deleted: false
+            banned: user.ban || false,
+            deleted: user.deleted || false
           };
         });
         setUserStatuses(initialStatuses);
@@ -66,7 +70,7 @@ const UsersList = () => {
                 <td>{user.level || 1}</td>
                 <td>{user.referrals}</td>
                 <td>
-                 <button
+<button
                     onClick={async () => {
                       try {
                         await axios.put(`/admin/ban-user/${user.telegram_id}`);
@@ -74,10 +78,16 @@ const UsersList = () => {
                           ...prev,
                           [user.telegram_id]: {
                             ...prev[user.telegram_id],
-                            banned: true
+                            banned: !prev[user.telegram_id]?.banned
                           }
                         }));
-                        alert('Пользователь забанен');
+                        setUsers(prevUsers => 
+                          prevUsers.map(u => 
+                            u.telegram_id === user.telegram_id 
+                              ? {...u, ban: !u.ban}
+                              : u
+                          )
+                        );
                       } catch (err) {
                         console.error('Ошибка при бане пользователя:', err);
                         alert('Ошибка при бане пользователя');
@@ -86,16 +96,17 @@ const UsersList = () => {
                     style={{
                       marginRight: '5px',
                       padding: '5px 10px',
-                      background: userStatuses[user.telegram_id]?.banned ? '#666' : '#ff9800',
+                      background: user.ban ? '#666' : '#ff9800',
                       color: 'white',
                       border: 'none',
                       borderRadius: '4px',
                       cursor: 'pointer'
                     }}
                   >
-                    {userStatuses[user.telegram_id]?.banned ? 'Забанен' : 'Бан'}
+                    {user.ban ? 'Забанен' : 'Бан'}
                   </button>
-                  <button
+
+<button
                     onClick={async () => {
                       try {
                         await axios.put(`/admin/delete-user/${user.telegram_id}`);
@@ -103,10 +114,16 @@ const UsersList = () => {
                           ...prev,
                           [user.telegram_id]: {
                             ...prev[user.telegram_id],
-                            deleted: true
+                            deleted: !prev[user.telegram_id]?.deleted
                           }
                         }));
-                        alert('Пользователь удален');
+                        setUsers(prevUsers => 
+                          prevUsers.map(u => 
+                            u.telegram_id === user.telegram_id 
+                              ? {...u, deleted: !u.deleted}
+                              : u
+                          )
+                        );
                       } catch (err) {
                         console.error('Ошибка при удалении пользователя:', err);
                         alert('Ошибка при удалении пользователя');
@@ -114,14 +131,14 @@ const UsersList = () => {
                     }}
                     style={{
                       padding: '5px 10px',
-                      background: userStatuses[user.telegram_id]?.deleted ? '#666' : '#f44336',
-                      color: 'white', 
+                      background: user.deleted ? '#666' : '#ff4444',
+                      color: 'white',
                       border: 'none',
                       borderRadius: '4px',
                       cursor: 'pointer'
                     }}
                   >
-                    {userStatuses[user.telegram_id]?.deleted ? 'Удален' : 'Удалить'}
+                    {user.deleted ? 'Удален' : 'Удалить'}
                   </button>
                 </td>
               </tr>
