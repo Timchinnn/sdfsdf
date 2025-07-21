@@ -56,6 +56,51 @@ const UsersList = () => {
                 <td>{user.hourly_income || 0}</td>
                 <td>{user.level || 1}</td>
                 <td>{user.referrals}</td>
+                <td>
+                  <button
+                    onClick={async () => {
+                      try {
+                        await axios.put(`/admin/ban-user/${user.telegram_id}`);
+                        alert('Пользователь забанен');
+                      } catch (err) {
+                        console.error('Ошибка при бане пользователя:', err);
+                        alert('Ошибка при бане пользователя');
+                      }
+                    }}
+                    style={{
+                      marginRight: '5px',
+                      padding: '5px 10px',
+                      background: '#ff9800',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Бан
+                  </button>
+                  <button
+                    onClick={async () => {
+                      try {
+                        await axios.put(`/admin/delete-user/${user.telegram_id}`);
+                        alert('Пользователь удален');
+                      } catch (err) {
+                        console.error('Ошибка при удалении пользователя:', err);
+                        alert('Ошибка при удалении пользователя');
+                      }
+                    }}
+                    style={{
+                      padding: '5px 10px',
+                      background: '#f44336',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Удалить
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
