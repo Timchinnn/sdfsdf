@@ -5,27 +5,13 @@ import routeUsersList from "./routes";
 import Spinner from "components/Spinner";
 const UsersList = () => {
   const [users, setUsers] = useState([]);
-    const [userStatuses, setUserStatuses] = useState({});
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-
-useEffect(() => {
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get('/admin/all-users');
         setUsers(response.data);
-        
-        // Initialize user statuses based on API response
-        const initialStatuses = {};
-        response.data.forEach(user => {
-          initialStatuses[user.telegram_id] = {
-            banned: user.ban || false,
-            deleted: user.deleted || false
-          };
-        });
-        setUserStatuses(initialStatuses);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -47,7 +33,7 @@ useEffect(() => {
       <div className={styles.tableContainer}>
         <table className={styles.table}>
           <thead>
-             <tr>
+            <tr>
               <th>ID</th>
               <th>Telegram ID</th>
               <th>Username</th>
@@ -56,6 +42,7 @@ useEffect(() => {
               <th>Доход в час</th>
               <th>Уровень</th>
               <th>Рефералы</th>
+              <th>Статус</th>
             </tr>
           </thead>
           <tbody>
@@ -70,76 +57,61 @@ useEffect(() => {
                 <td>{user.level || 1}</td>
                 <td>{user.referrals}</td>
                 <td>
-<button
-  onClick={async () => {
-    try {
-      await axios.put(`/admin/ban-user/${user.telegram_id}`);
-      setUserStatuses(prev => ({
-        ...prev,
-        [user.telegram_id]: {
-          ...prev[user.telegram_id],
-          banned: !prev[user.telegram_id]?.banned
-        }
-      }));
-      setUsers(prevUsers => 
-        prevUsers.map(u => 
-          u.telegram_id === user.telegram_id 
-            ? {...u, ban: !u.ban}
-            : u
-        )
-      );
-    } catch (err) {
-      console.error('Ошибка при бане пользователя:', err);
-      alert('Ошибка при бане пользователя');
-    }
-  }}
- style={{
-    marginRight: '5px',
-    padding: '5px 10px',
-    background: userStatuses[user.telegram_id]?.ban || user.ban ? '#666' : '#ff9800',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer'
-  }}
->
-  {userStatuses[user.telegram_id]?.ban || user.ban ? 'Забанен' : 'Бан'}
-</button>
-<button
-  onClick={async () => {
-    try {
-      await axios.put(`/admin/delete-user/${user.telegram_id}`);
-      setUserStatuses(prev => ({
-        ...prev,
-        [user.telegram_id]: {
-          ...prev[user.telegram_id],
-          deleted: !prev[user.telegram_id]?.deleted
-        }
-      }));
-      setUsers(prevUsers => 
-        prevUsers.map(u => 
-          u.telegram_id === user.telegram_id 
-            ? {...u, deleted: !u.deleted}
-            : u
-        )
-      );
-    } catch (err) {
-      console.error('Ошибка при удалении пользователя:', err);
-      alert('Ошибка при удалении пользователя');
-    }
-  }}
-  style={{
-    padding: '5px 10px',
-    background: userStatuses[user.telegram_id]?.deleted || user.deleted ? '#666' : '#f44336',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px', 
-    cursor: 'pointer'
-  }}
->
-  {userStatuses[user.telegram_id]?.deleted || user.deleted ? 'Удален' : 'Удалить'}
-</button>
-  
+                  <button
+                    onClick={async () => {
+                      try {
+                        await axios.put(`/admin/ban-user/${user.telegram_id}`);
+                        setUsers(prevUsers =>
+                          prevUsers.map(u =>
+                            u.telegram_id === user.telegram_id
+                              ? { ...u, ban: !u.ban }
+                              : u
+                          )
+                        );
+                      } catch (err) {
+                        console.error('Ошибка при бане пользователя:', err);
+                        alert('Ошибка при бане пользователя');
+                      }
+                    }}
+                    style={{
+                      marginRight: '5px',
+                      padding: '5px 10px',
+                      background: user.ban ? '#666' : '#ff9800',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {user.ban ? 'Забанен' : 'Бан'}
+                  </button>
+                  <button
+                    onClick={async () => {
+                      try {
+                        await axios.put(`/admin/delete-user/${user.telegram_id}`);
+                        setUsers(prevUsers =>
+                          prevUsers.map(u =>
+                            u.telegram_id === user.telegram_id
+                              ? { ...u, deleted: !u.deleted }
+                              : u
+                          )
+                        );
+                      } catch (err) {
+                        console.error('Ошибка при удалении пользователя:', err);
+                        alert('Ошибка при удалении пользователя');
+                      }
+                    }}
+                    style={{
+                      padding: '5px 10px',
+                      background: user.deleted ? '#666' : '#f44336',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {user.deleted ? 'Удален' : 'Удалить'}
+                  </button>
                 </td>
               </tr>
             ))}
