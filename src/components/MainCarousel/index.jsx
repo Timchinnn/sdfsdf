@@ -78,7 +78,7 @@ useEffect(() => {
       if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const telegram_id = tg.initDataUnsafe.user.id;
         const userStatusResponse = await fetch(
-          `/api/admin/user/${telegram_id}`
+          `/admin/user/${telegram_id}`
         );
         const userStatusData = await userStatusResponse.json();
         setUserStatus(userStatusData);
