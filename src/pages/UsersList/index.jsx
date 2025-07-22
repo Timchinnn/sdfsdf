@@ -96,14 +96,14 @@ useEffect(() => {
   style={{
     marginRight: '5px',
     padding: '5px 10px',
-    background: userStatuses[user.telegram_id]?.banned ? '#666' : '#ff9800',
+    background: user.ban ? '#666' : '#ff9800',
     color: 'white',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer'
   }}
 >
-  {userStatuses[user.telegram_id]?.banned ? 'Забанен' : 'Бан'}
+  {user.ban ? 'Забанен' : 'Бан'}
 </button>
 <button
   onClick={async () => {
@@ -130,14 +130,14 @@ useEffect(() => {
   }}
   style={{
     padding: '5px 10px',
-    background: userStatuses[user.telegram_id]?.deleted ? '#666' : '#f44336',
+    background: user.deleted ? '#666' : '#f44336',
     color: 'white',
     border: 'none', 
     borderRadius: '4px',
     cursor: 'pointer'
   }}
 >
-  {userStatuses[user.telegram_id]?.deleted ? 'Удален' : 'Удалить'}
+  {user.deleted ? 'Удален' : 'Удалить'}
 </button>
   
                 </td>
