@@ -8,6 +8,8 @@ import Style1CardBack from "assets/img/card1.png";
 import Style2CardBack from "assets/img/card2.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setImageQuality } from "../../redux/actions"; // Отсутствует определение cardBackStyles
+import axios from "../../axios-controller";
+
 const cardBackStyles = {
   default: { image: DefaultImg },
   style1: { image: Style1CardBack },
@@ -73,14 +75,12 @@ useEffect(() => {
       const response = await fetch("https://api.zoomayor.io/api/cards");
       const endTime = performance.now();
       const time = endTime - startTime;
-      // Получаем статус пользователя
+      // Получаем статус пользователя с помощью Axios
       const tg = window.Telegram.WebApp;
       if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const telegram_id = tg.initDataUnsafe.user.id;
-        const userStatusResponse = await fetch(
-          `/admin/user/${telegram_id}`
-        );
-        const userStatusData = await userStatusResponse.json();
+        const userStatusResponse = await axios.get(`/admin/user/${telegram_id}`);
+        const userStatusData = userStatusResponse.data;
         setUserStatus(userStatusData);
       }
       // Show popup after 5 seconds if response time is slow
