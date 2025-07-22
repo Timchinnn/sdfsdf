@@ -40,6 +40,7 @@ const MainCarousel = ({
   // Minimum distance required for swipe
   const minSwipeDistance = 50;
   const [responseTime, setResponseTime] = useState(null);
+  const [userStatus, setUserStatus] = useState({ banned: false, deleted: false });
   const dispatch = useDispatch();
 //  const [translations, setTranslations] = useState({
 //     collect: "Забрать",
@@ -66,31 +67,58 @@ const MainCarousel = ({
   //   updateTranslations(language);
   // }, [language]);
 useEffect(() => {
-    const measureResponseTime = async () => {
-      const startTime = performance.now();
-      try {
-        const response = await fetch("https://api.zoomayor.io/api/cards");
-        const endTime = performance.now();
-        const time = endTime - startTime;
-        
-        // Show popup after 5 seconds if response time is slow
-        setTimeout(() => {
-          if (time > 300) {
+  const measureResponseTime = async () => {
+    const startTime = performance.now();
+    try {
+      const response = await fetch("https://api.zoomayor.io/api/cards");
+      const endTime = performance.now();
+      const time = endTime - startTime;
+      // Получаем статус пользователя
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const telegram_id = tg.initDataUnsafe.user.id;
+        const userStatusResponse = await fetch(
+          `/api/admin/user/${telegram_id}`
+        );
+        const userStatusData = await userStatusResponse.json();
+        setUserStatus(userStatusData);
+      }
+      // Show popup after 5 seconds if response time is slow
+      setTimeout(() => {
+        if (time > 300) {
+          const tg = window.Telegram.WebApp;
+          tg.showPopup({
+            title: translations.slowConnectionTitle,
+            message: translations.slowConnectionMessage,
+            buttons: [{ type: "ok" }],
+          });
+        } else {
+          // Показываем всплывающее окно, если пользователь забанен
+          if (userStatus.banned) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
-              title: translations.slowConnectionTitle,
-              message: translations.slowConnectionMessage,
+              title: "Внимание",
+              message: "Ваш аккаунт был заблокирован.",
               buttons: [{ type: "ok" }],
             });
           }
-        }, 4000);
-        
-      } catch (error) {
-        console.error("Ошибка при измерении времени ответа:", error);
-      }
-    };
-    measureResponseTime();
-  }, [translations]);
+          // Показываем всплывающее окно, если пользователь удален
+          if (userStatus.deleted) {
+            const tg = window.Telegram.WebApp;
+            tg.showPopup({
+              title: "Внимание",
+              message: "Ваш аккаунт был удален.",
+              buttons: [{ type: "ok" }],
+            });
+          }
+        }
+      }, 4000);
+    } catch (error) {
+      console.error("Ошибка при измерении времени ответа:", error);
+    }
+  };
+  measureResponseTime();
+}, [translations]);
   useEffect(() => {
     // При каждом запуске приложения устанавливаем автонастройку
     dispatch(setImageQuality("auto"));
