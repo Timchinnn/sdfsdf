@@ -93,17 +93,17 @@ useEffect(() => {
       alert('Ошибка при бане пользователя');
     }
   }}
-  style={{
+ style={{
     marginRight: '5px',
     padding: '5px 10px',
-    background: user.ban ? '#666' : '#ff9800',
+    background: userStatuses[user.telegram_id]?.banned || user.ban ? '#666' : '#ff9800',
     color: 'white',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer'
   }}
 >
-  {user.ban ? 'Забанен' : 'Бан'}
+  {userStatuses[user.telegram_id]?.banned || user.ban ? 'Забанен' : 'Бан'}
 </button>
 <button
   onClick={async () => {
@@ -130,14 +130,14 @@ useEffect(() => {
   }}
   style={{
     padding: '5px 10px',
-    background: user.deleted ? '#666' : '#f44336',
+    background: userStatuses[user.telegram_id]?.deleted || user.deleted ? '#666' : '#f44336',
     color: 'white',
-    border: 'none', 
-    borderRadius: '4px',
+    border: 'none',
+    borderRadius: '4px', 
     cursor: 'pointer'
   }}
 >
-  {user.deleted ? 'Удален' : 'Удалить'}
+  {userStatuses[user.telegram_id]?.deleted || user.deleted ? 'Удален' : 'Удалить'}
 </button>
   
                 </td>
