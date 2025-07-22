@@ -96,14 +96,14 @@ useEffect(() => {
  style={{
     marginRight: '5px',
     padding: '5px 10px',
-    background: userStatuses[user.telegram_id]?.banned || user.ban ? '#666' : '#ff9800',
+    background: userStatuses[user.telegram_id]?.ban || user.ban ? '#666' : '#ff9800',
     color: 'white',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer'
   }}
 >
-  {userStatuses[user.telegram_id]?.banned || user.ban ? 'Забанен' : 'Бан'}
+  {userStatuses[user.telegram_id]?.ban || user.ban ? 'Забанен' : 'Бан'}
 </button>
 <button
   onClick={async () => {
