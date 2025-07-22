@@ -82,6 +82,7 @@ useEffect(() => {
         const userStatusResponse = await axios.get(`/admin/user/${telegram_id}`);
         const userStatusData = userStatusResponse.data;
         setUserStatus(userStatusData);
+        console.log(response.data)
       }
       // Show popup after 5 seconds if response time is slow
       setTimeout(() => {
