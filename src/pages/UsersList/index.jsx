@@ -12,7 +12,6 @@ const UsersList = () => {
       try {
         const response = await axios.get('/admin/all-users');
         setUsers(response.data);
-        console.log(response.data)
         setLoading(false);
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -28,6 +27,36 @@ const UsersList = () => {
   if (error) {
     return <div className={styles.error}>{error}</div>;
   }
+  const handleBan = async (user) => {
+    try {
+      await axios.put(`/admin/ban-user/${user.telegram_id}`);
+      setUsers(prevUsers =>
+        prevUsers.map(u =>
+          u.telegram_id === user.telegram_id
+            ? { ...u, ban: !u.ban }
+            : u
+        )
+      );
+    } catch (err) {
+      console.error('Ошибка при бане пользователя:', err);
+      alert('Ошибка при бане пользователя');
+    }
+  };
+  const handleDelete = async (user) => {
+    try {
+      await axios.put(`/admin/delete-user/${user.telegram_id}`);
+      setUsers(prevUsers =>
+        prevUsers.map(u =>
+          u.telegram_id === user.telegram_id
+            ? { ...u, deleted: !u.deleted }
+            : u
+        )
+      );
+    } catch (err) {
+      console.error('Ошибка при удалении пользователя:', err);
+      alert('Ошибка при удалении пользователя');
+    }
+  };
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Users List</h1>
@@ -59,21 +88,7 @@ const UsersList = () => {
                 <td>{user.referrals}</td>
                 <td>
                   <button
-                    onClick={async () => {
-                      try {
-                        await axios.put(`/admin/ban-user/${user.telegram_id}`);
-                        setUsers(prevUsers =>
-                          prevUsers.map(u =>
-                            u.telegram_id === user.telegram_id
-                              ? { ...u, ban: !u.ban }
-                              : u
-                          )
-                        );
-                      } catch (err) {
-                        console.error('Ошибка при бане пользователя:', err);
-                        alert('Ошибка при бане пользователя');
-                      }
-                    }}
+                    onClick={() => handleBan(user)}
                     style={{
                       marginRight: '5px',
                       padding: '5px 10px',
@@ -81,35 +96,23 @@ const UsersList = () => {
                       color: 'white',
                       border: 'none',
                       borderRadius: '4px',
-                      cursor: 'pointer'
+                      cursor: user.ban ? 'not-allowed' : 'pointer'
                     }}
+                    disabled={user.ban}
                   >
                     {user.ban ? 'Забанен' : 'Бан'}
                   </button>
                   <button
-                    onClick={async () => {
-                      try {
-                        await axios.put(`/admin/delete-user/${user.telegram_id}`);
-                        setUsers(prevUsers =>
-                          prevUsers.map(u =>
-                            u.telegram_id === user.telegram_id
-                              ? { ...u, deleted: !u.deleted }
-                              : u
-                          )
-                        );
-                      } catch (err) {
-                        console.error('Ошибка при удалении пользователя:', err);
-                        alert('Ошибка при удалении пользователя');
-                      }
-                    }}
+                    onClick={() => handleDelete(user)}
                     style={{
                       padding: '5px 10px',
                       background: user.deleted ? '#666' : '#f44336',
                       color: 'white',
                       border: 'none',
                       borderRadius: '4px',
-                      cursor: 'pointer'
+                      cursor: user.deleted ? 'not-allowed' : 'pointer'
                     }}
+                    disabled={user.deleted}
                   >
                     {user.deleted ? 'Удален' : 'Удалить'}
                   </button>
