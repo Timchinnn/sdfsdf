@@ -105,7 +105,7 @@ useEffect(() => {
               buttons: [{ type: "ok" }],
             });
           }
-          // Показываем всплывающее окно, если пользователь удален
+          // Показываем всплывающее окно, если пользовательs удален
           if (serStatusResponse.data.deleted) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
