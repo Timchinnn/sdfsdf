@@ -75,13 +75,14 @@ useEffect(() => {
       const response = await fetch("https://api.zoomayor.io/api/cards");
       const endTime = performance.now();
       const time = endTime - startTime;
-      
       // Получаем статус пользователя с помощью Axios
       const tg = window.Telegram.WebApp;
       const telegram_id = tg.initDataUnsafe.user.id;
       const userStatusResponse = await axios.get(`/admin/user/${telegram_id}`);
       const userStatusData = userStatusResponse.data;
       setUserStatus(userStatusData);
+
+
       // Show popup after 5 seconds if response time is slow
       setTimeout(() => {
         if (time > 300) {
@@ -95,21 +96,17 @@ useEffect(() => {
           // Показываем всплывающее окно, если пользователь забанен
           if (userStatusResponse.data.ban) {
             const tg = window.Telegram.WebApp;
-            // Блокируем все действия
-            tg.MainButton.hide();
-            tg.BackButton.hide();
-            document.body.style.pointerEvents = 'none';
-            // Показываем неубираемое окно без кнопок
             tg.showPopup({
               title: "Внимание",
               message: "Ваш аккаунт был заблокирован.",
+              buttons: [{ type: "ok" }],
             });
           }
           // Показываем всплывающее окно, если пользователь удален
           if (userStatusResponse.data.deleted) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
-              title: "Внимание", 
+              title: "Внимание",
               message: "Ваш аккаунт был удален.",
               buttons: [{ type: "ok" }],
             });
