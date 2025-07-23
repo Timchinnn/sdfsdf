@@ -86,7 +86,7 @@ const AdminPanel = () => {
       </div>
              <div className={styles.mainContent}>
           <div className={styles.content}>
-            <p>Новые карты за последние 24 часа ({newCards.length})</p>
+            <p>Открытые карты за последние 24 часа ({newCards.length})</p>
 
           </div>
         </div>
