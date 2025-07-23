@@ -95,7 +95,7 @@ useEffect(() => {
           });
         } else {
           // Показываем всплывающее окно, если пользователь забанен
-          if (userStatus.banned) {
+          if (userStatus.ban) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: "Внимание",
