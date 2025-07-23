@@ -84,6 +84,8 @@ useEffect(() => {
         setUserStatus(userStatusData);
         console.log(userStatusResponse.data)
       }
+              console.log(userStatus.ban)
+
       // Show popup after 5 seconds if response time is slow
       setTimeout(() => {
         if (time > 300) {
