@@ -6,6 +6,7 @@ import { routeBonus } from "pages/BonusPage";
 import SettingsPopup from "components/SettingsPopup";
 import { userInitService } from "services/api";
 import { useSelector } from "react-redux";
+import axios from "../../axios-controller";
 const MainSection = ({
   hourlyIncome: propHourlyIncome,
   coins: propCoins,
@@ -44,6 +45,7 @@ const MainSection = ({
   const [showIncomePopup, setShowIncomePopup] = useState(
     () => !sessionStorage.getItem("incomePopupShown")
   );
+  const [userStatus, setUserStatus] = useState({ ban: false, deleted: false });
 //   const [translations, setTranslations] = useState({
 //   sets: "Сет",
 //   tasks: "Задания",
@@ -78,6 +80,40 @@ const MainSection = ({
 // };useEffect(() => {
 //   updateTranslations(language);
 // }, [language]);
+useEffect(() => {
+    const checkUserStatus = async () => {
+      try {
+        const tg = window.Telegram.WebApp;
+        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+          const telegram_id = tg.initDataUnsafe.user.id;
+          const response = await axios.get(`/admin/user/${telegram_id}`);
+          setUserStatus(response.data);
+          
+          // Показываем модальное окно при бане
+          if (response.data.ban) {
+            tg.showPopup({
+              title: "Внимание",
+              message: "Ваш аккаунт заблокирован",
+              buttons: [{type: "ok"}]
+            });
+          }
+          
+          // Показываем модальное окно при удалении
+          if (response.data.deleted) {
+            tg.showPopup({
+              title: "Внимание", 
+              message: "Ваш аккаунт был удален",
+              buttons: [{type: "ok"}]
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Ошибка при проверке статуса пользователя:", error);
+      }
+    };
+    
+    checkUserStatus();
+  }, []);
   useEffect(() => {
     if (showIncomePopup) {
       sessionStorage.setItem("incomePopupShown", "true");
