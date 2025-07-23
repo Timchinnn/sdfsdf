@@ -45,8 +45,9 @@ const MainSection = ({
   const [showIncomePopup, setShowIncomePopup] = useState(
     () => !sessionStorage.getItem("incomePopupShown")
   );
-  const [userStatus, setUserStatus] = useState({ ban: false, deleted: false });
-//   const [translations, setTranslations] = useState({
+ const [userStatus, setUserStatus] = useState({ ban: false, deleted: false });
+  const [showBanModal, setShowBanModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);//   const [translations, setTranslations] = useState({
 //   sets: "Сет",
 //   tasks: "Задания",
 //   bonus: "Бонус",
@@ -90,22 +91,14 @@ useEffect(() => {
           setUserStatus(response.data);
           
           // Показываем модальное окно при бане
-          if (response.data.ban) {
-            tg.showPopup({
-              title: "Внимание",
-              message: "Ваш аккаунт заблокирован",
-              buttons: [{type: "ok"}]
-            });
+        if (response.data.ban) {
+            setShowBanModal(true);
           }
           
-          // Показываем модальное окно при удалении
           if (response.data.deleted) {
-            tg.showPopup({
-              title: "Внимание", 
-              message: "Ваш аккаунт был удален",
-              buttons: [{type: "ok"}]
-            });
+            setShowDeleteModal(true);
           }
+        
         }
       } catch (error) {
         console.error("Ошибка при проверке статуса пользователя:", error);
@@ -344,6 +337,57 @@ useEffect(() => {
             >
               {translations.collect}
             </button>
+          </div>
+        </div>
+      )}
+          {userStatus.ban && (
+        <div className="modal-overlay" style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div className="modal-content" style={{
+            backgroundColor: '#fff',
+            padding: '20px',
+            borderRadius: '8px',
+            maxWidth: '90%',
+            width: '300px'
+          }}>
+            <h3 style={{marginBottom: '15px', color: '#333'}}>Внимание</h3>
+            <p style={{marginBottom: '20px', color: '#666'}}>Ваш аккаунт заблокирован</p>
+          </div>
+        </div>
+      )}
+      
+      {userStatus.deleted && (
+        <div className="modal-overlay" style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div className="modal-content" style={{
+            backgroundColor: '#fff',
+            padding: '20px',
+            borderRadius: '8px',
+            maxWidth: '90%',
+            width: '300px'
+          }}>
+            <h3 style={{marginBottom: '15px', color: '#333'}}>Внимание</h3>
+            <p style={{marginBottom: '20px', color: '#666'}}>Ваш аккаунт был удален</p>
           </div>
         </div>
       )}
