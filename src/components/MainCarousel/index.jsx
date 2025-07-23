@@ -42,7 +42,7 @@ const MainCarousel = ({
   // Minimum distance required for swipe
   const minSwipeDistance = 50;
   const [responseTime, setResponseTime] = useState(null);
-  const [userStatus, setUserStatus] = useState({ banned: false, deleted: false });
+  const [userStatus, setUserStatus] = useState({ ban: false, deleted: false });
   const dispatch = useDispatch();
 //  const [translations, setTranslations] = useState({
 //     collect: "Забрать",
