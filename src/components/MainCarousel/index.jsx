@@ -77,14 +77,13 @@ useEffect(() => {
       const time = endTime - startTime;
       // Получаем статус пользователя с помощью Axios
       const tg = window.Telegram.WebApp;
-      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const telegram_id = tg.initDataUnsafe.user.id;
-        const userStatusResponse = await axios.get(`/admin/user/${telegram_id}`);
-        const userStatusData = userStatusResponse.data;
-        setUserStatus(userStatusData);
-        console.log(userStatusResponse.data.ban)
-      }
-              console.log(userStatus)
+      const telegram_id = tg.initDataUnsafe.user.id;
+      const userStatusResponse = await axios.get(`/admin/user/${telegram_id}`);
+      const userStatusData = userStatusResponse.data;
+      setUserStatus(userStatusData);
+      console.log(userStatusResponse.data.ban)
+    
+      console.log(userStatus)
 
       // Show popup after 5 seconds if response time is slow
       setTimeout(() => {
@@ -97,7 +96,7 @@ useEffect(() => {
           });
         } else {
           // Показываем всплывающее окно, если пользователь забанен
-          if (userStatus.ban) {
+          if (userStatusResponse.data.ban) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: "Внимание",
@@ -106,7 +105,7 @@ useEffect(() => {
             });
           }
           // Показываем всплывающее окно, если пользователь удален
-          if (userStatus.deleted) {
+          if (userStatusResponse.data.deleted) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: "Внимание",
