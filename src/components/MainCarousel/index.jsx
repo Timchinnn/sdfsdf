@@ -84,7 +84,7 @@ useEffect(() => {
         setUserStatus(userStatusData);
         console.log(userStatusResponse.data.ban)
       }
-              console.log(userStatus.ban)
+              console.log(userStatus)
 
       // Show popup after 5 seconds if response time is slow
       setTimeout(() => {
@@ -97,7 +97,7 @@ useEffect(() => {
           });
         } else {
           // Показываем всплывающее окно, если пользователь забанен
-          if (userStatusResponse.data.ban) {
+          if (userStatus.ban) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: "Внимание",
@@ -105,8 +105,8 @@ useEffect(() => {
               buttons: [{ type: "ok" }],
             });
           }
-          // Показываем всплывающее окно, если пользовательs удален
-          if (userStatusResponse.data.deleted) {
+          // Показываем всплывающее окно, если пользователь удален
+          if (userStatus.deleted) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: "Внимание",
