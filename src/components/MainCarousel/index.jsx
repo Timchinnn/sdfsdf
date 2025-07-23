@@ -97,7 +97,7 @@ useEffect(() => {
           });
         } else {
           // Показываем всплывающее окно, если пользователь забанен
-          if (serStatusResponse.data.ban) {
+          if (userStatusResponse.data.ban) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: "Внимание",
@@ -106,7 +106,7 @@ useEffect(() => {
             });
           }
           // Показываем всплывающее окно, если пользовательs удален
-          if (serStatusResponse.data.deleted) {
+          if (userStatusResponse.data.deleted) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: "Внимание",
