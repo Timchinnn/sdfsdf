@@ -82,7 +82,7 @@ useEffect(() => {
         const userStatusResponse = await axios.get(`/admin/user/${telegram_id}`);
         const userStatusData = userStatusResponse.data;
         setUserStatus(userStatusData);
-        console.log(userStatusResponse.data)
+        console.log(userStatusResponse.data.ban)
       }
               console.log(userStatus.ban)
 
@@ -97,7 +97,7 @@ useEffect(() => {
           });
         } else {
           // Показываем всплывающее окно, если пользователь забанен
-          if (userStatus.ban) {
+          if (serStatusResponse.data.ban) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: "Внимание",
@@ -106,7 +106,7 @@ useEffect(() => {
             });
           }
           // Показываем всплывающее окно, если пользователь удален
-          if (userStatus.deleted) {
+          if (serStatusResponse.data.deleted) {
             const tg = window.Telegram.WebApp;
             tg.showPopup({
               title: "Внимание",
