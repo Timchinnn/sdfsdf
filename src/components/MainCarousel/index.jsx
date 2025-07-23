@@ -47,7 +47,7 @@ const MainCarousel = ({
 //  const [translations, setTranslations] = useState({
 //     collect: "Забрать",
 //     slowConnectionTitle: "Внимание",
-//     slowConnectionMessage: "Обнаружено медленное соединение. Качество изображений будет снижено для улучшения производительности.",
+//     slowConnectionMessage: "Обнаружеdно медленное соединение. Качество изображений будет снижено для улучшения производительности.",
 //   });
   // const language = useSelector((state) => state.language);
   // useEffect(() => {
