@@ -60,7 +60,7 @@ const UsersList = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Users List</h1>
-      <div className={styles.tableContainer}>
+      <div className={styles.tableContainer}> 
         <table className={styles.table}>
           <thead>
             <tr>
