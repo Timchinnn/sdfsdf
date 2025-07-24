@@ -7,6 +7,10 @@ const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+   const [searchTerm, setSearchTerm] = useState('');
+  const filteredUsers = users.filter(user => 
+    user.username && user.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -59,8 +63,16 @@ const UsersList = () => {
   };
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Users List</h1>
-      <div className={styles.tableContainer}> 
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="Поиск по username"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={styles.searchInput}
+        />
+      </div>
+            <div className={styles.tableContainer}> 
         <table className={styles.table}>
           <thead>
             <tr>
@@ -76,7 +88,7 @@ const UsersList = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.telegram_id}</td>
