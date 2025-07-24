@@ -56,7 +56,8 @@
 .searchContainer {
   margin-bottom: 20px;
   width: 100%;
-  
+  display: flex;
+  justify-content: end;
   
 }
 .searchInput {
