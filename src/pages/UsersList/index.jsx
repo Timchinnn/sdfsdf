@@ -107,20 +107,20 @@ const [searchTerm, setSearchTerm] = useState('');
 <th>ID</th>
               <th>Telegram ID</th>
               <th>Username</th>
-              <th onClick={() => handleSort('balance')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('balance')} className={`${styles.sortableHeader} ${sortField === 'balance' ? styles.active : ''}`}>
                 Баланс {sortField === 'balance' && (sortDirection === 'asc' ? '↑' : '↓')}
               </th>
               <th>Опыт</th>
-              <th onClick={() => handleSort('hourly_income')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('hourly_income')} className={`${styles.sortableHeader} ${sortField === 'hourly_income' ? styles.active : ''}`}>
                 Доход в час {sortField === 'hourly_income' && (sortDirection === 'asc' ? '↑' : '↓')}
               </th>
-              <th onClick={() => handleSort('level')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('level')} className={`${styles.sortableHeader} ${sortField === 'level' ? styles.active : ''}`}>
                 Уровень {sortField === 'level' && (sortDirection === 'asc' ? '↑' : '↓')}
               </th>
-              <th onClick={() => handleSort('referrals')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('referrals')} className={`${styles.sortableHeader} ${sortField === 'referrals' ? styles.active : ''}`}>
                 Рефералы {sortField === 'referrals' && (sortDirection === 'asc' ? '↑' : '↓')}
               </th>
-              <th onClick={() => handleSort('created_at')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('created_at')} className={`${styles.sortableHeader} ${sortField === 'created_at' ? styles.active : ''}`}>
                 Дата регистрации {sortField === 'created_at' && (sortDirection === 'asc' ? '↑' : '↓')}
               </th>
             </tr>

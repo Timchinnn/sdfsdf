@@ -10,7 +10,25 @@
   color: #333;
 }
 .tableContainer {
-  overflow-x: auto;    color: black;
+  overflow-x: auto;    
+  color: black;
+}
+.sortableHeader {
+  cursor: pointer;
+  position: relative;
+  padding-right: 20px !important;
+}
+.sortableHeader:hover {
+  background-color: #f0f0f0;
+}
+.sortableHeader::after {
+  content: '↕';
+  position: absolute;
+  right: 5px;
+  opacity: 0.5;
+}
+.sortableHeader.active::after {
+  opacity: 1;
 }
 .table {
   width: 100%;
