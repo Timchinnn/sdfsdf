@@ -9,7 +9,7 @@ const UsersList = () => {
   const [error, setError] = useState(null);
 const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState(null);
-  const [sortDirection, setSortDirection] = useState('asc');
+  const [sortDirection, setSortDirection] = useState('balance');
     const filteredUsers = users.filter(user => 
     user.username && user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
