@@ -7,8 +7,10 @@ const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-   const [searchTerm, setSearchTerm] = useState('');
-  const filteredUsers = users.filter(user => 
+const [searchTerm, setSearchTerm] = useState('');
+  const [sortField, setSortField] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
+    const filteredUsers = users.filter(user => 
     user.username && user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
   useEffect(() => {
@@ -61,6 +63,31 @@ const UsersList = () => {
       alert('Ошибка при удалении пользователя');
     }
   };
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
+    if (!sortField) return 0;
+    
+    let aValue = a[sortField];
+    let bValue = b[sortField];
+    
+    if (sortField === 'created_at') {
+      aValue = new Date(aValue).getTime();
+      bValue = new Date(bValue).getTime();
+    }
+    
+    if (sortDirection === 'asc') {
+      return aValue > bValue ? 1 : -1;
+    } else {
+      return aValue < bValue ? 1 : -1;
+    }
+  });
   return (
     <div style={{background:'white', height:'100vh'}}>
     <div className={styles.container}>
@@ -77,19 +104,29 @@ const UsersList = () => {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>ID</th>
+<th>ID</th>
               <th>Telegram ID</th>
               <th>Username</th>
-              <th>Баланс</th>
+              <th onClick={() => handleSort('balance')} style={{cursor: 'pointer'}}>
+                Баланс {sortField === 'balance' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </th>
               <th>Опыт</th>
-              <th>Доход в час</th>
-              <th>Уровень</th>
-              <th>Рефералы</th>
-              <th>Дата регистрации</th>
+              <th onClick={() => handleSort('hourly_income')} style={{cursor: 'pointer'}}>
+                Доход в час {sortField === 'hourly_income' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </th>
+              <th onClick={() => handleSort('level')} style={{cursor: 'pointer'}}>
+                Уровень {sortField === 'level' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </th>
+              <th onClick={() => handleSort('referrals')} style={{cursor: 'pointer'}}>
+                Рефералы {sortField === 'referrals' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </th>
+              <th onClick={() => handleSort('created_at')} style={{cursor: 'pointer'}}>
+                Дата регистрации {sortField === 'created_at' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user) => (
+{sortedUsers.map((user) => (
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.telegram_id}</td>
