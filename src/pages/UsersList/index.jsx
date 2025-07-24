@@ -85,7 +85,7 @@ const UsersList = () => {
               <th>Доход в час</th>
               <th>Уровень</th>
               <th>Рефералы</th>
-              <th>Статус</th>
+              <th>Дата регистрации</th>
             </tr>
           </thead>
           <tbody>
@@ -99,7 +99,8 @@ const UsersList = () => {
                 <td>{user.hourly_income || 0}</td>
                 <td>{user.level || 1}</td>
                 <td>{user.referrals}</td>
-                <td>{user.created_at}</td>
+                <td>{new Date(user.created_at).toLocaleString()}
+</td>
                 <td>
                   <button
                     onClick={() => handleBan(user)}
