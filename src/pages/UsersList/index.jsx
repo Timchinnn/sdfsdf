@@ -99,6 +99,7 @@ const UsersList = () => {
                 <td>{user.hourly_income || 0}</td>
                 <td>{user.level || 1}</td>
                 <td>{user.referrals}</td>
+                <td>{user.created_at}</td>
                 <td>
                   <button
                     onClick={() => handleBan(user)}
