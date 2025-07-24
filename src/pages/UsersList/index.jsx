@@ -62,6 +62,7 @@ const UsersList = () => {
     }
   };
   return (
+    <div style={{background:'white'}}>
     <div className={styles.container}>
       <div className={styles.searchContainer}>
         <input
@@ -134,6 +135,7 @@ const UsersList = () => {
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   );
 };
