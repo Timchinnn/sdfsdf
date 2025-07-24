@@ -635,7 +635,7 @@ useEffect(() => {
                                   {translations.shop}
 
                 </h2>
-                {isSpecialUser ? (
+
                   <>
                     <div className="shop-block__nav f-center-jcsb">
                       <div className="shop-block__search">
@@ -822,19 +822,7 @@ useEffect(() => {
                       </div>
                     </div>
                   </>
-                ) : (
-                  <div
-                    className="block-style"
-                    style={{
-                      textAlign: "center",
-                      padding: "20px",
-                      marginTop: "6px",
-                    }}
-                  >
-                                                {translations.comingSoon}
-
-                  </div>
-                )}
+ 
               </div>
             </>
           )}
