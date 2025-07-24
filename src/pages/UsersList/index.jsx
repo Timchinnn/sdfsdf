@@ -62,16 +62,11 @@ const UsersList = () => {
     }
   };
   return (
-    <div style={{background:'white'}}>
+    <div style={{background:'white', height:'100vh'}}>
     <div className={styles.container}>
       <div className={styles.searchContainer}>
-        <input
-          type="text"
-          placeholder="Поиск по username"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className={styles.searchInput}
-        />
+        
+        
       </div>
             <div className={styles.tableContainer}> 
         <table className={styles.table}>
