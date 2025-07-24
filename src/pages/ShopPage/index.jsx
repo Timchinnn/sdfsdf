@@ -636,7 +636,7 @@ useEffect(() => {
 
                 </h2>
 
-                  <>
+                  
                     <div className="shop-block__nav f-center-jcsb">
                       <div className="shop-block__search">
                         <div className="shop-block__search-icon">
@@ -821,7 +821,7 @@ useEffect(() => {
                         </ul>
                       </div>
                     </div>
-                  </>
+                 
  
               </div>
             </>
