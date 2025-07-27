@@ -1,0 +1,87 @@
+
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import axios from '../../axios-controller';
+import styles from './EditUser.module.css';
+const EditUser = () => {
+  const { id } = useParams();
+  const history = useHistory();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`/admin/user/${id}`);
+        setUser(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, [id]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`/admin/user/${id}`, user);
+      history.push('/users-list');
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
+  if (loading) return <div>Загрузка...</div>;
+  if (!user) return <div>Пользователь не найден</div>;
+  return (
+    <div className={styles.container}>
+      <h2>Редактирование пользователя</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={user.username || ''}
+            onChange={(e) => setUser({...user, username: e.target.value})}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Баланс:</label>
+          <input
+            type="number"
+            value={user.balance || 0}
+            onChange={(e) => setUser({...user, balance: Number(e.target.value)})}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Опыт:</label>
+          <input
+            type="number"
+            value={user.experience || 0}
+            onChange={(e) => setUser({...user, experience: Number(e.target.value)})}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Уровень:</label>
+          <input
+            type="number"
+            value={user.level || 1}
+            onChange={(e) => setUser({...user, level: Number(e.target.value)})}
+          />
+        </div>
+        <div className={styles.buttonGroup}>
+          <button type="submit" className={styles.saveButton}>
+            Сохранить
+          </button>
+          <button 
+            type="button" 
+            onClick={() => history.push('/users-list')}
+            className={styles.cancelButton}
+          >
+            Отмена
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+export default EditUser;

@@ -49,6 +49,7 @@ import { routeAddEditShopSet } from "pages/AddEditShopSet";
 import AddEditShopShirt from "pages/AddEditShopShirt";
 import { routeAddEditShopShirt } from "pages/AddEditShopShirt";
 import UsersList from "pages/UsersList";
+import EditUser from 'pages/EditUser';
 
 const AppContent = () => {
   const theme = useSelector((state) => state.theme);
@@ -144,6 +145,7 @@ const AppContent = () => {
             path={routeShopManagementPage()}
             component={ShopManagement}
           />
+          <Route path="/edit-user/:id" component={EditUser} />
 
           <Route exact path={routeBonusPage()} component={BonusPage} />
           <Route exact path={routePeoplePage()} component={PeoplePage} />

@@ -3,6 +3,8 @@ import axios from "../../axios-controller";
 import styles from "./UsersList.module.css";
 import routeUsersList from "./routes";
 import Spinner from "components/Spinner";
+import { NavLink } from 'react-router-dom';
+
 const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -168,6 +170,21 @@ const [searchTerm, setSearchTerm] = useState('');
                   >
                     {user.deleted ? 'Удален' : 'Удалить'}
                   </button>
+                  <NavLink to={`/edit-user/${user.telegram_id}`}>
+                    <button
+                      style={{
+                        marginLeft: '5px',
+                        padding: '5px 10px',
+                        background: '#4CAF50',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Редактировать
+                    </button>
+                  </NavLink>
                 </td>
               </tr>
             ))}
