@@ -9,6 +9,7 @@ const EditUser = () => {
   const { id } = useParams();
   const history = useHistory();
   const [user, setUser] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
 
@@ -88,6 +89,15 @@ useEffect(() => {
         </div>
         </div>
      <div className={styles.formGroup}>
+      <div className={styles.searchContainer}>
+  <input
+    type="text"
+    placeholder="Поиск по названию карты"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className={styles.searchInput}
+  />
+</div>
           <label>Карты пользователя:</label>
        <div className={styles.mainContent}>
             <img
