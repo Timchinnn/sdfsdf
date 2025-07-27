@@ -21,6 +21,11 @@ useEffect(() => {
         if (levelResponse.data && levelResponse.data.level) {
           setUser(prev => ({...prev, level: levelResponse.data.level}));
         }
+        // Получаем карты пользователя
+        const cardsResponse = await axios.get(`/user/${id}/cards`);
+        if (cardsResponse.data) {
+          setUser(prev => ({...prev, cards: cardsResponse.data}));
+        }
         
         setLoading(false);
       } catch (error) {
@@ -76,6 +81,25 @@ useEffect(() => {
             value={user.level || 1}
             onChange={(e) => setUser({...user, level: Number(e.target.value)})}
           />
+        </div>
+         <div className={styles.formGroup}>
+          <label>Карты пользователя:</label>
+          <div className={styles.cardsGrid}>
+            {user.cards && user.cards.map((card) => (
+              <div key={card.id} className={styles.cardItem}>
+                <img 
+                  src={`https://api.zoomayor.io${card.image}`}
+                  alt={card.title}
+                  className={styles.cardImage}
+                />
+                <div className={styles.cardInfo}>
+                  <p>{card.title}</p>
+                  <p>Опыт: {card.experience}</p>
+                  <p>Доход в час: {card.hourly_income}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
         <div className={styles.buttonGroup}>
           <button type="submit" className={styles.saveButton}>
