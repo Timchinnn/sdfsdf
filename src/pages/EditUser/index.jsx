@@ -51,7 +51,7 @@ useEffect(() => {
   if (!user) return <div>Пользователь не найден</div>;
   return (
     <div className={styles.container}>
-      <h2 style={{color:'black',marginBottom:'12px'}}>Редактирование пользователя</h2>
+      <h2 style={{color:'black',marginBottom:'30px'}}>Редактирование пользователя</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
       <div style={{display:'flex',flexDirection:'column'}}>
         <div className={styles.formGroup}>

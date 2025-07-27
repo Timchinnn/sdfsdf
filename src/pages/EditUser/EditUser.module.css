@@ -59,6 +59,7 @@
   font-weight: 500;
   color: #333;
   cursor: default;
+  margin-bottom: 0 !important;
 }
 .cardsGrid {
   display: grid;
