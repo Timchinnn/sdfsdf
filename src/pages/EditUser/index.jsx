@@ -53,6 +53,7 @@ useEffect(() => {
     <div className={styles.container}>
       <h2 style={{color:'black',marginBottom:'12px'}}>Редактирование пользователя</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
+      <div style={{display:'flex',flexDirection:'column'}}>
         <div className={styles.formGroup}>
           <label>Username:</label>
           <input
@@ -84,6 +85,7 @@ useEffect(() => {
             value={user.level || 1}
             onChange={(e) => setUser({...user, level: Number(e.target.value)})}
           />
+        </div>
         </div>
      <div className={styles.formGroup}>
           <label>Карты пользователя:</label>
