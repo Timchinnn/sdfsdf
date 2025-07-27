@@ -82,20 +82,19 @@ useEffect(() => {
             onChange={(e) => setUser({...user, level: Number(e.target.value)})}
           />
         </div>
-         <div className={styles.formGroup}>
+     <div className={styles.formGroup}>
           <label>Карты пользователя:</label>
-          <div className={styles.cardsGrid}>
-            {user.cards && user.cards.map((card) => (
+          <div className={styles.mainContent}>
+            {user?.cards?.map((card, index) => (
               <div key={card.id} className={styles.cardItem}>
-                <img 
-                  src={`https://api.zoomayor.io${card.image}`}
-                  alt={card.title}
-                  className={styles.cardImage}
-                />
+                <div className={styles.cardItemImg}>
+                  <img
+                    src={`https://api.zoomayor.io${card.image}`}
+                    alt={card.title}
+                  />
+                </div>
                 <div className={styles.cardInfo}>
-                  <p>{card.title}</p>
-                  <p>Опыт: {card.experience}</p>
-                  <p>Доход в час: {card.hourly_income}</p>
+                  <h3>{card.title}</h3>
                 </div>
               </div>
             ))}
