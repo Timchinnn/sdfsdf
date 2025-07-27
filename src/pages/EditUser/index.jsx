@@ -26,7 +26,7 @@ useEffect(() => {
         if (cardsResponse.data) {
           setUser(prev => ({...prev, cards: cardsResponse.data}));
         }
-        
+        console.log(cardsResponse.data)
         setLoading(false);
       } catch (error) {
         console.error('Error fetching user:', error);
