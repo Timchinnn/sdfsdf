@@ -85,7 +85,10 @@ useEffect(() => {
      <div className={styles.formGroup}>
           <label>Карты пользователя:</label>
           <div className={styles.mainContent}>
-            {user?.cards?.map((card, index) => (
+          {user?.cards?.filter((card, index, self) => 
+              // Фильтруем только уникальные карты по id
+              index === self.findIndex((c) => c.id === card.id)
+            ).map((card) => (
               <div key={card.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
                   <img
@@ -94,7 +97,7 @@ useEffect(() => {
                   />
                 </div>
                 <div className={styles.cardInfo}>
-                  <h3>{card.title}</h3>
+                  <h3 style={{color:'black'}}>{card.title}</h3>
                 </div>
               </div>
             ))}
