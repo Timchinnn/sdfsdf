@@ -93,6 +93,25 @@ if (loading) return <div>Загрузка...</div>;
           />
         </div>
         <div className={styles.formGroup}>
+          <label>Доходность в час:</label>
+          <input
+            type="number"
+            value={user.hourly_income || 0}
+            onChange={(e) => setUser({...user, hourly_income: Number(e.target.value)})}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Общее количество карт:</label>
+           <input 
+            type="number"
+            value={user?.cards?.filter(card => 
+              !card.title.match(/^Бонус \d+/) && 
+              card.type !== "energy_boost"
+            ).length || 0}
+            onChange={(e) => setUser({...user, experience: Number(e.target.value)})}
+          />
+        </div>
+        <div className={styles.formGroup}>
           <label>Уровень:</label>
           <input
             type="number"
