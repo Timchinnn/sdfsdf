@@ -8,12 +8,20 @@ const EditUser = () => {
   const history = useHistory();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
+  
+useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`/user/${id}`);
         console.log(response.data)
         setUser(response.data);
+        
+        // Получаем уровень пользователя
+        const levelResponse = await axios.get(`/user/${id}/level`);
+        if (levelResponse.data && levelResponse.data.level) {
+          setUser(prev => ({...prev, level: levelResponse.data.level}));
+        }
+        
         setLoading(false);
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -49,7 +57,7 @@ const EditUser = () => {
           <label>Баланс:</label>
           <input
             type="number"
-            value={user.balance || 0}
+            value={user.coins || 0}
             onChange={(e) => setUser({...user, balance: Number(e.target.value)})}
           />
         </div>
