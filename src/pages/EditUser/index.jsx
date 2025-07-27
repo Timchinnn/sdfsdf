@@ -12,6 +12,7 @@ const EditUser = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
+    const [sortBy, setSortBy] = useState("none");
 
 useEffect(() => {
     const fetchUser = async () => {
@@ -48,8 +49,20 @@ useEffect(() => {
       console.error('Error updating user:', error);
     }
   };
-  if (loading) return <div>Загрузка...</div>;
+if (loading) return <div>Загрузка...</div>;
   if (!user) return <div>Пользователь не найден</div>;
+  const sortCards = (cards) => {
+    if (sortBy === "none") return cards;
+    
+    return [...cards].sort((a, b) => {
+      if (sortBy === "price") {
+        return a.price - b.price;
+      } else if (sortBy === "rarity") {
+        return a.rarity - b.rarity;
+      }
+      return 0;
+    });
+  };
   return (
     <div className={styles.container}>
       <h2 style={{color:'black',marginBottom:'30px'}}>Редактирование пользователя</h2>
@@ -88,16 +101,25 @@ useEffect(() => {
           />
         </div>
         </div>
-     <div className={styles.formGroup}>
-      <div className={styles.searchContainer}>
-  <input
-    type="text"
-    placeholder="Поиск по названию карты"
-    value={searchQuery}
-    onChange={(e) => setSearchQuery(e.target.value)}
-    className={styles.searchInput}
-  />
-</div>
+      <div className={styles.formGroup}>
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            placeholder="Поиск по названию карты"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.searchInput}
+          />
+          <select 
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className={styles.sortSelect}
+          >
+            <option value="none">Без сортировки</option>
+            <option value="price">По цене</option>
+            <option value="rarity">По редкости</option>
+          </select>
+        </div>
           <label>Карты пользователя:</label>
        <div className={styles.mainContent}>
             <img
@@ -106,12 +128,12 @@ useEffect(() => {
               onClick={() => currentPage > 0 && setCurrentPage(prev => prev - 1)}
               alt="Previous"
             />
-{user?.cards?.filter((card, index, self) => 
+{sortCards(user?.cards?.filter((card, index, self) => 
   index === self.findIndex((c) => c.id === card.id) && 
   card.type !== "energy_boost" &&
   !card.title.match(/^Бонус \d+/) &&
   card.title.toLowerCase().includes(searchQuery.toLowerCase())
-).slice(currentPage * 5, (currentPage + 1) * 5)
+)).slice(currentPage * 5, (currentPage + 1) * 5)
             .map((card) => (
               <div key={card.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
