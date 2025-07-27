@@ -127,7 +127,8 @@ useEffect(() => {
             />
           </div>
         </div>
-        <div className={styles.buttonGroup}>
+
+      </form>        <div className={styles.buttonGroup}>
           <button type="submit" className={styles.saveButton}>
             Сохранить
           </button>
@@ -139,7 +140,6 @@ useEffect(() => {
             Отмена
           </button>
         </div>
-      </form>
     </div>
   );
 };
