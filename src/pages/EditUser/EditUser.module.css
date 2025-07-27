@@ -110,11 +110,19 @@
 .mainContent {
   display: flex;
   gap: 16px;
-  overflow-x: auto;
+  overflow-x: hidden;
   padding: 16px;
-  scrollbar-width: none;
-  white-space: nowrap;
   align-items: center;
+  justify-content: center;
+}
+.arrow {
+  height: 64px;
+  cursor: pointer;
+}
+@media (max-width: 999px) {
+  .arrow {
+    height: 25px;
+  }
 }
 .mainContent::-webkit-scrollbar {
   display: none;

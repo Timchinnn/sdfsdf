@@ -3,12 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from '../../axios-controller';
 import styles from './EditUser.module.css';
+import left from "assets/img/left.png";
+import right from "assets/img/right.png";
 const EditUser = () => {
   const { id } = useParams();
   const history = useHistory();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+    const [currentPage, setCurrentPage] = useState(0);
+
 useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -84,11 +87,17 @@ useEffect(() => {
         </div>
      <div className={styles.formGroup}>
           <label>Карты пользователя:</label>
-          <div className={styles.mainContent}>
-          {user?.cards?.filter((card, index, self) => 
-              // Фильтруем только уникальные карты по id
+       <div className={styles.mainContent}>
+            <img
+              src={left}
+              className={styles.arrow}
+              onClick={() => currentPage > 0 && setCurrentPage(prev => prev - 1)}
+              alt="Previous"
+            />
+            {user?.cards?.filter((card, index, self) => 
               index === self.findIndex((c) => c.id === card.id)
-            ).map((card) => (
+            ).slice(currentPage * 5, (currentPage + 1) * 5)
+            .map((card) => (
               <div key={card.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
                   <img
@@ -101,6 +110,19 @@ useEffect(() => {
                 </div>
               </div>
             ))}
+            <img
+              src={right}
+              className={styles.arrow}
+              onClick={() => {
+                const uniqueCards = user?.cards?.filter((card, index, self) => 
+                  index === self.findIndex((c) => c.id === card.id)
+                );
+                if (currentPage < Math.ceil(uniqueCards.length / 5) - 1) {
+                  setCurrentPage(prev => prev + 1);
+                }
+              }}
+              alt="Next"
+            />
           </div>
         </div>
         <div className={styles.buttonGroup}>
