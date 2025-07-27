@@ -12,6 +12,7 @@ const EditUser = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`/user/${id}`);
+        console.log(response.data)
         setUser(response.data);
         setLoading(false);
       } catch (error) {
@@ -34,7 +35,7 @@ const EditUser = () => {
   if (!user) return <div>Пользователь не найден</div>;
   return (
     <div className={styles.container}>
-      <h2>Редактирование пользователя</h2>
+      <h2 style={{color:'black'}}>Редактирование пользователя</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label>Username:</label>
