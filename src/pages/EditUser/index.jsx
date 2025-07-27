@@ -11,7 +11,7 @@ const EditUser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`/admin/user/${id}`);
+        const response = await axios.get(`/user/${id}`);
         setUser(response.data);
         setLoading(false);
       } catch (error) {
