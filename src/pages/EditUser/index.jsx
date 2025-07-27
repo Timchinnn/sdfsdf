@@ -96,8 +96,8 @@ useEffect(() => {
               onClick={() => currentPage > 0 && setCurrentPage(prev => prev - 1)}
               alt="Previous"
             />
-            {user?.cards?.filter((card, index, self) => 
-              index === self.findIndex((c) => c.id === card.id)
+{user?.cards?.filter((card, index, self) => 
+              index === self.findIndex((c) => c.id === card.id) && card.type !== "energy_boost"
             ).slice(currentPage * 5, (currentPage + 1) * 5)
             .map((card) => (
               <div key={card.id} className={styles.cardItem}>
