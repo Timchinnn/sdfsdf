@@ -131,6 +131,7 @@
 .searchContainer {
   margin-bottom: 15px;
   width: 100%;
+  display: flex;
 }
 .searchInput {
   width: 100%;
