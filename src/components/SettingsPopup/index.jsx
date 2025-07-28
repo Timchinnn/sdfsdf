@@ -103,16 +103,18 @@ useEffect(() => {
             dispatch(setCardBack(cardBackStyleValue));
           }
           // Get card back name and translate it before setting loading to false
-                   const getCardBackNameAndTranslate = async () => {
-            const cardBackName = purchasedShirts.find(
-              (shirt) => shirt.image_url === cardBackStyleValue
-            )?.name;
-            if (cardBackName) {
-              const translatedName = await translateServerResponse(cardBackName);
-              setTranslatedCardBackName(translatedName);
-            }
-          };
-          await getCardBackNameAndTranslate();
+    try {
+        const cardBackName = purchasedShirts.find(
+          (shirt) => shirt.image_url === cardBackStyleValue
+        )?.name;
+        if (cardBackName) {
+          const translatedName = await translateServerResponse(cardBackName);
+          setTranslatedCardBackName(translatedName);
+        }
+      } catch (error) {
+        console.error("Ошибка при получении названия рубашки:", error);
+        alert("Произошла ошибка при получении названия рубашки");
+      }
         }
         
         // Load card backs
