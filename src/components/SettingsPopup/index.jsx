@@ -103,13 +103,16 @@ useEffect(() => {
             dispatch(setCardBack(cardBackStyleValue));
           }
           // Get card back name and translate it before setting loading to false
-          const cardBackName = purchasedShirts.find(
-            (shirt) => shirt.image_url === cardBackStyleValue
-          )?.name;
-          if (cardBackName) {
-            const translatedName = await translateServerResponse(cardBackName);
-            setTranslatedCardBackName(translatedName);
-          }
+                   const getCardBackNameAndTranslate = async () => {
+            const cardBackName = purchasedShirts.find(
+              (shirt) => shirt.image_url === cardBackStyleValue
+            )?.name;
+            if (cardBackName) {
+              const translatedName = await translateServerResponse(cardBackName);
+              setTranslatedCardBackName(translatedName);
+            }
+          };
+          await getCardBackNameAndTranslate();
         }
         
         // Load card backs
