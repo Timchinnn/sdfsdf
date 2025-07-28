@@ -362,7 +362,7 @@ const handleLanguageChange = async (langCode) => {
       className={`modal ${activePopup ? "show" : ""}`}
     >
       {" "}
-    {isLoading || !translatedCardBackName ? (
+    {isLoading  ? (
         <div className="modal-spinner" style={{ marginBottom: "50vw" }}>
           <Spinner loading={true} size={50} />
         </div>
