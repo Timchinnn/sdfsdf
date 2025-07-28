@@ -102,21 +102,13 @@ useEffect(() => {
             setCardBackStyle(cardBackStyleValue);
             dispatch(setCardBack(cardBackStyleValue));
           }
-          // Get card back name and translate it before setting loading to false
-          const cardBackName = purchasedShirts.find(
-            (shirt) => shirt.image_url === cardBackStyleValue
-          )?.name;
-          if (cardBackName) {
-            const translatedName = await translateServerResponse(cardBackName);
-            setTranslatedCardBackName(translatedName);
-          }
         }
         
         // Load card backs
         await fetchCardBacks();
         setIsLoading(false);
       } catch (error) {
-        console.error("Error");
+        console.error("Error loading settings:", error);
         setIsLoading(false);
       }
     };
