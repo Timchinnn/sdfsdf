@@ -6,7 +6,7 @@ import styles from './EditUser.module.css';
 import left from "assets/img/left.png";
 import right from "assets/img/right.png";
 const EditUser = () => {
-  const { id } = useParams();
+const { id, userId } = useParams();
   const history = useHistory();
   const [user, setUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,7 +45,7 @@ useEffect(() => {
     useEffect(() => {
     const fetchUserActions = async () => {
       try {
-        const response = await axios.get(`/user-actions/${user.id}`);
+        const response = await axios.get(`/user-actions/${userId}`);
         setUserActions(response.data);
         console.log(response.data)
         console.log(id)
