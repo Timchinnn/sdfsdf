@@ -208,7 +208,7 @@ if (loading) return <div>Загрузка...</div>;
                 </tr>
               </thead>
               <tbody>
-                {userActions.map((action, index) => {
+  {userActions.map((action, index) => {
                   // Маппинг типов действий на русский язык
                   const actionTypeMap = {
                     'ad_reward_claimed': 'Получена награда за рекламу',
@@ -224,11 +224,20 @@ if (loading) return <div>Загрузка...</div>;
                     hour: '2-digit',
                     minute: '2-digit'
                   });
+                  // Формирование деталей действия
+                  let details = '-';
+                  if (action.action_data && action.reward_data) {
+                    if (action.action_type === 'card_opened') {
+                      details = `Карта: ${action.action_data.card_name || 'Неизвестно'}`;
+                    } else if (action.reward_data.title) {
+                      details = `Награда: ${action.reward_data.title}`;
+                    }
+                  }
                   return (
                     <tr key={index}>
                       <td>{formattedDate}</td>
                       <td>{actionTypeMap[action.action_type] || action.action_type}</td>
-                      <td>{action.details || '-'}</td>
+                      <td>{details}</td>
                     </tr>
                   );
                 })}
