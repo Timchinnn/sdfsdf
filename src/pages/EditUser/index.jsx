@@ -198,15 +198,44 @@ if (loading) return <div>Загрузка...</div>;
        </div>
         <div className={styles.formGroup}>
           <label>Последние действия пользователя:</label>
-          <div className={styles.actionsList}>
-            {userActions.map((action, index) => (
-              <div key={index} className={styles.actionItem}>
-                <span>{new Date(action.created_at).toLocaleString()}</span>
-                <span>{action.action_type}</span>
-                <span>{action.details}</span>
-              </div>
-            ))}
+  <div className={styles.actionsList}>
+            <table className={styles.actionsTable}>
+              <thead>
+                <tr>
+                  <th>Дата</th>
+                  <th>Действие</th>
+                  <th>Детали</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userActions.map((action, index) => {
+                  // Маппинг типов действий на русский язык
+                  const actionTypeMap = {
+                    'ad_reward_claimed': 'Получена награда за рекламу',
+                    'bonus_code_activated': 'Активирован бонус-код',
+                    'card_opened': 'Открыта карточка'
+                  };
+                  // Форматирование даты
+                  const date = new Date(action.created_at);
+                  const formattedDate = date.toLocaleString('ru-RU', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  });
+                  return (
+                    <tr key={index}>
+                      <td>{formattedDate}</td>
+                      <td>{actionTypeMap[action.action_type] || action.action_type}</td>
+                      <td>{action.details || '-'}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
+  
         </div>
   
       </form>        <div className={styles.buttonGroup}>

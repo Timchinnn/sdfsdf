@@ -156,3 +156,31 @@
   outline: none;
   border-color: #4CAF50;
 }
+.actionsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.actionsTable th,
+.actionsTable td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.actionsTable th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+.actionsTable tr:hover {
+  background-color: #f9f9f9;
+}
+.actionsTable td {
+  color: #333;
+}
+.actionsList {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
