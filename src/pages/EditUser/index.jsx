@@ -13,6 +13,8 @@ const EditUser = () => {
   const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [sortBy, setSortBy] = useState("none");
+    const [userActions, setUserActions] = useState([]);
+
 
 useEffect(() => {
     const fetchUser = async () => {
@@ -39,6 +41,18 @@ useEffect(() => {
       }
     };
     fetchUser();
+  }, [id]);
+    useEffect(() => {
+    const fetchUserActions = async () => {
+      try {
+        const response = await axios.get(`/api/user-actions/${id}`);
+        setUserActions(response.data);
+        console.log(response.data)
+      } catch (error) {
+        console.error('Ошибка при получении действий пользователя:', error);
+      }
+    };
+    fetchUserActions();
   }, [id]);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -180,8 +194,20 @@ if (loading) return <div>Загрузка...</div>;
               alt="Next"
             />
           </div>
+       </div>
+        <div className={styles.formGroup}>
+          <label>Последние действия пользователя:</label>
+          <div className={styles.actionsList}>
+            {userActions.map((action, index) => (
+              <div key={index} className={styles.actionItem}>
+                <span>{new Date(action.created_at).toLocaleString()}</span>
+                <span>{action.action_type}</span>
+                <span>{action.details}</span>
+              </div>
+            ))}
+          </div>
         </div>
-
+  
       </form>        <div className={styles.buttonGroup}>
           <button type="submit" className={styles.saveButton}>
             Сохранить
