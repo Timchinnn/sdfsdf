@@ -235,9 +235,9 @@ if (loading) return <div>Загрузка...</div>;
                     } else if (action.reward_data.title) {
                       details = `Награда: ${action.reward_data.title}`;
                       if (action.reward_data.coins) {
-                        reward = `${action.reward_data.coins} монет`;
+                        reward = `${action.reward_data.reward_value} монет`;
                       } else if (action.reward_data.experience) {
-                        reward = `${action.reward_data.experience} опыта`;
+                        reward = `${action.reward_data.reward_experience} опыта`;
                       }
                     }
                   }
