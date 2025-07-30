@@ -231,7 +231,7 @@ if (loading) return <div>Загрузка...</div>;
                   if (action.reward_data) {
                     if (action.action_type === 'card_opened') {
                       details = `Карта: ${action.reward_data.card_title || 'Неизвестно'}`;
-                    } else if (action.reward_data) {
+                    } else if (action.reward_data.card_title) {
                       console.log(1)
                       details = `Награда:`;
                       if (action.reward_data.reward_value) {
