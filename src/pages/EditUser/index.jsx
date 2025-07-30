@@ -48,6 +48,7 @@ useEffect(() => {
         const response = await axios.get(`/user-actions/${id}`);
         setUserActions(response.data);
         console.log(response.data)
+        console.log(id)
       } catch (error) {
         console.error('Ошибка при получении действий пользователя:', error);
       }
