@@ -6,7 +6,7 @@ import styles from './EditUser.module.css';
 import left from "assets/img/left.png";
 import right from "assets/img/right.png";
 const EditUser = () => {
-const { id, userId } = useParams();
+  const { id, userId } = useParams();
   const history = useHistory();
   const [user, setUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");

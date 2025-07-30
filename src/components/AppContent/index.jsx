@@ -145,7 +145,7 @@ const AppContent = () => {
             path={routeShopManagementPage()}
             component={ShopManagement}
           />
-          <Route path="/edit-user/:id" component={EditUser} />
+<Route path="/edit-user/:id/:userId" component={EditUser} />
 
           <Route exact path={routeBonusPage()} component={BonusPage} />
           <Route exact path={routePeoplePage()} component={PeoplePage} />

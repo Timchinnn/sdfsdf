@@ -170,7 +170,7 @@ const [searchTerm, setSearchTerm] = useState('');
                   >
                     {user.deleted ? 'Удален' : 'Удалить'}
                   </button>
-<NavLink to={`/edit-user/${user.telegram_id}/${user.id}`}>
+                  <NavLink to={`/edit-user/${user.telegram_id}/${user.id}`}>
                     <button
                       style={{
                         marginLeft: '5px',
