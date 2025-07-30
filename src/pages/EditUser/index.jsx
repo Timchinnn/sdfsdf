@@ -45,7 +45,7 @@ useEffect(() => {
     useEffect(() => {
     const fetchUserActions = async () => {
       try {
-        const response = await axios.get(`/api/user-actions/${id}`);
+        const response = await axios.get(`/user-actions/${id}`);
         setUserActions(response.data);
         console.log(response.data)
       } catch (error) {
