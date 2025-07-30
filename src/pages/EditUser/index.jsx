@@ -226,9 +226,9 @@ if (loading) return <div>Загрузка...</div>;
                   });
                   // Формирование деталей действия
                   let details = '-';
-                  if (action.action_data && action.reward_data) {
+                  if (action.reward_data && action.reward_data) {
                     if (action.action_type === 'card_opened') {
-                      details = `Карта: ${action.action_data.card_name || 'Неизвестно'}`;
+                      details = `Карта: ${action.reward_data.card_title || 'Неизвестно'}`;
                     } else if (action.reward_data.title) {
                       details = `Награда: ${action.reward_data.title}`;
                     }
