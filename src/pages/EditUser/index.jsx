@@ -232,9 +232,9 @@ if (loading) return <div>Загрузка...</div>;
                     if (action.action_type === 'card_opened') {
                       details = `Карта: ${action.reward_data.card_title || 'Неизвестно'}`;
                       reward = `${action.reward_data.experience || 0} опыта`;
-                    } else if (action.reward_data.title) {
-                      details = `Награда: ${action.reward_data.title}`;
-                      if (action.reward_data.coins) {
+                    } else if (action.reward_data) {
+                      details = `Награда:`;
+                      if (action.reward_data.reward_value) {
                         reward = `${action.reward_data.reward_value} монет`;
                       } else if (action.reward_data.experience) {
                         reward = `${action.reward_data.reward_experience} опыта`;
