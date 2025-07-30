@@ -201,7 +201,7 @@ if (loading) return <div>Загрузка...</div>;
   <div className={styles.actionsList}>
             <table className={styles.actionsTable}>
               <thead>
-                <tr>
+                <tr style={{color:'black'}}>
                   <th>Дата</th>
                   <th>Действие</th>
                   <th>Детали</th>
