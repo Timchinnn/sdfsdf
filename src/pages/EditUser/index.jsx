@@ -204,6 +204,8 @@ if (loading) return <div>Загрузка...</div>;
                 <tr style={{color:'black'}}>
                   <th>Дата</th>
                   <th>Действие</th>
+                                    <th>Награда</th>
+
                   <th>Детали</th>
                 </tr>
               </thead>
@@ -224,19 +226,26 @@ if (loading) return <div>Загрузка...</div>;
                     hour: '2-digit',
                     minute: '2-digit'
                   });
-                  // Формирование деталей действия
                   let details = '-';
-                  if (action.reward_data && action.reward_data) {
+                  let reward = '-';
+                  if (action.reward_data) {
                     if (action.action_type === 'card_opened') {
                       details = `Карта: ${action.reward_data.card_title || 'Неизвестно'}`;
+                      reward = `${action.reward_data.experience || 0} опыта`;
                     } else if (action.reward_data.title) {
                       details = `Награда: ${action.reward_data.title}`;
+                      if (action.reward_data.coins) {
+                        reward = `${action.reward_data.coins} монет`;
+                      } else if (action.reward_data.experience) {
+                        reward = `${action.reward_data.experience} опыта`;
+                      }
                     }
                   }
                   return (
                     <tr key={index}>
-                      <td>{formattedDate}</td>
+                    <td>{formattedDate}</td>
                       <td>{actionTypeMap[action.action_type] || action.action_type}</td>
+                      <td>{reward}</td>
                       <td>{details}</td>
                     </tr>
                   );
