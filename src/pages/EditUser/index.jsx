@@ -238,7 +238,7 @@ if (loading) return <div>Загрузка...</div>;
           console.log(1)
 
       reward = `${action.reward_data.reward_value} монет`;
-    } else if (action.reward_data.experience) {
+    } else if (action.reward_data.reward_experience) {
           console.log(1)
 
       reward = `${action.reward_data.reward_experience} опыта`;
