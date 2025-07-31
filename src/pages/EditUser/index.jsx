@@ -227,26 +227,30 @@ if (loading) return <div>Загрузка...</div>;
                     minute: '2-digit'
                   });
 let details = '-';
-          let reward = '-';
-          if (action.reward_data) {
-            if (action.action_type === 'card_opened') {
-              details = `Карта: ${action.reward_data.card_title || 'Неизвестно'}`;
-              reward = action.reward_data.reward_value ? 
-                      `${action.reward_data.reward_value} монет` : 
-                      (action.reward_data.reward_experience ? 
-                      `${action.reward_data.reward_experience} опыта` :
-                      (action.reward_data.reward_energy ?
-                      `${action.reward_data.reward_energy} энергии` : '-'));
-            } else if (action.action_type === 'bonus_code_activated') {
-              details = 'Активирован бонус-код';
-              reward = action.reward_data.reward_value ? 
-                      `${action.reward_data.reward_value} монет` : '-';
-            } else if (action.reward_data.reward_value || 
-                      action.reward_data.reward_experience || 
-                      action.reward_data.reward_energy) {
-              reward = `${action.reward_data.reward_value || ''} ${action.reward_data.reward_experience || ''} ${action.reward_data.reward_energy || ''}`.trim();
-            }
-          
+let reward = '-';
+if (action.reward_data) {
+  if (action.action_type === 'card_opened') {
+    details = `Карта: ${action.reward_data.card_title || 'Неизвестно'}`;
+    // Show experience points for specific bonus card
+    if (action.id === 24 && action.reward_data.card_title === 'Бонус 100') {
+      reward = `${action.reward_data.reward_experience || 10} опыта`;
+    } else {
+      reward = action.reward_data.reward_value ? 
+              `${action.reward_data.reward_value} монет` : 
+              (action.reward_data.reward_experience ? 
+              `${action.reward_data.reward_experience} опыта` :
+              (action.reward_data.reward_energy ?
+              `${action.reward_data.reward_energy} энергии` : '-'));
+    }
+  } else if (action.action_type === 'bonus_code_activated') {
+    details = 'Активирован бонус-код';
+    reward = action.reward_data.reward_value ? 
+            `${action.reward_data.reward_value} монет` : '-';
+  } else if (action.reward_data.reward_value || 
+            action.reward_data.reward_experience || 
+            action.reward_data.reward_energy) {
+    reward = `${action.reward_data.reward_value || ''} ${action.reward_data.reward_experience || ''} ${action.reward_data.reward_energy || ''}`.trim();
+  }
 }
                   return (
                     <tr key={index}>
