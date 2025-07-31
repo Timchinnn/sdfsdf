@@ -227,32 +227,35 @@ if (loading) return <div>Загрузка...</div>;
                     minute: '2-digit'
                   });
 let details = '-';
-let reward = '-';
+let rewards = [];
 if (action.reward_data) {
   if (action.action_type === 'card_opened') {
     details = `Карта: ${action.reward_data.card_title}`;
-    reward = action.reward_data.reward_value ?
-             `${action.reward_data.reward_value} монет` :
-             (action.reward_data.reward_experience ?
-              `${action.reward_data.reward_experience} опыта` :
-              (action.reward_data.reward_energy ?
-               `${action.reward_data.reward_energy} энергии` : '-'));
+    if (action.reward_data.reward_value) {
+      rewards.push(`${action.reward_data.reward_value} монет`);
+    }
+    if (action.reward_data.reward_experience) {
+      rewards.push(`${action.reward_data.reward_experience} опыта`);
+    }
+    if (action.reward_data.reward_energy) {
+      rewards.push(`${action.reward_data.reward_energy} энергии`);
+    }
   } else if (action.action_type === 'bonus_code_activated') {
     details = 'Активирован бонус-код';
-    reward = action.reward_data.reward_value ?
-             `${action.reward_data.reward_value} монет` : '-';
-  } else if (action.reward_data.reward_value ||
-             action.reward_data.reward_experience ||
-             action.reward_data.reward_energy) {
-    reward = `${action.reward_data.reward_value || ''} ${action.reward_data.reward_experience || ''} ${action.reward_data.reward_energy || ''}`.trim();
+    if (action.reward_data.reward_value) {
+      rewards.push(`${action.reward_data.reward_value} монет`);
+    }
+  } else {
+    if (action.reward_data.reward_value) rewards.push(`${action.reward_data.reward_value} монет`);
+    if (action.reward_data.reward_experience) rewards.push(`${action.reward_data.reward_experience} опыта`);
+    if (action.reward_data.reward_energy) rewards.push(`${action.reward_data.reward_energy} энергии`);
   }
-
 }
                   return (
                     <tr key={index}>
                     <td>{formattedDate}</td>
                       <td>{actionTypeMap[action.action_type] || action.action_type}</td>
-                      <td>{reward}</td>
+<td>{rewards.join(', ') || '-'}</td>
                       <td>{details}</td>
                     </tr>
                   );
