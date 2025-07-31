@@ -303,11 +303,11 @@ useEffect(() => {
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0 && !shouldUpdate) {
- const weightedRandom = (items) => {
-        // Фильтруем предметы с нулевым шансом выпадения и шансом выше 0.03
+      const weightedRandom = (items) => {
+        // Фильтруем предметы с нулевым шансом выпаденияа
         const availableItems = items.filter((item) => {
           const chance = parseFloat(item.chance);
-          return !isNaN(chance) && chance > 0 && chance <= 0.03;
+          return !isNaN(chance) && chance > 0;
         });
         // Если нет доступных предметов, возвращаем null
         if (availableItems.length === 0) {
@@ -326,6 +326,7 @@ useEffect(() => {
         // Выбираем случайный элемент
         const random = Math.random();
         let cumulativeWeight = 0;
+
         for (const item of normalizedItems) {
           cumulativeWeight += item.normalizedChance;
           if (random <= cumulativeWeight) {
@@ -431,6 +432,18 @@ useEffect(() => {
     }
     const selectedCard = selectedPhotos[data[index].id];
 
+    // Preload the card image
+    // try {
+    //   await new Promise((resolve, reject) => {
+    //     const img = new Image();
+    //     img.src = `https://api.zoomayor.io${selectedCard.image}`;
+    //     img.onload = () => resolve(selectedCard);
+    //     img.onerror = () => reject();
+    //   });
+    // } catch (error) {
+    //   console.error("Error preloading image:", error);
+    //   return;
+    // }
     setIsAnimating(true);
     setIsSwipeLocked(true);
     setIsButtonLocked(true);
