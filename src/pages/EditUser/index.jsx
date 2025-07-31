@@ -226,24 +226,27 @@ if (loading) return <div>Загрузка...</div>;
                     hour: '2-digit',
                     minute: '2-digit'
                   });
-                  let details = '-';
-                  let reward = '-';
+let details = '-';
+          let reward = '-';
           if (action.reward_data) {
-  if (action.action_type === 'card_opened') {
-    details = `Карта: ${action.reward_data.card_title || 'Неизвестно'}`;
-  } else if (action.reward_data.card_title || action.reward_data.reward_value || action.reward_data.reward_experience) {
-    details = 'Награда:';
-    console.log(1)
-    if (action.reward_data.reward_value) {
-          console.log(1)
-
-      reward = `${action.reward_data.reward_value} монет`;
-    } else if (action.reward_data.reward_experience) {
-          console.log(1)
-
-      reward = `${action.reward_data.reward_experience} опыта`;
-    }
-  }
+            if (action.action_type === 'card_opened') {
+              details = `Карта: ${action.reward_data.card_title || 'Неизвестно'}`;
+              reward = action.reward_data.reward_value ? 
+                      `${action.reward_data.reward_value} монет` : 
+                      (action.reward_data.reward_experience ? 
+                      `${action.reward_data.reward_experience} опыта` :
+                      (action.reward_data.reward_energy ?
+                      `${action.reward_data.reward_energy} энергии` : '-'));
+            } else if (action.action_type === 'bonus_code_activated') {
+              details = 'Активирован бонус-код';
+              reward = action.reward_data.reward_value ? 
+                      `${action.reward_data.reward_value} монет` : '-';
+            } else if (action.reward_data.reward_value || 
+                      action.reward_data.reward_experience || 
+                      action.reward_data.reward_energy) {
+              reward = `${action.reward_data.reward_value || ''} ${action.reward_data.reward_experience || ''} ${action.reward_data.reward_energy || ''}`.trim();
+            }
+          
 }
                   return (
                     <tr key={index}>
