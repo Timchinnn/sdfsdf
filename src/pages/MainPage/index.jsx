@@ -20,6 +20,7 @@ const MainPage = () => {
   const [activeShopPopup, setActiveShopPopup] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [shouldUpdateCarousel, setShouldUpdateCarousel] = useState(false);
+  const [userChanceRange, setUserChanceRange] = useState({ min_chance: null, max_chance: null });
 
   // Состояния для данных пользователя
   const [hourlyIncome, setHourlyIncome] = useState(0);
@@ -71,6 +72,23 @@ const MainPage = () => {
         loadCardBack();
     }, []);
   // Update translations when language changes
+  useEffect(() => {
+    const loadUserChanceRange = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const telegram_id = tg.initDataUnsafe.user.id;
+        try {
+          const response = await userInitService.getUser(telegram_id);
+          // Предполагаем, что в response.data есть min_chance и max_chance
+          const { min_chance, max_chance } = response.data;
+          setUserChanceRange({ min_chance, max_chance });
+        } catch (error) {
+          console.error("Ошибка при получении диапазона шансов:", error);
+        }
+      }
+    };
+    loadUserChanceRange();
+  }, []);
 useEffect(() => {
     if (language === "ru") {
       setTranslations({
@@ -296,6 +314,7 @@ useEffect(() => {
                   onUpdateComplete={() => setShouldUpdateCarousel(false)}
                   translations={translations}
                                                   cardBackStyle={cardBackStyle} 
+                  userChanceRange={userChanceRange}
 
                 />
               </div>

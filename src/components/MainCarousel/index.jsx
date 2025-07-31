@@ -28,6 +28,7 @@ const MainCarousel = ({
   onUpdateComplete,
     translations,
     cardBackStyle,
+    userChanceRange,
 }) => {
   const [isButtonLocked, setIsButtonLocked] = useState(false);
   const imageQuality = useSelector((state) => state.imageQuality);
@@ -303,38 +304,37 @@ useEffect(() => {
   const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     if (photos.length > 0 && !shouldUpdate) {
-      const weightedRandom = (items) => {
-        // Фильтруем предметы с нулевым шансом выпаденияа
-        const availableItems = items.filter((item) => {
-          const chance = parseFloat(item.chance);
-          return !isNaN(chance) && chance > 0;
-        });
-        // Если нет доступных предметов, возвращаем null
-        if (availableItems.length === 0) {
-          return null;
-        }
-        // Считаем общий вес с поддержкой дробных чисел
-        const totalWeight = availableItems.reduce(
-          (sum, item) => sum + parseFloat(item.chance || 0.001),
-          0
-        );
-        // Нормализуем шансы
-        const normalizedItems = availableItems.map((item) => ({
-          ...item,
-          normalizedChance: parseFloat(item.chance || 0.001) / totalWeight,
-        }));
-        // Выбираем случайный элемент
-        const random = Math.random();
-        let cumulativeWeight = 0;
-
-        for (const item of normalizedItems) {
-          cumulativeWeight += item.normalizedChance;
-          if (random <= cumulativeWeight) {
-            return item;
-          }
-        }
-        return normalizedItems[0];
-      };
+ const weightedRandom = (items) => {
+    const { min_chance, max_chance } = userChanceRange || {};
+    // Фильтруем предметы по min_chance и max_chance, если они заданы:
+    const availableItems = items.filter((item) => {
+      const chance = parseFloat(item.chance);
+      if (min_chance !== null && max_chance !== null) {
+        return !isNaN(chance) && chance > 0 && chance >= min_chance && chance <= max_chance;
+      }
+      return !isNaN(chance) && chance > 0;
+    });
+    if (availableItems.length === 0) {
+      return null;
+    }
+    const totalWeight = availableItems.reduce(
+      (sum, item) => sum + parseFloat(item.chance || 0.001),
+      0
+    );
+    const normalizedItems = availableItems.map((item) => ({
+      ...item,
+      normalizedChance: parseFloat(item.chance || 0.001) / totalWeight,
+    }));
+    const random = Math.random();
+    let cumulativeWeight = 0;
+    for (const item of normalizedItems) {
+      cumulativeWeight += item.normalizedChance;
+      if (random <= cumulativeWeight) {
+        return item;
+      }
+    }
+    return normalizedItems[0];
+  };
 
       const newSelectedPhotos = data.reduce((acc, item) => {
         const selectedItem = weightedRandom(photos);
