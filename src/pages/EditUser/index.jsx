@@ -196,7 +196,9 @@ if (loading) return <div>Загрузка...</div>;
             />
           </div>
        </div>
-        <div className={styles.formGroup}>
+
+  
+      </form>         <div className={styles.formGroup}>
           <label>Последние действия пользователя:</label>
   <div className={styles.actionsList}>
             <table className={styles.actionsTable}>
@@ -264,9 +266,7 @@ if (action.reward_data) {
             </table>
           </div>
   
-        </div>
-  
-      </form>        <div className={styles.buttonGroup}>
+        </div>       <div className={styles.buttonGroup}>
           <button type="submit" className={styles.saveButton}>
             Сохранить
           </button>
