@@ -99,6 +99,7 @@ useEffect(() => {
           
           if (cardBackResponse.data.style) {
             cardBackStyleValue = cardBackResponse.data.style;
+            console.log(cardBackResponse.data)
             setCardBackStyle(cardBackStyleValue);
             dispatch(setCardBack(cardBackStyleValue));
           }
