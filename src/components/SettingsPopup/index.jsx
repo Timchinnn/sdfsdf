@@ -80,7 +80,6 @@ useEffect(() => {
   const settingsPopupRef = useRef(null);
 useEffect(() => {
     const loadData = async () => {
-      setIsLoading(true);
       try {
         // Load saved language
         const savedLanguage = localStorage.getItem("language") || "ru";
@@ -93,38 +92,33 @@ useEffect(() => {
         let cardBackStyleValue = "default";
         
         if (tg?.initDataUnsafe?.user?.id) {
-          try {
-            const [cardBackResponse, purchasedResponse] = await Promise.all([
-              cardBackService.getUserCardBack(tg.initDataUnsafe.user.id),
-              fetchPurchasedShirts()
-            ]);
-            
-            if (cardBackResponse.data.style) {
-              cardBackStyleValue = cardBackResponse.data.style;
-              setCardBackStyle(cardBackStyleValue);
-              dispatch(setCardBack(cardBackStyleValue));
-            }
-          } catch (error) {
-            console.error("Error loadinsg user")}
+          const [cardBackResponse, purchasedResponse] = await Promise.all([
+            cardBackService.getUserCardBack(tg.initDataUnsafe.user.id),
+            fetchPurchasedShirts()
+          ]);
+          
+          if (cardBackResponse.data.style) {
+            cardBackStyleValue = cardBackResponse.data.style;
+            setCardBackStyle(cardBackStyleValue);
+            dispatch(setCardBack(cardBackStyleValue));
+          }
+          // Get card back name and translate it before setting loading to false
+const cardBackName = purchasedShirts.find(
+            (shirt) => shirt.image_url === cardBackStyleValue
+          )?.name;
+          if (cardBackName || cardBackStyleValue === "default") {
+            const translatedName = cardBackStyleValue === "default" ? 
+              "Стандартная рубашка" : 
+              await translateServerResponse(cardBackName);
+            setTranslatedCardBackName(translatedName);
+          }
         }
         
         // Load card backs
         await fetchCardBacks();
-        
-        // Get card back name and translate it
-        const cardBackName = purchasedShirts.find(
-          (shirt) => shirt.image_url === cardBackStyleValue
-        )?.name;
-        
-        if (cardBackName || cardBackStyleValue === "default") {
-          const translatedName = cardBackStyleValue === "default" ? 
-            "Стандартная рубашка" : 
-            await translateServerResponse(cardBackName);
-          setTranslatedCardBackName(translatedName);
-        }
+        setIsLoading(false);
       } catch (error) {
-        console.error("Error loading settings:", error);
-      } finally {
+        console.error("Error");
         setIsLoading(false);
       }
     };
