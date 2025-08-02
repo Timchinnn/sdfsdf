@@ -64,17 +64,17 @@ const [selectedLanguage, setSelectedLanguage] = useState(language);
   };
   const [translatedCardBackName, setTranslatedCardBackName] = useState("");
 useEffect(() => {
-    const getTranslatedName = async () => {
-      const cardBackName = purchasedShirts.find(
-        (shirt) => shirt.image_url === cardBackStyle
-      )?.name;
-      if (cardBackName) {
-        const translatedName = await translateServerResponse(cardBackName);
-        setTranslatedCardBackName(translatedName);
-      }
-    };
-    getTranslatedName();
-  }, [cardBackStyle, purchasedShirts, language]);
+  const getTranslatedName = async () => {
+    const cardBackName = purchasedShirts.find(
+      (shirt) => shirt.image_url === cardBackStyle
+    )?.name;
+    if (cardBackName) {
+      const translatedName = await translateServerResponse(cardBackName);
+      setTranslatedCardBackName(translatedName);
+    }
+  };
+  getTranslatedName();
+}, [cardBackStyle, purchasedShirts, language]);
 
   const [isLoading, setIsLoading] = useState(true);
   const settingsPopupRef = useRef(null);
