@@ -293,22 +293,27 @@ const handleLanguageChange = async (langCode) => {
       return text;
     }
   };
-  const fetchPurchasedShirts = async () => {
-    try {
-      const tg = window.Telegram.WebApp;
-      if (tg?.initDataUnsafe?.user?.id) {
-        const response = await axios.get(
-          `/user/${tg.initDataUnsafe.user.id}/shirts`
-        );
-        if (response.data && response.data.shirts) {
-          setPurchasedShirts(response.data.shirts);
-          console.log(response.data.shirts);
-        }
+const fetchPurchasedShirts = async () => {
+  try {
+    const tg = window.Telegram.WebApp;
+    if (tg?.initDataUnsafe?.user?.id) {
+      const [userShirtsResponse, allShirtsResponse] = await Promise.all([
+        axios.get(`/user/${tg.initDataUnsafe.user.id}/shirts`),
+        axios.get('/shirts')
+      ]);
+      if (userShirtsResponse.data && userShirtsResponse.data.shirts) {
+        // Объединяем информацию о купленных рубашках с полной информацией о рубашках
+        const purchasedShirts = userShirtsResponse.data.shirts.map(userShirt => {
+          const fullShirtInfo = allShirtsResponse.data.find(s => s.id === userShirt.id);
+          return { ...userShirt, ...fullShirtInfo };
+        });
+        setPurchasedShirts(purchasedShirts);
       }
-    } catch (error) {
-      console.error("Ошибка при получении купленных рубашек:", error);
     }
-  };
+  } catch (error) {
+    console.error("Ошибка при получении купленных рубашек:", error);
+  }
+};
   const fetchCardBacks = async () => {
     try {
       const response = await cardBackService.getAllCardBacks();
