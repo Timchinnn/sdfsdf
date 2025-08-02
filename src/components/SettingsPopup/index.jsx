@@ -65,9 +65,6 @@ const [selectedLanguage, setSelectedLanguage] = useState(language);
   const [translatedCardBackName, setTranslatedCardBackName] = useState("");
 useEffect(() => {
     const getTranslatedName = async () => {
-                  fetchPurchasedShirts()
-                  console.log(purchasedShirts)
-
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
@@ -106,6 +103,7 @@ useEffect(() => {
             dispatch(setCardBack(cardBackStyleValue));
           }
           // Get card back name and translate it before setting loading to false
+          fetchPurchasedShirts()
 const cardBackName = purchasedShirts.find(
             (shirt) => shirt.image_url === cardBackStyleValue
           )?.name;
