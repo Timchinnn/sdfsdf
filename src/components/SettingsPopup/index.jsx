@@ -105,7 +105,7 @@ useEffect(() => {
               dispatch(setCardBack(cardBackStyleValue));
             }
           } catch (error) {
-            console.error("Error loading user")}
+            console.error("Error loadinsg user")}
         }
         
         // Load card backs
