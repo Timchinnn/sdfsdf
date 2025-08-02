@@ -307,6 +307,8 @@ const fetchPurchasedShirts = async () => {
           const fullShirtInfo = allShirtsResponse.data.find(s => s.id === userShirt.id);
           return { ...userShirt, ...fullShirtInfo };
         });
+        console.log(purchasedShirts)
+        console.log(userShirtsResponse)
         setPurchasedShirts(purchasedShirts);
       }
     }
