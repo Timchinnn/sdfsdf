@@ -103,6 +103,7 @@ useEffect(() => {
             dispatch(setCardBack(cardBackStyleValue));
           }
           // Get card back name and translate it before setting loading to false
+          console.log(purchasedShirts)
 const cardBackName = purchasedShirts.find(
             (shirt) => shirt.image_url === cardBackStyleValue
           )?.name;
