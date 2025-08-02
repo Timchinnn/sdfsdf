@@ -65,11 +65,11 @@ const [selectedLanguage, setSelectedLanguage] = useState(language);
   const [translatedCardBackName, setTranslatedCardBackName] = useState("");
 useEffect(() => {
     const getTranslatedName = async () => {
-      fetchPurchasedShirts();
+                  fetchPurchasedShirts()
+
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
-
       if (cardBackName) {
         const translatedName = await translateServerResponse(cardBackName);
         setTranslatedCardBackName(translatedName);
@@ -302,7 +302,6 @@ const handleLanguageChange = async (langCode) => {
         const response = await axios.get(
           `/user/${tg.initDataUnsafe.user.id}/shirts`
         );
-        console.log(response.data)
         if (response.data && response.data.shirts) {
           setPurchasedShirts(response.data.shirts);
         }
