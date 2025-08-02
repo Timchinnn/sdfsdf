@@ -66,6 +66,7 @@ const [selectedLanguage, setSelectedLanguage] = useState(language);
 useEffect(() => {
     const getTranslatedName = async () => {
                   fetchPurchasedShirts()
+                  console.log(purchasedShirts)
 
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
