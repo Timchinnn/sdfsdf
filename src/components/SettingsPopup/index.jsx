@@ -124,6 +124,18 @@ const cardBackName = purchasedShirts.find(
     };
     loadData();
 }, [dispatch]);
+useEffect(() => {
+    const getTranslatedName = async () => {
+      const cardBackName = purchasedShirts.find(
+        (shirt) => shirt.image_url === cardBackStyle
+      )?.name;
+      if (cardBackName) {
+        const translatedName = await translateServerResponse(cardBackName);
+        setTranslatedCardBackName(translatedName);
+      }
+    };
+    getTranslatedName();
+  }, [cardBackStyle, purchasedShirts, language]);
 const handleLanguageChange = async (langCode) => {
     if (langCode === "ru") {
       setSelectLang(1);
