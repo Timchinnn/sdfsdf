@@ -65,9 +65,11 @@ const [selectedLanguage, setSelectedLanguage] = useState(language);
   const [translatedCardBackName, setTranslatedCardBackName] = useState("");
 useEffect(() => {
     const getTranslatedName = async () => {
+      fetchPurchasedShirts();
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
+
       if (cardBackName) {
         const translatedName = await translateServerResponse(cardBackName);
         setTranslatedCardBackName(translatedName);
