@@ -103,7 +103,6 @@ useEffect(() => {
             dispatch(setCardBack(cardBackStyleValue));
           }
           // Get card back name and translate it before setting loading to false
-          fetchPurchasedShirts()
 const cardBackName = purchasedShirts.find(
             (shirt) => shirt.image_url === cardBackStyleValue
           )?.name;
@@ -303,6 +302,7 @@ const handleLanguageChange = async (langCode) => {
         );
         if (response.data && response.data.shirts) {
           setPurchasedShirts(response.data.shirts);
+          console.log(response.data.shirts);
         }
       }
     } catch (error) {
