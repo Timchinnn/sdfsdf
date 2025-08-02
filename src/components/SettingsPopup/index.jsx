@@ -107,7 +107,7 @@ useEffect(() => {
 const cardBackName = purchasedShirts.find(
             (shirt) => shirt.image_url === cardBackStyleValue
           )?.name;
-          else if (cardBackName || cardBackStyleValue === "default") {
+          if (cardBackName || cardBackStyleValue === "default") {
             const translatedName = cardBackStyleValue === "default" ? 
               "Стандартная рубашка" : 
               await translateServerResponse(cardBackName);
