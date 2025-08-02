@@ -294,28 +294,33 @@ const handleLanguageChange = async (langCode) => {
     }
   };
 const fetchPurchasedShirts = async () => {
-  try {
-    const tg = window.Telegram.WebApp;
-    if (tg?.initDataUnsafe?.user?.id) {
-      const [userShirtsResponse, allShirtsResponse] = await Promise.all([
-        axios.get(`/user/${tg.initDataUnsafe.user.id}/shirts`),
-        axios.get('/shirts')
-      ]);
-      if (userShirtsResponse.data && userShirtsResponse.data.shirts) {
-        // Объединяем информацию о купленных рубашках с полной информацией о рубашках
-        const purchasedShirts = userShirtsResponse.data.shirts.map(userShirt => {
-          const fullShirtInfo = allShirtsResponse.data.find(s => s.id === userShirt.id);
-          return { ...userShirt, ...fullShirtInfo };
-        });
-        console.log(purchasedShirts)
-        console.log(userShirtsResponse)
-        setPurchasedShirts(purchasedShirts);
+    try {
+      const tg = window.Telegram.WebApp;
+      if (tg?.initDataUnsafe?.user?.id) {
+        // Get purchased shirts
+        const purchasedResponse = await axios.get(
+          `/user/${tg.initDataUnsafe.user.id}/shirts`
+        );
+        
+        // Get all shirts
+        const allShirtsResponse = await axios.get('/shirts');
+        console.log(allShirtsResponse)
+        // Combine the results
+        const purchasedShirts = purchasedResponse.data.shirts || [];
+        const allShirts = allShirtsResponse.data || [];
+        
+        // Mark purchased shirts
+        const combinedShirts = allShirts.map(shirt => ({
+          ...shirt,
+          isPurchased: purchasedShirts.some(ps => ps.id === shirt.id)
+        }));
+        
+        setPurchasedShirts(combinedShirts);
       }
+    } catch (error) {
+      console.error("Ошибка при получении купленных рубашек:", error);
     }
-  } catch (error) {
-    console.error("Ошибка при получении купленных рубашек:", error);
-  }
-};
+  };
   const fetchCardBacks = async () => {
     try {
       const response = await cardBackService.getAllCardBacks();
