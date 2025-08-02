@@ -293,29 +293,16 @@ const handleLanguageChange = async (langCode) => {
       return text;
     }
   };
-const fetchPurchasedShirts = async () => {
+  const fetchPurchasedShirts = async () => {
     try {
       const tg = window.Telegram.WebApp;
       if (tg?.initDataUnsafe?.user?.id) {
-        // Get purchased shirts
-        const purchasedResponse = await axios.get(
+        const response = await axios.get(
           `/user/${tg.initDataUnsafe.user.id}/shirts`
         );
-        
-        // Get all shirts
-        const allShirtsResponse = await axios.get('/shirts');
-        console.log(allShirtsResponse)
-        // Combine the results
-        const purchasedShirts = purchasedResponse.data.shirts || [];
-        const allShirts = allShirtsResponse.data || [];
-        
-        // Mark purchased shirts
-        const combinedShirts = allShirts.map(shirt => ({
-          ...shirt,
-          isPurchased: purchasedShirts.some(ps => ps.id === shirt.id)
-        }));
-        
-        setPurchasedShirts(combinedShirts);
+        if (response.data && response.data.shirts) {
+          setPurchasedShirts(response.data.shirts);
+        }
       }
     } catch (error) {
       console.error("Ошибка при получении купленных рубашек:", error);
