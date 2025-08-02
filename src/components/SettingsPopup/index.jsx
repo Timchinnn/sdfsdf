@@ -103,8 +103,9 @@ useEffect(() => {
             dispatch(setCardBack(cardBackStyleValue));
           }
           // Get card back name and translate it before setting loading to false
-          console.log(cardBackResponse.data)
-const cardBackName =  cardBackResponse.data.name;
+const cardBackName = purchasedShirts.find(
+            (shirt) => shirt.image_url === cardBackStyleValue
+          )?.name;
           if (cardBackName || cardBackStyleValue === "default") {
             const translatedName = cardBackStyleValue === "default" ? 
               "Стандартная рубашка" : 
@@ -299,6 +300,7 @@ const handleLanguageChange = async (langCode) => {
         const response = await axios.get(
           `/user/${tg.initDataUnsafe.user.id}/shirts`
         );
+        console.log(response.data)
         if (response.data && response.data.shirts) {
           setPurchasedShirts(response.data.shirts);
         }
