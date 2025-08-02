@@ -99,7 +99,6 @@ useEffect(() => {
           
           if (cardBackResponse.data.style) {
             cardBackStyleValue = cardBackResponse.data.style;
-            console.lo
             setCardBackStyle(cardBackStyleValue);
             dispatch(setCardBack(cardBackStyleValue));
           }
@@ -365,10 +364,10 @@ const handleLanguageChange = async (langCode) => {
       className={`modal ${activePopup ? "show" : ""}`}
     >
       {" "}
-{isLoading || !translatedCardBackName ? (
-  <div className="modal-spinner" style={{ marginBottom: "50vw" }}>
-    <Spinner loading={true} size={50} />
-  </div>
+    {isLoading || !translatedCardBackName ? (
+        <div className="modal-spinner" style={{ marginBottom: "50vw" }}>
+          <Spinner loading={true} size={50} />
+        </div>
       ) : (
         <div className="modal-wrapper">
           {modalStep === 1 && (
