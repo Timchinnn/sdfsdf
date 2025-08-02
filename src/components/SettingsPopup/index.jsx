@@ -103,8 +103,7 @@ useEffect(() => {
             dispatch(setCardBack(cardBackStyleValue));
           }
           // Get card back name and translate it before setting loading to false
-const cardBackName = cardBackResponse.data.style === 'default' ? 'default' : 
-            await cardBackService.getCardBack(cardBackResponse.data.style)?.name;
+const cardBackName =  cardBackResponse.data.style;
           if (cardBackName || cardBackStyleValue === "default") {
             const translatedName = cardBackStyleValue === "default" ? 
               "Стандартная рубашка" : 
@@ -123,18 +122,6 @@ const cardBackName = cardBackResponse.data.style === 'default' ? 'default' :
     };
     loadData();
 }, [dispatch]);
-useEffect(() => {
-    const getTranslatedName = async () => {
-      const cardBackName = purchasedShirts.find(
-        (shirt) => shirt.image_url === cardBackStyle
-      )?.name;
-      if (cardBackName) {
-        const translatedName = await translateServerResponse(cardBackName);
-        setTranslatedCardBackName(translatedName);
-      }
-    };
-    getTranslatedName();
-  }, [cardBackStyle, purchasedShirts, language]);
 const handleLanguageChange = async (langCode) => {
     if (langCode === "ru") {
       setSelectLang(1);
