@@ -64,15 +64,28 @@ useEffect(() => {
     };
     fetchUserActions();
   }, [id]);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.put(`/admin/user/${id}`, user);
-      history.push('/users-list');
-    } catch (error) {
-      console.error('Error updating user:', error);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    // Update basic user info
+    await axios.put(`/admin/user/${id}`, user);
+    // Update user experience if changed
+    if (user.experience !== undefined) {
+      await axios.put(`/api/user/${id}/experience`, {
+        experience: Number(user.experience)
+      });
     }
-  };
+    // Update user balance if changed 
+    if (user.coins !== undefined) {
+      await axios.put(`/api/user/${id}/balance`, {
+        balance: Number(user.coins)
+      });
+    }
+    history.push('/users-list');
+  } catch (error) {
+    console.error('Error updating user:', error);
+  }
+};
 if (loading) return <div>Загрузка...</div>;
   if (!user) return <div>Пользователь не найден</div>;
   const sortCards = (cards) => {
