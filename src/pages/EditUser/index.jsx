@@ -79,7 +79,7 @@ const handleSubmit = async (e) => {
         balance: Number(user.coins)
       });
     }
-    // Update user chance range if changed
+    // Update user chance range if changedв
     if (user.min_chance !== undefined && user.max_chance !== undefined) {
       await axios.put(`/user/${id}/chance`, {
         min_chance: Number(user.min_chance),
