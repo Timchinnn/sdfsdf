@@ -73,6 +73,37 @@ const [searchTerm, setSearchTerm] = useState('');
       setSortDirection('asc');
     }
   };
+  // В компоненте UsersList
+const handleUnban = async (user) => {
+  try {
+    await axios.put(`/admin/unban-user/${user.telegram_id}`);
+    setUsers(prevUsers =>
+      prevUsers.map(u =>
+        u.telegram_id === user.telegram_id
+          ? { ...u, ban: !u.ban }
+          : u
+      )
+    );
+  } catch (err) {
+    console.error('Ошибка при разбане пользователя:', err);
+    alert('Ошибка при разбане пользователя');
+  }
+};
+const handleRestore = async (user) => {
+  try {
+    await axios.put(`/admin/restore-user/${user.telegram_id}`);
+    setUsers(prevUsers =>
+      prevUsers.map(u =>
+        u.telegram_id === user.telegram_id
+          ? { ...u, deleted: !u.deleted }
+          : u
+      )
+    );
+  } catch (err) {
+    console.error('Ошибка при восстановлении пользователя:', err);
+    alert('Ошибка при восстановлении пользователя');
+  }
+};
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     if (!sortField) return 0;
     
@@ -140,7 +171,7 @@ const [searchTerm, setSearchTerm] = useState('');
                 <td>{user.referrals}</td>
                 <td>{new Date(user.created_at).toLocaleString()}
 </td>
-                <td>
+             <td>
                   <button
                     onClick={() => handleBan(user)}
                     style={{
@@ -169,6 +200,34 @@ const [searchTerm, setSearchTerm] = useState('');
                     disabled={user.deleted}
                   >
                     {user.deleted ? 'Удален' : 'Удалить'}
+                  </button>
+                  <button
+                    onClick={() => handleUnban(user)}
+                    style={{
+                      marginLeft: '5px',
+                      padding: '5px 10px',
+                      background: '#4CAF50',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Разбанить
+                  </button>
+                  <button
+                    onClick={() => handleRestore(user)}
+                    style={{
+                      marginLeft: '5px',
+                      padding: '5px 10px',
+                      background: '#4CAF50',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Восстановить
                   </button>
                   <NavLink to={`/edit-user/${user.telegram_id}/${user.id}`}>
                     <button
