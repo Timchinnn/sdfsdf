@@ -170,7 +170,6 @@ if (loading) return <div>Загрузка...</div>;
             onChange={(e) => setUser({...user, min_chance: Number(e.target.value)})}
             min="0"
             max="100"
-            step="0.01"
           />
         </div>
         <div className={styles.formGroup}>
@@ -181,7 +180,6 @@ if (loading) return <div>Загрузка...</div>;
             onChange={(e) => setUser({...user, max_chance: Number(e.target.value)})}
             min="0"
             max="100"
-            step="0.01"
           />
         </div>
       <div className={styles.formGroup}>
