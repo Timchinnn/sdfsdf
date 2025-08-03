@@ -79,7 +79,7 @@ const handleSubmit = async (e) => {
         balance: Number(user.coins)
       });
     }
-    // Update user chance range if changedв
+    // Update user chance range if changed
     if (user.min_chance !== undefined && user.max_chance !== undefined) {
       await axios.put(`/user/${id}/chance`, {
         min_chance: Number(user.min_chance),
@@ -162,34 +162,28 @@ if (loading) return <div>Загрузка...</div>;
           />
         </div>
         </div>
-<div className={styles.formGroup}>
-  <label>Минимальный шанс:</label>
-  <input
-    type="number"
-    value={user.min_chance }
-    onChange={(e) => {
-      const value = Math.max(0, Math.min(parseFloat(e.target.value) || 0, 100));
-      setUser({ ...user, min_chance: value });
-    }}
-    min="0"
-    max="100"
-    step="0.01" // Убедитесь, что шаг установлен на 0.01
-  />
-</div>
-<div className={styles.formGroup}>
-  <label>Максимальный шанс:</label>
-  <input
-    type="number"
-    value={user.max_chance }
-    onChange={(e) => {
-      const value = Math.max(0, Math.min(parseFloat(e.target.value) || 0, 100));
-      setUser({ ...user, max_chance: value });
-    }}
-    min="0"
-    max="100"
-    step="0.01" // Убедитесь, что шаг установлен на 0.01
-  />
-</div>
+           <div className={styles.formGroup}>
+          <label>Минимальный шанс:</label>
+          <input
+            type="number"
+            value={user.min_chance}
+            onChange={(e) => setUser({...user, min_chance: Number(e.target.value)})}
+            min="0"
+            max="100"
+            step="0.01"
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Максимальный шанс:</label>
+          <input
+            type="number"
+            value={user.max_chance}
+            onChange={(e) => setUser({...user, max_chance: Number(e.target.value)})}
+            min="0"
+            max="100"
+            step="0.01"
+          />
+        </div>
       <div className={styles.formGroup}>
         <div className={styles.searchContainer}>
           <input
