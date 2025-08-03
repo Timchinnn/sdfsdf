@@ -164,17 +164,17 @@ if (loading) return <div>Загрузка...</div>;
         </div>
            <div className={styles.formGroup}>
               <label>Минимальный шанс:</label>
-          <input
-            type="number"
-            value={user.min_chance || 0}
-            onChange={(e) => {
-              const value = Math.min(Number(e.target.value), 100);
-              setUser({...user, min_chance: value});
-            }}
-            min="0" 
-            max="100"
-            step="0.01"
-          />
+ <input
+  type="number"
+  value={user.min_chance === undefined ? 0 : user.min_chance}
+  onChange={(e) => {
+    const value = e.target.value === '' ? '' : Math.min(Number(e.target.value), 100);
+    setUser({...user, min_chance: value});
+  }}
+  min="0" 
+  max="100"
+  step="0.01"
+/>
         </div>
         <div className={styles.formGroup}>
           <label>Максимальный шанс:</label>
