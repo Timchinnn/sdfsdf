@@ -171,63 +171,33 @@ const handleRestore = async (user) => {
                 <td>{user.referrals}</td>
                 <td>{new Date(user.created_at).toLocaleString()}
 </td>
-             <td>
+        <td>
                   <button
                     onClick={() => handleBan(user)}
                     style={{
                       marginRight: '5px',
                       padding: '5px 10px',
-                      background: user.ban ? '#666' : '#ff9800',
+                      background: user.ban ? '#4CAF50' : '#ff9800',
                       color: 'white',
                       border: 'none',
                       borderRadius: '4px',
-                      cursor: user.ban ? 'not-allowed' : 'pointer'
+                      cursor: 'pointer'
                     }}
-                    disabled={user.ban}
                   >
-                    {user.ban ? 'Забанен' : 'Бан'}
+                    {user.ban ? 'Разбанить' : 'Бан'}
                   </button>
                   <button
                     onClick={() => handleDelete(user)}
                     style={{
                       padding: '5px 10px',
-                      background: user.deleted ? '#666' : '#f44336',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: user.deleted ? 'not-allowed' : 'pointer'
-                    }}
-                    disabled={user.deleted}
-                  >
-                    {user.deleted ? 'Удален' : 'Удалить'}
-                  </button>
-                  <button
-                    onClick={() => handleUnban(user)}
-                    style={{
-                      marginLeft: '5px',
-                      padding: '5px 10px',
-                      background: '#4CAF50',
+                      background: user.deleted ? '#4CAF50' : '#f44336',
                       color: 'white',
                       border: 'none',
                       borderRadius: '4px',
                       cursor: 'pointer'
                     }}
                   >
-                    Разбанить
-                  </button>
-                  <button
-                    onClick={() => handleRestore(user)}
-                    style={{
-                      marginLeft: '5px',
-                      padding: '5px 10px',
-                      background: '#4CAF50',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Восстановить
+                    {user.deleted ? 'Восстановить' : 'Удалить'}
                   </button>
                   <NavLink to={`/edit-user/${user.telegram_id}/${user.id}`}>
                     <button
