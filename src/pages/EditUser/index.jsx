@@ -238,7 +238,7 @@ if (loading) return <div>Загрузка...</div>;
           readOnly
         />
       </div>
-      <div className={styles.formGroup}>
+      <div className={styles.formGroup} style={{color:'black'}}>
         <label>Список рефералов:</label>
         <table className={styles.referralsTable}>
           <thead>
