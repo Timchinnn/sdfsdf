@@ -168,12 +168,14 @@ if (loading) return <div>Загрузка...</div>;
     type="number"
     value={user.min_chance || 0}
     onChange={(e) => {
-      const value = Math.max(0, Math.min(parseFloat(e.target.value) || 0, 100));
-      setUser({ ...user, min_chance: value });
+      const value = parseFloat(e.target.value);
+      if (!isNaN(value) && value >= 0 && value <= 100) {
+        setUser({ ...user, min_chance: value });
+      }
     }}
     min="0"
     max="100"
-    step="0.01" // Убедитесь, что шаг установлен на 0.01
+    step="0.01"
   />
 </div>
 <div className={styles.formGroup}>
@@ -182,12 +184,14 @@ if (loading) return <div>Загрузка...</div>;
     type="number"
     value={user.max_chance || 0}
     onChange={(e) => {
-      const value = Math.max(0, Math.min(parseFloat(e.target.value) || 0, 100));
-      setUser({ ...user, max_chance: value });
+      const value = parseFloat(e.target.value);
+      if (!isNaN(value) && value >= 0 && value <= 100) {
+        setUser({ ...user, max_chance: value });
+      }
     }}
     min="0"
     max="100"
-    step="0.01" // Убедитесь, что шаг установлен на 0.01
+    step="0.01"
   />
 </div>
       <div className={styles.formGroup}>
