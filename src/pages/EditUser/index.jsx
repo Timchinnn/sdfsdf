@@ -166,8 +166,11 @@ if (loading) return <div>Загрузка...</div>;
           <label>Минимальный шанс:</label>
           <input
             type="number"
-            value={user.min_chance || 0}
-            onChange={(e) => setUser({...user, min_chance: Number(e.target.value)})}
+            value={user.min_chance || ''}
+            onChange={(e) => {
+              const value = Math.max(0, Math.min(parseFloat(e.target.value) || 0, 100));
+              setUser({...user, min_chance: value})
+            }}
             min="0"
             max="100"
             step="0.01"
@@ -176,9 +179,12 @@ if (loading) return <div>Загрузка...</div>;
         <div className={styles.formGroup}>
           <label>Максимальный шанс:</label>
           <input
-            type="number"
-            value={user.max_chance || 100}
-            onChange={(e) => setUser({...user, max_chance: Number(e.target.value)})}
+            type="number" 
+            value={user.max_chance || ''}
+            onChange={(e) => {
+              const value = Math.max(0, Math.min(parseFloat(e.target.value) || 0, 100));
+              setUser({...user, max_chance: value})
+            }}
             min="0"
             max="100"
             step="0.01"
