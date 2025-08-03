@@ -172,33 +172,33 @@ const handleRestore = async (user) => {
                 <td>{new Date(user.created_at).toLocaleString()}
 </td>
         <td>
-                  <button
-                    onClick={() => handleBan(user)}
-                    style={{
-                      marginRight: '5px',
-                      padding: '5px 10px',
-                      background: user.ban ? '#4CAF50' : '#ff9800',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {user.ban ? 'Разбанить' : 'Бан'}
-                  </button>
-                  <button
-                    onClick={() => handleDelete(user)}
-                    style={{
-                      padding: '5px 10px',
-                      background: user.deleted ? '#4CAF50' : '#f44336',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {user.deleted ? 'Восстановить' : 'Удалить'}
-                  </button>
+      <button
+  onClick={() => user.ban ? handleUnban(user) : handleBan(user)}
+  style={{
+    marginRight: '5px',
+    padding: '5px 10px',
+    background: user.ban ? '#4CAF50' : '#ff9800',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer'
+  }}
+>
+  {user.ban ? 'Разбанить' : 'Бан'}
+</button>
+<button
+  onClick={() => user.deleted ? handleRestore(user) : handleDelete(user)}
+  style={{
+    padding: '5px 10px',
+    background: user.deleted ? '#4CAF50' : '#f44336',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer'
+  }}
+>
+  {user.deleted ? 'Восстановить' : 'Удалить'}
+</button>
                   <NavLink to={`/edit-user/${user.telegram_id}/${user.id}`}>
                     <button
                       style={{
