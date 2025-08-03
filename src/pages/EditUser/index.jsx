@@ -123,7 +123,7 @@ if (loading) return <div>Загрузка...</div>;
           <input
             type="number"
             value={user.coins || 0}
-            onChange={(e) => setUser({...user, balance: Number(e.target.value)})}
+            onChange={(e) => setUser({...user, coins: Number(e.target.value)})}
           />
         </div>
         <div className={styles.formGroup}>
