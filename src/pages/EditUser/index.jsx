@@ -180,10 +180,11 @@ if (loading) return <div>Загрузка...</div>;
           <label>Максимальный шанс:</label>
           <input
             type="number"
-            value={user.max_chance || 100}
+            value={user.max_chance  === undefined ? 0 : user.max_chance}
             onChange={(e) => {
-              const value = Math.min(Number(e.target.value), 100);
-              setUser({...user, max_chance: value});
+    
+              const value = e.target.value === '' ? '' : Math.min(Number(e.target.value), 100);
+    setUser({...user, max_chance: value});
             }}
             min="0"
             max="100"
