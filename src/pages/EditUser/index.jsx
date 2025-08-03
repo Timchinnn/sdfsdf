@@ -162,34 +162,38 @@ if (loading) return <div>Загрузка...</div>;
           />
         </div>
         </div>
-           <div className={styles.formGroup}>
-          <label>Минимальный шанс:</label>
-          <input
-            type="number"
-            value={user.min_chance || ''}
-            onChange={(e) => {
-              const value = Math.max(0, Math.min(parseFloat(e.target.value) || 0, 100));
-              setUser({...user, min_chance: value})
-            }}
-            min="0"
-            max="100"
-            step="0.01"
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Максимальный шанс:</label>
-          <input
-            type="number" 
-            value={user.max_chance || ''}
-            onChange={(e) => {
-              const value = Math.max(0, Math.min(parseFloat(e.target.value) || 0, 100));
-              setUser({...user, max_chance: value})
-            }}
-            min="0"
-            max="100"
-            step="0.01"
-          />
-        </div>
+          <div className={styles.formGroup}>
+            <label>Минимальный шанс:</label>
+            <input
+              type="number"
+              value={user.min_chance || ''}
+              onChange={(e) => {
+                const value = parseFloat(e.target.value);
+                // Ensure value is at least 0.01 and not greater than max_chance
+                const validValue = Math.max(0.01, Math.min(value || 0.01, user.max_chance || 100));
+                setUser({...user, min_chance: validValue})
+              }}
+              min="0.01"
+              max="100"
+              step="0.01"
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Максимальный шанс:</label>
+            <input
+              type="number" 
+              value={user.max_chance || ''}
+              onChange={(e) => {
+                const value = parseFloat(e.target.value);
+                // Ensure value is at least min_chance and not greater than 100
+                const validValue = Math.max(user.min_chance || 0.01, Math.min(value || 0, 100));
+                setUser({...user, max_chance: validValue})
+              }}
+              min="0.01"
+              max="100"
+              step="0.01"
+            />
+          </div>
       <div className={styles.formGroup}>
         <div className={styles.searchContainer}>
           <input
