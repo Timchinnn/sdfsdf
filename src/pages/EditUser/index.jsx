@@ -135,28 +135,7 @@ if (loading) return <div>Загрузка...</div>;
           />
         </div>
         </div>
-                <div className={styles.formGroup}>
-          <label>Минимальный шанс:</label>
-          <input
-            type="number"
-            value={user.min_chance || 0}
-            onChange={(e) => setUser({...user, min_chance: Number(e.target.value)})}
-            min="0"
-            max="100"
-            step="0.01"
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Максимальный шанс:</label>
-          <input
-            type="number"
-            value={user.max_chance || 100}
-            onChange={(e) => setUser({...user, max_chance: Number(e.target.value)})}
-            min="0"
-            max="100"
-            step="0.01"
-          />
-        </div>
+        
       <div className={styles.formGroup}>
         <div className={styles.searchContainer}>
           <input
@@ -220,7 +199,30 @@ if (loading) return <div>Загрузка...</div>;
        </div>
 
   
-      </form>         <div className={styles.formGroup}>
+      </form>
+              <div className={styles.formGroup}>
+          <label>Минимальный шанс:</label>
+          <input
+            type="number"
+            value={user.min_chance || 0}
+            onChange={(e) => setUser({...user, min_chance: Number(e.target.value)})}
+            min="0"
+            max="100"
+            step="0.01"
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Максимальный шанс:</label>
+          <input
+            type="number"
+            value={user.max_chance || 100}
+            onChange={(e) => setUser({...user, max_chance: Number(e.target.value)})}
+            min="0"
+            max="100"
+            step="0.01"
+          />
+        </div>
+               <div className={styles.formGroup}>
           <label>Последние действия пользователя:</label>
   <div className={styles.actionsList}>
             <table className={styles.actionsTable}>
