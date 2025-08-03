@@ -69,14 +69,21 @@ const handleSubmit = async (e) => {
   try {
     // Update user experience if changed
     if (user.experience !== undefined) {
-      await axios.put(`/api/user/${id}/experience`, {
+      await axios.put(`/user/${id}/experience`, {
         experience: Number(user.experience)
       });
     }
     // Update user balance if changed
     if (user.coins !== undefined) {
-      await axios.put(`/api/user/${id}/balance`, {
+      await axios.put(`/user/${id}/balance`, {
         balance: Number(user.coins)
+      });
+    }
+    // Update user chance range if changed
+    if (user.min_chance !== undefined && user.max_chance !== undefined) {
+      await axios.put(`/user/${id}/chance`, {
+        min_chance: Number(user.min_chance),
+        max_chance: Number(user.max_chance)
       });
     }
     history.push('/users-list');
