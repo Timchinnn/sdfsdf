@@ -340,7 +340,7 @@ if (action.reward_data) {
           </div>
   
         </div>       <div className={styles.buttonGroup}>
-          <button type="submit" className={styles.saveButton}>
+         <button type="submit" className={styles.saveButton} onClick={handleSubmit}>
             Сохранить
           </button>
           <button 
