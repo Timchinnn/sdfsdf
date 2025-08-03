@@ -33,7 +33,15 @@ useEffect(() => {
         if (cardsResponse.data) {
           setUser(prev => ({...prev, cards: cardsResponse.data}));
         }
-        console.log(cardsResponse.data)
+        // Получаем рефералов пользователя
+        const referralsResponse = await axios.get(`/api/user/${id}/referrals`);
+        if (referralsResponse.data && referralsResponse.data.referrals) {
+          setUser(prev => ({
+            ...prev, 
+            referral_users: referralsResponse.data.referrals,
+            referrals: referralsResponse.data.referrals.length
+          }));
+        }
         setLoading(false);
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -220,7 +228,36 @@ if (loading) return <div>Загрузка...</div>;
        </div>
 
   
-      </form>         <div className={styles.formGroup}>
+            </form>         
+      <div className={styles.formGroup}>
+        <label>Общее количество рефералов:</label>
+        <input
+          type="number" 
+          value={user?.referrals || 0}
+          readOnly
+        />
+      </div>
+      <div className={styles.formGroup}>
+        <label>Список рефералов:</label>
+        <table className={styles.referralsTable}>
+          <thead>
+            <tr>
+              <th>Никнейм</th>
+              <th>Дата приглашения</th>
+              <th>Уровень</th>
+            </tr>
+          </thead>
+          <tbody>
+            {user?.referral_users?.map((referral) => (
+              <tr key={referral.id}>
+                <td>{referral.username}</td>
+                <td>{new Date(referral.registered_via_referral_date).toLocaleDateString()}</td>
+                <td>{referral.level}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>         <div className={styles.formGroup}>
           <label>Последние действия пользователя:</label>
   <div className={styles.actionsList}>
             <table className={styles.actionsTable}>

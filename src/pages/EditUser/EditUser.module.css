@@ -184,3 +184,21 @@
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+.referralsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.referralsTable th,
+.referralsTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.referralsTable th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+.referralsTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
