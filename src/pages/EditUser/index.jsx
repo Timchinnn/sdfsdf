@@ -35,6 +35,7 @@ useEffect(() => {
         }
         // Получаем рефералов пользователя
         const referralsResponse = await axios.get(`/user/${id}/referrals`);
+        console.log(referralsResponse)
         if (referralsResponse.data && referralsResponse.data.referrals) {
           setUser(prev => ({
             ...prev, 
