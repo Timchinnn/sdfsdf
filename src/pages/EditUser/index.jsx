@@ -67,15 +67,13 @@ useEffect(() => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    // Update basic user info
-    await axios.put(`/admin/user/${id}`, user);
     // Update user experience if changed
     if (user.experience !== undefined) {
       await axios.put(`/api/user/${id}/experience`, {
         experience: Number(user.experience)
       });
     }
-    // Update user balance if changed 
+    // Update user balance if changed
     if (user.coins !== undefined) {
       await axios.put(`/api/user/${id}/balance`, {
         balance: Number(user.coins)
