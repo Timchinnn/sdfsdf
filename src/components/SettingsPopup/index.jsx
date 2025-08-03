@@ -300,7 +300,7 @@ const fetchPurchasedShirts = async () => {
       const response = await axios.get(
         `/user/${tg.initDataUnsafe.user.id}/shirts`
       );
-      const cardBacksResponse = await axios.get('/api/card-backs');
+      const cardBacksResponse = await axios.get('/card-backs');
       if (response.data && response.data.shirts) {
         setPurchasedShirts([...response.data.shirts, ...cardBacksResponse.data.map(back => ({
           id: back.id,
