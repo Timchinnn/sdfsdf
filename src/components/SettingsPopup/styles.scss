@@ -69,3 +69,31 @@
     border-radius: 50%;
   }
 }
+.modal-cardback__circle {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-cardback__dot {
+  width: 10px;
+  height: 10px;
+  background-color: #71b21d;
+  border-radius: 50%;
+}
+.modal-cardback__select {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  z-index: 1;
+}
+.modal-cardback__item {
+  position: relative;
+  cursor: pointer;
+}
+.modal-cardback__item.active .modal-cardback__circle {
+  border-color: #71b21d;
+}
