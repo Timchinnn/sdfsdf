@@ -731,7 +731,7 @@ const fetchPurchasedShirts = async () => {
                   >
                     <div className="modal-cardback__select">
                       <div className="modal-cardback__circle">
-                        {cardBackStyle === cardBack.image && (
+                        {String(cardBackStyle).trim() === String(cardBack.image).trim() && (
                           <div className="modal-cardback__dot"></div>
                         )}
                       </div>
