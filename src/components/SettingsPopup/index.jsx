@@ -724,14 +724,14 @@ const fetchPurchasedShirts = async () => {
                 {cardBacks.map((cardBack) => (
                   <div
                     key={cardBack.id}
-       className={`modal-cardback__item ${
-  String(cardBackStyle).trim() === String(cardBack.image).trim() ? "active" : ""
-}`}
+                    className={`modal-cardback__item ${
+                      cardBackStyle === cardBack.image ? "active" : ""
+                    }`}
                     onClick={() => handleCardBackChange(cardBack.image)}
                   >
                     <div className="modal-cardback__select">
                       <div className="modal-cardback__circle">
-                        {String(cardBackStyle).trim() === String(cardBack.image).trim() && (
+                        {cardBackStyle === cardBack.image && (
                           <div className="modal-cardback__dot"></div>
                         )}
                       </div>
