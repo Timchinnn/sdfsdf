@@ -322,8 +322,6 @@ const fetchPurchasedShirts = async () => {
     }
   };
   const handleCardBackChange = async (style) => {
-    console.log(style)
-    console.log(cardBackStyle)
     try {
       setCardBackStyle(style);
       dispatch(setCardBack(style));
@@ -726,9 +724,9 @@ const fetchPurchasedShirts = async () => {
                 {cardBacks.map((cardBack) => (
                   <div
                     key={cardBack.id}
-                    className={`modal-cardback__item ${
-                      cardBackStyle === cardBack.image ? "active" : ""
-                    }`}
+       className={`modal-cardback__item ${
+  String(cardBackStyle).trim() === String(cardBack.image).trim() ? "active" : ""
+}`}
                     onClick={() => handleCardBackChange(cardBack.image)}
                   >
                     <div className="modal-cardback__select">
