@@ -721,14 +721,13 @@ const fetchPurchasedShirts = async () => {
                 }}
               >
                 {/* Стандартные рубашки карт */}
-         {cardBacks.map((cardBack) => (
+                {cardBacks.map((cardBack) => (
                   <div
                     key={cardBack.id}
                     className={`modal-cardback__item ${
                       cardBackStyle === cardBack.image ? "active" : ""
                     }`}
                     onClick={() => handleCardBackChange(cardBack.image)}
-                    style={{ position: 'relative' }}
                   >
                     <div className="modal-cardback__select">
                       <div className="modal-cardback__circle">
