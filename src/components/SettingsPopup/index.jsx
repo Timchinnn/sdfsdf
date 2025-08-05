@@ -722,33 +722,29 @@ const fetchPurchasedShirts = async () => {
                   whiteSpace: "nowrap",
                 }}
               >
-                {/* Стандартные рубашкиk карт */}
-{cardBacks.map((cardBack) => (
-  <div 
-    key={cardBack.id} 
-    className={`modal-cardback__item ${
-      cardBackStyle === cardBack.image || 
-      (cardBackStyle?.startsWith('/img') && cardBackStyle === cardBack.image_url)
-        ? 'active' 
-        : ''
-    }`}
-    onClick={() => handleCardBackChange(cardBack.image)}
-  >
-    <div className="modal-cardback__select">
-      <div className="modal-cardback__circle">
-        {(cardBackStyle === cardBack.image || 
-          (cardBackStyle?.startsWith('/img') && cardBackStyle === cardBack.image_url)) && (
-          <div className="modal-cardback__dot"></div>
-        )}
-      </div>
-    </div>
-    <img
-      src={`https://api.zoomayor.io${cardBack.image}`}
-      alt={cardBack.name}
-      style={{ marginRight: "20px", height: "245px" }}
-    />
-  </div>
-))}
+                {/* Стандартные рубашки карт */}
+                {cardBacks.map((cardBack) => (
+                  <div
+                    key={cardBack.id}
+                    className={`modal-cardback__item ${
+                      cardBackStyle === cardBack.image ? "active" : ""
+                    }`}
+                    onClick={() => handleCardBackChange(cardBack.image)}
+                  >
+                    <div className="modal-cardback__select">
+                      <div className="modal-cardback__circle">
+                        {cardBackStyle === cardBack.image && (
+                          <div className="modal-cardback__dot"></div>
+                        )}
+                      </div>
+                    </div>
+                    <img
+                      src={`https://api.zoomayor.io${cardBack.image}`}
+                      alt={cardBack.name}
+                      style={{ marginRight: "20px", height: "245px" }}
+                    />
+                  </div>
+                ))}
                 {/* Купленные рубашки */}
                 {purchasedShirts.map((shirt) => (
                   <div
