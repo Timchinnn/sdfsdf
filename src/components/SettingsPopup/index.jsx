@@ -321,19 +321,19 @@ const fetchPurchasedShirts = async () => {
       console.error("Ошибка при загрузке рубашек карт:", error);
     }
   };
-  const handleCardBackChange = async (style) => {
-    try {
-      setCardBackStyle(style);
-      dispatch(setCardBack(style));
-      const tg = window.Telegram.WebApp;
-      if (tg?.initDataUnsafe?.user?.id) {
-        const userId = tg.initDataUnsafe.user.id;
-        await cardBackService.updateUserCardBack(userId, { style });
-      }
-    } catch (error) {
-      console.error("Ошибка при обновлении рубашки карты:", error);
+const handleCardBackChange = async (style) => {
+  try {
+    setCardBackStyle(style);
+    dispatch(setCardBack(style));
+    const tg = window.Telegram.WebApp;
+    if (tg?.initDataUnsafe?.user?.id) {
+      const userId = tg.initDataUnsafe.user.id;
+      await cardBackService.updateUserCardBack(userId, { style });
     }
-  };
+  } catch (error) {
+    console.error("Ошибка при обновлении рубашки карты:", error);
+  }
+};
   const setThemeMode = () => {
     setSettingsNight(!settingsNight);
     dispatch(setTheme(!settingsNight));
@@ -722,8 +722,8 @@ const fetchPurchasedShirts = async () => {
               >
                 {/* Стандартные рубашки карт */}
 {cardBacks.map((cardBack) => (
-  <div
-    key={cardBack.id}
+  <div 
+    key={cardBack.id} 
     className={`modal-cardback__item ${
       cardBackStyle === cardBack.image ? "active" : ""
     }`}
@@ -743,6 +743,7 @@ const fetchPurchasedShirts = async () => {
     />
   </div>
 ))}
+  
                 {/* Купленные рубашки */}
                 {purchasedShirts.map((shirt) => (
                   <div
