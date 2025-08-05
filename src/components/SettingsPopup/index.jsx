@@ -722,7 +722,7 @@ const fetchPurchasedShirts = async () => {
                   whiteSpace: "nowrap",
                 }}
               >
-                {/* Стандартные рубашки карт */}
+                {/* Стандартные рубашкиk карт */}
 {cardBacks.map((cardBack) => (
   <div 
     key={cardBack.id} 
