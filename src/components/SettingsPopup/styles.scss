@@ -42,11 +42,26 @@
   }
 }
 .modal-cardback {
+  display: flex;
+  align-items: center;
+  margin-top: 18px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
   &__item {
     position: relative;
     cursor: pointer;
+    flex-shrink: 0;
+    margin-right: 20px;
+    
+    &:last-child {
+      margin-right: 0;
+    }
   }
-
   &__select {
     position: absolute;
     right: 35px;
@@ -61,11 +76,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: white;
   }
   &__dot {
     width: 10px;
     height: 10px;
     background-color: #71b21d;
     border-radius: 50%;
+  }
+  img {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
 }

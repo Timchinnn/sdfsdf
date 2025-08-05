@@ -710,39 +710,37 @@ const fetchPurchasedShirts = async () => {
           {modalStep === 4 && (
             <>
               <h3 className="modal-title">{translations.cardBack}</h3>
-              <div
+            <div
                 className="modal-cardback"
                 style={{
                   display: "flex",
-                  marginTop: "20px",
+                  marginTop: "20px", 
                   overflowX: "auto",
                   scrollbarWidth: "none",
                   whiteSpace: "nowrap",
+                  padding: "0 10px"
                 }}
               >
-                {/* Стандартные рубашки карт */}
-                {cardBacks.map((cardBack) => (
-                  <div
-                    key={cardBack.id}
-                    className={`modal-cardback__item ${
-                      cardBackStyle === cardBack.image ? "active" : ""
-                    }`}
-                    onClick={() => handleCardBackChange(cardBack.image)}
-                  >
-                    <div className="modal-cardback__select">
-                      <div className="modal-cardback__circle">
-                        {cardBackStyle === cardBack.image && (
-                          <div className="modal-cardback__dot"></div>
-                        )}
-                      </div>
+                {/* Стандартная рубашка */}
+                <div
+                  className={`modal-cardback__item ${
+                    cardBackStyle === "default" ? "active" : ""
+                  }`}
+                  onClick={() => handleCardBackChange("default")}
+                >
+                  <div className="modal-cardback__select">
+                    <div className="modal-cardback__circle">
+                      {cardBackStyle === "default" && (
+                        <div className="modal-cardback__dot"></div>
+                      )}
                     </div>
-                    <img
-                      src={`https://api.zoomayor.io${cardBack.image}`}
-                      alt={cardBack.name}
-                      style={{ marginRight: "20px", height: "245px" }}
-                    />
                   </div>
-                ))}
+                  <img
+                    src={`https://api.zoomayor.io/img/cards/back/default.webp`}
+                    alt="Default"
+                    style={{ marginRight: "20px", height: "245px" }}
+                  />
+                </div>
                 {/* Купленные рубашки */}
                 {purchasedShirts.map((shirt) => (
                   <div
