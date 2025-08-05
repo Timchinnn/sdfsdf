@@ -321,19 +321,21 @@ const fetchPurchasedShirts = async () => {
       console.error("Ошибка при загрузке рубашек карт:", error);
     }
   };
-const handleCardBackChange = async (style) => {
-  try {
-    setCardBackStyle(style);
-    dispatch(setCardBack(style));
-    const tg = window.Telegram.WebApp;
-    if (tg?.initDataUnsafe?.user?.id) {
-      const userId = tg.initDataUnsafe.user.id;
-      await cardBackService.updateUserCardBack(userId, { style });
+  const handleCardBackChange = async (style) => {
+    console.log(style)
+    console.log(cardBackStyle)
+    try {
+      setCardBackStyle(style);
+      dispatch(setCardBack(style));
+      const tg = window.Telegram.WebApp;
+      if (tg?.initDataUnsafe?.user?.id) {
+        const userId = tg.initDataUnsafe.user.id;
+        await cardBackService.updateUserCardBack(userId, { style });
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении рубашки карты:", error);
     }
-  } catch (error) {
-    console.error("Ошибка при обновлении рубашки карты:", error);
-  }
-};
+  };
   const setThemeMode = () => {
     setSettingsNight(!settingsNight);
     dispatch(setTheme(!settingsNight));
@@ -725,13 +727,17 @@ const handleCardBackChange = async (style) => {
   <div 
     key={cardBack.id} 
     className={`modal-cardback__item ${
-      cardBackStyle === cardBack.image ? "active" : ""
+      cardBackStyle === cardBack.image || 
+      (cardBackStyle?.startsWith('/img') && cardBackStyle === cardBack.image_url)
+        ? 'active' 
+        : ''
     }`}
     onClick={() => handleCardBackChange(cardBack.image)}
   >
     <div className="modal-cardback__select">
       <div className="modal-cardback__circle">
-        {cardBackStyle === cardBack.image && (
+        {(cardBackStyle === cardBack.image || 
+          (cardBackStyle?.startsWith('/img') && cardBackStyle === cardBack.image_url)) && (
           <div className="modal-cardback__dot"></div>
         )}
       </div>
@@ -743,7 +749,6 @@ const handleCardBackChange = async (style) => {
     />
   </div>
 ))}
-  
                 {/* Купленные рубашки */}
                 {purchasedShirts.map((shirt) => (
                   <div
