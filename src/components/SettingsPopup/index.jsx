@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { cardBackService } from "services/api";
 import axios from "../../axios-controller";
 import Spinner from "../Spinner";
+import "./styles.scss";
 import {
   setTheme,
   setCardBack,
