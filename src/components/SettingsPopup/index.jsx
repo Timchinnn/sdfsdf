@@ -322,7 +322,7 @@ const fetchPurchasedShirts = async () => {
       console.error("Ошибка при загрузке рубашек карт:", error);
     }
   };
-  const handleCardBackChange = async (style) => {
+const handleCardBackChange = async (style) => {
     try {
       setCardBackStyle(style);
       dispatch(setCardBack(style));
@@ -330,6 +330,8 @@ const fetchPurchasedShirts = async () => {
       if (tg?.initDataUnsafe?.user?.id) {
         const userId = tg.initDataUnsafe.user.id;
         await cardBackService.updateUserCardBack(userId, { style });
+        // Принудительно обновляем состояние после успешного сохранения
+        window.dispatchEvent(new Event('cardBackChanged'));
       }
     } catch (error) {
       console.error("Ошибка при обновлении рубашки карты:", error);

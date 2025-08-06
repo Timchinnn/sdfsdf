@@ -55,7 +55,7 @@ const MainPage = () => {
     const [cardBackStyle, setCardBackStyle] = useState(null);
     
     // const swiperRef = useRef(null);
-    useEffect(() => {
+useEffect(() => {
         const loadCardBack = async () => {
             try {
                 const tg = window.Telegram.WebApp;
@@ -69,7 +69,18 @@ const MainPage = () => {
                 console.error("Error loading card back:", error);
             } 
         };
+        
+        // Добавляем слушатель события
+        const handleCardBackChange = () => {
+            loadCardBack();
+        };
+        window.addEventListener('cardBackChanged', handleCardBackChange);
+        
         loadCardBack();
+        
+        return () => {
+            window.removeEventListener('cardBackChanged', handleCardBackChange);
+        };
     }, []);
   // Update translations when language changes
   useEffect(() => {
