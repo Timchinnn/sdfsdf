@@ -370,7 +370,7 @@ const CardManagement = () => {
           </NavLink>
         </div>
       </div>
-      <div className={styles.mainContent}>
+      {/* <div className={styles.mainContent}>
         <h2>Реклама</h2>
         <div className={styles.settings}>
           <div>
@@ -391,7 +391,7 @@ const CardManagement = () => {
             </NavLink>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className={styles.mainContent}>
         <h2>Бонус коды</h2>
         <div className={styles.settings}>
