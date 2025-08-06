@@ -97,6 +97,13 @@ const AdminPanel = () => {
             </div>
           </NavLink>
         </div>
+                        <div className={styles.mainContent}>
+          <NavLink to="/adsmanagement">
+            <div className={styles.content}>
+              <p>Управление рекламой</p>
+            </div>
+          </NavLink>
+        </div>
       </div>
     </div>
   );
