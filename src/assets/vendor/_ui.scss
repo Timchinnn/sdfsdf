@@ -58,6 +58,40 @@ body {
     .friends-list__image {
       box-shadow: none;
     }
+    .modal-cardback {
+  &__select {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+  }
+  &__circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  &__dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #71B21D;
+    transition: all 0.3s ease;
+  }
+  &__item {
+    position: relative;
+    
+    &.active {
+      .modal-cardback__circle {
+        border: 2px solid #71B21D;
+      }
+    }
+  }
+}
     .friends-params__item {
       background: #262b2f;
       color: $white;
