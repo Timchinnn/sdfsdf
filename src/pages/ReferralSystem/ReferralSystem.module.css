@@ -1,0 +1,63 @@
+.container {
+  padding: 20px;
+  background: white;
+  min-height: 100vh;
+}
+.form {
+  max-width: 600px;
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.formGroup {
+  margin-bottom: 15px;
+}
+.formGroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.formGroup textarea {
+  min-height: 100px;
+}
+button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #45a049;
+}
+.levelsList {
+  margin-top: 20px;
+}
+.levelItem {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.levelItem h3 {
+  margin: 0 0 10px 0;
+}
+.levelItem p {
+  margin: 5px 0;
+}
+.levelItem button {
+  background-color: #f44336;
+  margin-top: 10px;
+}
+.levelItem button:hover {
+  background-color: #da190b;
+}

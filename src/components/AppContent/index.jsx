@@ -2,6 +2,7 @@ import React from "react";
 
 // libs
 import { Route, Switch, Redirect } from "react-router-dom";
+import ReferralSystem from "pages/ReferralSystem";
 import AddEditShopCard from "pages/AddEditShopCard";
 import routeAddEditShopCard from "pages/AddEditShopCard/route";
 // routePages
@@ -122,8 +123,8 @@ const AppContent = () => {
             path={routeAddEditCardBackPage()}
             component={AddEditCardBack}
           />
-          <Route exact path={routeAdminPage()} component={AdminPanel} />
-          <Route
+<Route exact path={routeAdminPage()} component={AdminPanel} />
+          <Route exact path="/referral-system" component={ReferralSystem} />          <Route
             exact
             path={routeAdsManagementPage()}
             component={AdsManagement}

@@ -104,6 +104,13 @@ const AdminPanel = () => {
             </div>
           </NavLink>
         </div>
+          <div className={styles.mainContent}>
+          <NavLink to="/referral-system">
+            <div className={styles.content}>
+              <p>Реферальная система</p>
+            </div>
+          </NavLink>
+        </div>
       </div>
     </div>
   );
