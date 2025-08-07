@@ -48,7 +48,7 @@ const ReferralSystem = () => {
   }, []);
   const fetchLevels = async () => {
     try {
-      const response = await axios.get('/api/referral-levels');
+      const response = await axios.get('/referral-levels');
       setLevels(response.data);
     } catch (error) {
       console.error('Error fetching referral levels:', error);
@@ -57,7 +57,7 @@ const ReferralSystem = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/referral-levels', newLevel);
+      await axios.post('/referral-levels', newLevel);
       setNewLevel({
         name: '',
         description: '',
@@ -72,7 +72,7 @@ const ReferralSystem = () => {
   };
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/referral-levels/${id}`);
+      await axios.delete(`/referral-levels/${id}`);
       fetchLevels();
     } catch (error) {
       console.error('Error deleting referral level:', error);
