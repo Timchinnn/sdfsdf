@@ -4,7 +4,8 @@ import styles from './ReferralSystem.module.css';
 import { useSelector } from 'react-redux';
 import axios from '../../axios-controller';
 const ReferralSystem = () => {
-  const [levels, setLevels] = useState([]);
+const [levels, setLevels] = useState([]);
+  const [cards, setCards] = useState([]); // Добавляем состояние для карт
   const [newLevel, setNewLevel] = useState({
     name: '',
     description: '',
@@ -46,7 +47,17 @@ const ReferralSystem = () => {
   }, [language]);
   useEffect(() => {
     fetchLevels();
+    fetchCards(); // Добавляем загрузку карт
   }, []);
+  const fetchCards = async () => {
+    try {
+      const response = await axios.get('/cards');
+      setCards(response.data);
+    } catch (error) {
+      console.error('Error fetching cards:', error);
+    }
+  };
+ 
   const fetchLevels = async () => {
     try {
       const response = await axios.get('/referral-levels');
@@ -203,14 +214,22 @@ const ReferralSystem = () => {
   
             ) : (
               <>
-                <h3>{level.name}</h3>
+             <h3>{level.name}</h3>
                 <p>{level.description}</p>
                 <p>{translations.friendsRequired}: {level.friends_required}</p>
                 <p>{translations.cardReward}: {level.card_reward}</p>
+                {cards.find(card => card.id === level.card_reward) && (
+                  <img 
+                    src={`https://api.zoomayor.io${cards.find(card => card.id === level.card_reward).image}`}
+                    alt={cards.find(card => card.id === level.card_reward).title}
+                    style={{width: '100px', height: '150px', objectFit: 'contain'}}
+                  />
+                )}
                 <p>{translations.coinReward}: {level.coin_reward}</p>
                 <button onClick={() => startEditing(level)}>{translations.editLevel}</button>
                 <button onClick={() => handleDelete(level.id)}>{translations.deleteLevel}</button>
               </>
+  
             )}
           </div>
         ))}
