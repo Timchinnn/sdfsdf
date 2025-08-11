@@ -3,8 +3,12 @@ import React, { useState, useEffect } from 'react';
 import styles from './ReferralSystem.module.css';
 import { useSelector } from 'react-redux';
 import axios from '../../axios-controller';
+import left from "assets/img/left.png";
+import right from "assets/img/right.png";
 const ReferralSystem = () => {
 const [levels, setLevels] = useState([]);
+const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
+
   const [cards, setCards] = useState([]); // Добавляем состояние для карт
   const [newLevel, setNewLevel] = useState({
     name: '',
@@ -187,9 +191,20 @@ const [levels, setLevels] = useState([]);
     />
   </div>
 <div className={styles.cardSelection}>
-                  <h4>Select Card Reward:</h4>
+                  <h4>Выюери карту:</h4>
+ 
                   <div className={styles.cardGrid}>
-                    {cards.map(card => (
+                    <img
+                      src={left}
+                      className={styles.arrow}
+                      onClick={() => {
+                        if (currentAvailableIndex > 0) {
+                          setCurrentAvailableIndex(currentAvailableIndex - 1);
+                        }
+                      }}
+                      alt="Previous"
+                    />
+                    {cards.slice(currentAvailableIndex, currentAvailableIndex + 5).map(card => (
                       <div 
                         key={card.id}
                         className={`${styles.cardItem} ${editingLevel.card_id === card.id ? styles.selected : ''}`}
@@ -203,6 +218,16 @@ const [levels, setLevels] = useState([]);
                         <p>{card.title}</p>
                       </div>
                     ))}
+                    <img
+                      src={right} 
+                      className={styles.arrow}
+                      onClick={() => {
+                        if (currentAvailableIndex < cards.length - 5) {
+                          setCurrentAvailableIndex(currentAvailableIndex + 1);
+                        }
+                      }}
+                      alt="Next"
+                    />
                   </div>
                 </div>
   <div className={styles.formGroup}>
