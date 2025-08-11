@@ -70,6 +70,21 @@ const ReferralSystem = () => {
       console.error('Error creating referral level:', error);
     }
   };
+  const handleEdit = async (level) => {
+  try {
+    const updatedLevel = {
+      name: level.name,
+      description: level.description, 
+      friends_required: level.friends_required,
+      card_reward: level.card_reward,
+      coin_reward: level.coin_reward
+    };
+    await axios.put(`/api/referral-levels/${level.id}`, updatedLevel);
+    fetchLevels();
+  } catch (error) {
+    console.error('Error editing referral level:', error);
+  }
+};
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/referral-levels/${id}`);
@@ -136,8 +151,8 @@ const ReferralSystem = () => {
             <p>{translations.friendsRequired}: {level.friends_required}</p>
             <p>{translations.cardReward}: {level.card_reward}</p>
             <p>{translations.coinReward}: {level.coin_reward}</p>
-            <button onClick={() => handleDelete(level.id)}>{translations.deleteLevel}</button>
-          </div>
+<button onClick={() => handleEdit(level)}>{translations.editLevel}</button>
+<button onClick={() => handleDelete(level.id)}>{translations.deleteLevel}</button>          </div>
         ))}
       </div>
     </div>
