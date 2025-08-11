@@ -79,7 +79,7 @@ const ReferralSystem = () => {
       card_reward: level.card_reward,
       coin_reward: level.coin_reward
     };
-    await axios.put(`/api/referral-levels/${level.id}`, updatedLevel);
+    await axios.put(`/referral-levels/${level.id}`, updatedLevel);
     fetchLevels();
   } catch (error) {
     console.error('Error editing referral level:', error);
