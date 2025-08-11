@@ -186,15 +186,25 @@ const [levels, setLevels] = useState([]);
       required
     />
   </div>
-  <div className={styles.formGroup}>
-    <label>{translations.cardReward}:</label>
-    <input
-      type="number" 
-      value={editingLevel.card_reward}
-      onChange={(e) => setEditingLevel({...editingLevel, card_reward: Number(e.target.value)})}
-      required
-    />
-  </div>
+<div className={styles.cardSelection}>
+                  <h4>Select Card Reward:</h4>
+                  <div className={styles.cardGrid}>
+                    {cards.map(card => (
+                      <div 
+                        key={card.id}
+                        className={`${styles.cardItem} ${editingLevel.card_id === card.id ? styles.selected : ''}`}
+                        onClick={() => setEditingLevel({...editingLevel, card_id: card.id})}
+                      >
+                        <img 
+                          src={`https://api.zoomayor.io${card.image}`}
+                          alt={card.title}
+                          className={styles.cardImage}
+                        />
+                        <p>{card.title}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
   <div className={styles.formGroup}>
     <label>{translations.coinReward}:</label>
     <input

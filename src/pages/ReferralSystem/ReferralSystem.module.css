@@ -62,4 +62,40 @@ button:hover {
 }
 .levelItem button:hover {
   background-color: #da190b;
+}.cardSelection {
+  margin: 15px 0;
+}
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.cardItem {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.cardItem:hover {
+  border-color: #4CAF50;
+}
+.cardItem.selected {
+  border-color: #4CAF50;
+  background-color: rgba(76, 175, 80, 0.1);
+}
+.cardImage {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+.cardPreview {
+  margin: 10px 0;
+  max-width: 200px;
+}
+.cardPreview img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
 }
