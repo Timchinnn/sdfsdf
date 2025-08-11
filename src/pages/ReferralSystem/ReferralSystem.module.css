@@ -81,6 +81,7 @@ button:hover {
   padding: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 190px;
 }
 .cardItem:hover {
   border-color: #4CAF50;
