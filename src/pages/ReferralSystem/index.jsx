@@ -12,6 +12,7 @@ const ReferralSystem = () => {
     card_reward: 0,
     coin_reward: 0
   });
+  const [editingLevel, setEditingLevel] = useState(null);
   const [translations, setTranslations] = useState({
     title: 'Реферальная система',
     addLevel: 'Добавить уровень',
@@ -34,7 +35,7 @@ const ReferralSystem = () => {
         editLevel: 'Edit Level',
         deleteLevel: 'Delete Level',
         name: 'Name',
-        description: 'Description',
+        description: 'Description', 
         friendsRequired: 'Friends Required',
         cardReward: 'Card Reward',
         coinReward: 'Coin Reward',
@@ -70,21 +71,16 @@ const ReferralSystem = () => {
       console.error('Error creating referral level:', error);
     }
   };
-  const handleEdit = async (level) => {
-  try {
-    const updatedLevel = {
-      name: level.name,
-      description: level.description, 
-      friends_required: level.friends_required,
-      card_reward: level.card_reward,
-      coin_reward: level.coin_reward
-    };
-    await axios.put(`/referral-levels/${level.id}`, updatedLevel);
-    fetchLevels();
-  } catch (error) {
-    console.error('Error editing referral level:', error);
-  }
-};
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`/referral-levels/${editingLevel.id}`, editingLevel);
+      setEditingLevel(null);
+      fetchLevels();
+    } catch (error) {
+      console.error('Error updating referral level:', error);
+    }
+  };
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/referral-levels/${id}`);
@@ -92,6 +88,9 @@ const ReferralSystem = () => {
     } catch (error) {
       console.error('Error deleting referral level:', error);
     }
+  };
+  const startEditing = (level) => {
+    setEditingLevel({...level});
   };
   return (
     <div className={styles.container}>
@@ -146,13 +145,52 @@ const ReferralSystem = () => {
       <div className={styles.levelsList}>
         {levels.map(level => (
           <div key={level.id} className={styles.levelItem}>
-            <h3>{level.name}</h3>
-            <p>{level.description}</p>
-            <p>{translations.friendsRequired}: {level.friends_required}</p>
-            <p>{translations.cardReward}: {level.card_reward}</p>
-            <p>{translations.coinReward}: {level.coin_reward}</p>
-<button onClick={() => handleEdit(level)}>{translations.editLevel}</button>
-<button onClick={() => handleDelete(level.id)}>{translations.deleteLevel}</button>          </div>
+            {editingLevel && editingLevel.id === level.id ? (
+              <form onSubmit={handleEdit}>
+                <input
+                  type="text"
+                  value={editingLevel.name}
+                  onChange={(e) => setEditingLevel({...editingLevel, name: e.target.value})}
+                  required
+                />
+                <textarea
+                  value={editingLevel.description}
+                  onChange={(e) => setEditingLevel({...editingLevel, description: e.target.value})}
+                  required
+                />
+                <input
+                  type="number"
+                  value={editingLevel.friends_required}
+                  onChange={(e) => setEditingLevel({...editingLevel, friends_required: Number(e.target.value)})}
+                  required
+                />
+                <input
+                  type="number"
+                  value={editingLevel.card_reward}
+                  onChange={(e) => setEditingLevel({...editingLevel, card_reward: Number(e.target.value)})}
+                  required
+                />
+                <input
+                  type="number"
+                  value={editingLevel.coin_reward}
+                  onChange={(e) => setEditingLevel({...editingLevel, coin_reward: Number(e.target.value)})}
+                  required
+                />
+                <button type="submit">{translations.save}</button>
+                <button type="button" onClick={() => setEditingLevel(null)}>{translations.cancel}</button>
+              </form>
+            ) : (
+              <>
+                <h3>{level.name}</h3>
+                <p>{level.description}</p>
+                <p>{translations.friendsRequired}: {level.friends_required}</p>
+                <p>{translations.cardReward}: {level.card_reward}</p>
+                <p>{translations.coinReward}: {level.coin_reward}</p>
+                <button onClick={() => startEditing(level)}>{translations.editLevel}</button>
+                <button onClick={() => handleDelete(level.id)}>{translations.deleteLevel}</button>
+              </>
+            )}
+          </div>
         ))}
       </div>
     </div>
