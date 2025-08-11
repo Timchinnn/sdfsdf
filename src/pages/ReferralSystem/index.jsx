@@ -146,39 +146,61 @@ const ReferralSystem = () => {
         {levels.map(level => (
           <div key={level.id} className={styles.levelItem}>
             {editingLevel && editingLevel.id === level.id ? (
-              <form onSubmit={handleEdit}>
-                <input
-                  type="text"
-                  value={editingLevel.name}
-                  onChange={(e) => setEditingLevel({...editingLevel, name: e.target.value})}
-                  required
-                />
-                <textarea
-                  value={editingLevel.description}
-                  onChange={(e) => setEditingLevel({...editingLevel, description: e.target.value})}
-                  required
-                />
-                <input
-                  type="number"
-                  value={editingLevel.friends_required}
-                  onChange={(e) => setEditingLevel({...editingLevel, friends_required: Number(e.target.value)})}
-                  required
-                />
-                <input
-                  type="number"
-                  value={editingLevel.card_reward}
-                  onChange={(e) => setEditingLevel({...editingLevel, card_reward: Number(e.target.value)})}
-                  required
-                />
-                <input
-                  type="number"
-                  value={editingLevel.coin_reward}
-                  onChange={(e) => setEditingLevel({...editingLevel, coin_reward: Number(e.target.value)})}
-                  required
-                />
-                <button type="submit">{translations.save}</button>
-                <button type="button" onClick={() => setEditingLevel(null)}>{translations.cancel}</button>
-              </form>
+<form onSubmit={handleEdit} className={styles.editForm}>
+  <div className={styles.formGroup}>
+    <label>{translations.name}:</label>
+    <input 
+      type="text"
+      value={editingLevel.name}
+      onChange={(e) => setEditingLevel({...editingLevel, name: e.target.value})}
+      required
+      placeholder={translations.name}
+    />
+  </div>
+  <div className={styles.formGroup}>
+    <label>{translations.description}:</label>
+    <textarea
+      value={editingLevel.description}
+      onChange={(e) => setEditingLevel({...editingLevel, description: e.target.value})}
+      required
+      placeholder={translations.description}
+    />
+  </div>
+  <div className={styles.formGroup}>
+    <label>{translations.friendsRequired}:</label>
+    <input
+      type="number"
+      value={editingLevel.friends_required}
+      onChange={(e) => setEditingLevel({...editingLevel, friends_required: Number(e.target.value)})}
+      required
+    />
+  </div>
+  <div className={styles.formGroup}>
+    <label>{translations.cardReward}:</label>
+    <input
+      type="number" 
+      value={editingLevel.card_reward}
+      onChange={(e) => setEditingLevel({...editingLevel, card_reward: Number(e.target.value)})}
+      required
+    />
+  </div>
+  <div className={styles.formGroup}>
+    <label>{translations.coinReward}:</label>
+    <input
+      type="number"
+      value={editingLevel.coin_reward}
+      onChange={(e) => setEditingLevel({...editingLevel, coin_reward: Number(e.target.value)})}
+      required
+    />
+  </div>
+  <div className={styles.buttonGroup}>
+    <button type="submit" className={styles.saveButton}>{translations.save}</button>
+    <button type="button" onClick={() => setEditingLevel(null)} className={styles.cancelButton}>
+      {translations.cancel}
+    </button>
+  </div>
+</form>
+  
             ) : (
               <>
                 <h3>{level.name}</h3>
