@@ -98,6 +98,8 @@ useEffect(() => {
         // Получаем все уровни реферальной системы
         const levelsResponse = await axios.get('/referral-levels');
         const levels = levelsResponse.data;
+                    console.log(levels)
+
         // Проверяем каждый уровень
         for (const level of levels) {
           if (referralsCount >= level.friends_required) {
@@ -105,11 +107,12 @@ useEffect(() => {
             const claimedResponse = await axios.get(
               `/user/${telegram_id}/referral-level/${level.id}/claimed`
             );
-            
+            console.log(claimedResponse.data.claimed)
             if (!claimedResponse.data.claimed) {
               // Получаем награды за уровень
               const rewardsResponse = await axios.get(`/referral-levels/${level.id}/rewards`);
               const rewards = rewardsResponse.data;
+              console.log(rewards)
               // Начисляем награды пользователю
               if (rewards.coin_reward > 0) {
                 await axios.post(`/user/${telegram_id}/add-coins`, {
