@@ -83,6 +83,62 @@ useEffect(() => {
         };
     }, []);
   // Update translations when language changes
+  // Проверка и получение наград за рефералов
+useEffect(() => {
+  const checkReferralRewards = async () => {
+    try {
+      const tg = window.Telegram.WebApp;
+      if (tg?.initDataUnsafe?.user?.id) {
+        const telegram_id = tg.initDataUnsafe.user.id;
+        
+        // Получаем количество рефералов пользователя
+        const referralsResponse = await userInitService.getReferrals(telegram_id);
+        const referralsCount = referralsResponse.data.referrals.length;
+        // Получаем все уровни реферальной системы
+        const levelsResponse = await axios.get('/referral-levels');
+        const levels = levelsResponse.data;
+        // Проверяем каждый уровень
+        for (const level of levels) {
+          if (referralsCount >= level.friends_required) {
+            // Проверяем, получал ли пользователь награду за этот уровень
+            const claimedResponse = await axios.get(
+              `/user/${telegram_id}/referral-level/${level.id}/claimed`
+            );
+            
+            if (!claimedResponse.data.claimed) {
+              // Получаем награды за уровень
+              const rewardsResponse = await axios.get(`/referral-levels/${level.id}/rewards`);
+              const rewards = rewardsResponse.data;
+              // Начисляем награды пользователю
+              if (rewards.coin_reward > 0) {
+                await axios.post(`/user/${telegram_id}/add-coins`, {
+                  amount: rewards.coin_reward
+                });
+              }
+              
+              if (rewards.card_reward) {
+                await axios.post(`/user/${telegram_id}/add-card`, {
+                  card_id: rewards.card_reward
+                });
+              }
+              // Отмечаем уровень как полученный
+              await axios.post(`/user/${telegram_id}/referral-level/${level.id}/claim`);
+              // Показываем уведомление пользователю
+              tg.showPopup({
+                title: "Награда получена!",
+                message: `Вы получили награду за достижение ${level.friends_required} рефералов!`,
+                buttons: [{ type: "ok" }]
+              });
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Ошибка при проверке наград за рефералов:", error);
+    }
+  };
+  checkReferralRewards();
+}, []);
   useEffect(() => {
     const loadUserChanceRange = async () => {
       const tg = window.Telegram.WebApp;
