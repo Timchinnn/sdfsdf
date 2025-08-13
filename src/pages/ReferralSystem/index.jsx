@@ -86,10 +86,14 @@ const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
       console.error('Error creating referral level:', error);
     }
   };
-  const handleEdit = async (e) => {
+const handleEdit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/referral-levels/${editingLevel.id}`, editingLevel);
+      const dataToUpdate = {
+        ...editingLevel,
+        card_reward: editingLevel.card_id // Use card_id instead of card_reward
+      };
+      await axios.put(`/referral-levels/${editingLevel.id}`, dataToUpdate);
       setEditingLevel(null);
       fetchLevels();
     } catch (error) {
