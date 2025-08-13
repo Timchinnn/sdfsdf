@@ -256,7 +256,7 @@ const handleEdit = async (e) => {
                 <h3>{level.name}</h3>
                 <p>{level.description}</p>
                 <p>{translations.friendsRequired}: {level.friends_required}</p>
-                <p>{translations.cardReward}: {level.card_reward}</p>
+<p>{translations.cardReward}: {cards.find(card => card.id === level.card_reward)?.title || level.card_reward}</p>
                 <p>{translations.coinReward}: {level.coin_reward}</p>
                 <button onClick={() => startEditing(level)}>{translations.editLevel}</button>
                 <button onClick={() => handleDelete(level.id)}>{translations.deleteLevel}</button>
