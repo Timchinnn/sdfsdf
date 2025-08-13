@@ -141,15 +141,45 @@ const handleEdit = async (e) => {
             required
           />
         </div>
-        <div className={styles.formGroup}>
-          <label>{translations.cardReward}:</label>
-          <input
-            type="number"
-            value={newLevel.card_reward}
-            onChange={(e) => setNewLevel({...newLevel, card_reward: Number(e.target.value)})}
-            required
-          />
-        </div>
+<div className={styles.cardSelection}>
+  <h4>Выберите карту:</h4>
+  <div className={styles.cardGrid}>
+    <img
+      src={left}
+      className={styles.arrow}
+      onClick={() => {
+        if (currentAvailableIndex > 0) {
+          setCurrentAvailableIndex(currentAvailableIndex - 1);
+        }
+      }}
+      alt="Previous"
+    />
+    {cards.slice(currentAvailableIndex, currentAvailableIndex + 5).map(card => (
+      <div 
+        key={card.id}
+        className={`${styles.cardItem} ${newLevel.card_reward === card.id ? styles.selected : ''}`}
+        onClick={() => setNewLevel({...newLevel, card_reward: card.id})}
+      >
+        <img 
+          src={`https://api.zoomayor.io${card.image}`}
+          alt={card.title}
+          className={styles.cardImage}
+        />
+        <p>{card.title}</p>
+      </div>
+    ))}
+    <img
+      src={right} 
+      className={styles.arrow}
+      onClick={() => {
+        if (currentAvailableIndex < cards.length - 5) {
+          setCurrentAvailableIndex(currentAvailableIndex + 1);
+        }
+      }}
+      alt="Next"
+    />
+  </div>
+</div>
         <div className={styles.formGroup}>
           <label>{translations.coinReward}:</label>
           <input
