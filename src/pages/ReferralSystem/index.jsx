@@ -8,7 +8,8 @@ import right from "assets/img/right.png";
 const ReferralSystem = () => {
 const [levels, setLevels] = useState([]);
 const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
-
+const [addCardIndex, setAddCardIndex] = useState(0);
+const [editCardIndex, setEditCardIndex] = useState(0);
   const [cards, setCards] = useState([]); // Добавляем состояние для карт
   const [newLevel, setNewLevel] = useState({
     name: '',
@@ -148,13 +149,13 @@ const handleEdit = async (e) => {
       src={left}
       className={styles.arrow}
       onClick={() => {
-        if (currentAvailableIndex > 0) {
-          setCurrentAvailableIndex(currentAvailableIndex - 1);
+        if (addCardIndex > 0) {
+          setAddCardIndex(addCardIndex - 1);
         }
       }}
       alt="Previous"
     />
-    {cards.slice(currentAvailableIndex, currentAvailableIndex + 5).map(card => (
+    {cards.slice(addCardIndex, addCardIndex + 5).map(card => (
       <div 
         key={card.id}
         className={`${styles.cardItem} ${newLevel.card_reward === card.id ? styles.selected : ''}`}
@@ -172,8 +173,8 @@ const handleEdit = async (e) => {
       src={right} 
       className={styles.arrow}
       onClick={() => {
-        if (currentAvailableIndex < cards.length - 5) {
-          setCurrentAvailableIndex(currentAvailableIndex + 1);
+        if (addCardIndex < cards.length - 5) {
+          setAddCardIndex(addCardIndex + 1);
         }
       }}
       alt="Next"
@@ -225,45 +226,44 @@ const handleEdit = async (e) => {
     />
   </div>
 <div className={styles.cardSelection}>
-                  <h4>Выюери карту:</h4>
- 
-                  <div className={styles.cardGrid}>
-                    <img
-                      src={left}
-                      className={styles.arrow}
-                      onClick={() => {
-                        if (currentAvailableIndex > 0) {
-                          setCurrentAvailableIndex(currentAvailableIndex - 1);
-                        }
-                      }}
-                      alt="Previous"
-                    />
-                    {cards.slice(currentAvailableIndex, currentAvailableIndex + 5).map(card => (
-                      <div 
-                        key={card.id}
-                        className={`${styles.cardItem} ${editingLevel.card_id === card.id ? styles.selected : ''}`}
-                        onClick={() => setEditingLevel({...editingLevel, card_id: card.id})}
-                      >
-                        <img 
-                          src={`https://api.zoomayor.io${card.image}`}
-                          alt={card.title}
-                          className={styles.cardImage}
-                        />
-                        <p>{card.title}</p>
-                      </div>
-                    ))}
-                    <img
-                      src={right} 
-                      className={styles.arrow}
-                      onClick={() => {
-                        if (currentAvailableIndex < cards.length - 5) {
-                          setCurrentAvailableIndex(currentAvailableIndex + 1);
-                        }
-                      }}
-                      alt="Next"
-                    />
-                  </div>
-                </div>
+  <h4>Выберите карту:</h4>
+  <div className={styles.cardGrid}>
+    <img
+      src={left}
+      className={styles.arrow}
+      onClick={() => {
+        if (editCardIndex > 0) {
+          setEditCardIndex(editCardIndex - 1);
+        }
+      }}
+      alt="Previous"
+    />
+    {cards.slice(editCardIndex, editCardIndex + 5).map(card => (
+      <div 
+        key={card.id}
+        className={`${styles.cardItem} ${editingLevel.card_id === card.id ? styles.selected : ''}`}
+        onClick={() => setEditingLevel({...editingLevel, card_id: card.id})}
+      >
+        <img 
+          src={`https://api.zoomayor.io${card.image}`}
+          alt={card.title}
+          className={styles.cardImage}
+        />
+        <p>{card.title}</p>
+      </div>
+    ))}
+    <img
+      src={right} 
+      className={styles.arrow}
+      onClick={() => {
+        if (editCardIndex < cards.length - 5) {
+          setEditCardIndex(editCardIndex + 1);
+        }
+      }}
+      alt="Next"
+    />
+  </div>
+</div>
   <div className={styles.formGroup}>
     <label>{translations.coinReward}:</label>
     <input
