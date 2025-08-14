@@ -101,7 +101,7 @@ const handleSubmit = async (e) => {
     }
     if (selectedRewardTypes.referral_level) {
       formData.append("reward_type", "referral_level");
-      formData.append("reward_referral_level", rewardValues.referral_level);
+      formData.append("required_referrals", rewardValues.referral_level);
     }
     
     if (selectedImage) {
