@@ -18,6 +18,7 @@ const AdsManagement = () => {
   const [cards, setCards] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   // const [rewards, setRewards] = useState([]);
+  const [referralLevels, setReferralLevels] = useState([]); // Состояние для реферальных уровней
 
   const [selectedRewardTypes, setSelectedRewardTypes] = useState({
     coins: false,
@@ -31,10 +32,19 @@ const AdsManagement = () => {
     energy: "",
     experience: "",
   });
-  useEffect(() => {
+ useEffect(() => {
     fetchAds();
     fetchCards();
+    fetchReferralLevels();
   }, []);
+  const fetchReferralLevels = async () => {
+    try {
+      const response = await axios.get('/referral-levels');
+      setReferralLevels(response.data);
+    } catch (error) {
+      console.error("Error fetching referral levels:", error);
+    }
+  };
   const fetchAds = async () => {
     try {
       const response = await adsService.getAllAds();
@@ -66,11 +76,12 @@ const AdsManagement = () => {
       setSelectedImage(file);
     }
   };
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
+    
     // Добавляем награды в formData
     if (selectedRewardTypes.coins) {
       formData.append("reward_type", "coins");
@@ -88,6 +99,11 @@ const AdsManagement = () => {
       formData.append("reward_type", "experience");
       formData.append("reward_experience", rewardValues.experience);
     }
+    if (selectedRewardTypes.referral_level) {
+      formData.append("reward_type", "referral_level");
+      formData.append("reward_referral_level", rewardValues.referral_level);
+    }
+    
     if (selectedImage) {
       formData.append("image", selectedImage);
     }
@@ -102,12 +118,14 @@ const AdsManagement = () => {
         card: false,
         energy: false,
         experience: false,
+        referral_level: false
       });
       setRewardValues({
         coins: "",
         card: "",
         energy: "",
         experience: "",
+        referral_level: ""
       });
       setSelectedImage(null);
     } catch (error) {
@@ -176,6 +194,36 @@ const AdsManagement = () => {
             required
           />
         </div>
+                   <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={selectedRewardTypes.referral_level}
+                onChange={(e) =>
+                  setSelectedRewardTypes({
+                    ...selectedRewardTypes,
+                    referral_level: e.target.checked,
+                  })
+                }
+              />
+              <label>Уровень рефералки:</label>
+              <select
+                value={rewardValues.referral_level}
+                onChange={(e) =>
+                  setRewardValues({
+                    ...rewardValues,
+                    referral_level: e.target.value,
+                  })
+                }
+                disabled={!selectedRewardTypes.referral_level}
+              >
+                <option value="">Выберите уровень</option>
+                {referralLevels.map((level) => (
+                  <option key={level.id} value={level.id}>
+                    {level.name} ({level.friends_required} друзей)
+                  </option>
+                ))}
+              </select>
+            </div>
         <div className={styles.formGroup}>
           <label>Описание:</label>
           <textarea
