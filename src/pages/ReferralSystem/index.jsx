@@ -92,7 +92,7 @@ const handleEdit = async (e) => {
     try {
       const dataToUpdate = {
         ...editingLevel,
-        card_reward: editingLevel.card_id // Use card_id instead of card_reward
+        card_reward: editingLevel.card_id || editingLevel.card_reward // Preserve existing card_id or use card_reward
       };
       await axios.put(`/referral-levels/${editingLevel.id}`, dataToUpdate);
       setEditingLevel(null);
