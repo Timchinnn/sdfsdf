@@ -113,6 +113,7 @@ const handleEdit = async (e) => {
     setEditingLevel({...level});
   };
   return (
+    <div className={styles.mainC} >
     <div className={styles.container}>
       <h2>{translations.title}</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -190,7 +191,7 @@ const handleEdit = async (e) => {
             required
           />
         </div>
-        <button type="submit">{translations.save}</button>
+        <button style={{backgroundColor:'#4CAF50'}} type="submit">{translations.save}</button>
       </form>
       <div className={styles.levelsList}>
         {levels.map(level => (
@@ -295,6 +296,7 @@ const handleEdit = async (e) => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };

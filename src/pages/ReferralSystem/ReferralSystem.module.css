@@ -29,7 +29,7 @@
 .formGroup textarea {
   min-height: 100px;
 }
-button {
+.mainC button {
   padding: 8px 16px;
   background-color: #4CAF50;
   color: white;
@@ -38,7 +38,7 @@ button {
   cursor: pointer;
   margin-right: 8px;
 }
-button:hover {
+.mainC button:hover {
   background-color: #45a049;
 }
 .levelsList {
