@@ -44,6 +44,8 @@ const TasksPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+    const [referralTasks, setReferralTasks] = useState([]);
+  const [userReferrals, setUserReferrals] = useState(0);
    const [translations, setTranslations] = useState({
      sets: "Сет",
       tasks: "Задания", 
@@ -61,6 +63,55 @@ const TasksPage = () => {
     watch: "Смотреть"
   });
   // Get language from Redux store
+  useEffect(() => {
+    const fetchReferralTasks = async () => {
+      try {
+        const response = await axios.get('/referral-levels');
+        setReferralTasks(response.data);
+      } catch (error) {
+        console.error('Error fetching referral tasks:', error);
+      }
+    };
+    const fetchUserReferrals = async () => {
+      const tg = window.Telegram.WebApp;
+      if (tg?.initDataUnsafe?.user?.id) {
+        try {
+          const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/referrals`);
+          setUserReferrals(response.data.referrals?.length || 0);
+        } catch (error) {
+          console.error('Error fetching user referrals:', error);
+        }
+      }
+    };
+    fetchReferralTasks();
+    fetchUserReferrals();
+  }, []);
+  const handleReferralReward = async (task) => {
+    const tg = window.Telegram.WebApp;
+    if (!tg?.initDataUnsafe?.user?.id) return;
+    try {
+      if (userReferrals >= task.friends_required) {
+        const response = await processReward(tg.initDataUnsafe.user.id, null, {
+          type: 'referral',
+          task_id: task.id
+        });
+        if (response.success) {
+          tg.showPopup({
+            title: translations.rewardReceived,
+            message: translations.rewardForAd,
+            buttons: [{ type: "ok", text: translations.excellent }]
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error processing referral reward:', error);
+      tg.showPopup({
+        title: translations.error,
+        message: translations.rewardError,
+        buttons: [{ type: "ok" }]
+      });
+    }
+  };
   const language = useSelector((state) => state.language);
 useEffect(() => {
     if (language === "ru") {
@@ -524,6 +575,44 @@ useEffect(() => {
                       </div>
                     </li>
                   ))}
+                                   {referralTasks.map((task) => (
+                      <div key={task.id} className="tasks-list__card block-style">
+                        <div className="tasks-list__wrap f-center">
+                          <div className="tasks-list__content">
+                            <h3 className="tasks-list__title">{task.name}</h3>
+                            <p>{task.description}</p>
+                            <p>Required referrals: {task.friends_required}</p>
+                            <p>Current referrals: {userReferrals}</p>
+                            <ul className="friends-params f-center">
+                              {task.rewards && Object.entries(task.rewards).map(([type, value]) => (
+                                <li key={type} className="friends-params__item f-center">
+                                  {type === 'coins' && (
+                                    <>
+                                      <img src={CoinIcon} alt="Coins" />
+                                      {value}
+                                    </>
+                                  )}
+                                  {type === 'experience' && (
+                                    <>
+                                      <img src={StarIcon} alt="Experience" />
+                                      {value} EXP
+                                    </>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          className="tasks-list__btn"
+                          onClick={() => handleReferralReward(task)}
+                          disabled={userReferrals < task.friends_required}
+                        >
+                          {translations.collect}
+                        </button>
+                      </div>
+                    ))}
                 </ul>
               </div>
             </>
