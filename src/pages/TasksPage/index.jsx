@@ -575,44 +575,51 @@ useEffect(() => {
                       </div>
                     </li>
                   ))}
-                                   {referralTasks.map((task) => (
-                      <div key={task.id} className="tasks-list__card block-style">
+             {referralTasks.map((task) => (
+                    <li key={task.id} className="tasks-list__item">
+                      <div className="tasks-list__card block-style">
                         <div className="tasks-list__wrap f-center">
+                          <div className="tasks-list__image">
+                            <img
+                              src={DefaultImgTG}
+                              alt=""
+                              style={{ height: "73%" }}
+                            />
+                          </div>
                           <div className="tasks-list__content">
-                            <h3 className="tasks-list__title">{task.name}</h3>
-                            <p>{task.description}</p>
-                            <p>Required referrals: {task.friends_required}</p>
-                            <p>Current referrals: {userReferrals}</p>
+                            <h3 className="tasks-list__title">
+                              Пригласите {task.friends_required} друзей
+                            </h3>
                             <ul className="friends-params f-center">
-                              {task.rewards && Object.entries(task.rewards).map(([type, value]) => (
-                                <li key={type} className="friends-params__item f-center">
-                                  {type === 'coins' && (
-                                    <>
-                                      <img src={CoinIcon} alt="Coins" />
-                                      {value}
-                                    </>
-                                  )}
-                                  {type === 'experience' && (
-                                    <>
-                                      <img src={StarIcon} alt="Experience" />
-                                      {value} EXP
-                                    </>
-                                  )}
+                              {task.reward_experience > 0 && (
+                                <li className="friends-params__item f-center">
+                                  <img src={StarIcon} alt="" />
+                                  {task.reward_experience} EXP
                                 </li>
-                              ))}
+                              )}
+                              {task.reward_coins > 0 && (
+                                <li className="friends-params__item f-center">
+                                  <img src={CoinIcon} alt="" />
+                                  {task.reward_coins}
+                                </li>
+                              )}
                             </ul>
                           </div>
                         </div>
                         <button
                           type="button"
-                          className="tasks-list__btn"
+                          className={`tasks-list__btn ${
+                            userReferrals >= task.friends_required ? "tasks-list__btn_done" : ""
+                          }`}
                           onClick={() => handleReferralReward(task)}
                           disabled={userReferrals < task.friends_required}
                         >
-                          {translations.collect}
+                          {userReferrals >= task.friends_required ? "Получить награду" : `${userReferrals}/${task.friends_required} друзей`}
                         </button>
                       </div>
-                    ))}
+                    </li>
+                  ))}
+  
                 </ul>
               </div>
             </>
