@@ -608,9 +608,9 @@ useEffect(() => {
                         </div>
                         <button
                           type="button"
-                          className={`tasks-list__btn ${
-                            userReferrals >= task.friends_required ? "tasks-list__btn_done" : ""
-                          }`}
+                          // className={`tasks-list__btn ${
+                          //   userReferrals >= task.friends_required ? "tasks-list__btn_done" : ""
+                          // }`}
                           onClick={() => handleReferralReward(task)}
                           disabled={userReferrals < task.friends_required}
                         >
