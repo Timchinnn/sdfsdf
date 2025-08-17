@@ -46,22 +46,24 @@ const TasksPage = () => {
   const [showSpinner, setShowSpinner] = useState(true);
     const [referralTasks, setReferralTasks] = useState([]);
   const [userReferrals, setUserReferrals] = useState(0);
-   const [translations, setTranslations] = useState({
+const [translations, setTranslations] = useState({
      sets: "Сет",
-      tasks: "Задания", 
-      bonus: "Бонус",
-      level: "Уровень города",
-      mayor: "/ Мэр",
-    rewardReceived: "Награда получена!",
-    rewardForAd: "Вы получили награду за просмотр рекламы!",
-    excellent: "Отлично!",
-    error: "Ошибка",
-    rewardError: "Не удалось получить награду. Попробуйте позже.",
-    taskRewards: "Награды за задания",
-    subscribeToTelegram: "Подписаться на телеграм канал https://t.me/zoomayor",
-    start: "Начать",
-    watch: "Смотреть"
-  });
+     tasks: "Задания", 
+     bonus: "Бонус",
+     level: "Уровень города",
+     mayor: "/ Мэр",
+     rewardReceived: "Награда получена!",
+     rewardForAd: "Вы получили награду за просмотр рекламы!",
+     excellent: "Отлично!",
+     error: "Ошибка",
+     rewardError: "Не удалось получить награду. Попробуйте позже.",
+     taskRewards: "Награды за задания",
+     subscribeToTelegram: "Подписаться на телеграм канал https://t.me/zoomayor",
+     start: "Начать",
+     watch: "Смотреть",
+     taskTitle: "", // Will be translated dynamically
+     taskDescription: "" // Will be translated dynamically
+   });
   // Get language from Redux store
 useEffect(() => {
   const fetchReferralTasks = async () => {
@@ -194,6 +196,20 @@ useEffect(() => {
     }
   }, [language]);
   // Получаем username из Telegram API
+  useEffect(() => {
+  const translateTaskContent = async () => {
+    if (task?.title && task?.description) {
+      const translatedTitle = await translateText(task.title, language);
+      const translatedDesc = await translateText(task.description, language);
+      setTranslations(prev => ({
+        ...prev,
+        taskTitle: translatedTitle,
+        taskDescription: translatedDesc
+      }));
+    }
+  };
+  translateTaskContent();
+}, [task, language]);
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -576,8 +592,8 @@ useEffect(() => {
           <img src={`https://api.zoomayor.io${task.image_url}`|| DefaultImgTG} alt="" style={{ height: "73%" }} />
         </div>
         <div className="tasks-list__content">
-<h3 className="tasks-list__title">{translations1[ad.id] || ad.title}</h3>
-<p>{translations1[`${ad.id}_desc`] || ad.description}</p>
+<h3 className="tasks-list__title">{translations.taskTitle || task.title}</h3>
+<p>{translations.taskDescription || task.description}</p>
           <ul className="friends-params f-center">
                  {task.reward_experience > 0 && (
 
