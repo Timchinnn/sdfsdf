@@ -583,7 +583,7 @@ useEffect(() => {
               <img src={StarIcon} alt="" />
               {task.reward_experience} EXP
             </li>
-     {task.reward_value > 0 && (
+     {task.reward_experience > 0 && (
               <li className="friends-params__item f-center">
                 <img src={CoinIcon} alt="" />
                 {task.reward_value}
