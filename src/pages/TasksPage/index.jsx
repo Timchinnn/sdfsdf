@@ -503,7 +503,7 @@ useEffect(() => {
                       </button>
                     </div>
                   </li>
-                  {ads.map((ad) => (
+                  {ads.filter(ad => !ad.required_referrals || ad.required_referrals === 0).map((ad) => (
                     <li key={ad.id} className="tasks-list__item">
                       <div className="tasks-list__card block-style">
                         <div className="tasks-list__wrap f-center">
