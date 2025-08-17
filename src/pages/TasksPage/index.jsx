@@ -69,6 +69,7 @@ useEffect(() => {
       const tg = window.Telegram.WebApp;
       if (tg?.initDataUnsafe?.user?.id) {
         const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/referral-tasks`);
+        console.log(response.data);
         setReferralTasks(response.data);
       }
     } catch (error) {
