@@ -572,7 +572,7 @@ useEffect(() => {
     <div className="tasks-list__card block-style">
       <div className="tasks-list__wrap f-center">
         <div className="tasks-list__image">
-          <img src={task.image_url || DefaultImgTG} alt="" style={{ height: "73%" }} />
+          <img src={`https://api.zoomayor.io${task.image_url}`|| DefaultImgTG} alt="" style={{ height: "73%" }} />
         </div>
         <div className="tasks-list__content">
           <h3 className="tasks-list__title">{task.title}</h3>
