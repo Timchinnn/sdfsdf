@@ -92,7 +92,8 @@ const TasksPage = () => {
         const tg = window.Telegram.WebApp;
         if (tg?.initDataUnsafe?.user?.id) {
           const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/referral-tasks`);
-          setReferralTasks(response.data);
+          // setReferralTasks(response.data);
+          console.log(response.data)
         }
       } catch (error) {
         console.error('Error fetching referral tasks:', error);
