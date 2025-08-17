@@ -62,7 +62,7 @@ const TasksPage = () => {
     start: "Начать",
     watch: "Смотреть"
   });
-  // Get language from Redux stores
+  // Get language from Redux store
   useEffect(() => {
     const fetchReferralTasks = async () => {
       try {
@@ -72,21 +72,6 @@ const TasksPage = () => {
         console.error('Error fetching referral tasks:', error);
       }
     };
-    useEffect(() => {
-    const fetchReferralTasks = async () => {
-      try {
-        const tg = window.Telegram.WebApp;
-        if (tg?.initDataUnsafe?.user?.id) {
-          const response = await axios.get(`/api/user/${tg.initDataUnsafe.user.id}/referral-tasks`);
-          setReferralTasks(response.data);
-          console.log(response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching referral tasks:', error);
-      }
-    };
-    fetchReferralTasks();
-  }, []);
     const fetchUserReferrals = async () => {
       const tg = window.Telegram.WebApp;
       if (tg?.initDataUnsafe?.user?.id) {
@@ -100,6 +85,20 @@ const TasksPage = () => {
     };
     fetchReferralTasks();
     fetchUserReferrals();
+  }, []);
+  useEffect(() => {
+    const fetchReferralTasks = async () => {
+      try {
+        const tg = window.Telegram.WebApp;
+        if (tg?.initDataUnsafe?.user?.id) {
+          const response = await axios.get(`/api/user/${tg.initDataUnsafe.user.id}/referral-tasks`);
+          setReferralTasks(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching referral tasks:', error);
+      }
+    };
+    fetchReferralTasks();
   }, []);
   const handleReferralReward = async (task) => {
     const tg = window.Telegram.WebApp;
