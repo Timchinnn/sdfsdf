@@ -579,11 +579,14 @@ useEffect(() => {
           <h3 className="tasks-list__title">{task.title}</h3>
           <p>{task.description}</p>
           <ul className="friends-params f-center">
+                 {task.reward_experience > 0 && (
+
             <li className="friends-params__item f-center">
               <img src={StarIcon} alt="" />
               {task.reward_experience} EXP
-            </li>
-     {task.reward_experience > 0 && (
+            </li>            )}
+
+     {task.reward_value > 0 && (
               <li className="friends-params__item f-center">
                 <img src={CoinIcon} alt="" />
                 {task.reward_value}
