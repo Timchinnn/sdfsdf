@@ -62,7 +62,7 @@ const TasksPage = () => {
     start: "Начать",
     watch: "Смотреть"
   });
-  // Get language from Redux store
+  // Get language from Redux stores
   useEffect(() => {
     const fetchReferralTasks = async () => {
       try {
