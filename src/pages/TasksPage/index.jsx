@@ -567,7 +567,7 @@ useEffect(() => {
                       </div>
                     </li>
                   ))}
-    {referralTasks[0].map((task) => (
+    {referralTasks?.tasks?.map((task) => (
   <li key={task.id} className="tasks-list__item">
     <div className="tasks-list__card block-style">
       <div className="tasks-list__wrap f-center">
