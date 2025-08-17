@@ -592,8 +592,8 @@ useEffect(() => {
           <img src={`https://api.zoomayor.io${task.image_url}`|| DefaultImgTG} alt="" style={{ height: "73%" }} />
         </div>
         <div className="tasks-list__content">
-          <h3 className="tasks-list__title">{translations1[`task_${task.id}`] || task.title}</h3>
-          <p>{translations1[`task_${task.id}_desc`] || task.description}</p>
+          <h3 className="tasks-list__title">{task.title}</h3>
+          <p>{task.description}</p>
           <ul className="friends-params f-center">
                  {task.reward_experience > 0 && (
 
