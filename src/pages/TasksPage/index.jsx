@@ -44,9 +44,8 @@ const TasksPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
-const [referralTasks, setReferralTasks] = useState([]);
+    const [referralTasks, setReferralTasks] = useState([]);
   const [userReferrals, setUserReferrals] = useState(0);
-  const [currentTask, setCurrentTask] = useState(null);
 const [translations, setTranslations] = useState({
      sets: "Сет",
      tasks: "Задания", 
@@ -74,7 +73,6 @@ useEffect(() => {
         const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/referral-tasks`);
         console.log(response.data);
         setReferralTasks(response.data);
-        setCurrentTask(response.data);
       }
     } catch (error) {
       console.error('Error fetching referral tasks:', error);
@@ -198,20 +196,20 @@ useEffect(() => {
     }
   }, [language]);
   // Получаем username из Telegram API
-useEffect(() => {
-    const translateTaskContent = async () => {
-      if (currentTask?.title && currentTask?.description) {
-        const translatedTitle = await translateText(currentTask.title, language);
-        const translatedDesc = await translateText(currentTask.description, language);
-        setTranslations(prev => ({
-          ...prev,
-          taskTitle: translatedTitle,
-          taskDescription: translatedDesc
-        }));
-      }
-    };
-    translateTaskContent();
-  }, [currentTask, language]);
+  useEffect(() => {
+  const translateTaskContent = async () => {
+    if (task?.title && task?.description) {
+      const translatedTitle = await translateText(task.title, language);
+      const translatedDesc = await translateText(task.description, language);
+      setTranslations(prev => ({
+        ...prev,
+        taskTitle: translatedTitle,
+        taskDescription: translatedDesc
+      }));
+    }
+  };
+  translateTaskContent();
+}, [task, language]);
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -594,8 +592,8 @@ useEffect(() => {
           <img src={`https://api.zoomayor.io${task.image_url}`|| DefaultImgTG} alt="" style={{ height: "73%" }} />
         </div>
         <div className="tasks-list__content">
-<h3 className="tasks-list__title">{translations.taskTitle || task.title}</h3>
-<p>{translations.taskDescription || task.description}</p>
+          <h3 className="tasks-list__title">{task.title}</h3>
+          <p>{task.description}</p>
           <ul className="friends-params f-center">
                  {task.reward_experience > 0 && (
 
