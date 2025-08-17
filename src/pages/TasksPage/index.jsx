@@ -290,6 +290,7 @@ useEffect(() => {
     const fetchAds = async () => {
       try {
         const response = await adsService.getAllAds();
+        console.log(response.data)
         setAds(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке рекламы:", error);
