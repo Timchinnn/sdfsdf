@@ -63,44 +63,20 @@ const TasksPage = () => {
     watch: "Смотреть"
   });
   // Get language from Redux store
-  useEffect(() => {
-    const fetchReferralTasks = async () => {
-      try {
-        const response = await axios.get('/referral-levels');
-        setReferralTasks(response.data);
-      } catch (error) {
-        console.error('Error fetching referral tasks:', error);
-      }
-    };
-    const fetchUserReferrals = async () => {
+useEffect(() => {
+  const fetchReferralTasks = async () => {
+    try {
       const tg = window.Telegram.WebApp;
       if (tg?.initDataUnsafe?.user?.id) {
-        try {
-          const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/referrals`);
-          setUserReferrals(response.data.referrals?.length || 0);
-        } catch (error) {
-          console.error('Error fetching user referrals:', error);
-        }
+        const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/referral-tasks`);
+        setReferralTasks(response.data);
       }
-    };
-    fetchReferralTasks();
-    fetchUserReferrals();
-  }, []);
-  useEffect(() => {
-    const fetchReferralTasks = async () => {
-      try {
-        const tg = window.Telegram.WebApp;
-        if (tg?.initDataUnsafe?.user?.id) {
-          const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/referral-tasks`);
-          // setReferralTasks(response.data);
-          console.log(response.data)
-        }
-      } catch (error) {
-        console.error('Error fetching referral tasks:', error);
-      }
-    };
-    fetchReferralTasks();
-  }, []);
+    } catch (error) {
+      console.error('Error fetching referral tasks:', error);
+    }
+  };
+  fetchReferralTasks();
+}, []);
   const handleReferralReward = async (task) => {
     const tg = window.Telegram.WebApp;
     if (!tg?.initDataUnsafe?.user?.id) return;
@@ -590,50 +566,39 @@ useEffect(() => {
                       </div>
                     </li>
                   ))}
-             {referralTasks.map((task) => (
-                    <li key={task.id} className="tasks-list__item">
-                      <div className="tasks-list__card block-style">
-                        <div className="tasks-list__wrap f-center">
-                          <div className="tasks-list__image">
-                            <img
-                              src={DefaultImgTG}
-                              alt=""
-                              style={{ height: "73%" }}
-                            />
-                          </div>
-                          <div className="tasks-list__content">
-                            <h3 className="tasks-list__title">
-                              Пригласите {task.friends_required} друзей
-                            </h3>
-                            <ul className="friends-params f-center">
-                              {task.reward_experience > 0 && (
-                                <li className="friends-params__item f-center">
-                                  <img src={StarIcon} alt="" />
-                                  {task.reward_experience} EXP
-                                </li>
-                              )}
-                              {task.reward_coins > 0 && (
-                                <li className="friends-params__item f-center">
-                                  <img src={CoinIcon} alt="" />
-                                  {task.reward_coins}
-                                </li>
-                              )}
-                            </ul>
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          // className={`tasks-list__btn ${
-                          //   userReferrals >= task.friends_required ? "tasks-list__btn_done" : ""
-                          // }`}
-                          onClick={() => handleReferralReward(task)}
-                          disabled={userReferrals < task.friends_required}
-                        >
-                          {userReferrals >= task.friends_required ? "Получить награду" : `${userReferrals}/${task.friends_required} друзей`}
-                        </button>
-                      </div>
-                    </li>
-                  ))}
+    {referralTasks.map((task) => (
+  <li key={task.id} className="tasks-list__item">
+    <div className="tasks-list__card block-style">
+      <div className="tasks-list__wrap f-center">
+        <div className="tasks-list__image">
+          <img src={task.image_url || DefaultImgTG} alt="" style={{ height: "73%" }} />
+        </div>
+        <div className="tasks-list__content">
+          <h3 className="tasks-list__title">{task.title}</h3>
+          <p>{task.description}</p>
+          <ul className="friends-params f-center">
+            <li className="friends-params__item f-center">
+              <img src={StarIcon} alt="" />
+              {task.reward_experience} EXP
+            </li>
+            <li className="friends-params__item f-center">
+              <img src={CoinIcon} alt="" />
+              {task.reward_value}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <button
+        type="button"
+        className={`tasks-list__btn ${task.referral_count >= task.required_referrals ? 'tasks-list__btn_done' : ''}`}
+        onClick={() => handleReferralReward(task)}
+        disabled={task.referral_count < task.required_referrals}
+      >
+        {task.referral_count >= task.required_referrals ? translations.collect : `${task.referral_count}/${task.required_referrals}`}
+      </button>
+    </div>
+  </li>
+))}
   
                 </ul>
               </div>
