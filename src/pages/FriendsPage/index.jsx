@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import Avatar from "assets/img/avatar.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import MoneyIcon from "assets/img/money-icon.svg";
-// Определяем URL-ы для остальных изображений, которые используются в MainSection
+// Определяем URL-ы для остальных изображений, которые используютвся в MainSection
 const cardImg = "https://image.tw1.ru/image/card.webp";
 const taskImg = "https://image.tw1.ru/image/vopros.webp";
 const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
