@@ -154,7 +154,7 @@ const handleEdit = async (e) => {
           min="0"
           step="0.01"
         />
-        <button onClick={() => updateReferrerBonus(referrerBonus)}>
+        <button onClick={() => updateReferrerBonus(parseFloat(e.target.value))}>
           Сохранить
         </button>
         <button onClick={() => setIsEditingBonus(false)}>
