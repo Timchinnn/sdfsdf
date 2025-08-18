@@ -165,7 +165,7 @@ const handleEdit = async (e) => {
       </div>
     ) : (
       <div className={styles.bonusDisplay}>
-        <span>{referrerBonus}</span>
+        <span style={{marginRight: '10px'}}>{referrerBonus}</span>
         <button onClick={() => setIsEditingBonus(true)}>
           Редактировать
         </button>
