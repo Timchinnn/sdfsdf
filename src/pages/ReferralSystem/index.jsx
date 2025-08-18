@@ -75,6 +75,8 @@ const [isEditingBonus, setIsEditingBonus] = useState(false);
   };
   const updateReferrerBonus = async (newValue) => {
   try {
+    console.log(newValue)
+
     await axios.put(`/admin/system-settings/referrer_bonus`, {
       setting_value: newValue
     });
@@ -154,7 +156,7 @@ const handleEdit = async (e) => {
           min="0"
           step="0.01"
         />
-        <button onClick={() => updateReferrerBonus(parseFloat(e.target.value))}>
+        <button onClick={() => updateReferrerBonus(referrerBonus)}>
           Сохранить
         </button>
         <button onClick={() => setIsEditingBonus(false)}>
