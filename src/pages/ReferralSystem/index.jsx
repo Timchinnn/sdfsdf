@@ -143,9 +143,7 @@ const handleEdit = async (e) => {
   return (
     <div className={styles.mainC} >
     <div className={styles.container}>
-      <h2>{translations.title}</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-         <div className={styles.formGroup}>
+               <div className={styles.formGroup}>
     <label>Реферальный бонус:</label>
     {isEditingBonus ? (
       <div className={styles.editBonus}>
@@ -172,6 +170,9 @@ const handleEdit = async (e) => {
       </div>
     )}
   </div>
+      <h2>{translations.title}</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
+
         <div className={styles.formGroup}>
           <label>{translations.name}:</label>
           <input
