@@ -196,20 +196,20 @@ useEffect(() => {
     }
   }, [language]);
   // Получаем username из Telegram API
-  useEffect(() => {
-  const translateTaskContent = async () => {
-    if (task?.title && task?.description) {
-      const translatedTitle = await translateText(task.title, language);
-      const translatedDesc = await translateText(task.description, language);
-      setTranslations(prev => ({
-        ...prev,
-        taskTitle: translatedTitle,
-        taskDescription: translatedDesc
-      }));
-    }
-  };
-  translateTaskContent();
-}, [task, language]);
+//   useEffect(() => {
+//   const translateTaskContent = async () => {
+//     if (task?.title && task?.description) {
+//       const translatedTitle = await translateText(task.title, language);
+//       const translatedDesc = await translateText(task.description, language);
+//       setTranslations(prev => ({
+//         ...prev,
+//         taskTitle: translatedTitle,
+//         taskDescription: translatedDesc
+//       }));
+//     }
+//   };
+//   translateTaskContent();
+// }, [task, language]);
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
