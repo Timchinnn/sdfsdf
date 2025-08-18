@@ -78,7 +78,7 @@ const [isEditingBonus, setIsEditingBonus] = useState(false);
     console.log(newValue)
 
     await axios.put(`/admin/system-settings/referrer_bonus`, {
-      setting_value: newValue
+      settingValue: newValue
     });
     setReferrerBonus(newValue);
     setIsEditingBonus(false);
