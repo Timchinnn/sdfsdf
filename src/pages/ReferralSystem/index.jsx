@@ -149,7 +149,8 @@ const handleEdit = async (e) => {
     <label>Реферальный бонус:</label>
     {isEditingBonus ? (
       <div className={styles.editBonus}>
-        <input
+        <input style={{
+    marginBottom: '10px'}}
           type="number"
           value={referrerBonus}
           onChange={(e) => setReferrerBonus(parseFloat(e.target.value))}
