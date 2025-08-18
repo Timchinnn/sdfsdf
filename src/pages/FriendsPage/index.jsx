@@ -8,6 +8,7 @@ import CoinIcon from "assets/img/coin-icon.svg";
 import MobileNav from "components/MobileNav";
 import Spinner from "components/Spinner";
 import { useSelector } from "react-redux";
+import axios from "../../axios-controller";
 
 // Импортируем необходимые локальные изображения
 import Avatar from "assets/img/avatar.png";
