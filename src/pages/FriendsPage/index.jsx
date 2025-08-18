@@ -20,6 +20,8 @@ const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
 const FriendsPage = () => {
   // Состояния для реферальной системы
   const [referralCode, setReferralCode] = useState("");
+  const [referrerBonus, setReferrerBonus] = useState(10);
+
   const [referrals, setReferrals] = useState([]);
 
   // Состояния для данных пользователя
@@ -217,6 +219,22 @@ useEffect(() => {
     fetchUserLevel();
   }, []);
   // Получение реферальных данных
+  // Получение системных настроек
+  useEffect(() => {
+    const fetchSystemSettings = async () => {
+      try {
+        const response = await axios.get("/admin/system-settings");
+        const settings = response.data;
+        const bonus = settings.find(setting => setting.setting_name === "referrer_bonus");
+        if (bonus) {
+          setReferrerBonus(parseFloat(bonus.setting_value));
+        }
+      } catch (error) {
+        console.error("Ошибка при получении системных настроек:", error);
+      }
+    };
+    fetchSystemSettings();
+  }, []);
   useEffect(() => {
     const fetchReferralData = async () => {
       try {
@@ -375,7 +393,7 @@ useEffect(() => {
                               </li>
                               <li className="friends-params__item f-center">
                                 <img src={CoinIcon} alt="" />
-                                5000
+                                {referrerBonus}
                               </li>
                             </ul>
                           </div>
