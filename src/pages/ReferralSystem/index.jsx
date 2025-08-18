@@ -10,6 +10,8 @@ const [levels, setLevels] = useState([]);
 const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
 const [addCardIndex, setAddCardIndex] = useState(0);
 const [editCardIndex, setEditCardIndex] = useState(0);
+const [referrerBonus, setReferrerBonus] = useState(10);
+const [isEditingBonus, setIsEditingBonus] = useState(false);
   const [cards, setCards] = useState([]); // Добавляем состояние для карт
   const [newLevel, setNewLevel] = useState({
     name: '',
@@ -71,6 +73,32 @@ const [editCardIndex, setEditCardIndex] = useState(0);
       console.error('Error fetching referral levels:', error);
     }
   };
+  const updateReferrerBonus = async (newValue) => {
+  try {
+    await axios.put(`/admin/system-settings/referrer_bonus`, {
+      setting_value: newValue
+    });
+    setReferrerBonus(newValue);
+    setIsEditingBonus(false);
+  } catch (error) {
+    console.error('Error updating referrer bonus:', error);
+  }
+};
+// Fetch initial referrer_bonus value
+useEffect(() => {
+  const fetchReferrerBonus = async () => {
+    try {
+      const response = await axios.get('/admin/system-settings');
+      const bonus = response.data.find(setting => setting.setting_name === 'referrer_bonus');
+      if (bonus) {
+        setReferrerBonus(parseFloat(bonus.setting_value));
+      }
+    } catch (error) {
+      console.error('Error fetching referrer bonus:', error);
+    }
+  };
+  fetchReferrerBonus();
+}, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -117,6 +145,33 @@ const handleEdit = async (e) => {
     <div className={styles.container}>
       <h2>{translations.title}</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
+         <div className={styles.formGroup}>
+    <label>Реферальный бонус:</label>
+    {isEditingBonus ? (
+      <div className={styles.editBonus}>
+        <input
+          type="number"
+          value={referrerBonus}
+          onChange={(e) => setReferrerBonus(parseFloat(e.target.value))}
+          min="0"
+          step="0.01"
+        />
+        <button onClick={() => updateReferrerBonus(referrerBonus)}>
+          Сохранить
+        </button>
+        <button onClick={() => setIsEditingBonus(false)}>
+          Отмена
+        </button>
+      </div>
+    ) : (
+      <div className={styles.bonusDisplay}>
+        <span>{referrerBonus}</span>
+        <button onClick={() => setIsEditingBonus(true)}>
+          Редактировать
+        </button>
+      </div>
+    )}
+  </div>
         <div className={styles.formGroup}>
           <label>{translations.name}:</label>
           <input
