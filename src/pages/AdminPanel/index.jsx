@@ -27,7 +27,7 @@ const AdminPanel = () => {
           telegram_login: "@testmod",
           description: "Test moderator account"
         };
-        const response = await axios.post("/api/moderators", testData);
+        const response = await axios.post("/moderators", testData);
         
         if (response.status === 201) {
           console.log("Test moderator created successfully:", response.data);
