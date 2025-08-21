@@ -19,28 +19,27 @@ const AdminPanel = () => {
     fetchNewUsers();
     fetchNewCards();
   }, []);
-    useEffect(() => {
-    const testCreateModerator = async () => {
-      try {
-        const testData = {
-          name: "Test Moderator",
-          password: "test123",
-          email: "test@example.com", 
-          telegram_login: "@testmod",
-          description: "Test moderator account"
-        };
-        const response = await axios.post("/moderators", testData);
+  //   useEffect(() => {
+  //   const testCreateModerator = async () => {
+  //     try {
+  //       const testData = {
+  //         name: "Test Moderator",
+  //         password: "test123",
+  //         email: "test@example.com", 
+  //         telegram_login: "@testmod",
+  //         description: "Test moderator account"
+  //       };
+  //       const response = await axios.post("/moderators", testData);
         
-        if (response.status === 201) {
-          console.log("Test moderator created successfully:", response.data);
-        }
-      } catch (err) {
-        console.error("Error creating test moderator:", err);
-      }
-    };
-    // Uncomment to  moderator creation
-    testCreateModerator();
-  }, []);
+  //       if (response.status === 201) {
+  //         console.log("Test moderator created successfully:", response.data);
+  //       }
+  //     } catch (err) {
+  //       console.error("Error creating test moderator:", err);
+  //     }
+  //   };
+  //   testCreateModerator();
+  // }, []);
  const fetchNewUsers = async () => {
     try {
       const response = await axios.get('/admin/new-users');
