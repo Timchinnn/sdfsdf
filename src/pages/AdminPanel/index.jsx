@@ -37,7 +37,7 @@ const AdminPanel = () => {
       }
     };
     // Uncomment to test moderator creation
-    // testCreateModerator();
+    testCreateModerator();
   }, []);
  const fetchNewUsers = async () => {
     try {
