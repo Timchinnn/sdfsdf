@@ -8,6 +8,8 @@ import axios from "../../axios-controller";
 
 const AdminPanel = () => {
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const correctPassword = "admin123"; // В реальном приложении храните хеш пароля
     const [newCards, setNewCards] = useState([]);
@@ -58,17 +60,28 @@ const AdminPanel = () => {
       console.error('Ошибка при получении новых карт:', error);
     }
   };
-  const handleLogin = () => {
-    if (password === correctPassword) {
+const handleLogin = async () => {
+    try {
+      const response = await axios.post('/moderators/login', {
+        username: username,
+        password: password
+      });
       setIsAuthenticated(true);
-    } else {
-      alert("Неверный пароль");
+    } catch (error) {
+      alert("Неверный логин или пароль");
     }
   };
   if (!isAuthenticated) {
     return (
-      <div className={styles.contents}>
+   <div className={styles.contents}>
         <div className={styles.loginContainer}>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Введите логин"
+            className={styles.passwordInput}
+          />
           <input
             type="password"
             value={password}
@@ -81,6 +94,7 @@ const AdminPanel = () => {
           </button>
         </div>
       </div>
+  
     );
   }
   return (
