@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './AdminPanel.module.css';
+import styles from './Moderators.module.css';
 import axios from '../../axios-controller';
 const Moderators = () => {
   const [moderators, setModerators] = useState([]);
@@ -30,7 +30,7 @@ const Moderators = () => {
     }
   };
   return (
-    <div className={styles.moderatorsContainer}>
+    <div style={{color:'black'}} className={styles.moderatorsContainer}>
       <h2>Управление модераторами</h2>
       
       <form onSubmit={handleCreateModerator} className={styles.form}>
