@@ -36,7 +36,7 @@ const AdminPanel = () => {
         console.error("Error creating test moderator:", err);
       }
     };
-    // Uncomment to test moderator creation
+    // Uncomment to  moderator creation
     testCreateModerator();
   }, []);
  const fetchNewUsers = async () => {
