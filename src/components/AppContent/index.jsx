@@ -1,4 +1,5 @@
 import React from "react";
+import ProtectedRoute from "components/ProtectedRoute";
 
 // libs
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -52,7 +53,6 @@ import { routeAddEditShopShirt } from "pages/AddEditShopShirt";
 import UsersList from "pages/UsersList";
 import EditUser from 'pages/EditUser';
 import Moderators from 'pages/Moderators';
-import EditModerator from 'pages/EditModerator';
 
 const AppContent = () => {
   const theme = useSelector((state) => state.theme);
@@ -126,19 +126,13 @@ const AppContent = () => {
             component={AddEditCardBack}
           />
 <Route exact path={routeAdminPage()} component={AdminPanel} />
-          <Route exact path="/referral-system" component={ReferralSystem} />          <Route
-            exact
-            path={routeAdsManagementPage()}
-            component={AdsManagement}
-          />
-          <Route
-            exact
-            path={routeCardManagementPage()}
-            component={CardManagement}
-          />
+          <ProtectedRoute exact path="/referral-system" component={ReferralSystem} />
+<ProtectedRoute exact path={routeAdsManagementPage()} component={AdsManagement} />
+
+    <ProtectedRoute exact path={routeCardManagementPage()} component={CardManagement} />
+
           <Route exact path={routeTasksPage()} component={TasksPage} />
-          <Route exact path="/moderators" component={Moderators} />
-          <Route exact path="/edit-moderator/:id" component={EditModerator} />
+<ProtectedRoute exact path="/moderators" component={Moderators} />
 
           <Route exact path={routeSetsPage()} component={SetsPage} />
           <Route
@@ -151,11 +145,11 @@ const AppContent = () => {
             path={routeShopManagementPage()}
             component={ShopManagement}
           />
-<Route path="/edit-user/:id/:userId" component={EditUser} />
+<ProtectedRoute path="/edit-user/:id/:userId" component={EditUser} />
 
           <Route exact path={routeBonusPage()} component={BonusPage} />
           <Route exact path={routePeoplePage()} component={PeoplePage} />
-                    <Route exact path="/users-list" component={UsersList} />
+<ProtectedRoute exact path="/users-list" component={UsersList} />
 
           <Redirect
             to={{

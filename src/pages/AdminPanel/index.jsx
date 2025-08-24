@@ -10,8 +10,9 @@ const AdminPanel = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const correctPassword = "admin123"; // В реальном приложении храните хеш пароля
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem('adminAuthenticated') === 'true'
+  );
     const [newCards, setNewCards] = useState([]);
 
     const [newUsers, setNewUsers] = useState([]);
@@ -60,16 +61,17 @@ const AdminPanel = () => {
     }
   };
 const handleLogin = async () => {
-    try {
-      const response = await axios.post('/moderators/login', {
-        username: username,
-        password: password
-      });
-      setIsAuthenticated(true);
-    } catch (error) {
-      alert("Неверный логин или пароль");
-    }
-  };
+  try {
+    const response = await axios.post('/moderators/login', {
+      username: username,
+      password: password
+    });
+    setIsAuthenticated(true);
+    localStorage.setItem('adminAuthenticated', 'true');
+  } catch (error) {
+    alert("Неверный логин или пароль");
+  }
+};
   if (!isAuthenticated) {
     return (
    <div className={styles.contents}>
