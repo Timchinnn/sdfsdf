@@ -1,8 +1,8 @@
 .moderatorsContainer {
   padding: 20px;
   background: white;
-  border-radius: 8px;
-  margin: 20px;
+    width: 100%;
+    height: 100vh;
 }
 .moderatorsList {
   margin-top: 20px;
@@ -20,4 +20,26 @@
 .moderatorItem p {
   margin: 5px 0;
   color: #666;
+}
+.submitButtonModer {
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+}
+.passwordModer{
+      border-radius: 10px;
+    margin-bottom: 15px;
+    height: 35px;
+    padding-left: 11px;
+}
+.inputModer{
+      border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 10px;
 }

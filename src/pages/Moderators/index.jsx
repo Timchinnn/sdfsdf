@@ -31,12 +31,13 @@ const Moderators = () => {
   };
   return (
     <div style={{color:'black'}} className={styles.moderatorsContainer}>
-      <h2>Управление модераторами</h2>
+      <h2 style={{marginBottom: '20px'}}>Управление модераторами</h2>
       
       <form onSubmit={handleCreateModerator} className={styles.form}>
         <div className={styles.formGroup}>
           <label>Имя:</label>
           <input
+          className={styles.inputModer}
             type="text"
             value={newModerator.name}
             onChange={(e) => setNewModerator({...newModerator, name: e.target.value})}
@@ -46,6 +47,8 @@ const Moderators = () => {
         <div className={styles.formGroup}>
           <label>Email:</label>
           <input
+                    className={styles.inputModer}
+
             type="email"
             value={newModerator.email}
             onChange={(e) => setNewModerator({...newModerator, email: e.target.value})}
@@ -55,6 +58,8 @@ const Moderators = () => {
         <div className={styles.formGroup}>
           <label>Telegram логин:</label>
           <input
+                    className={styles.inputModer}
+
             type="text"
             value={newModerator.telegram_login}
             onChange={(e) => setNewModerator({...newModerator, telegram_login: e.target.value})}
@@ -64,6 +69,7 @@ const Moderators = () => {
         <div className={styles.formGroup}>
           <label>Пароль:</label>
           <input
+          className={styles.passwordModer}
             type="password"
             value={newModerator.password}
             onChange={(e) => setNewModerator({...newModerator, password: e.target.value})}
@@ -73,11 +79,13 @@ const Moderators = () => {
         <div className={styles.formGroup}>
           <label>Описание:</label>
           <textarea
+                    className={styles.inputModer}
+
             value={newModerator.description}
             onChange={(e) => setNewModerator({...newModerator, description: e.target.value})}
           />
         </div>
-        <button type="submit" className={styles.submitButton}>
+        <button type="submit" className={styles.submitButtonModer}>
           Создать модератора
         </button>
       </form>
