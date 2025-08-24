@@ -16,6 +16,7 @@ const EditModerator = () => {
     const fetchModerator = async () => {
       try {
         const response = await axios.get(`/moderators/${id}`);
+        console.log(response.data)
         setModerator(response.data);
       } catch (error) {
         console.error('Error fetching moderator:', error);
