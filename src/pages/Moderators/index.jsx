@@ -146,6 +146,7 @@ const Moderators = () => {
                     <button 
                       onClick={() => handleDeleteModerator(moderator.id)}
                       className={styles.deleteButton}
+                      style={{marginBottom:'10px'}}
                     >
                       Удалить
                     </button>
