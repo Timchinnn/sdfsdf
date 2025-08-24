@@ -31,10 +31,11 @@
     padding: 10px;
 }
 .passwordModer{
-      border-radius: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 10px;
     margin-bottom: 15px;
-    height: 35px;
-    padding-left: 11px;
 }
 .inputModer{
       border: 1px solid #ccc !important;
