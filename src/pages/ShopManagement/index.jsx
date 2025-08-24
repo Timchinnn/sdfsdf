@@ -23,6 +23,23 @@ const ShopManagement = () => {
   const [shopShirts, setShopShirts] = useState([]);
   const [shopCards, setShopCards] = useState([]);
   const [shopSets, setShopSets] = useState([]);
+  const [hasShopManagementPermission, setHasShopManagementPermission] = useState(false);
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const adminUsername = localStorage.getItem('adminUsername');
+        if (adminUsername) {
+          const response = await axios.get(`/moderators/permissions/${adminUsername}`);
+          setHasShopManagementPermission(response.data.permissions.some(
+            p => p.permission_name === 'Настройки магазина'
+          ));
+        }
+      } catch (error) {
+        console.error("Error checking permissions:", error);
+      }
+    };
+    checkPermissions();
+  }, []);
   useEffect(() => {
     const fetchShopSets = async () => {
       try {
@@ -98,7 +115,7 @@ const ShopManagement = () => {
     }));
   };
   return (
-    <div className={styles.contents}>
+    <div className={styles.contents}  style={{display: hasShopManagementPermission ? 'block' : 'none'}}>
       {" "}
       <NavLink to="/admin" className={styles.adminLink}>
         Admin Panel
