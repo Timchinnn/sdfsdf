@@ -40,3 +40,13 @@
   outline: none;
   border-color: #4CAF50;
 }
+.formGroup textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.formGroup textarea {
+  height: 100px;
+  resize: vertical;
+}
