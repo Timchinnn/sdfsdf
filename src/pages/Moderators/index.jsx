@@ -71,7 +71,6 @@ const Moderators = () => {
           <input
           className={styles.passwordModer}
             type="password"
-            value={newModerator.password}
             onChange={(e) => setNewModerator({...newModerator, password: e.target.value})}
             required
           />
