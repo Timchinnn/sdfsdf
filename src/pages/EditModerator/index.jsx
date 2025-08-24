@@ -4,8 +4,6 @@ import { useParams, useHistory } from 'react-router-dom';
 import axios from '../../axios-controller';
 import styles from './EditModerator.module.css';
 const EditModerator = () => {
-      const [permissions, setPermissions] = useState([]);
-
   const { id } = useParams();
   const history = useHistory();
   const [moderator, setModerator] = useState({
@@ -39,22 +37,6 @@ setModerator(response.data.moderator);
       console.error('Error updating moderator:', error);
     }
   };
-  const handlePermissionChange = async (permissionId, assigned) => {
-  try {
-    if (assigned) {
-      await axios.delete(`/moderators/${id}/permissions/${permissionId}`);
-    } else {
-      await axios.post(`/moderators/${id}/permissions/${permissionId}`);
-    }
-    // Обновляем состояние после успешного запроса
-    setPermissions(permissions.map(p => 
-      p.id === permissionId ? {...p, assigned: !assigned} : p
-    ));
-  } catch (error) {
-    console.error('Error updating permission:', error);
-    alert('Ошибка при обновлении прав доступа');
-  }
-};
   return (
     <div className={styles.editModeratorContainer} style={{color: 'black'}}>
       <h2>Редактирование модератора</h2>
@@ -98,13 +80,13 @@ setModerator(response.data.moderator);
     <div className={styles.permissionsList}>
       {permissions.map(permission => (
         <div key={permission.id} className={styles.permissionItem}>
-<input
-  type="checkbox"
-  id={`permission-${permission.id}`}
-  name={`permission-${permission.id}`}
-  checked={permission.assigned}
-  onChange={() => handlePermissionChange(permission.id, permission.assigned)}
-/>
+          <input
+            type="radio"
+            id={`permission-${permission.id}`}
+            name={`permission-${permission.id}`}
+            checked={permission.assigned}
+            onChange={() => {}} // Добавить обработчик при необходимости
+          />
           <label htmlFor={`permission-${permission.id}`}>
             {permission.name} - {permission.description}
           </label>
