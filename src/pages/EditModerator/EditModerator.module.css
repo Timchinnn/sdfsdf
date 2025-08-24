@@ -23,4 +23,20 @@
 .editModeratorContainer button[type="button"] {
   background: #f44336;
   color: white;
+}formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+      margin-bottom: 13px;
+}
+
+.formGroup input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.formGroup input:focus {
+  outline: none;
+  border-color: #4CAF50;
 }
