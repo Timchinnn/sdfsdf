@@ -24,8 +24,8 @@ const CardManagement = () => {
         const adminUsername = localStorage.getItem('adminUsername');
         if (adminUsername) {
           const response = await axios.get(`/moderators/permissions/${adminUsername}`);
-          setHasEditPermission(response.data.permissions.includes('edit_cards'));
-          setHasDeletePermission(response.data.permissions.includes('delete_cards'));
+          setHasEditPermission(response.data.permissions.includes('Добавление и редактирование карт'));
+          setHasDeletePermission(response.data.permissions.includes('Добавление и редактирование карт'));
         }
       } catch (error) {
         console.error("Error checking permissions:", error);
