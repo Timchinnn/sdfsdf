@@ -79,7 +79,7 @@ const handleLogin = async () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Введите логин"
-            className={styles.passwordInput}
+            className={styles.loginAdminInput}
           />
           <input
             type="password"
