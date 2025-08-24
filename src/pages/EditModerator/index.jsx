@@ -1,0 +1,48 @@
+
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import axios from '../../axios-controller';
+import styles from './EditModerator.module.css';
+const EditModerator = () => {
+  const { id } = useParams();
+  const history = useHistory();
+  const [moderator, setModerator] = useState({
+    name: '',
+    email: '',
+    telegram_login: '',
+    description: ''
+  });
+  useEffect(() => {
+    const fetchModerator = async () => {
+      try {
+        const response = await axios.get(`/moderators/${id}`);
+        setModerator(response.data);
+      } catch (error) {
+        console.error('Error fetching moderator:', error);
+      }
+    };
+    fetchModerator();
+  }, [id]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`/moderators/${id}`, moderator);
+      history.push('/moderators');
+    } catch (error) {
+      console.error('Error updating moderator:', error);
+    }
+  };
+  return (
+    <div className={styles.editModeratorContainer}>
+      <h2>Редактирование модератора</h2>
+      <form onSubmit={handleSubmit}>
+        {/* Add form fields for editing moderator data */}
+        <button type="submit">Сохранить</button>
+        <button type="button" onClick={() => history.push('/moderators')}>
+          Отмена
+        </button>
+      </form>
+    </div>
+  );
+};
+export default EditModerator;

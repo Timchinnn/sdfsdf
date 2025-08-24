@@ -51,15 +51,8 @@ const Moderators = () => {
       alert('Ошибка при удалении модератора');
     }
   };
-  const handleEditModerator = (moderator) => {
-    setNewModerator({
-      name: moderator.name,
-      email: moderator.email,
-      telegram_login: moderator.telegram_login,
-      password: '',
-      description: moderator.description || ''
-    });
-    // You can also add state to track editing mode and moderator ID
+  const handleEdit = (moderatorId) => {
+    history.push(`/edit-moderator/${moderatorId}`);
   };
   return (
     <div style={{color:'black'}} className={styles.moderatorsContainer}>
@@ -151,7 +144,7 @@ const Moderators = () => {
                       Удалить
                     </button>
                                        <button
-                       onClick={() => handleEditModerator(moderator)}
+                  onClick={() => handleEdit(moderator.id)}
                        className={styles.editButton}
                      >
                        Редактировать
