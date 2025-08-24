@@ -9,7 +9,7 @@ const EditModerator = () => {
   const [moderator, setModerator] = useState({
     name: '',
     email: '',
-    telegram_login: '',
+    telegramLogin: '',
     description: ''
   });
   useEffect(() => {
@@ -60,8 +60,8 @@ setModerator(response.data.moderator);
           <label>Telegram логин:</label>
           <input
             type="text"
-            value={moderator.telegram_login}
-            onChange={(e) => setModerator({...moderator, telegram_login: e.target.value})}
+            value={moderator.telegramLogin}
+            onChange={(e) => setModerator({...moderator, telegramLogin: e.target.value})}
             required
           />
         </div>
