@@ -33,7 +33,7 @@ const EditModerator = () => {
     }
   };
   return (
-    <div className={styles.editModeratorContainer}>
+    <div className={styles.editModeratorContainer} style={{color: 'black'}}>
       <h2>Редактирование модератора</h2>
       <form onSubmit={handleSubmit}>
         {/* Add form fields for editing moderator data */}
