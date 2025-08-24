@@ -17,8 +17,7 @@ const EditModerator = () => {
   useEffect(() => {
     const fetchModerator = async () => {
       try {
-                const adminUsername = localStorage.getItem('adminUsername');
-                  console.log(adminUsername)
+
         const response = await axios.get(`/moderators/${id}`);
         console.log(response.data)
         console.log(response.data.moderator.name)
@@ -46,7 +45,8 @@ const handleSubmit = async (e) => {
     try {
       // Обновляем основную информацию о модераторе
       await axios.put(`/moderators/${id}`, moderator);
-      
+                      const adminUsername = localStorage.getItem('adminUsername');
+                  console.log(adminUsername)
       // Получаем текущие разрешения с сервера
       const currentPermissions = await axios.get(`/moderators/permissions/${adminUsername}`);
       const serverPermissions = currentPermissions.data;
