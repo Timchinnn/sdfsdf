@@ -53,14 +53,19 @@ const handleSubmit = async (e) => {
       
       // Отправляем обновленные права доступа
       await Promise.all(
-        updatedPermissions.map(permission => {
+      updatedPermissions.map(async permission => {
+        try {
           if (permission.assigned) {
-            return axios.post(`/moderators/${id}/permissions/${permission.id}`);
+            await axios.post(`/moderators/${id}/permissions/${permission.id}`);
           } else {
-            return axios.delete(`/moderators/${id}/permissions/${permission.id}`);
+            await axios.delete(`/moderators/${id}/permissions/${permission.id}`);
           }
-        })
-      );
+        } catch (permissionError) {
+          console.error(`Ошибка при обновлении разрешения ${permission.id}:`, permissionError);
+          throw new Error(`Не удалось обновить разрешение ${permission.id}`);
+        }
+      })
+    );
       history.push('/moderators');
     } catch (error) {
       console.error('Error updating moderator:', error);
