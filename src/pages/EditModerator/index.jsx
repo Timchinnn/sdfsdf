@@ -41,7 +41,7 @@ const EditModerator = () => {
           <label>Имя:</label>
           <input
             type="text"
-            value={moderator.moderator.name}
+            value={moderator.name}
             onChange={(e) => setModerator({...moderator, name: e.target.value})}
             required
           />
