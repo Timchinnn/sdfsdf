@@ -120,33 +120,39 @@ const Moderators = () => {
           Создать модератора
         </button>
       </form>
-         <div className={styles.moderatorsList}>
-        <h3 style={{    marginBottom: '10px'}}>Список модераторов</h3>
-        {moderators.map(moderator => (
-          <div key={moderator.id} className={styles.moderatorItem}>
-            <div className={styles.moderatorInfo}>
-              <p><strong>Имя:</strong> {moderator.name}</p>
-              <p><strong>Email:</strong> {moderator.email}</p>
-              <p><strong>Telegram:</strong> {moderator.telegram_login}</p>
-              <p><strong>Описание:</strong> {moderator.description}</p>
-            </div>
-                    <div className={styles.moderatorActions}>
-              <button 
-                className={styles.editButton}
-                onClick={() => handleEditModerator(moderator)}
-              >
-                Редактировать
-              </button>
-              <button
-                className={styles.deleteButton} 
-                onClick={() => handleDeleteModerator(moderator.id)}
-              >
-                Удалить
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+            <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Telegram</th>
+                <th>Описание</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              {moderators.map((moderator) => (
+                <tr key={moderator.id}>
+                  <td>{moderator.id}</td>
+                  <td>{moderator.name}</td>
+                  <td>{moderator.email}</td>
+                  <td>{moderator.telegram_login}</td>
+                  <td>{moderator.description}</td>
+                  <td>
+                    <button 
+                      onClick={() => handleDeleteModerator(moderator.id)}
+                      className={styles.deleteButton}
+                    >
+                      Удалить
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
     </div>
   );
 };
