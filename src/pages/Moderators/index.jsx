@@ -1,8 +1,11 @@
 import styles from './Moderators.module.css';
 import axios from '../../axios-controller';
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Moderators = () => {
+    const history = useHistory();
+
   const [moderators, setModerators] = useState([]);
   const [newModerator, setNewModerator] = useState({
     name: '',
