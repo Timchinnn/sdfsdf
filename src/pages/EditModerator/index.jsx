@@ -114,9 +114,9 @@ const handleSubmit = async (e) => {
             id={`permission-${permission.id}`}
             name={`permission-${permission.id}`}
             checked={permission.assigned}
-            onChange={() => setPermissions(permissions.map(p => 
+onChange={() => setPermissions(permissions.map(p => 
               p.id === permission.id ? {...p, assigned: !p.assigned} : p
-            ))}/>
+            ))}          />
           <label htmlFor={`permission-${permission.id}`}>
             {permission.name} - {permission.description}
           </label>
