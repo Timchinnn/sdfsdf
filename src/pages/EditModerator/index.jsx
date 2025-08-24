@@ -6,6 +6,8 @@ import styles from './EditModerator.module.css';
 const EditModerator = () => {
   const { id } = useParams();
   const history = useHistory();
+    const [permissions, setPermissions] = useState([]);
+
   const [moderator, setModerator] = useState({
     name: '',
     email: '',
@@ -28,16 +30,42 @@ setModerator(response.data.moderator);
     fetchModerator();
   }, [id]);
   
-  const handleSubmit = async (e) => {
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       await axios.put(`/moderators/${id}`, moderator);
+//       history.push('/moderators');
+//     } catch (error) {
+//       console.error('Error updating moderator:', error);
+//     }
+//   };
+const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Обновляем основную информацию о модераторе
       await axios.put(`/moderators/${id}`, moderator);
+      
+      // Обновляем права доступа
+      const updatedPermissions = permissions.map(permission => ({
+        id: permission.id,
+        assigned: permission.assigned
+      }));
+      
+      // Отправляем обновленные права доступа
+      await Promise.all(
+        updatedPermissions.map(permission => {
+          if (permission.assigned) {
+            return axios.post(`/moderators/${id}/permissions/${permission.id}`);
+          } else {
+            return axios.delete(`/moderators/${id}/permissions/${permission.id}`);
+          }
+        })
+      );
       history.push('/moderators');
     } catch (error) {
       console.error('Error updating moderator:', error);
     }
   };
-  //dssd
   return (
     <div className={styles.editModeratorContainer} style={{color: 'black'}}>
       <h2>Редактирование модератора</h2>
@@ -86,8 +114,9 @@ setModerator(response.data.moderator);
             id={`permission-${permission.id}`}
             name={`permission-${permission.id}`}
             checked={permission.assigned}
-            onChange={() => {}} // Добавить обработчик при необходимости
-          />
+onChange={() => setPermissions(permissions.map(p => 
+              p.id === permission.id ? {...p, assigned: !p.assigned} : p
+            ))}          />
           <label htmlFor={`permission-${permission.id}`}>
             {permission.name} - {permission.description}
           </label>
