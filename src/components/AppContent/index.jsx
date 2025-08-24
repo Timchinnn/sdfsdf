@@ -67,60 +67,60 @@ const AppContent = () => {
     <div className={`main-wrapper`}>
       <main className="main-container">
         <Switch>
-          <Route
+          <ProtectedRoute
             exact
             path={routeAddEditShopSet()}
             component={AddEditShopSet}
           />
-          <Route
+          <ProtectedRoute
             exact
             path={routeAddEditShopSet(":id")}
             component={AddEditShopSet}
           />
-          <Route
+          <ProtectedRoute
             exact
             path={routeAddEditShopShirt()}
             component={AddEditShopShirt}
           />
-          <Route
+          <ProtectedRoute
             exact
             path={routeAddEditShopShirt(":id")}
             component={AddEditShopShirt}
           />
-          <Route exact path="/addEditCard/:id" component={AddEditCard} />
-          <Route exact path="/addEditDeck/:id" component={AddEditDeck} />
-          <Route
+          <ProtectedRoute exact path="/addEditCard/:id" component={AddEditCard} />
+          <ProtectedRoute exact path="/addEditDeck/:id" component={AddEditDeck} />
+          <ProtectedRoute
             exact
             path="/addEditCityDeck/:id"
             component={AddEditCityDeck}
           />
-          <Route
+          <ProtectedRoute
             path={routeAddEditShopCard()}
             exact
             component={AddEditShopCard}
           />
-          <Route
+          <ProtectedRoute
             path={routeAddEditShopCard(":id")}
             exact
             component={AddEditShopCard}
           />
           <Route exact path={routeMainPage()} component={MainPage} />
-          <Route exact path={routeAddEditDeckPage()} component={AddEditDeck} />
-          <Route
+          <ProtectedRoute exact path={routeAddEditDeckPage()} component={AddEditDeck} />
+          <ProtectedRoute
             exact
             path={routeAddEditCityDeckPage()}
             component={AddEditCityDeck}
           />
           <Route exact path={routeCityPage()} component={CityPage} />
-          <Route
+          <ProtectedRoute
             exact
             path={routeBonusCodeManagementPage()}
             component={BonusCodeManagement}
           />
           <Route exact path={routeFriendsPage()} component={FriendsPage} />
           <Route exact path={routeShopPage()} component={ShopPage} />
-          <Route exact path={routeAddEditCardPage()} component={AddEditCard} />
-          <Route
+          <ProtectedRoute exact path={routeAddEditCardPage()} component={AddEditCard} />
+          <ProtectedRoute
             exact
             path={routeAddEditCardBackPage()}
             component={AddEditCardBack}
@@ -135,12 +135,12 @@ const AppContent = () => {
 <ProtectedRoute exact path="/moderators" component={Moderators} />
 
           <Route exact path={routeSetsPage()} component={SetsPage} />
-          <Route
+          <ProtectedRoute
             exact
             path={routeShirtManagementPage()}
             component={ShirtManagement}
           />
-          <Route
+          <ProtectedRoute
             exact
             path={routeShopManagementPage()}
             component={ShopManagement}
