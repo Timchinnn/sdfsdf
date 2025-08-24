@@ -18,6 +18,8 @@ const CardManagement = () => {
   const [setsSearchQuery, setSetsSearchQuery] = useState("");
   const [hasEditPermission, setHasEditPermission] = useState(false);
   const [hasDeletePermission, setHasDeletePermission] = useState(false);
+    const [hasSetEditPermission, setHasSetEditPermission] = useState(false);
+
   useEffect(() => {
     const checkPermissions = async () => {
       try {
@@ -27,7 +29,10 @@ const CardManagement = () => {
         if (adminUsername) {
           const response = await axios.get(`/moderators/permissions/${adminUsername}`);
           console.log(response.data)
+                    setHasSetEditPermission(response.data.permissions.some(p => p.permission_name === 'Добавление и редактирование сета'));
+
  setHasEditPermission(response.data.permissions.some(p => p.permission_name === 'Добавление и редактирование карт' ));
+          setHasDeletePermission(response.data.permissions.some(p => p.permission_name === 'Добавление и редактирование карт' ));
           setHasDeletePermission(response.data.permissions.some(p => p.permission_name === 'Добавление и редактирование карт' ));
         }
       } catch (error) {
@@ -202,12 +207,17 @@ const CardManagement = () => {
                   <p>{set.description}</p>
                 </div>
 
-                <NavLink to={routeAddEditDeck(set.id)}>
+    <NavLink to={routeAddEditDeck(set.id)} style={{ display: hasSetEditPermission ? 'block' : 'none' }}>
                   <button>Редактировать</button>
                 </NavLink>
                 <button
-                  style={{ background: "red", marginTop: "10px" }}
+                  style={{ 
+                    background: "red", 
+                    marginTop: "10px",
+                    display: hasSetEditPermission ? 'block' : 'none'
+                  }}
                   onClick={async () => {
+                    if (!hasSetEditPermission) return;
                     try {
                       await cardSetsService.deleteCardSet(set.id);
                       setCardSets(cardSets.filter((cs) => cs.id !== set.id));
@@ -246,7 +256,7 @@ const CardManagement = () => {
             </button>
           </div>{" "}
           <div>
-            <NavLink to={routeAddEditDeck()} style={{ width: "40%" }}>
+            <NavLink to={routeAddEditDeck()} style={{ width: "40%", display: hasSetEditPermission ? 'block' : 'none' }}>
               <button
                 className={styles.addCard}
                 style={{
@@ -294,12 +304,17 @@ const CardManagement = () => {
                   <h3>{set.name}</h3>
                   <p>{set.description}</p>
                 </div>
-                <NavLink to={routeAddEditCityDeck(set.id)}>
+                    <NavLink to={routeAddEditCityDeck(set.id)} style={{ display: hasSetEditPermission ? 'block' : 'none' }}>
                   <button>Редактировать</button>
                 </NavLink>
                 <button
-                  style={{ background: "red", marginTop: "10px" }}
+                  style={{ 
+                    background: "red", 
+                    marginTop: "10px",
+                    display: hasSetEditPermission ? 'block' : 'none'
+                  }}
                   onClick={async () => {
+                    if (!hasSetEditPermission) return;
                     try {
                       await cardSetsService.deleteCardSet(set.id);
                       setCardSets(cardSets.filter((cs) => cs.id !== set.id));
@@ -338,7 +353,7 @@ const CardManagement = () => {
             </button>
           </div>
           <div>
-            <NavLink to={routeAddEditCityDeck()} style={{ width: "40%" }}>
+          <NavLink to={routeAddEditCityDeck()} style={{ width: "40%", display: hasSetEditPermission ? 'block' : 'none' }}>
               <button
                 className={styles.addCard}
                 style={{
