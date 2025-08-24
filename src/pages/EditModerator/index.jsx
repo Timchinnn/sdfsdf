@@ -18,7 +18,7 @@ const EditModerator = () => {
         const response = await axios.get(`/moderators/${id}`);
         console.log(response.data)
         console.log(response.data.moderator.name)
-        setModerator(response.data);
+setModerator(response.data.moderator);
       } catch (error) {
         console.error('Error fetching moderator:', error);
       }
