@@ -16,7 +16,26 @@ const CardManagement = () => {
   const [cardSets, setCardSets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [setsSearchQuery, setSetsSearchQuery] = useState("");
+  const [hasEditPermission, setHasEditPermission] = useState(false);
+  const [hasDeletePermission, setHasDeletePermission] = useState(false);
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const adminUsername = localStorage.getItem('adminUsername');
+                  console.log(adminUsername)
 
+        if (adminUsername) {
+          const response = await axios.get(`/moderators/permissions/${adminUsername}`);
+          console.log(response.data)
+          setHasEditPermission(response.data.permissions.includes('Добавление и редактирование карт'));
+          setHasDeletePermission(response.data.permissions.includes('Добавление и редактирование карт'));
+        }
+      } catch (error) {
+        console.error("Error checking permissions:", error);
+      }
+    };
+    checkPermissions();
+  }, []);
   useEffect(() => {
     const fetchCardBacks = async () => {
       try {
@@ -84,12 +103,17 @@ const CardManagement = () => {
                   <p>{card.description}</p>{" "}
                 </div>
 
-                <NavLink to={routeAddEditCard(card.id)}>
+                <NavLink to={routeAddEditCard(card.id)} style={{ display: hasEditPermission ? 'block' : 'none' }}>
                   <button>Редактировать</button>
                 </NavLink>
                 <button
-                  style={{ background: "red", marginTop: "10px" }}
+                  style={{ 
+                    background: "red", 
+                    marginTop: "10px",
+                    display: hasDeletePermission ? 'block' : 'none' 
+                  }}
                   onClick={async () => {
+                    if (!hasDeletePermission) return;
                     try {
                       await cardsService.deleteCard(card.id);
                       setCards(cards.filter((c) => c.id !== card.id));
@@ -128,7 +152,7 @@ const CardManagement = () => {
             </button>
           </div>{" "}
           <div>
-            <NavLink to={routeAddEditCard()} style={{ width: "40%" }}>
+            <NavLink to={routeAddEditCard()} style={{ width: "40%", display: hasEditPermission ? 'block' : 'none' }}>
               <button
                 className={styles.addCard}
                 style={{
