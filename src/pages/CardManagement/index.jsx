@@ -27,7 +27,7 @@ const CardManagement = () => {
         if (adminUsername) {
           const response = await axios.get(`/moderators/permissions/${adminUsername}`);
           console.log(response.data)
-          setHasEditPermission(response.data.permissions.includes('Добавление и редактирование карт'));
+          setHasEditPermission(response.data.permissions.permission_name.includes('Добавление и редактирование карт'));
           setHasDeletePermission(response.data.permissions.includes('Добавление и редактирование карт'));
         }
       } catch (error) {
