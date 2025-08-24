@@ -140,7 +140,9 @@ const Moderators = () => {
                   <td>{moderator.email}</td>
                   <td>{moderator.telegram_login}</td>
                   <td>{moderator.description}</td>
-                  <td>
+                  <td style={{    display: 'flex',
+    flexDirection: 'column',
+    width: '140px'}}>
                     <button 
                       onClick={() => handleDeleteModerator(moderator.id)}
                       className={styles.deleteButton}
