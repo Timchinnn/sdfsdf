@@ -22,6 +22,8 @@ const CardManagement = () => {
     const checkPermissions = async () => {
       try {
         const adminUsername = localStorage.getItem('adminUsername');
+                  console.log(adminUsername)
+
         if (adminUsername) {
           const response = await axios.get(`/moderators/permissions/${adminUsername}`);
           console.log(response.data)
