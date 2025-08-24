@@ -35,6 +35,23 @@ const [isEditingBonus, setIsEditingBonus] = useState(false);
     cancel: 'Отмена'
   });
   const language = useSelector((state) => state.language);
+  const [hasReferralSystemAccess, setHasReferralSystemAccess] = useState(false);
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const adminUsername = localStorage.getItem('adminUsername');
+        if (adminUsername) {
+          const response = await axios.get(`/moderators/permissions/${adminUsername}`);
+          setHasReferralSystemAccess(response.data.permissions.some(
+            p => p.permission_name === 'Настройки реферальной системы'
+          ));
+        }
+      } catch (error) {
+        console.error("Error checking permissions:", error);
+      }
+    };
+    checkPermissions();
+  }, []);
   useEffect(() => {
     if (language === 'en') {
       setTranslations({
@@ -143,7 +160,7 @@ const handleEdit = async (e) => {
     setEditingLevel({...level});
   };
   return (
-    <div className={styles.mainC} >
+    <div className={styles.mainC}  style={{display: hasReferralSystemAccess ? 'block' : 'none'}}>
     <div className={styles.container}>
                <div className={styles.formGroup}>
     <label>Реферальный бонус:</label>
