@@ -4,6 +4,8 @@ import { useParams, useHistory } from 'react-router-dom';
 import axios from '../../axios-controller';
 import styles from './EditModerator.module.css';
 const EditModerator = () => {
+      const [permissions, setPermissions] = useState([]);
+
   const { id } = useParams();
   const history = useHistory();
   const [moderator, setModerator] = useState({
