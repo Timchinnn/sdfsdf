@@ -42,6 +42,25 @@ const Moderators = () => {
       alert('Ошибка при создании модератора');
     }
   };
+    const handleDeleteModerator = async (id) => {
+    try {
+      await axios.delete(`/moderators/${id}`);
+      setModerators(moderators.filter(mod => mod.id !== id));
+    } catch (err) {
+      console.error('Ошибка при удалении модератора:', err);
+      alert('Ошибка при удалении модератора');
+    }
+  };
+  const handleEditModerator = (moderator) => {
+    setNewModerator({
+      name: moderator.name,
+      email: moderator.email,
+      telegram_login: moderator.telegram_login,
+      password: '',
+      description: moderator.description || ''
+    });
+    // You can also add state to track editing mode and moderator ID
+  };
   return (
     <div style={{color:'black'}} className={styles.moderatorsContainer}>
       <h2 style={{marginBottom: '20px'}}>Управление модераторами</h2>
@@ -110,6 +129,20 @@ const Moderators = () => {
               <p><strong>Email:</strong> {moderator.email}</p>
               <p><strong>Telegram:</strong> {moderator.telegram_login}</p>
               <p><strong>Описание:</strong> {moderator.description}</p>
+            </div>
+                    <div className={styles.moderatorActions}>
+              <button 
+                className={styles.editButton}
+                onClick={() => handleEditModerator(moderator)}
+              >
+                Редактировать
+              </button>
+              <button
+                className={styles.deleteButton} 
+                onClick={() => handleDeleteModerator(moderator.id)}
+              >
+                Удалить
+              </button>
             </div>
           </div>
         ))}

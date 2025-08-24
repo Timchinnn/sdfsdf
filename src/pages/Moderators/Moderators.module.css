@@ -8,15 +8,16 @@
   margin-top: 20px;
 }
 .moderatorItem {
-  background: #f5f5f5;
-  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 15px;
   margin-bottom: 10px;
+  background: #f5f5f5;
+  border-radius: 5px;
 }
 .moderatorInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex: 1;
 }
 .moderatorInfo p {
   margin: 0;
@@ -51,4 +52,30 @@
     font-size: 16px;
     padding: 10px;
     margin-bottom: 10px;
+}
+.moderatorActions {
+  display: flex;
+  gap: 10px;
+}
+.editButton {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.deleteButton {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.editButton:hover {
+  background: #45a049;
+}
+.deleteButton:hover {
+  background: #da190b;
 }
