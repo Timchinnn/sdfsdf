@@ -147,6 +147,12 @@ const Moderators = () => {
                     >
                       Удалить
                     </button>
+                                       <button
+                       onClick={() => handleEditModerator(moderator)}
+                       className={styles.editButton}
+                     >
+                       Редактировать
+                     </button>
                   </td>
                 </tr>
               ))}
