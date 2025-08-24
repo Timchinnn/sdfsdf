@@ -36,6 +36,40 @@ const EditModerator = () => {
     <div className={styles.editModeratorContainer} style={{color: 'black'}}>
       <h2>Редактирование модератора</h2>
       <form onSubmit={handleSubmit}>
+                <div className={styles.formGroup}>
+          <label>Имя:</label>
+          <input
+            type="text"
+            value={moderator.name}
+            onChange={(e) => setModerator({...moderator, name: e.target.value})}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Email:</label>
+          <input
+            type="email" 
+            value={moderator.email}
+            onChange={(e) => setModerator({...moderator, email: e.target.value})}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Telegram логин:</label>
+          <input
+            type="text"
+            value={moderator.telegram_login}
+            onChange={(e) => setModerator({...moderator, telegram_login: e.target.value})}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Описание:</label>
+          <textarea
+            value={moderator.description}
+            onChange={(e) => setModerator({...moderator, description: e.target.value})}
+          />
+        </div>
         {/* Add form fields for editing moderator data */}
         <button type="submit">Сохранить</button>
         <button type="button" onClick={() => history.push('/moderators')}>
