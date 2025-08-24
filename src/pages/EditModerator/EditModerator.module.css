@@ -68,3 +68,28 @@
   font-size: 14px;
   color: #333;
 }
+.permissionItem input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  position: relative;
+}
+.permissionItem input[type="checkbox"]:checked {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+}
+.permissionItem input[type="checkbox"]:checked::after {
+  content: "✓";
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
