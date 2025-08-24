@@ -45,32 +45,35 @@ const handleSubmit = async (e) => {
       // Обновляем основную информацию о модераторе
       await axios.put(`/moderators/${id}`, moderator);
       
-      // Обновляем права доступа
-      const updatedPermissions = permissions.map(permission => ({
-        id: permission.id,
-        assigned: permission.assigned
-      }));
+      // Получаем текущие разрешения с сервера
+      const currentPermissions = await axios.get(`/moderators/${id}/permissions`);
+      const serverPermissions = currentPermissions.data;
       
-      // Отправляем обновленные права доступа
+      // Находим измененные разрешения
+      const changedPermissions = permissions.filter(permission => {
+        const serverPermission = serverPermissions.find(sp => sp.id === permission.id);
+        return serverPermission?.assigned !== permission.assigned;
+      });
+      // Обновляем только измененные разрешения
       await Promise.all(
-      updatedPermissions.map(async permission => {
-        try {
-          if (permission.assigned) {
-            await axios.post(`/moderators/${id}/permissions/${permission.id}`);
-          } else {
-            await axios.delete(`/moderators/${id}/permissions/${permission.id}`);
+        changedPermissions.map(async permission => {
+          try {
+            if (permission.assigned) {
+              await axios.post(`/moderators/${id}/permissions/${permission.id}`);
+            } else {
+              await axios.delete(`/moderators/${id}/permissions/${permission.id}`);
+            }
+          } catch (permissionError) {
+            console.error(`Ошибка при обновлении разрешения ${permission.id}:`, permissionError);
+            throw new Error(`Не удалось обновить разрешение ${permission.id}`);
           }
-        } catch (permissionError) {
-          console.error(`Ошибка при обновлении разрешения ${permission.id}:`, permissionError);
-          throw new Error(`Не удалось обновить разрешение ${permission.id}`);
-        }
-      })
-    );
+        })
+      );
       history.push('/moderators');
     } catch (error) {
       console.error('Error updating moderator:', error);
     }
-  };
+};
   return (
     <div className={styles.editModeratorContainer} style={{color: 'black'}}>
       <h2>Редактирование модератора</h2>
