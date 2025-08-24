@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styles from "./BonusCodeManagement.module.css";
 import routeBonusCodeManagement from "./route";
 import { bonusCodeService, cardsService } from "../../services/api";
+import axios from "../../axios-controller";
+
 const BonusCodeManagement = () => {
   const [codes, setCodes] = useState([]);
   const [generatedCodes, setGeneratedCodes] = useState([]);
