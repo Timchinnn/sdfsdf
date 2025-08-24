@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styles from './Moderators.module.css';
 import axios from '../../axios-controller';
+import React, { useState, useEffect } from 'react';
+
 const Moderators = () => {
   const [moderators, setModerators] = useState([]);
   const [newModerator, setNewModerator] = useState({
