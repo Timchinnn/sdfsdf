@@ -10,6 +10,18 @@ const Moderators = () => {
     password: '',
     description: ''
   });
+    useEffect(() => {
+    const fetchModerators = async () => {
+      try {
+        const response = await axios.get('/moderators');
+        setModerators(response.data);
+      } catch (err) {
+        console.error('Ошибка при получении списка модераторов:', err);
+        alert('Ошибка при получении списка модераторов');
+      }
+    };
+    fetchModerators();
+  }, []);
   const handleCreateModerator = async (e) => {
     e.preventDefault();
     try {
@@ -88,13 +100,16 @@ const Moderators = () => {
           Создать модератора
         </button>
       </form>
-      <div className={styles.moderatorsList}>
+         <div className={styles.moderatorsList}>
+        <h3>Список модераторов</h3>
         {moderators.map(moderator => (
           <div key={moderator.id} className={styles.moderatorItem}>
-            <h3>{moderator.name}</h3>
-            <p>{moderator.email}</p>
-            <p>{moderator.telegram_login}</p>
-            <p>{moderator.description}</p>
+            <div className={styles.moderatorInfo}>
+              <p><strong>Имя:</strong> {moderator.name}</p>
+              <p><strong>Email:</strong> {moderator.email}</p>
+              <p><strong>Telegram:</strong> {moderator.telegram_login}</p>
+              <p><strong>Описание:</strong> {moderator.description}</p>
+            </div>
           </div>
         ))}
       </div>
