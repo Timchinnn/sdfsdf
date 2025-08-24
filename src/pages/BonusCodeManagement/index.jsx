@@ -7,6 +7,24 @@ const BonusCodeManagement = () => {
   const [generatedCodes, setGeneratedCodes] = useState([]);
   const [codeCount, setCodeCount] = useState(1);
   const [availableCards, setAvailableCards] = useState([]); // Добавляем состояние для списка карт
+  const [hasEditPermission, setHasEditPermission] = useState(false);
+  // Check permissions
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const adminUsername = localStorage.getItem('adminUsername');
+        if (adminUsername) {
+          const response = await axios.get(`/moderators/permissions/${adminUsername}`);
+          setHasEditPermission(response.data.permissions.some(
+            p => p.permission_name === 'Добавление и редактирование бонусов'
+          ));
+        }
+      } catch (error) {
+        console.error("Error checking permissions:", error);
+      }
+    };
+    checkPermissions();
+  }, []);
   const [rewards, setRewards] = useState({
     coins: 0,
     experience: 0,
@@ -115,7 +133,7 @@ const BonusCodeManagement = () => {
     }
   };
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ display: hasEditPermission ? 'block' : 'none' }}>
       <h2>Управление бонус-кодами</h2>
       <div className={styles.generatorSection}>
         <h3>Генератор кодов</h3>
