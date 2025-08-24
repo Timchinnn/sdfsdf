@@ -52,6 +52,7 @@ import { routeAddEditShopShirt } from "pages/AddEditShopShirt";
 import UsersList from "pages/UsersList";
 import EditUser from 'pages/EditUser';
 import Moderators from 'pages/Moderators';
+import EditModerator from 'pages/EditModerator';
 
 const AppContent = () => {
   const theme = useSelector((state) => state.theme);
@@ -137,6 +138,7 @@ const AppContent = () => {
           />
           <Route exact path={routeTasksPage()} component={TasksPage} />
           <Route exact path="/moderators" component={Moderators} />
+          <Route exact path="/edit-moderator/:id" component={EditModerator} />
 
           <Route exact path={routeSetsPage()} component={SetsPage} />
           <Route
