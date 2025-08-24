@@ -102,7 +102,7 @@ const Moderators = () => {
         </button>
       </form>
          <div className={styles.moderatorsList}>
-        <h3>Список модераторов</h3>
+        <h3 style={{    marginBottom: '10px'}}>Список модераторов</h3>
         {moderators.map(moderator => (
           <div key={moderator.id} className={styles.moderatorItem}>
             <div className={styles.moderatorInfo}>
