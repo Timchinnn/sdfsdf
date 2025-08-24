@@ -53,6 +53,7 @@ import { routeAddEditShopShirt } from "pages/AddEditShopShirt";
 import UsersList from "pages/UsersList";
 import EditUser from 'pages/EditUser';
 import Moderators from 'pages/Moderators';
+import EditModerator from 'pages/EditModerator';
 
 const AppContent = () => {
   const theme = useSelector((state) => state.theme);
@@ -130,6 +131,7 @@ const AppContent = () => {
 <ProtectedRoute exact path={routeAdsManagementPage()} component={AdsManagement} />
 
     <ProtectedRoute exact path={routeCardManagementPage()} component={CardManagement} />
+<ProtectedRoute path="/edit-moderator/:id" component={EditModerator} />
 
           <Route exact path={routeTasksPage()} component={TasksPage} />
 <ProtectedRoute exact path="/moderators" component={Moderators} />
