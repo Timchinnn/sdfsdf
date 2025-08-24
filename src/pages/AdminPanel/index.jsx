@@ -68,6 +68,7 @@ const handleLogin = async () => {
     });
     setIsAuthenticated(true);
     localStorage.setItem('adminAuthenticated', 'true');
+    localStorage.setItem('adminUsername', username); // Store username in localStorage
   } catch (error) {
     alert("Неверный логин или пароль");
   }
