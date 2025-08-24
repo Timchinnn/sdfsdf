@@ -32,6 +32,24 @@ const AdsManagement = () => {
     energy: "",
     experience: "",
   });
+  const [hasAdsManagementPermission, setHasAdsManagementPermission] = useState(false);
+
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const adminUsername = localStorage.getItem('adminUsername');
+        if (adminUsername) {
+          const response = await axios.get(`/moderators/permissions/${adminUsername}`);
+          setHasAdsManagementPermission(response.data.permissions.some(
+            p => p.permission_name === 'Добавление и редактирование заданий'
+          ));
+        }
+      } catch (error) {
+        console.error("Error checking permissions:", error);
+      }
+    };
+    checkPermissions();
+  }, []);
  useEffect(() => {
     fetchAds();
     fetchCards();
@@ -181,7 +199,7 @@ const handleSubmit = async (e) => {
     }
   };
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ display: hasAdsManagementPermission ? 'block' : 'none' }}>
       <h2>Управление рекламой</h2>
 
       <form onSubmit={handleSubmit} className={styles.form}>
