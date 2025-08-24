@@ -37,6 +37,7 @@ setModerator(response.data.moderator);
       console.error('Error updating moderator:', error);
     }
   };
+  //dssd
   return (
     <div className={styles.editModeratorContainer} style={{color: 'black'}}>
       <h2>Редактирование модератора</h2>
