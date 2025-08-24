@@ -50,4 +50,21 @@
 .formGroup textarea {
   height: 100px;
   resize: vertical;
+}.permissionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+.permissionItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.permissionItem input[type="radio"] {
+  margin: 0;
+}
+.permissionItem label {
+  font-size: 14px;
+  color: #333;
 }

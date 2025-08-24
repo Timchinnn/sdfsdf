@@ -19,12 +19,15 @@ const EditModerator = () => {
         console.log(response.data)
         console.log(response.data.moderator.name)
 setModerator(response.data.moderator);
+        setPermissions(response.data.permissions);
+
       } catch (error) {
         console.error('Error fetching moderator:', error);
       }
     };
     fetchModerator();
   }, [id]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -72,6 +75,25 @@ setModerator(response.data.moderator);
             onChange={(e) => setModerator({...moderator, description: e.target.value})}
           />
         </div>
+        <div className={styles.formGroup}>
+    <label>Права доступа:</label>
+    <div className={styles.permissionsList}>
+      {permissions.map(permission => (
+        <div key={permission.id} className={styles.permissionItem}>
+          <input
+            type="radio"
+            id={`permission-${permission.id}`}
+            name={`permission-${permission.id}`}
+            checked={permission.assigned}
+            onChange={() => {}} // Добавить обработчик при необходимости
+          />
+          <label htmlFor={`permission-${permission.id}`}>
+            {permission.name} - {permission.description}
+          </label>
+        </div>
+      ))}
+    </div>
+  </div>
         {/* Add form fields for editing moderator data */}
         <button type="submit">Сохранить</button>
         <button type="button" onClick={() => history.push('/moderators')}>
