@@ -142,6 +142,13 @@ const handleLogin = async () => {
             </div>
           </NavLink>
         </div>
+                        <div className={styles.mainContent}>
+          <NavLink to="/moderators">
+            <div className={styles.content}>
+              <p>Управление модераторами</p>
+            </div>
+          </NavLink>
+        </div>
           <div className={styles.mainContent}>
           <NavLink to="/referral-system">
             <div className={styles.content}>
