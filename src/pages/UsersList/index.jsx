@@ -15,6 +15,29 @@ const [searchTerm, setSearchTerm] = useState('');
     const filteredUsers = users.filter(user => 
     user.username && user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
+    const [hasUserSettingsAccess, setHasUserSettingsAccess] = useState(false);
+useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        // Check permissions first
+        const adminUsername = localStorage.getItem('adminUsername');
+        if (adminUsername) {
+          const permResponse = await axios.get(`/moderators/permissions/${adminUsername}`);
+          setHasUserSettingsAccess(permResponse.data.permissions.some(
+            p => p.permission_name === 'Доступ к настройкам пользователя'
+          ));
+        }
+        const response = await axios.get('/admin/all-users');
+        setUsers(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+        setError("Failed to load users");
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -122,7 +145,7 @@ const handleRestore = async (user) => {
     }
   });
   return (
-    <div style={{background:'white', height:'100vh'}}>
+    <div style={{background:'white', height:'100vh',display: hasUserSettingsAccess ? 'block' : 'none'}} >
     <div className={styles.container}>
       <div className={styles.searchContainer}>
         <input
