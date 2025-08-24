@@ -17,7 +17,6 @@ const EditModerator = () => {
   useEffect(() => {
     const fetchModerator = async () => {
       try {
-
         const response = await axios.get(`/moderators/${id}`);
         console.log(response.data)
         console.log(response.data.moderator.name)
@@ -45,37 +44,33 @@ const handleSubmit = async (e) => {
     try {
       // Обновляем основную информацию о модераторе
       await axios.put(`/moderators/${id}`, moderator);
-                      const adminUsername = localStorage.getItem('adminUsername');
-                  console.log(adminUsername)
-      // Получаем текущие разрешения с сервера
-      const currentPermissions = await axios.get(`/moderators/permissions/${adminUsername}`);
-      const serverPermissions = currentPermissions.data;
       
-      // Находим измененные разрешения
-      const changedPermissions = permissions.filter(permission => {
-        const serverPermission = serverPermissions.find(sp => sp.id === permission.id);
-        return serverPermission?.assigned !== permission.assigned;
-      });
-      // Обновляем только измененные разрешения
+      // Обновляем права доступа
+      const updatedPermissions = permissions.map(permission => ({
+        id: permission.id,
+        assigned: permission.assigned
+      }));
+      
+      // Отправляем обновленные права доступа
       await Promise.all(
-        changedPermissions.map(async permission => {
-          try {
-            if (permission.assigned) {
-              await axios.post(`/moderators/${id}/permissions/${permission.id}`);
-            } else {
-              await axios.delete(`/moderators/${id}/permissions/${permission.id}`);
-            }
-          } catch (permissionError) {
-            console.error(`Ошибка при обновлении разрешения ${permission.id}:`, permissionError);
-            throw new Error(`Не удалось обновить разрешение ${permission.id}`);
+      updatedPermissions.map(async permission => {
+        try {
+          if (permission.assigned) {
+            await axios.post(`/moderators/${id}/permissions/${permission.id}`);
+          } else {
+            await axios.delete(`/moderators/${id}/permissions/${permission.id}`);
           }
-        })
-      );
+        } catch (permissionError) {
+          console.error(`Ошибка при обновлении разрешения ${permission.id}:`, permissionError);
+          throw new Error(`Не удалось обновить разрешение ${permission.id}`);
+        }
+      })
+    );
       history.push('/moderators');
     } catch (error) {
       console.error('Error updating moderator:', error);
     }
-};
+  };
   return (
     <div className={styles.editModeratorContainer} style={{color: 'black'}}>
       <h2>Редактирование модератора</h2>
