@@ -59,6 +59,7 @@ const AdsManagement = () => {
     try {
       const response = await axios.get('/referral-levels');
       setReferralLevels(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error("Error fetching referral levels:", error);
     }
