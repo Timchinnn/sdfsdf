@@ -237,7 +237,7 @@ const handleSubmit = async (e) => {
               >
                 <option value="">Выберите уровень</option>
                 {referralLevels.map((level) => (
-                  <option key={level.id} value={level.id}>
+                  <option key={level.friends_required} value={level.friends_required}>
                     {level.name} ({level.friends_required} друзей)
                   </option>
                 ))}
