@@ -91,6 +91,7 @@ useEffect(() => {
       const tg = window.Telegram.WebApp;
       if (tg?.initDataUnsafe?.user?.id) {
         const telegram_id = tg.initDataUnsafe.user.id;
+        console.log(telegram_id)
         
         // Получаем количество рефералов пользователя
         const referralsResponse = await userInitService.getReferrals(telegram_id);
