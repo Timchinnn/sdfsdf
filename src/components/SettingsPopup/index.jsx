@@ -69,15 +69,9 @@ useEffect(() => {
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
-      
-      // Проверяем существование cardBackName перед переводом
-      if (cardBackStyle === "default") {
-        setTranslatedCardBackName("Стандартная рубашка");
-      } else if (cardBackName) {
+      if (cardBackName) {
         const translatedName = await translateServerResponse(cardBackName);
         setTranslatedCardBackName(translatedName);
-      } else {
-        setTranslatedCardBackName(""); // Очищаем значение если рубашка не найдена
       }
     };
     getTranslatedName();
@@ -106,19 +100,27 @@ useEffect(() => {
           
           if (cardBackResponse.data.style) {
             cardBackStyleValue = cardBackResponse.data.style;
-            setCardBackStyle(cardBackStyleValue);
-            dispatch(setCardBack(cardBackStyleValue));
+            
+            // Проверяем наличие cardBackStyleValue в purchasedShirts перед установкой
+            const isCardBackAvailable = purchasedShirts.some(
+              shirt => shirt.image_url === cardBackStyleValue
+            );
+            
+            if (isCardBackAvailable || cardBackStyleValue === "default") {
+              setCardBackStyle(cardBackStyleValue);
+              dispatch(setCardBack(cardBackStyleValue));
+              
+              // Get card back name and translate it only if card back is available
+              const cardBackName = purchasedShirts.find(
+                shirt => shirt.image_url === cardBackStyleValue
+              )?.name;
+              
+              const translatedName = cardBackStyleValue === "default" ? 
+                "Стандартная рубашка" : 
+                await translateServerResponse(cardBackName);
+              setTranslatedCardBackName(translatedName);
+            }
           }
-          // Get card back name and translate it before setting loading to false
-const cardBackName = purchasedShirts.find(
-  (shirt) => shirt.image_url === cardBackStyleValue
-)?.name;
-if (cardBackStyleValue === "default") {
-  setTranslatedCardBackName("Стандартная рубашка");
-} else if (cardBackName) {
-  const translatedName = await translateServerResponse(cardBackName);
-  setTranslatedCardBackName(translatedName);
-}
         }
         
         // Load card backs
