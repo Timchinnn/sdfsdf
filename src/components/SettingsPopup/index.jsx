@@ -100,26 +100,18 @@ useEffect(() => {
           
           if (cardBackResponse.data.style) {
             cardBackStyleValue = cardBackResponse.data.style;
-            
-            // Проверяем наличие cardBackStyleValue в purchasedShirts перед установкой
-            const isCardBackAvailable = purchasedShirts.some(
-              shirt => shirt.image_url === cardBackStyleValue
-            );
-            
-            if (isCardBackAvailable || cardBackStyleValue === "default") {
-              setCardBackStyle(cardBackStyleValue);
-              dispatch(setCardBack(cardBackStyleValue));
-              
-              // Get card back name and translate it only if card back is available
-              const cardBackName = purchasedShirts.find(
-                shirt => shirt.image_url === cardBackStyleValue
-              )?.name;
-              
-              const translatedName = cardBackStyleValue === "default" ? 
-                "Стандартная рубашка" : 
-                await translateServerResponse(cardBackName);
-              setTranslatedCardBackName(translatedName);
-            }
+            setCardBackStyle(cardBackStyleValue);
+            dispatch(setCardBack(cardBackStyleValue));
+          }
+          // Get card back name and translate it before setting loading to false
+const cardBackName = purchasedShirts.find(
+            (shirt) => shirt.image_url === cardBackStyleValue
+          )?.name;
+          if (cardBackName || cardBackStyleValue === "default") {
+            const translatedName = cardBackStyleValue === "default" ? 
+              "Стандартная рубашка" : 
+              await translateServerResponse('cardBackName');
+            setTranslatedCardBackName(translatedName);
           }
         }
         
