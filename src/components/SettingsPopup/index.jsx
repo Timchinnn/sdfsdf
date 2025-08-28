@@ -97,6 +97,7 @@ useEffect(() => {
             cardBackService.getUserCardBack(tg.initDataUnsafe.user.id),
             fetchPurchasedShirts()
           ]);
+          console.log(cardBackResponse)
           
           if (cardBackResponse.data.style) {
             cardBackStyleValue = cardBackResponse.data.style;
