@@ -69,9 +69,15 @@ useEffect(() => {
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
-      if (cardBackName) {
+      
+      // Проверяем существование cardBackName перед переводом
+      if (cardBackStyle === "default") {
+        setTranslatedCardBackName("Стандартная рубашка");
+      } else if (cardBackName) {
         const translatedName = await translateServerResponse(cardBackName);
         setTranslatedCardBackName(translatedName);
+      } else {
+        setTranslatedCardBackName(""); // Очищаем значение если рубашка не найдена
       }
     };
     getTranslatedName();
