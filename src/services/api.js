@@ -99,8 +99,17 @@ export const cardsService = {
 };
 export const cardBackService = {
   getAllCardBacks: () => axios.get("/card-backs"),
-  getUserCardBack: (telegram_id) => axios.get(`/user/${telegram_id}/card-back`),
-  updateUserCardBack: (userId, data) =>
+ getUserCardBack: (telegram_id) => axios.get(`/user/${telegram_id}/card-back`).then(response => {
+    // If no card back style is found, return default style
+    if (!response.data || !response.data.style) {
+      return {
+        data: {
+          style: "default"
+        }
+      };
+    }
+    return response;
+  }),  updateUserCardBack: (userId, data) =>
     axios.put(`/user/${userId}/card-back`, data),
   addCardBack: (formData) =>
     axios.post("/card-backs/add", formData, {
