@@ -111,14 +111,14 @@ useEffect(() => {
           }
           // Get card back name and translate it before setting loading to false
 const cardBackName = purchasedShirts.find(
-            (shirt) => shirt.image_url === cardBackStyleValue
-          )?.name;
-          if (cardBackName || cardBackStyleValue === "default") {
-            const translatedName = cardBackStyleValue === "default" ? 
-              "Стандартная рубашка" : 
-              await translateServerResponse(cardBackName);
-            setTranslatedCardBackName(translatedName);
-          }
+  (shirt) => shirt.image_url === cardBackStyleValue
+)?.name;
+if (cardBackStyleValue === "default") {
+  setTranslatedCardBackName("Стандартная рубашка");
+} else if (cardBackName) {
+  const translatedName = await translateServerResponse(cardBackName);
+  setTranslatedCardBackName(translatedName);
+}
         }
         
         // Load card backs
