@@ -69,13 +69,16 @@ useEffect(() => {
       const cardBackName = purchasedShirts.find(
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
+      
       if (cardBackName) {
         const translatedName = await translateServerResponse(cardBackName);
         setTranslatedCardBackName(translatedName);
+      } else {
+        setTranslatedCardBackName('default');
       }
     };
     getTranslatedName();
-  }, [cardBackStyle, purchasedShirts, language]);
+}, [cardBackStyle, purchasedShirts, language]);
 
   const [isLoading, setIsLoading] = useState(true);
   const settingsPopupRef = useRef(null);
@@ -104,15 +107,15 @@ useEffect(() => {
             dispatch(setCardBack(cardBackStyleValue));
           }
           // Get card back name and translate it before setting loading to false
-        const cardBackName = purchasedShirts.find(
-  (shirt) => shirt.image_url === cardBackStyleValue
-)?.name;
-if (cardBackName || cardBackStyleValue === "default") {
-  const translatedName = cardBackStyleValue === "default" ? 
-    "Стандартная рубашка" : 
-    cardBackName ? await translateServerResponse(cardBackName) : "Стандартная рубашка";
-  setTranslatedCardBackName(translatedName);
-}
+const cardBackName = purchasedShirts.find(
+            (shirt) => shirt.image_url === cardBackStyleValue
+          )?.name;
+          if (cardBackName || cardBackStyleValue === "default") {
+            const translatedName = cardBackStyleValue === "default" ? 
+              "Стандартная рубашка" : 
+              await translateServerResponse(cardBackName);
+            setTranslatedCardBackName(translatedName);
+          }
         }
         
         // Load card backs
