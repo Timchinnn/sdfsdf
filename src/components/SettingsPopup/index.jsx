@@ -70,8 +70,9 @@ useEffect(() => {
         (shirt) => shirt.image_url === cardBackStyle
       )?.name;
       if (cardBackName) {
-        const translatedName = await translateServerResponse(cardBackName);
-        setTranslatedCardBackName(translatedName);
+        console.log(cardBackName)
+        // const translatedName = await translateServerResponse(cardBackName);
+        // setTranslatedCardBackName(translatedName);
       }
     };
     getTranslatedName();
