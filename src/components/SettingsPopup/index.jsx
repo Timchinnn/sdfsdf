@@ -93,27 +93,18 @@ useEffect(() => {
         let cardBackStyleValue = "default";
         
         if (tg?.initDataUnsafe?.user?.id) {
-          try {
-            const [cardBackResponse, purchasedResponse] = await Promise.all([
-              cardBackService.getUserCardBack(tg.initDataUnsafe.user.id),
-              fetchPurchasedShirts()
-            ]);
-            if (cardBackResponse.data.style) {
-              cardBackStyleValue = cardBackResponse.data.style;
-              setCardBackStyle(cardBackStyleValue);
-              dispatch(setCardBack(cardBackStyleValue));
-            }
-          } catch (error) {
-            if (error.response?.status === 404) {
-              // If 404 error, set default card back style without showing error
-              setCardBackStyle("default");
-              dispatch(setCardBack("default"));
-            } else {
-              console.error("Error loading card back:", error);
-            }
+          const [cardBackResponse, purchasedResponse] = await Promise.all([
+            cardBackService.getUserCardBack(tg.initDataUnsafe.user.id),
+            fetchPurchasedShirts()
+          ]);
+          
+          if (cardBackResponse.data.style) {
+            cardBackStyleValue = cardBackResponse.data.style;
+            setCardBackStyle(cardBackStyleValue);
+            dispatch(setCardBack(cardBackStyleValue));
           }
-          // Get card back name and translate it
-          const cardBackName = purchasedShirts.find(
+          // Get card back name and translate it before setting loading to false
+const cardBackName = purchasedShirts.find(
             (shirt) => shirt.image_url === cardBackStyleValue
           )?.name;
           if (cardBackName || cardBackStyleValue === "default") {
@@ -128,7 +119,7 @@ useEffect(() => {
         await fetchCardBacks();
         setIsLoading(false);
       } catch (error) {
-        console.error("Error loading data:", error);
+        console.error("Error");
         setIsLoading(false);
       }
     };
