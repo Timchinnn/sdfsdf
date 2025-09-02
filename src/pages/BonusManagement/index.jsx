@@ -87,22 +87,15 @@ const BonusManagement = () => {
                 <p>Истекает: {new Date(bonus.expires_at).toLocaleDateString()}</p>
               )}
                <p>Описание: {bonus.description || 'Без описания'}</p>
-  <p>Заметки: {bonus.notes || 'Без заметок'}</p>
+  <p>Заметки: {bonus.note || 'Без заметок'}</p>
             </div>
             <div className={styles.bonusActions}>
-                            {bonus.is_active ? (
+                            {bonus.is_active && (
                 <button 
                   onClick={() => handleDeactivate(bonus.id)}
                   className={styles.deactivateButton}
                 >
                   Деактивировать
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleActivate(bonus.id)}
-                  className={styles.activateButton}
-                >
-                  Активировать
                 </button>
               )}
                             <button
