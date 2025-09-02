@@ -86,6 +86,8 @@ const BonusManagement = () => {
               {bonus.expires_at && (
                 <p>Истекает: {new Date(bonus.expires_at).toLocaleDateString()}</p>
               )}
+               <p>Описание: {bonus.description || 'Без описания'}</p>
+  <p>Заметки: {bonus.notes || 'Без заметок'}</p>
             </div>
             <div className={styles.bonusActions}>
                             {bonus.is_active ? (
