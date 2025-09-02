@@ -5,7 +5,7 @@ const BonusManagement = () => {
   const [bonuses, setBonuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasEditPermission, setHasEditPermission] = useState(false);
-  // Check permissions
+  // Check permissionss
   useEffect(() => {
     const checkPermissions = async () => {
       try {
