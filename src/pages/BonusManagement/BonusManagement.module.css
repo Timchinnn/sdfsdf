@@ -1,0 +1,44 @@
+.container {
+  padding: 20px;
+}
+.bonusList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+.bonusItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.bonusInfo {
+  flex: 1;
+}
+.bonusInfo h3 {
+  margin: 0 0 8px 0;
+  color: #333;
+}
+.bonusInfo p {
+  margin: 4px 0;
+  color: #666;
+}
+.bonusActions {
+  display: flex;
+  gap: 8px;
+}
+.deactivateButton {
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.deactivateButton:hover {
+  background-color: #c82333;
+}

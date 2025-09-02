@@ -54,7 +54,7 @@ import UsersList from "pages/UsersList";
 import EditUser from 'pages/EditUser';
 import Moderators from 'pages/Moderators';
 import EditModerator from 'pages/EditModerator';
-
+import BonusManagement from "pages/BonusManagement";
 const AppContent = () => {
   const theme = useSelector((state) => state.theme);
 
@@ -125,6 +125,11 @@ const AppContent = () => {
             exact
             path={routeAddEditCardBackPage()}
             component={AddEditCardBack}
+          />
+          <ProtectedRoute
+            exact
+            path="/bonusmanagement"
+            component={BonusManagement}
           />
 <Route exact path={routeAdminPage()} component={AdminPanel} />
           <ProtectedRoute exact path="/referral-system" component={ReferralSystem} />
