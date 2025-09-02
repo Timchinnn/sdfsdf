@@ -98,10 +98,9 @@ export const cardsService = {
     }),
 };
 export const bonusService = {
-  getAllBonuses: () => axios.get("/api/bonuses"),
-  deactivateBonus: (id) => axios.put(`/api/bonuses/${id}/deactivate`),
-  createBonus: (data) => axios.post("/api/bonuses", data),
-  deleteBonus: (id) => axios.delete(`/api/bonuses/${id}`)
+  getAllBonuses: () => axios.get("/bonuses"),
+  deactivateBonus: (id) => axios.put(`/bonuses/${id}/deactivate`),
+
 };
 export const cardBackService = {
   getAllCardBacks: () => axios.get("/card-backs"),
