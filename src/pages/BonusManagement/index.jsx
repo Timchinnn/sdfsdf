@@ -62,6 +62,14 @@ const BonusManagement = () => {
       console.error('Error deactivating bonus:', error);
     }
   };
+  const handleDelete = async (id) => {
+    try {
+      await bonusService.deleteBonus(id);
+      setBonuses(bonuses.filter((bonus) => bonus.id !== id));
+    } catch (error) {
+      console.error("Error deleting bonus:", error);
+    }
+  };
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -95,6 +103,13 @@ const BonusManagement = () => {
                   Активировать
                 </button>
               )}
+                            <button
+                onClick={() => handleDelete(bonus.id)}
+                className={styles.deleteButton}
+                style={{ marginLeft: '8px' }}
+              >
+                Удалить
+              </button>
   
             </div>
           </div>
