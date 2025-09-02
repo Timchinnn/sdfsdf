@@ -100,6 +100,7 @@ export const cardsService = {
 export const bonusService = {
   getAllBonuses: () => axios.get("/bonuses"),
   deactivateBonus: (id) => axios.put(`/bonuses/${id}/deactivate`),
+  activateBonus: (id) => axios.put(`/bonuses/${id}/activate`),
 
 };
 export const cardBackService = {

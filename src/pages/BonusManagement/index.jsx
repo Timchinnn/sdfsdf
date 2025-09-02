@@ -38,6 +38,18 @@ const BonusManagement = () => {
     };
     fetchBonuses();
   }, []);
+  const handleActivate = async (id) => {
+    try {
+      await bonusService.activateBonus(id);
+      setBonuses(prevBonuses => 
+        prevBonuses.map(bonus => 
+          bonus.id === id ? { ...bonus, is_active: true } : bonus
+        )
+      );
+    } catch (error) {
+      console.error('Error activating bonus:', error);
+    }
+  };
   const handleDeactivate = async (id) => {
     try {
       await bonusService.deactivateBonus(id);
@@ -68,14 +80,22 @@ const BonusManagement = () => {
               )}
             </div>
             <div className={styles.bonusActions}>
-              {bonus.is_active && (
+                            {bonus.is_active ? (
                 <button 
                   onClick={() => handleDeactivate(bonus.id)}
                   className={styles.deactivateButton}
                 >
                   Деактивировать
                 </button>
+              ) : (
+                <button
+                  onClick={() => handleActivate(bonus.id)}
+                  className={styles.activateButton}
+                >
+                  Активировать
+                </button>
               )}
+  
             </div>
           </div>
         ))}
