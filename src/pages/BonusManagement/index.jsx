@@ -87,10 +87,10 @@ const BonusManagement = () => {
                 <p>Истекает: {new Date(bonus.expires_at).toLocaleDateString()}</p>
               )}</div>
    
-              <div><p>Описание: </p>
+              <div  className={styles.borderDesc}><p>Описание: </p>
               <p>{bonus.description || 'Без описания'}</p>
               </div>
-               <div><p>Заметки: </p>
+               <div className={styles.borderDesc}><p>Заметки: </p>
                <p>{bonus.note || 'Без заметок'}</p>
                </div>
   
