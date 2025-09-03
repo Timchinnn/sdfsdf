@@ -97,7 +97,7 @@ const BonusManagement = () => {
               <div className={styles.borderDesc}>
                 <p>Описание: </p>
                 <p>{bonus.description || "Без описания"}</p>
-                <p>Создан: {new Date(bonus.created_at).toLocaleDateString()}</p>
+                <p>Создан:</p>
                 <p>{new Date(bonus.created_at).toLocaleDateString()}</p>
               </div>
               <div className={styles.borderDesc}>
@@ -120,6 +120,12 @@ const BonusManagement = () => {
                 style={{ marginLeft: "8px" }}
               >
                 Удалить
+              </button>
+              <button
+                className={styles.editButton}
+                style={{ marginLeft: "8px" }}
+              >
+                Редактировать
               </button>
             </div>
           </div>
