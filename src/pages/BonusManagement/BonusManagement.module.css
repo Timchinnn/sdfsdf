@@ -44,7 +44,7 @@
 .deactivateButton:hover {
   background-color: #c82333;
 }
-.borderDesc{
+.borderDesc{ 
       border: 1px solid black;
     padding: 17px;
     border-radius: 17px;
