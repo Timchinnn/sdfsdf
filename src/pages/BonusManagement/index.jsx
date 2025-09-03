@@ -80,14 +80,16 @@ const BonusManagement = () => {
         {bonuses.map(bonus => (
           <div key={bonus.id} className={styles.bonusItem}>
             <div className={styles.bonusInfo}>
-              <h3>{bonus.name || 'Без названия'}</h3>
+              <div>           <h3>{bonus.name || 'Без названия'}</h3>
               <p>Статус: {bonus.is_active ? 'Активен' : 'Неактивен'}</p>
               <p>Создан: {new Date(bonus.created_at).toLocaleDateString()}</p>
               {bonus.expires_at && (
                 <p>Истекает: {new Date(bonus.expires_at).toLocaleDateString()}</p>
-              )}
-               <p>Описание: {bonus.description || 'Без описания'}</p>
-  <p>Заметки: {bonus.note || 'Без заметок'}</p>
+              )}</div>
+   
+              <div><p>Описание: {bonus.description || 'Без описания'}</p></div>
+               <div><p>Заметки: {bonus.note || 'Без заметок'}</p></div>
+  
             </div>
             <div className={styles.bonusActions}>
                             {bonus.is_active && (
