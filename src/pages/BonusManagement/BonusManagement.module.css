@@ -8,12 +8,11 @@
   margin-top: 20px;
 }
 .bonusItem {
-
   align-items: center;
   padding: 16px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .bonusInfo {
   flex: 1;
@@ -44,8 +43,16 @@
 .deactivateButton:hover {
   background-color: #c82333;
 }
-.borderDesc{ 
-      border: 1px solid black;
-    padding: 17px;
-    border-radius: 17px;
+.deleteButton {
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.borderDesc {
+  border: 1px solid black;
+  padding: 17px;
+  border-radius: 17px;
 }
