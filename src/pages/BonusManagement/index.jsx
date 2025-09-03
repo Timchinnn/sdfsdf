@@ -105,6 +105,11 @@ const BonusManagement = () => {
                 <p>{bonus.note || "Без заметок"}</p>
               </div>
             </div>
+            <div>
+              <p>Количество инвайт кодов</p>
+              <p>//</p>
+              <p>создано/использовано/осталось</p>
+            </div>
             <div className={styles.bonusActions}>
               {bonus.is_active && (
                 <button
