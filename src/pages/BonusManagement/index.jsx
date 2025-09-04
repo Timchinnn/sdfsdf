@@ -105,7 +105,7 @@ const BonusManagement = () => {
                 <p>{bonus.note || "Без заметок"}</p>
               </div>
             </div>
-            <div>
+            <div style={{ color: "black", marginBottom: "10px" }}>
               <p>Количество инвайт кодов</p>
               <p>//</p>
               <p>создано/использовано/осталось</p>
