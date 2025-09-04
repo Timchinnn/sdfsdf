@@ -19,7 +19,7 @@ const BonusManagement = () => {
     };
     fetchStats();
   }, []);
-  // Check permissionss
+  // Check permissionssы
   //   useEffect(() => {
   //     const checkPermissions = async () => {
   //       try {
