@@ -7,6 +7,18 @@ const BonusManagement = () => {
   const [bonuses, setBonuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasEditPermission, setHasEditPermission] = useState(false);
+  const [stats, setStats] = useState(null);
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await axios.get("/bonus-codes/stats");
+        setStats(response.data);
+      } catch (error) {
+        console.error("Error fetching bonus code stats:", error);
+      }
+    };
+    fetchStats();
+  }, []);
   // Check permissionss
   //   useEffect(() => {
   //     const checkPermissions = async () => {
@@ -107,7 +119,9 @@ const BonusManagement = () => {
             </div>
             <div style={{ color: "black", marginBottom: "10px" }}>
               <p>Количество инвайт кодов</p>
-              <p>//</p>
+              <p>
+                {stats?.total || 0}/{stats?.used || 0}/{stats?.remaining || 0}
+              </p>
               <p>создано/использовано/осталось</p>
             </div>
             <div className={styles.bonusActions}>
