@@ -6,7 +6,7 @@ import axios from "../../axios-controller";
 const BonusManagement = () => {
   const [bonuses, setBonuses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [hasEditPermission, setHasEditPermission] = useState(false);
+  const [hasEditPermission, setHasEditPermission] = useState(true);
   const [stats, setStats] = useState(null);
   useEffect(() => {
     const fetchStats = async () => {
