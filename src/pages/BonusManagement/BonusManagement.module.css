@@ -65,7 +65,7 @@
   cursor: pointer;
 }
 .borderDesc {
-  box-shadow: 0 2px 4px black;
+  box-shadow: 0 2px 3px black;
   padding: 17px;
   border-radius: 17px;
 }
