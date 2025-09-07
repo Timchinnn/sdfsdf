@@ -400,7 +400,7 @@ const BonusCodeManagement = () => {
           Скачать коды в TXT
         </button>
       </div>
-      <div className={styles.generatedCodes}>
+      {/* <div className={styles.generatedCodes}>
         <h3>Сгенерированные коды</h3>
         <div className={styles.codesList}>
           {generatedCodes.map((codeData, index) => (
@@ -461,7 +461,7 @@ const BonusCodeManagement = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
