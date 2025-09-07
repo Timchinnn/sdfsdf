@@ -51,9 +51,9 @@ import { routeAddEditShopSet } from "pages/AddEditShopSet";
 import AddEditShopShirt from "pages/AddEditShopShirt";
 import { routeAddEditShopShirt } from "pages/AddEditShopShirt";
 import UsersList from "pages/UsersList";
-import EditUser from 'pages/EditUser';
-import Moderators from 'pages/Moderators';
-import EditModerator from 'pages/EditModerator';
+import EditUser from "pages/EditUser";
+import Moderators from "pages/Moderators";
+import EditModerator from "pages/EditModerator";
 import BonusManagement from "pages/BonusManagement";
 const AppContent = () => {
   const theme = useSelector((state) => state.theme);
@@ -88,8 +88,16 @@ const AppContent = () => {
             path={routeAddEditShopShirt(":id")}
             component={AddEditShopShirt}
           />
-          <ProtectedRoute exact path="/addEditCard/:id" component={AddEditCard} />
-          <ProtectedRoute exact path="/addEditDeck/:id" component={AddEditDeck} />
+          <ProtectedRoute
+            exact
+            path="/addEditCard/:id"
+            component={AddEditCard}
+          />
+          <ProtectedRoute
+            exact
+            path="/addEditDeck/:id"
+            component={AddEditDeck}
+          />
           <ProtectedRoute
             exact
             path="/addEditCityDeck/:id"
@@ -106,7 +114,11 @@ const AppContent = () => {
             component={AddEditShopCard}
           />
           <Route exact path={routeMainPage()} component={MainPage} />
-          <ProtectedRoute exact path={routeAddEditDeckPage()} component={AddEditDeck} />
+          <ProtectedRoute
+            exact
+            path={routeAddEditDeckPage()}
+            component={AddEditDeck}
+          />
           <ProtectedRoute
             exact
             path={routeAddEditCityDeckPage()}
@@ -115,12 +127,16 @@ const AppContent = () => {
           <Route exact path={routeCityPage()} component={CityPage} />
           <ProtectedRoute
             exact
-            path={routeBonusCodeManagementPage()}
+            path={routeBonusCodeManagementPage(":id")}
             component={BonusCodeManagement}
           />
           <Route exact path={routeFriendsPage()} component={FriendsPage} />
           <Route exact path={routeShopPage()} component={ShopPage} />
-          <ProtectedRoute exact path={routeAddEditCardPage()} component={AddEditCard} />
+          <ProtectedRoute
+            exact
+            path={routeAddEditCardPage()}
+            component={AddEditCard}
+          />
           <ProtectedRoute
             exact
             path={routeAddEditCardBackPage()}
@@ -131,15 +147,30 @@ const AppContent = () => {
             path="/bonusmanagement"
             component={BonusManagement}
           />
-<Route exact path={routeAdminPage()} component={AdminPanel} />
-          <ProtectedRoute exact path="/referral-system" component={ReferralSystem} />
-<ProtectedRoute exact path={routeAdsManagementPage()} component={AdsManagement} />
+          <Route exact path={routeAdminPage()} component={AdminPanel} />
+          <ProtectedRoute
+            exact
+            path="/referral-system"
+            component={ReferralSystem}
+          />
+          <ProtectedRoute
+            exact
+            path={routeAdsManagementPage()}
+            component={AdsManagement}
+          />
 
-    <ProtectedRoute exact path={routeCardManagementPage()} component={CardManagement} />
-<ProtectedRoute path="/edit-moderator/:id" component={EditModerator} />
+          <ProtectedRoute
+            exact
+            path={routeCardManagementPage()}
+            component={CardManagement}
+          />
+          <ProtectedRoute
+            path="/edit-moderator/:id"
+            component={EditModerator}
+          />
 
           <Route exact path={routeTasksPage()} component={TasksPage} />
-<ProtectedRoute exact path="/moderators" component={Moderators} />
+          <ProtectedRoute exact path="/moderators" component={Moderators} />
 
           <Route exact path={routeSetsPage()} component={SetsPage} />
           <ProtectedRoute
@@ -152,11 +183,11 @@ const AppContent = () => {
             path={routeShopManagementPage()}
             component={ShopManagement}
           />
-<ProtectedRoute path="/edit-user/:id/:userId" component={EditUser} />
+          <ProtectedRoute path="/edit-user/:id/:userId" component={EditUser} />
 
           <Route exact path={routeBonusPage()} component={BonusPage} />
           <Route exact path={routePeoplePage()} component={PeoplePage} />
-<ProtectedRoute exact path="/users-list" component={UsersList} />
+          <ProtectedRoute exact path="/users-list" component={UsersList} />
 
           <Redirect
             to={{
