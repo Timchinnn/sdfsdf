@@ -10,6 +10,7 @@ import { useParams, useHistory } from "react-router-dom";
 import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
   const { id } = useParams();
+  console.log(id);
   const history = useHistory();
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
   const [cards, setCards] = useState([]);

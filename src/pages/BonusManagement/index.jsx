@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { bonusService } from "../../services/api";
 import styles from "./BonusManagement.module.css";
 import axios from "../../axios-controller";
+import { routeBonusCodeManagement } from "pages/BonusCodeManagement";
 
 const BonusManagement = () => {
-  
   const [bonuses, setBonuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasEditPermission, setHasEditPermission] = useState(true);
@@ -141,12 +141,14 @@ const BonusManagement = () => {
               >
                 Удалить
               </button>
-              <button
-                className={styles.editButton}
-                style={{ marginLeft: "8px" }}
-              >
-                Редактировать
-              </button>
+              <NavLink to={routeBonusCodeManagement(bonus.id)}>
+                <button
+                  className={styles.editButton}
+                  style={{ marginLeft: "8px" }}
+                >
+                  Редактировать
+                </button>
+              </NavLink>
             </div>
           </div>
         ))}
