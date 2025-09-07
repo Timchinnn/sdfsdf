@@ -3,8 +3,11 @@ import styles from "./BonusCodeManagement.module.css";
 import routeBonusCodeManagement from "./route";
 import { bonusCodeService, cardsService } from "../../services/api";
 import axios from "../../axios-controller";
-
+import left from "assets/img/left.png";
+import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
+  const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
+
   const [codes, setCodes] = useState([]);
   const [generatedCodes, setGeneratedCodes] = useState([]);
   const [codeCount, setCodeCount] = useState(1);
@@ -14,12 +17,16 @@ const BonusCodeManagement = () => {
   useEffect(() => {
     const checkPermissions = async () => {
       try {
-        const adminUsername = localStorage.getItem('adminUsername');
+        const adminUsername = localStorage.getItem("adminUsername");
         if (adminUsername) {
-          const response = await axios.get(`/moderators/permissions/${adminUsername}`);
-          setHasEditPermission(response.data.permissions.some(
-            p => p.permission_name === 'Добавление и редактирование бонусов'
-          ));
+          const response = await axios.get(
+            `/moderators/permissions/${adminUsername}`
+          );
+          setHasEditPermission(
+            response.data.permissions.some(
+              (p) => p.permission_name === "Добавление и редактирование бонусов"
+            )
+          );
         }
       } catch (error) {
         console.error("Error checking permissions:", error);
@@ -135,7 +142,10 @@ const BonusCodeManagement = () => {
     }
   };
   return (
-    <div className={styles.container} style={{ display: hasEditPermission ? 'block' : 'none' }}>
+    <div
+      className={styles.container}
+      style={{ display: hasEditPermission ? "block" : "none" }}
+    >
       <h2>Управление бонус-кодами</h2>
       <div className={styles.generatorSection}>
         <h3>Генератор кодов</h3>
@@ -255,21 +265,49 @@ const BonusCodeManagement = () => {
                   })
                 }
               />
-              <label>Карта:</label>
-              <select
-                value={rewards.cardId}
-                onChange={(e) =>
-                  setRewards({ ...rewards, cardId: e.target.value })
-                }
-                disabled={rewards.cardId === ""}
-              >
-                <option value="">Выберите карту</option>
-                {availableCards.map((card) => (
-                  <option key={card.id} value={card.id}>
-                    {card.title}
-                  </option>
-                ))}
-              </select>
+              <div className={styles.mainContent}>
+                <img
+                  src={left}
+                  className={styles.arrow}
+                  onClick={() => {
+                    currentAvailableIndex > 0 &&
+                      setCurrentAvailableIndex(currentAvailableIndex - 1);
+                  }}
+                  alt="Previous"
+                />
+                {availableCards
+                  .slice(currentAvailableIndex, currentAvailableIndex + 3)
+                  .map((card) => (
+                    <div key={card.id} className={styles.cardItem}>
+                      <div className={styles.cardItemImg}>
+                        <img
+                          src={`https://api.zoomayor.io${card.image}`}
+                          alt={card.title}
+                        />
+                      </div>
+                      <div className={styles.cardInfo}>
+                        <h3>{card.title}</h3>
+                      </div>
+                      <button
+                        onClick={() =>
+                          setRewards({ ...rewards, cardId: card.id })
+                        }
+                        disabled={rewards.cardId === card.id}
+                      >
+                        {rewards.cardId === card.id ? "Выбрано" : "Выбрать"}
+                      </button>
+                    </div>
+                  ))}
+                <img
+                  src={right}
+                  className={styles.arrow}
+                  onClick={() => {
+                    currentAvailableIndex < availableCards.length - 3 &&
+                      setCurrentAvailableIndex(currentAvailableIndex + 1);
+                  }}
+                  alt="Next"
+                />
+              </div>
             </div>
           </div>
         </div>
