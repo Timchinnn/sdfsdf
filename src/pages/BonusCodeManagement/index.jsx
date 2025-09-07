@@ -5,9 +5,12 @@ import { bonusCodeService, cardsService } from "../../services/api";
 import axios from "../../axios-controller";
 import left from "assets/img/left.png";
 import addimg from "assets/img/addimg.png";
+import { useParams, useHistory } from "react-router-dom";
 
 import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
+  const { id } = useParams();
+  const history = useHistory();
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
   const [cards, setCards] = useState([]);
   const [showAddCards, setShowAddCards] = useState(false);

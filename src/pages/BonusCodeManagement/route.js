@@ -1,3 +1,3 @@
-export default function routeBonusCodeManagement() {
-  return "/bonus-code-management";
+export default function routeBonusCodeManagement(id = "") {
+  return `/bonus-code-management${id ? `/${id}` : ""}`;
 }

@@ -4,6 +4,7 @@ import styles from "./BonusManagement.module.css";
 import axios from "../../axios-controller";
 
 const BonusManagement = () => {
+  
   const [bonuses, setBonuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasEditPermission, setHasEditPermission] = useState(true);
