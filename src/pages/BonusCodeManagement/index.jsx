@@ -62,9 +62,7 @@ const BonusCodeManagement = () => {
           .map(([type, value]) => `${type}: ${value}`)
           .join(", ");
 
-        return `Код: ${codeData.code}\nНазвание: ${
-          codeData.name
-        }\nНаграды: ${rewardsText}\n${
+        return `Код: ${codeData.code}\nНазвание: ${codeData.name}\n${
           codeData.expiresAt
             ? `Истекает: ${new Date(codeData.expiresAt).toLocaleDateString()}\n`
             : ""
