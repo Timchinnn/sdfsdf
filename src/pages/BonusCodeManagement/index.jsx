@@ -10,7 +10,6 @@ import { useParams, useHistory } from "react-router-dom";
 import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
   const { id } = useParams();
-  console.log(id);
   const history = useHistory();
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
   const [cards, setCards] = useState([]);
@@ -67,7 +66,7 @@ const BonusCodeManagement = () => {
   useEffect(() => {
     const fetchCodes = async () => {
       try {
-        const response = await bonusCodeService.getAllBonusCodes();
+        const response = await bonusCodeService.getAllBonusCodes(id);
         setCodes(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке кодов:", error);

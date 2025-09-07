@@ -101,22 +101,23 @@ export const bonusService = {
   getAllBonuses: () => axios.get("/bonuses"),
   deactivateBonus: (id) => axios.put(`/bonuses/${id}/deactivate`),
   activateBonus: (id) => axios.put(`/bonuses/${id}/activate`),
-  deleteBonus: (id) => axios.delete(`/bonuses/${id}`)
-
+  deleteBonus: (id) => axios.delete(`/bonuses/${id}`),
 };
 export const cardBackService = {
   getAllCardBacks: () => axios.get("/card-backs"),
- getUserCardBack: (telegram_id) => axios.get(`/user/${telegram_id}/card-back`).then(response => {
-    // If no card back style is found, return default style
-    if (!response.data || !response.data.style) {
-      return {
-        data: {
-          style: "default"
-        }
-      };
-    }
-    return response;
-  }),  updateUserCardBack: (userId, data) =>
+  getUserCardBack: (telegram_id) =>
+    axios.get(`/user/${telegram_id}/card-back`).then((response) => {
+      // If no card back style is found, return default style
+      if (!response.data || !response.data.style) {
+        return {
+          data: {
+            style: "default",
+          },
+        };
+      }
+      return response;
+    }),
+  updateUserCardBack: (userId, data) =>
     axios.put(`/user/${userId}/card-back`, data),
   addCardBack: (formData) =>
     axios.post("/card-backs/add", formData, {
@@ -290,7 +291,7 @@ export const shopSetService = {
   deleteShopSet: (id) => axios.delete(`/shop-sets/${id}`),
 };
 export const bonusCodeService = {
-  getAllBonusCodes: () => axios.get("/bonus-codes"),
+  getAllBonusCodes: (id = "") => axios.get(`/bonus-codes${id ? `/${id}` : ""}`),
   createBonusCode: (payload) => axios.post("/bonus-codes", payload),
   deleteBonusCode: (id) => axios.delete(`/bonus-codes/${id}`),
   activateCode: (telegram_id, code) =>
