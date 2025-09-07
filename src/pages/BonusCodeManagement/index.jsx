@@ -50,6 +50,37 @@ const BonusCodeManagement = () => {
   });
   const [codeName, setCodeName] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
+  const downloadCodesAsTxt = () => {
+    if (generatedCodes.length === 0) {
+      alert("Нет сгенерированных кодов для скачивания");
+      return;
+    }
+    const codesText = generatedCodes
+      .map((codeData) => {
+        const rewardsText = Object.entries(codeData.rewards)
+          .filter(([_, value]) => value > 0 || value !== "")
+          .map(([type, value]) => `${type}: ${value}`)
+          .join(", ");
+
+        return `Код: ${codeData.code}\nНазвание: ${
+          codeData.name
+        }\nНаграды: ${rewardsText}\n${
+          codeData.expiresAt
+            ? `Истекает: ${new Date(codeData.expiresAt).toLocaleDateString()}\n`
+            : ""
+        }\n`;
+      })
+      .join("---\n");
+    const blob = new Blob([codesText], { type: "text/plain;charset=utf-8" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `bonus-codes-${new Date().toISOString().split("T")[0]}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
   // Загрузка существующих кодов
   useEffect(() => {
     const fetchCards = async () => {
@@ -364,6 +395,13 @@ const BonusCodeManagement = () => {
         </div>
         <button onClick={generateBonusCode} className={styles.generateButton}>
           Сгенерировать коды
+        </button>
+        <button
+          onClick={downloadCodesAsTxt}
+          className={styles.generateButton}
+          style={{ marginTop: "10px" }}
+        >
+          Скачать коды в TXT
         </button>
       </div>
       <div className={styles.generatedCodes}>
