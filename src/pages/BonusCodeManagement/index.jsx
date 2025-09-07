@@ -51,11 +51,11 @@ const BonusCodeManagement = () => {
   const [codeName, setCodeName] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
   const downloadCodesAsTxt = () => {
-    if (generatedCodes.length === 0) {
-      alert("Нет сгенерированных кодов для скачивания");
-      return;
-    }
-    const codesText = generatedCodes
+    // if (generatedCodes.length === 0) {
+    //   alert("Нет сгенерированных кодов для скачивания");
+    //   return;
+    // }
+    const codesText = codes
       .map((codeData) => {
         const rewardsText = Object.entries(codeData.rewards)
           .filter(([_, value]) => value > 0 || value !== "")
