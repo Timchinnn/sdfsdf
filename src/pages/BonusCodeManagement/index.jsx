@@ -57,17 +57,15 @@ const BonusCodeManagement = () => {
     // }
     const codesText = codes
       .map((codeData) => {
-        const rewardsText = Object.entries(codeData.rewards)
-          .filter(([_, value]) => value > 0 || value !== "")
-          .map(([type, value]) => `${type}: ${value}`)
-          .join(", ");
-
-        return `Код: ${codeData.code}\nНазвание: ${codeData.name}\n${
+        return `Код: ${codeData.code}\nНазвание: ${codeData.name}\nСтатус: ${
+          codeData.is_used ? "Использован" : "Активен"
+        }\n${
           codeData.expiresAt
             ? `Истекает: ${new Date(codeData.expiresAt).toLocaleDateString()}\n`
             : ""
         }\n`;
       })
+
       .join("---\n");
     const blob = new Blob([codesText], { type: "text/plain;charset=utf-8" });
     const url = window.URL.createObjectURL(blob);
