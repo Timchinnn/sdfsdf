@@ -395,7 +395,7 @@ const BonusCodeManagement = () => {
         <button
           onClick={downloadCodesAsTxt}
           className={styles.generateButton}
-          style={{ marginTop: "10px" }}
+          style={{ marginLeft: "10px" }}
         >
           Скачать коды в TXT
         </button>
