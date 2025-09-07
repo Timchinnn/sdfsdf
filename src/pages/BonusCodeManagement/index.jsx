@@ -7,7 +7,10 @@ import left from "assets/img/left.png";
 import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
-
+  const [cards, setCards] = useState([]);
+  const [showAddCards, setShowAddCards] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCard, setSelectedCard] = useState(null);
   const [codes, setCodes] = useState([]);
   const [generatedCodes, setGeneratedCodes] = useState([]);
   const [codeCount, setCodeCount] = useState(1);
@@ -48,6 +51,7 @@ const BonusCodeManagement = () => {
       try {
         const response = await cardsService.getAllCards();
         setAvailableCards(response.data);
+        setCards(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке карт:", error);
       }
@@ -250,6 +254,7 @@ const BonusCodeManagement = () => {
                 disabled={!rewards.energy}
               />
             </div>
+            jsx
             <div className={styles.rewardItem}>
               <input
                 type="checkbox"
@@ -260,55 +265,109 @@ const BonusCodeManagement = () => {
                     cardId: e.target.checked
                       ? rewards.cardId !== ""
                         ? rewards.cardId
-                        : availableCards[0]?.id || ""
+                        : ""
                       : "",
                   })
                 }
               />
               <div className={styles.mainContent}>
-                <img
-                  src={left}
-                  className={styles.arrow}
-                  onClick={() => {
-                    currentAvailableIndex > 0 &&
-                      setCurrentAvailableIndex(currentAvailableIndex - 1);
-                  }}
-                  alt="Previous"
-                />
-                {availableCards
-                  .slice(currentAvailableIndex, currentAvailableIndex + 3)
-                  .map((card) => (
-                    <div key={card.id} className={styles.cardItem}>
-                      <div className={styles.cardItemImg}>
-                        <img
-                          src={`https://api.zoomayor.io${card.image}`}
-                          alt={card.title}
-                        />
-                      </div>
-                      <div className={styles.cardInfo}>
-                        <h3>{card.title}</h3>
-                      </div>
-                      <button
-                        onClick={() =>
-                          setRewards({ ...rewards, cardId: card.id })
-                        }
-                        disabled={rewards.cardId === card.id}
-                      >
-                        {rewards.cardId === card.id ? "Выбрано" : "Выбрать"}
-                      </button>
+                {selectedCard ? (
+                  <div className={styles.cardItem}>
+                    <div className={styles.cardItemImg}>
+                      <img
+                        src={`https://api.zoomayor.io${selectedCard.image}`}
+                        alt={selectedCard.title}
+                      />
                     </div>
-                  ))}
-                <img
-                  src={right}
-                  className={styles.arrow}
-                  onClick={() => {
-                    currentAvailableIndex < availableCards.length - 3 &&
-                      setCurrentAvailableIndex(currentAvailableIndex + 1);
-                  }}
-                  alt="Next"
-                />
+                    <div className={styles.cardInfo}>
+                      <h3>{selectedCard.title}</h3>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setSelectedCard(null);
+                        setRewards({ ...rewards, cardId: "" });
+                      }}
+                      style={{ background: "red" }}
+                    >
+                      Удалить
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    className={styles.whiteBox}
+                    onClick={() => setShowAddCards(!showAddCards)}
+                  >
+                    <div className={styles.whiteBoxImg}>
+                      <img src={addimg} alt="#" style={{ height: "64px" }} />
+                      <p>Выберите карту</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
+            {showAddCards && !selectedCard && (
+              <div>
+                <h3>Выберите карту:</h3>
+                <div className={styles.mainContent}>
+                  <img
+                    src={left}
+                    className={styles.arrow}
+                    onClick={() => {
+                      currentAvailableIndex > 0 &&
+                        setCurrentAvailableIndex(currentAvailableIndex - 1);
+                    }}
+                    alt="Previous"
+                  />
+                  {cards
+                    .filter((card) =>
+                      card.title
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase())
+                    )
+                    .slice(currentAvailableIndex, currentAvailableIndex + 3)
+                    .map((card) => (
+                      <div key={card.id} className={styles.cardItem}>
+                        <div className={styles.cardItemImg}>
+                          <img
+                            src={`https://api.zoomayor.io${card.image}`}
+                            alt={card.title}
+                          />
+                        </div>
+                        <div className={styles.cardInfo}>
+                          <h3>{card.title}</h3>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setSelectedCard(card);
+                            setRewards({ ...rewards, cardId: card.id });
+                            setShowAddCards(false);
+                          }}
+                        >
+                          Выбрать
+                        </button>
+                      </div>
+                    ))}
+                  <img
+                    src={right}
+                    className={styles.arrow}
+                    onClick={() => {
+                      currentAvailableIndex < cards.length - 3 &&
+                        setCurrentAvailableIndex(currentAvailableIndex + 1);
+                    }}
+                    alt="Next"
+                  />
+                </div>
+                <div className={styles.searchContainer}>
+                  <input
+                    type="text"
+                    placeholder="Поиск по названию"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={styles.searchInput}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <button onClick={generateBonusCode} className={styles.generateButton}>
