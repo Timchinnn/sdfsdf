@@ -22,7 +22,7 @@ const BonusCodeManagement = () => {
   const [codeCount, setCodeCount] = useState(1);
   const [availableCards, setAvailableCards] = useState([]); // Добавляем состояние для списка карт
   const [hasEditPermission, setHasEditPermission] = useState(false);
-  // Check permissions
+  // Check permissionsd
   useEffect(() => {
     const checkPermissions = async () => {
       try {
