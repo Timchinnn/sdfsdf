@@ -4,6 +4,8 @@ import routeBonusCodeManagement from "./route";
 import { bonusCodeService, cardsService } from "../../services/api";
 import axios from "../../axios-controller";
 import left from "assets/img/left.png";
+import addimg from "assets/img/addimg.png";
+
 import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
