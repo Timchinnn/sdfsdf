@@ -256,7 +256,6 @@ const BonusCodeManagement = () => {
                 disabled={!rewards.energy}
               />
             </div>
-            jsx
             <div className={styles.rewardItem}>
               <input
                 type="checkbox"
@@ -289,7 +288,7 @@ const BonusCodeManagement = () => {
                         setSelectedCard(null);
                         setRewards({ ...rewards, cardId: "" });
                       }}
-                      style={{ background: "red" }}
+                      className={styles.deleteButton}
                     >
                       Удалить
                     </button>
@@ -321,11 +320,7 @@ const BonusCodeManagement = () => {
                     alt="Previous"
                   />
                   {cards
-                    .filter((card) =>
-                      card.title
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase())
-                    )
+                    .filter((card) => card.title.toLowerCase())
                     .slice(currentAvailableIndex, currentAvailableIndex + 3)
                     .map((card) => (
                       <div key={card.id} className={styles.cardItem}>
@@ -344,6 +339,7 @@ const BonusCodeManagement = () => {
                             setRewards({ ...rewards, cardId: card.id });
                             setShowAddCards(false);
                           }}
+                          className={styles.chooseCard}
                         >
                           Выбрать
                         </button>
@@ -357,15 +353,6 @@ const BonusCodeManagement = () => {
                         setCurrentAvailableIndex(currentAvailableIndex + 1);
                     }}
                     alt="Next"
-                  />
-                </div>
-                <div className={styles.searchContainer}>
-                  <input
-                    type="text"
-                    placeholder="Поиск по названию"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className={styles.searchInput}
                   />
                 </div>
               </div>

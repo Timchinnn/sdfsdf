@@ -200,3 +200,12 @@
 .cardInfo {
   text-align: center;
 }
+.chooseCard {
+  background: green;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 5px 10px;
+}
