@@ -143,6 +143,7 @@ const BonusCodeManagement = () => {
         reward_type: null,
         reward_value: null,
         reward_card_id: null,
+        max_uses: 1, // Add default max_uses value
         expires_at: codeData.expiresAt || null,
         rewards: JSON.stringify(codeData.rewards),
       };
