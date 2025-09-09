@@ -195,16 +195,18 @@ const BonusCodeManagement = () => {
             placeholder="Введите название кода"
           />
         </div>
-        <div className={styles.inputGroup}>
-          <label>Количество кодов:</label>
-          <input
-            type="number"
-            value={codeCount}
-            onChange={(e) => setCodeCount(e.target.value)}
-            min="1"
-            max="100"
-          />
-        </div>
+        {!id && (
+          <div className={styles.inputGroup}>
+            <label>Количество кодов:</label>
+            <input
+              type="number"
+              value={codeCount}
+              onChange={(e) => setCodeCount(e.target.value)}
+              min="1"
+              max="100"
+            />
+          </div>
+        )}
         <div className={styles.inputGroup}>
           <label>Срок действия:</label>
           <input
@@ -393,13 +395,15 @@ const BonusCodeManagement = () => {
         <button onClick={generateBonusCode} className={styles.generateButton}>
           Сгенерировать коды
         </button>
-        <button
-          onClick={downloadCodesAsTxt}
-          className={styles.generateButton}
-          style={{ marginLeft: "10px" }}
-        >
-          Скачать коды в TXT
-        </button>
+        {id && (
+          <button
+            onClick={downloadCodesAsTxt}
+            className={styles.generateButton}
+            style={{ marginLeft: "10px" }}
+          >
+            Скачать коды в TXT
+          </button>
+        )}
       </div>
       {/* <div className={styles.generatedCodes}>
         <h3>Сгенерированные коды</h3>
