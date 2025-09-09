@@ -127,6 +127,11 @@ const AppContent = () => {
           <Route exact path={routeCityPage()} component={CityPage} />
           <ProtectedRoute
             exact
+            path={routeBonusCodeManagementPage()}
+            component={BonusCodeManagement}
+          />
+          <ProtectedRoute
+            exact
             path={routeBonusCodeManagementPage(":id")}
             component={BonusCodeManagement}
           />
