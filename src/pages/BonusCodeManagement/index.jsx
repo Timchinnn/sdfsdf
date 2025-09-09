@@ -377,7 +377,24 @@ const BonusCodeManagement = () => {
           </div>
         </div>
         <div>
-          <h3 style={{ marginBottom: "10px" }}>Обычные инвайт коды</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <input
+              type="checkbox"
+              style={{
+                width: "20px",
+                height: "20px",
+                cursor: "pointer",
+                marginRight: "10px",
+                appearance: "none",
+                WebkitAppearance: "none",
+                border: "2px solid #ccc",
+                borderRadius: "50%",
+                outline: "none",
+                position: "relative",
+              }}
+            />
+            <h3 style={{ marginBottom: "10px" }}>Обычные инвайт коды</h3>
+          </div>{" "}
           {!id && (
             <div className={styles.inputGroup}>
               <label>Количество кодов:</label>
@@ -402,7 +419,6 @@ const BonusCodeManagement = () => {
             <button
               onClick={downloadCodesAsTxt}
               className={styles.generateButton}
-              style={{ marginLeft: "10px" }}
             >
               Скачать коды в TXT
             </button>
