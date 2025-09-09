@@ -184,16 +184,209 @@ const BonusCodeManagement = () => {
       style={{ display: hasEditPermission ? "block" : "none" }}
     >
       <h2>Управление бонус-кодами</h2>
-      <div className={styles.generatorSection}>
-        <h3>Генератор кодов</h3>
-        <div className={styles.inputGroup}>
-          <label>Название кода:</label>
-          <input
-            type="text"
-            value={codeName}
-            onChange={(e) => setCodeName(e.target.value)}
-            placeholder="Введите название кода"
-          />
+      <div>
+        {" "}
+        <div className={styles.generatorSection}>
+          <h3>Генератор кодов</h3>
+          <div className={styles.inputGroup}>
+            <label>Название кода:</label>
+            <input
+              type="text"
+              value={codeName}
+              onChange={(e) => setCodeName(e.target.value)}
+              placeholder="Введите название кода"
+            />
+          </div>
+
+          <div className={styles.rewardsSection}>
+            <h4>Награды</h4>
+            <div className={styles.rewardInputs}>
+              <div className={styles.rewardItem}>
+                <input
+                  type="checkbox"
+                  checked={rewards.coins > 0}
+                  onChange={(e) =>
+                    setRewards({
+                      ...rewards,
+                      coins: e.target.checked ? rewards.coins || 100 : 0,
+                    })
+                  }
+                />
+                <label>Монеты:</label>
+                <input
+                  type="number"
+                  placeholder="Монеты"
+                  value={rewards.coins}
+                  onChange={(e) =>
+                    setRewards({ ...rewards, coins: parseInt(e.target.value) })
+                  }
+                  disabled={!rewards.coins}
+                />
+              </div>
+              <div className={styles.rewardItem}>
+                <input
+                  type="checkbox"
+                  checked={rewards.experience > 0}
+                  onChange={(e) =>
+                    setRewards({
+                      ...rewards,
+                      experience: e.target.checked
+                        ? rewards.experience || 100
+                        : 0,
+                    })
+                  }
+                />
+                <label>Опыт:</label>
+                <input
+                  type="number"
+                  placeholder="Опыт"
+                  value={rewards.experience}
+                  onChange={(e) =>
+                    setRewards({
+                      ...rewards,
+                      experience: parseInt(e.target.value),
+                    })
+                  }
+                  disabled={!rewards.experience}
+                />
+              </div>
+              <div className={styles.rewardItem}>
+                <input
+                  type="checkbox"
+                  checked={rewards.energy > 0}
+                  onChange={(e) =>
+                    setRewards({
+                      ...rewards,
+                      energy: e.target.checked ? rewards.energy || 10 : 0,
+                    })
+                  }
+                />
+                <label>Энергия:</label>
+                <input
+                  type="number"
+                  placeholder="Энергия"
+                  value={rewards.energy}
+                  onChange={(e) =>
+                    setRewards({ ...rewards, energy: parseInt(e.target.value) })
+                  }
+                  disabled={!rewards.energy}
+                />
+              </div>
+              <div className={styles.rewardItem}>
+                <input
+                  type="checkbox"
+                  checked={rewards.cardId !== ""}
+                  onChange={(e) =>
+                    setRewards({
+                      ...rewards,
+                      cardId: e.target.checked
+                        ? rewards.cardId !== ""
+                          ? rewards.cardId
+                          : ""
+                        : "",
+                    })
+                  }
+                />
+                <div className={styles.mainContent}>
+                  {selectedCard ? (
+                    <div className={styles.cardItem}>
+                      <div className={styles.cardItemImg}>
+                        <img
+                          src={`https://api.zoomayor.io${selectedCard.image}`}
+                          alt={selectedCard.title}
+                        />
+                      </div>
+                      <div className={styles.cardInfo}>
+                        <h3>{selectedCard.title}</h3>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setSelectedCard(null);
+                          setRewards({ ...rewards, cardId: "" });
+                        }}
+                        className={styles.deleteButton}
+                      >
+                        Удалить
+                      </button>
+                    </div>
+                  ) : (
+                    <div
+                      className={styles.whiteBox}
+                      onClick={() => setShowAddCards(!showAddCards)}
+                    >
+                      <div className={styles.whiteBoxImg}>
+                        <img src={addimg} alt="#" style={{ height: "64px" }} />
+                        <p>Выберите карту</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {showAddCards && !selectedCard && (
+                <div>
+                  <h3>Выберите карту:</h3>
+                  <div className={styles.mainContent}>
+                    <img
+                      src={left}
+                      className={styles.arrow}
+                      onClick={() => {
+                        currentAvailableIndex > 0 &&
+                          setCurrentAvailableIndex(currentAvailableIndex - 1);
+                      }}
+                      alt="Previous"
+                    />
+                    {cards
+                      .filter((card) => card.title.toLowerCase())
+                      .slice(currentAvailableIndex, currentAvailableIndex + 3)
+                      .map((card) => (
+                        <div key={card.id} className={styles.cardItem}>
+                          <div className={styles.cardItemImg}>
+                            <img
+                              src={`https://api.zoomayor.io${card.image}`}
+                              alt={card.title}
+                            />
+                          </div>
+                          <div className={styles.cardInfo}>
+                            <h3>{card.title}</h3>
+                          </div>
+                          <button
+                            onClick={() => {
+                              setSelectedCard(card);
+                              setRewards({ ...rewards, cardId: card.id });
+                              setShowAddCards(false);
+                            }}
+                            className={styles.chooseCard}
+                          >
+                            Выбрать
+                          </button>
+                        </div>
+                      ))}
+                    <img
+                      src={right}
+                      className={styles.arrow}
+                      onClick={() => {
+                        currentAvailableIndex < cards.length - 3 &&
+                          setCurrentAvailableIndex(currentAvailableIndex + 1);
+                      }}
+                      alt="Next"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          <button onClick={generateBonusCode} className={styles.generateButton}>
+            Сгенерировать коды
+          </button>
+          {id && (
+            <button
+              onClick={downloadCodesAsTxt}
+              className={styles.generateButton}
+              style={{ marginLeft: "10px" }}
+            >
+              Скачать коды в TXT
+            </button>
+          )}
         </div>
         {!id && (
           <div className={styles.inputGroup}>
@@ -215,196 +408,8 @@ const BonusCodeManagement = () => {
             onChange={(e) => setExpiresAt(e.target.value)}
           />
         </div>
-        <div className={styles.rewardsSection}>
-          <h4>Награды</h4>
-          <div className={styles.rewardInputs}>
-            <div className={styles.rewardItem}>
-              <input
-                type="checkbox"
-                checked={rewards.coins > 0}
-                onChange={(e) =>
-                  setRewards({
-                    ...rewards,
-                    coins: e.target.checked ? rewards.coins || 100 : 0,
-                  })
-                }
-              />
-              <label>Монеты:</label>
-              <input
-                type="number"
-                placeholder="Монеты"
-                value={rewards.coins}
-                onChange={(e) =>
-                  setRewards({ ...rewards, coins: parseInt(e.target.value) })
-                }
-                disabled={!rewards.coins}
-              />
-            </div>
-            <div className={styles.rewardItem}>
-              <input
-                type="checkbox"
-                checked={rewards.experience > 0}
-                onChange={(e) =>
-                  setRewards({
-                    ...rewards,
-                    experience: e.target.checked
-                      ? rewards.experience || 100
-                      : 0,
-                  })
-                }
-              />
-              <label>Опыт:</label>
-              <input
-                type="number"
-                placeholder="Опыт"
-                value={rewards.experience}
-                onChange={(e) =>
-                  setRewards({
-                    ...rewards,
-                    experience: parseInt(e.target.value),
-                  })
-                }
-                disabled={!rewards.experience}
-              />
-            </div>
-            <div className={styles.rewardItem}>
-              <input
-                type="checkbox"
-                checked={rewards.energy > 0}
-                onChange={(e) =>
-                  setRewards({
-                    ...rewards,
-                    energy: e.target.checked ? rewards.energy || 10 : 0,
-                  })
-                }
-              />
-              <label>Энергия:</label>
-              <input
-                type="number"
-                placeholder="Энергия"
-                value={rewards.energy}
-                onChange={(e) =>
-                  setRewards({ ...rewards, energy: parseInt(e.target.value) })
-                }
-                disabled={!rewards.energy}
-              />
-            </div>
-            <div className={styles.rewardItem}>
-              <input
-                type="checkbox"
-                checked={rewards.cardId !== ""}
-                onChange={(e) =>
-                  setRewards({
-                    ...rewards,
-                    cardId: e.target.checked
-                      ? rewards.cardId !== ""
-                        ? rewards.cardId
-                        : ""
-                      : "",
-                  })
-                }
-              />
-              <div className={styles.mainContent}>
-                {selectedCard ? (
-                  <div className={styles.cardItem}>
-                    <div className={styles.cardItemImg}>
-                      <img
-                        src={`https://api.zoomayor.io${selectedCard.image}`}
-                        alt={selectedCard.title}
-                      />
-                    </div>
-                    <div className={styles.cardInfo}>
-                      <h3>{selectedCard.title}</h3>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setSelectedCard(null);
-                        setRewards({ ...rewards, cardId: "" });
-                      }}
-                      className={styles.deleteButton}
-                    >
-                      Удалить
-                    </button>
-                  </div>
-                ) : (
-                  <div
-                    className={styles.whiteBox}
-                    onClick={() => setShowAddCards(!showAddCards)}
-                  >
-                    <div className={styles.whiteBoxImg}>
-                      <img src={addimg} alt="#" style={{ height: "64px" }} />
-                      <p>Выберите карту</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-            {showAddCards && !selectedCard && (
-              <div>
-                <h3>Выберите карту:</h3>
-                <div className={styles.mainContent}>
-                  <img
-                    src={left}
-                    className={styles.arrow}
-                    onClick={() => {
-                      currentAvailableIndex > 0 &&
-                        setCurrentAvailableIndex(currentAvailableIndex - 1);
-                    }}
-                    alt="Previous"
-                  />
-                  {cards
-                    .filter((card) => card.title.toLowerCase())
-                    .slice(currentAvailableIndex, currentAvailableIndex + 3)
-                    .map((card) => (
-                      <div key={card.id} className={styles.cardItem}>
-                        <div className={styles.cardItemImg}>
-                          <img
-                            src={`https://api.zoomayor.io${card.image}`}
-                            alt={card.title}
-                          />
-                        </div>
-                        <div className={styles.cardInfo}>
-                          <h3>{card.title}</h3>
-                        </div>
-                        <button
-                          onClick={() => {
-                            setSelectedCard(card);
-                            setRewards({ ...rewards, cardId: card.id });
-                            setShowAddCards(false);
-                          }}
-                          className={styles.chooseCard}
-                        >
-                          Выбрать
-                        </button>
-                      </div>
-                    ))}
-                  <img
-                    src={right}
-                    className={styles.arrow}
-                    onClick={() => {
-                      currentAvailableIndex < cards.length - 3 &&
-                        setCurrentAvailableIndex(currentAvailableIndex + 1);
-                    }}
-                    alt="Next"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        <button onClick={generateBonusCode} className={styles.generateButton}>
-          Сгенерировать коды
-        </button>
-        {id && (
-          <button
-            onClick={downloadCodesAsTxt}
-            className={styles.generateButton}
-            style={{ marginLeft: "10px" }}
-          >
-            Скачать коды в TXT
-          </button>
-        )}
       </div>
+
       {/* <div className={styles.generatedCodes}>
         <h3>Сгенерированные коды</h3>
         <div className={styles.codesList}>
