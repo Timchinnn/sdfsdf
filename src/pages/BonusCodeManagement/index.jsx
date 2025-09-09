@@ -184,7 +184,7 @@ const BonusCodeManagement = () => {
       style={{ display: hasEditPermission ? "block" : "none" }}
     >
       <h2>Управление бонус-кодами</h2>
-      <div>
+      <div className={styles.sectionMain}>
         {" "}
         <div className={styles.generatorSection}>
           <h3>Генератор кодов</h3>

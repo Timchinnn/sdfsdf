@@ -209,3 +209,8 @@
   margin-left: 10px;
   padding: 5px 10px;
 }
+.sectionMain {
+  display: flex;
+  justify-content: space-between;
+  width: 97vh;
+}
