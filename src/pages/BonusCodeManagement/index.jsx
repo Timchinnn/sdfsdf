@@ -379,10 +379,12 @@ const BonusCodeManagement = () => {
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <h3 style={{ marginBottom: "10px" }}>Обычные инвайт коды</h3>{" "}
-            <div className={styles.rewardItem}>
-              <input type="checkbox" />
-            </div>
-          </div>{" "}
+            {!id && (
+              <div className={styles.rewardItem}>
+                <input type="checkbox" />
+              </div>
+            )}
+          </div>
           {!id && (
             <div className={styles.inputGroup}>
               <label>Количество кодов:</label>
