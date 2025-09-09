@@ -390,9 +390,14 @@ const BonusCodeManagement = () => {
               />
             </div>
           )}{" "}
-          <button onClick={generateBonusCode} className={styles.generateButton}>
-            Сгенерировать коды
-          </button>
+          {!id && (
+            <button
+              onClick={generateBonusCode}
+              className={styles.generateButton}
+            >
+              Сгенерировать коды
+            </button>
+          )}
           {id && (
             <button
               onClick={downloadCodesAsTxt}
