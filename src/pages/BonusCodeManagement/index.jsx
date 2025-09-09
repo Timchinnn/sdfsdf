@@ -9,6 +9,7 @@ import { useParams, useHistory } from "react-router-dom";
 
 import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
+  const [shortInviteCodes, setShortInviteCodes] = useState(false); // Add state for tracking
   const { id } = useParams();
   const history = useHistory();
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
@@ -377,13 +378,15 @@ const BonusCodeManagement = () => {
           </div>
         </div>
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <h3 style={{ marginBottom: "10px" }}>Обычные инвайт коды</h3>{" "}
-            {!id && (
-              <div className={styles.rewardItem}>
-                <input type="checkbox" />
-              </div>
-            )}
+          <div className={styles.rewardItem}>
+            <input
+              type="checkbox"
+              checked={!shortInviteCodes} // Use opposite of shortInviteCodes
+              onChange={(e) => {
+                setShortInviteCodes(false); // Set short codes to false when regular is checked
+              }}
+            />
+            <h3>Обычные инвайт коды</h3>
           </div>
           {!id && (
             <div className={styles.inputGroup}>
@@ -415,13 +418,15 @@ const BonusCodeManagement = () => {
           )}
         </div>
         <div className={styles.inputGroup}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <h3 style={{ marginBottom: "10px" }}>Короткие инвайт коды</h3>{" "}
-            {!id && (
-              <div className={styles.rewardItem}>
-                <input type="checkbox" />
-              </div>
-            )}
+          <div className={styles.rewardItem}>
+            <input
+              type="checkbox"
+              checked={shortInviteCodes}
+              onChange={(e) => {
+                setShortInviteCodes(true); // Set short codes to true when checked
+              }}
+            />
+            <h3>Короткие инвайт коды</h3>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <p>Многоразовый код</p>{" "}
