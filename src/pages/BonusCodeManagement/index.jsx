@@ -377,7 +377,7 @@ const BonusCodeManagement = () => {
           </div>
         </div>
         <div>
-          {" "}
+          <p>Обычные инвайт коды</p>
           {!id && (
             <div className={styles.inputGroup}>
               <label>Количество кодов:</label>
