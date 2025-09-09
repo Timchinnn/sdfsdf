@@ -378,22 +378,10 @@ const BonusCodeManagement = () => {
         </div>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <input
-              type="checkbox"
-              style={{
-                width: "20px",
-                height: "20px",
-                cursor: "pointer",
-                marginRight: "10px",
-                appearance: "none",
-                WebkitAppearance: "none",
-                border: "2px solid #ccc",
-                borderRadius: "50%",
-                outline: "none",
-                position: "relative",
-              }}
-            />
-            <h3 style={{ marginBottom: "10px" }}>Обычные инвайт коды</h3>
+            <h3 style={{ marginBottom: "10px" }}>Обычные инвайт коды</h3>{" "}
+            <div className={styles.rewardItem}>
+              <input type="checkbox" />
+            </div>
           </div>{" "}
           {!id && (
             <div className={styles.inputGroup}>
