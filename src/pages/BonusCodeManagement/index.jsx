@@ -11,6 +11,8 @@ import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
   const [shortInviteCodes, setShortInviteCodes] = useState(false); // Add state for tracking
   const { id } = useParams();
+  const [isMultiUse, setIsMultiUse] = useState(false);
+  const [isLimited, setIsLimited] = useState(false);
   const history = useHistory();
   const [currentAvailableIndex, setCurrentAvailableIndex] = useState(0);
   const [cards, setCards] = useState([]);
@@ -429,10 +431,19 @@ const BonusCodeManagement = () => {
             <h3>Короткие инвайт коды</h3>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <p>Многоразовый код</p>{" "}
+            <p>Многоразовый код</p>
             {!id && (
               <div className={styles.rewardItem}>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={isMultiUse}
+                  onChange={(e) => {
+                    setIsMultiUse(e.target.checked);
+                    if (e.target.checked) {
+                      setIsLimited(false);
+                    }
+                  }}
+                />
               </div>
             )}
           </div>
@@ -440,7 +451,16 @@ const BonusCodeManagement = () => {
             <p>Ограниченый код</p>
             {!id && (
               <div className={styles.rewardItem}>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={isLimited}
+                  onChange={(e) => {
+                    setIsLimited(e.target.checked);
+                    if (e.target.checked) {
+                      setIsMultiUse(false);
+                    }
+                  }}
+                />
               </div>
             )}
           </div>
