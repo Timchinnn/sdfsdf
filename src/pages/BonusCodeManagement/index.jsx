@@ -415,6 +415,30 @@ const BonusCodeManagement = () => {
           )}
         </div>
         <div className={styles.inputGroup}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <h3 style={{ marginBottom: "10px" }}>Короткие инвайт коды</h3>{" "}
+            {!id && (
+              <div className={styles.rewardItem}>
+                <input type="checkbox" />
+              </div>
+            )}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <p>Многоразовый код</p>{" "}
+            {!id && (
+              <div className={styles.rewardItem}>
+                <input type="checkbox" />
+              </div>
+            )}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <p>Ограниченый код</p>
+            {!id && (
+              <div className={styles.rewardItem}>
+                <input type="checkbox" />
+              </div>
+            )}
+          </div>
           <label>Срок действия:</label>
           <input
             type="datetime-local"
