@@ -9,7 +9,7 @@ import { useParams, useHistory } from "react-router-dom";
 
 import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
-  const [shortInviteCodes, setShortInviteCodes] = useState(false); // Add state for tracking
+  const [shortInviteCodes, setShortInviteCodes] = useState(false); // Add state for trackingd
   const { id } = useParams();
   const [isMultiUse, setIsMultiUse] = useState(false);
   const [isLimited, setIsLimited] = useState(false);
