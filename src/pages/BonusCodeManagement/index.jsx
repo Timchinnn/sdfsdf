@@ -383,9 +383,11 @@ const BonusCodeManagement = () => {
           <div className={styles.rewardItem}>
             <input
               type="checkbox"
-              checked={!shortInviteCodes} // Use opposite of shortInviteCodes
+              checked={!shortInviteCodes}
               onChange={(e) => {
-                setShortInviteCodes(false); // Set short codes to false when regular is checked
+                setShortInviteCodes(false);
+                setIsMultiUse(false);
+                setIsLimited(false);
               }}
             />
             <h3>Обычные инвайт коды</h3>
@@ -441,6 +443,7 @@ const BonusCodeManagement = () => {
                     setIsMultiUse(e.target.checked);
                     if (e.target.checked) {
                       setIsLimited(false);
+                      setShortInviteCodes(true);
                     }
                   }}
                 />
@@ -458,6 +461,7 @@ const BonusCodeManagement = () => {
                     setIsLimited(e.target.checked);
                     if (e.target.checked) {
                       setIsMultiUse(false);
+                      setShortInviteCodes(true);
                     }
                   }}
                 />
