@@ -421,60 +421,62 @@ const BonusCodeManagement = () => {
             </button>
           )}
         </div>
-        <div className={styles.inputGroup}>
-          <div className={styles.rewardItem}>
+        {!id && (
+          <div className={styles.inputGroup}>
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={shortInviteCodes}
+                onChange={(e) => {
+                  setShortInviteCodes(true); // Set short codes to true when checked
+                }}
+              />
+              <h3>Короткие инвайт коды</h3>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <p>Многоразовый код</p>
+              {!id && (
+                <div className={styles.rewardItem}>
+                  <input
+                    type="checkbox"
+                    checked={isMultiUse}
+                    onChange={(e) => {
+                      setIsMultiUse(e.target.checked);
+                      if (e.target.checked) {
+                        setIsLimited(false);
+                        setShortInviteCodes(true);
+                      }
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <p>Ограниченый код</p>
+              {!id && (
+                <div className={styles.rewardItem}>
+                  <input
+                    type="checkbox"
+                    checked={isLimited}
+                    onChange={(e) => {
+                      setIsLimited(e.target.checked);
+                      if (e.target.checked) {
+                        setIsMultiUse(false);
+                        setShortInviteCodes(true);
+                      }
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+            <label style={{ marginBottom: "14px" }}>Срок действия:</label>
             <input
-              type="checkbox"
-              checked={shortInviteCodes}
-              onChange={(e) => {
-                setShortInviteCodes(true); // Set short codes to true when checked
-              }}
+              type="datetime-local"
+              value={expiresAt}
+              onChange={(e) => setExpiresAt(e.target.value)}
             />
-            <h3>Короткие инвайт коды</h3>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <p>Многоразовый код</p>
-            {!id && (
-              <div className={styles.rewardItem}>
-                <input
-                  type="checkbox"
-                  checked={isMultiUse}
-                  onChange={(e) => {
-                    setIsMultiUse(e.target.checked);
-                    if (e.target.checked) {
-                      setIsLimited(false);
-                      setShortInviteCodes(true);
-                    }
-                  }}
-                />
-              </div>
-            )}
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <p>Ограниченый код</p>
-            {!id && (
-              <div className={styles.rewardItem}>
-                <input
-                  type="checkbox"
-                  checked={isLimited}
-                  onChange={(e) => {
-                    setIsLimited(e.target.checked);
-                    if (e.target.checked) {
-                      setIsMultiUse(false);
-                      setShortInviteCodes(true);
-                    }
-                  }}
-                />
-              </div>
-            )}
-          </div>
-          <label>Срок действия:</label>
-          <input
-            type="datetime-local"
-            value={expiresAt}
-            onChange={(e) => setExpiresAt(e.target.value)}
-          />
-        </div>
+        )}
       </div>
 
       {/* <div className={styles.generatedCodes}>
