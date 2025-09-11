@@ -467,7 +467,10 @@ const BonusCodeManagement = () => {
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <p>Ограниченый код</p>
               {!id && (
-                <div className={styles.rewardItem}>
+                <div
+                  className={styles.rewardItem}
+                  style={{ marginBottom: "0px" }}
+                >
                   <input
                     type="checkbox"
                     checked={isLimited}
@@ -480,7 +483,10 @@ const BonusCodeManagement = () => {
                     }}
                   />
                   {!id && (
-                    <div className={styles.rewardItem}>
+                    <div
+                      className={styles.rewardItem}
+                      style={{ marginBottom: "0px" }}
+                    >
                       <input
                         type="number"
                         value={codeCount}
