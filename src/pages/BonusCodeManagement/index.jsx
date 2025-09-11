@@ -202,9 +202,19 @@ const BonusCodeManagement = () => {
         const payload = {
           code: codeName,
           name: codeName,
-          reward_type: null,
-          reward_value: null,
-          reward_card_id: null,
+          reward_type:
+            rewards.coins > 0
+              ? "coins"
+              : rewards.experience > 0
+              ? "experience"
+              : rewards.energy > 0
+              ? "energy"
+              : rewards.cardId
+              ? "card"
+              : null,
+          reward_value:
+            rewards.coins || rewards.experience || rewards.energy || null,
+          reward_card_id: rewards.cardId || null,
           max_uses: max_uses,
           expires_at: expiresAt || null,
           rewards: JSON.stringify(rewards),
