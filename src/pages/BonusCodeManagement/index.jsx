@@ -181,6 +181,57 @@ const BonusCodeManagement = () => {
       );
     }
   };
+  const handleSaveCode = async () => {
+    try {
+      if (!shortInviteCodes) {
+        // For regular invite codes, use existing saveCode function
+        await saveCode({
+          code: codeName,
+          name: codeName,
+          rewards,
+          expiresAt,
+        });
+      } else {
+        // For short invite codes
+        const max_uses = isLimited
+          ? parseInt(codeCount)
+          : isMultiUse
+          ? 1000000
+          : 1;
+
+        const payload = {
+          code: codeName,
+          name: codeName,
+          reward_type: null,
+          reward_value: null,
+          reward_card_id: null,
+          max_uses: max_uses,
+          expires_at: expiresAt || null,
+          rewards: JSON.stringify(rewards),
+        };
+        await bonusCodeService.createBonusCode(payload);
+      }
+
+      // Clear form after successful save
+      setCodeName("");
+      setRewards({
+        coins: 0,
+        experience: 0,
+        energy: 0,
+        cardId: "",
+      });
+      setExpiresAt("");
+
+      alert("Код успешно сохранен");
+    } catch (error) {
+      console.error("Error saving code:", error);
+      alert(
+        `Ошибка при сохранении кода: ${
+          error.response?.data?.error || error.message
+        }`
+      );
+    }
+  };
   return (
     <div
       className={styles.container}
@@ -514,6 +565,7 @@ const BonusCodeManagement = () => {
         <button
           className={styles.chooseCard}
           style={{ width: "184px", height: "47px" }}
+          onClick={handleSaveCode}
         >
           Сохранить
         </button>
