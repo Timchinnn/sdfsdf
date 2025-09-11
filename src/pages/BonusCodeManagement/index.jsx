@@ -479,6 +479,19 @@ const BonusCodeManagement = () => {
                       }
                     }}
                   />
+                  {!id && (
+                    <div className={styles.rewardItem}>
+                      <input
+                        type="number"
+                        value={codeCount}
+                        onChange={(e) => setCodeCount(e.target.value)}
+                        min="1"
+                        max="1000"
+                        disabled={!isLimited}
+                        style={{ width: "100px" }}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
