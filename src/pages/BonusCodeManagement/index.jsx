@@ -432,16 +432,16 @@ const BonusCodeManagement = () => {
                 }}
               />
               <h3>Короткие инвайт коды</h3>
-              <div className={styles.inputGroup}>
-                <label>Короткий инвайт код:</label>
-                <input
-                  type="text"
-                  value={codeName}
-                  onChange={(e) => setCodeName(e.target.value)}
-                  disabled={!shortInviteCodes}
-                  placeholder="Введите короткий инвайт код"
-                />
-              </div>
+            </div>
+            <div className={styles.inputGroup}>
+              <label>Короткий инвайт код:</label>
+              <input
+                type="text"
+                value={codeName}
+                onChange={(e) => setCodeName(e.target.value)}
+                disabled={!shortInviteCodes}
+                placeholder="Введите короткий инвайт код"
+              />
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <p>Многоразовый код</p>
