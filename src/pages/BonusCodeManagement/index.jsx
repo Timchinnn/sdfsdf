@@ -184,13 +184,21 @@ const BonusCodeManagement = () => {
   const handleSaveCode = async () => {
     try {
       if (!shortInviteCodes) {
-        // For regular invite codes, use existing saveCode function
-        await saveCode({
-          code: codeName,
-          name: codeName,
-          rewards,
-          expiresAt,
-        });
+        // For regular invite codes, generate and save codes
+        const newCodes = Array(parseInt(codeCount))
+          .fill()
+          .map(() => ({
+            code: Math.random().toString(36).substring(7).toUpperCase(),
+            name: codeName,
+            rewards,
+            expiresAt,
+            createdAt: new Date().toISOString(),
+          }));
+        setGeneratedCodes([...generatedCodes, ...newCodes]);
+        // Save each generated code
+        for (const codeData of newCodes) {
+          await saveCode(codeData);
+        }
       } else {
         // For short invite codes
         const max_uses = isLimited
@@ -198,7 +206,6 @@ const BonusCodeManagement = () => {
           : isMultiUse
           ? 1000000
           : 1;
-
         const payload = {
           code: codeName,
           name: codeName,
@@ -221,7 +228,6 @@ const BonusCodeManagement = () => {
         };
         await bonusCodeService.createBonusCode(payload);
       }
-
       // Clear form after successful save
       setCodeName("");
       setRewards({
@@ -231,7 +237,6 @@ const BonusCodeManagement = () => {
         cardId: "",
       });
       setExpiresAt("");
-
       alert("Код успешно сохранен");
     } catch (error) {
       console.error("Error saving code:", error);
