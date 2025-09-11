@@ -167,7 +167,7 @@ const BonusCodeManagement = () => {
       const response = await bonusCodeService.createBonusCode(payload);
       // Добавляем код в список существующих кодов
       setCodes((prevCodes) => [...prevCodes, response.data]);
-      alert("Код успешно сохранен");
+      // alert("Код успешно сохранен");
       // Удаляем сохранённый код из списка сгенерированных кодов
       setGeneratedCodes((prev) =>
         prev.filter((item) => item.code !== codeData.code)
