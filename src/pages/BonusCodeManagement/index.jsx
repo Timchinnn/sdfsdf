@@ -488,7 +488,9 @@ const BonusCodeManagement = () => {
           </div>
         )}
       </div>
-
+      <div>
+        <button className={styles.chooseCard}>Сохранить</button>
+      </div>
       {/* <div className={styles.generatedCodes}>
         <h3>Сгенерированные коды</h3>
         <div className={styles.codesList}>
