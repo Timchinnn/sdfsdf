@@ -54,11 +54,12 @@ const BonusCodeManagement = () => {
   const [codeName, setCodeName] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
   const downloadCodesAsTxt = () => {
-    // if (generatedCodes.length === 0) {
-    //   alert("Нет сгенерированных кодов для скачивания");
-    //   return;
-    // }
-    const codesText = codes
+    const codesToDownload = id ? codes : generatedCodes;
+    if (codesToDownload.length === 0) {
+      alert("Нет кодов для скачивания");
+      return;
+    }
+    const codesText = codesToDownload
       .map((codeData) => {
         return `Код: ${codeData.code}\nНазвание: ${codeData.name}\nСтатус: ${
           codeData.is_used ? "Использован" : "Активен"
@@ -68,7 +69,6 @@ const BonusCodeManagement = () => {
             : ""
         }\n`;
       })
-
       .join("---\n");
     const blob = new Blob([codesText], { type: "text/plain;charset=utf-8" });
     const url = window.URL.createObjectURL(blob);
@@ -405,20 +405,23 @@ const BonusCodeManagement = () => {
             </div>
           )}{" "}
           {!id && (
-            <button
-              onClick={generateBonusCode}
-              className={styles.generateButton}
-            >
-              Сгенерировать коды
-            </button>
-          )}
-          {id && (
-            <button
-              onClick={downloadCodesAsTxt}
-              className={styles.generateButton}
-            >
-              Скачать коды в TXT
-            </button>
+            <>
+              <button
+                onClick={generateBonusCode}
+                className={styles.generateButton}
+              >
+                Сгенерировать коды
+              </button>
+              {generatedCodes.length > 0 && (
+                <button
+                  onClick={downloadCodesAsTxt}
+                  className={styles.generateButton}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Скачать коды в TXT
+                </button>
+              )}
+            </>
           )}
         </div>
         {!id && (
@@ -489,70 +492,13 @@ const BonusCodeManagement = () => {
         )}
       </div>
       <div>
-        <button className={styles.chooseCard}>Сохранить</button>
+        <button
+          className={styles.chooseCard}
+          style={{ width: "184px", height: "47px" }}
+        >
+          Сохранить
+        </button>
       </div>
-      {/* <div className={styles.generatedCodes}>
-        <h3>Сгенерированные коды</h3>
-        <div className={styles.codesList}>
-          {generatedCodes.map((codeData, index) => (
-            <div key={index} className={styles.codeItem}>
-              <div className={styles.codeInfo}>
-                <span>{codeData.name}</span>
-                <span>{codeData.code}</span>
-                <span>{new Date(codeData.createdAt).toLocaleDateString()}</span>
-              </div>
-              <div className={styles.codeActions}>
-                <button onClick={() => copyToClipboard(codeData.code)}>
-                  Копировать
-                </button>
-                <button onClick={() => saveCode(codeData)}>Сохранить</button>
-                <button
-                  onClick={() => {
-                    setGeneratedCodes(
-                      generatedCodes.filter(
-                        (code) => code.code !== codeData.code
-                      )
-                    );
-                  }}
-                  style={{ background: "#dc3545", color: "white" }}
-                >
-                  Удалить
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className={styles.existingCodes}>
-        <h3>Существующие коды</h3>
-        <div className={styles.codesList}>
-          {codes.map((code) => (
-            <div key={code.id} className={styles.codeItem}>
-              <div className={styles.codeInfo}>
-                <span>{code.name || "Без названия"}</span>
-                <span>{code.code}</span>
-                <span>
-                  Статус: {code.is_used ? "Использован" : "Активен"}
-                  {code.used_by && ` (${code.used_by})`}
-                </span>
-                <span>
-                  {code.expires_at
-                    ? `Истекает: ${new Date(
-                        code.expires_at
-                      ).toLocaleDateString()}`
-                    : "Без срока действия"}
-                </span>
-              </div>
-              <button
-                onClick={() => handleDelete(code.id)}
-                className={styles.deleteButton}
-              >
-                Удалить
-              </button>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 };
