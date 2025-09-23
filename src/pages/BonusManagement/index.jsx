@@ -11,22 +11,19 @@ const BonusManagement = () => {
   const [hasEditPermission, setHasEditPermission] = useState(true);
   const [stats, setStats] = useState(null);
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await bonusService.getAllBonuses();
-        const bonuses = response.data;
-        const stats = {
-          total: bonuses.total_codes,
-          used: bonuses.used_codes,
-          remaining: bonuses.unused_codes,
+    if (bonuses.length > 0) {
+      const statsData = bonuses.reduce((acc, bonus) => {
+        return {
+          total: (parseInt(acc.total) || 0) + parseInt(bonus.total_codes || 0),
+          used: (parseInt(acc.used) || 0) + parseInt(bonus.used_codes || 0),
+          remaining:
+            (parseInt(acc.remaining) || 0) + parseInt(bonus.unused_codes || 0),
         };
-        setStats(stats);
-      } catch (error) {
-        console.error("Error fetching bonus code stats:", error);
-      }
-    };
-    fetchStats();
-  }, []);
+      }, {});
+      setStats(statsData);
+      console.log(statsData);
+    }
+  }, [bonuses]);
   // Check permissionssыc
   //   useEffect(() => {
   //     const checkPermissions = async () => {
