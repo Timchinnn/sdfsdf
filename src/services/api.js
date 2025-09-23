@@ -293,6 +293,8 @@ export const shopSetService = {
 export const bonusCodeService = {
   getAllBonusCodes: (id = "") => axios.get(`/bonus-codes?bonus_id=${id}`),
   createBonusCode: (payload) => axios.post("/bonus-codes", payload),
+  createBonusCodes: (data) => axios.post("/bonus-codes/bulk", data),
+
   deleteBonusCode: (id) => axios.delete(`/bonus-codes/${id}`),
   activateCode: (telegram_id, code) =>
     axios.post("/bonus-codes/activate", { telegram_id, code }),

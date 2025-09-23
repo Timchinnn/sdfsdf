@@ -137,54 +137,80 @@ const BonusCodeManagement = () => {
       );
     }
   };
-  const saveCode = async (codeData) => {
+  const generateBonusCode = () => {
+    const newCodes = Array(parseInt(codeCount))
+      .fill()
+      .map(() => ({
+        code: Math.random().toString(36).substring(7).toUpperCase(),
+        name: codeName,
+        rewards,
+        expiresAt,
+        createdAt: new Date().toISOString(),
+      }));
+    setGeneratedCodes([...generatedCodes, ...newCodes]);
+  };
+  const saveCode = async (codes) => {
     try {
-      // Подготовка данных
+      // Prepare codes data for bulk insert
       const payload = {
-        code: codeData.code,
-        name: codeData.name,
-        reward_type: null,
-        reward_value: null,
-        reward_card_id: null,
-        max_uses: 1, // Add default max_uses value
-        expires_at: codeData.expiresAt || null,
-        rewards: JSON.stringify(codeData.rewards),
+        codes: codes.map((codeData) => ({
+          code: codeData.code,
+          name: codeData.name,
+          reward_type: null,
+          reward_value: null,
+          reward_card_id: null,
+          max_uses: 1,
+          expires_at: codeData.expiresAt || null,
+          rewards: JSON.stringify(codeData.rewards),
+        })),
       };
-      // Определение типа награды (для обратной совместимости, если потребуется)
-      if (codeData.rewards.coins > 0) {
-        payload.reward_type = "coins";
-        payload.reward_value = codeData.rewards.coins;
-      } else if (codeData.rewards.experience > 0) {
-        payload.reward_type = "experience";
-        payload.reward_value = codeData.rewards.experience;
-      } else if (codeData.rewards.energy > 0) {
-        payload.reward_type = "energy";
-        payload.reward_value = codeData.rewards.energy;
-      } else if (codeData.rewards.cardId) {
-        payload.reward_type = "card";
-        payload.reward_card_id = codeData.rewards.cardId;
+      // Set reward type and value based on first code's rewards
+      // (assuming all codes in batch have same rewards)
+      if (codes[0].rewards.coins > 0) {
+        payload.codes = payload.codes.map((code) => ({
+          ...code,
+          reward_type: "coins",
+          reward_value: codes[0].rewards.coins,
+        }));
+      } else if (codes[0].rewards.experience > 0) {
+        payload.codes = payload.codes.map((code) => ({
+          ...code,
+          reward_type: "experience",
+          reward_value: codes[0].rewards.experience,
+        }));
+      } else if (codes[0].rewards.energy > 0) {
+        payload.codes = payload.codes.map((code) => ({
+          ...code,
+          reward_type: "energy",
+          reward_value: codes[0].rewards.energy,
+        }));
+      } else if (codes[0].rewards.cardId) {
+        payload.codes = payload.codes.map((code) => ({
+          ...code,
+          reward_type: "card",
+          reward_card_id: codes[0].rewards.cardId,
+        }));
       }
-      const response = await bonusCodeService.createBonusCode(payload);
-      // Добавляем код в список существующих кодов
-      setCodes((prevCodes) => [...prevCodes, response.data]);
-      // alert("Код успешно сохранен");
-      // Удаляем сохранённый код из списка сгенерированных кодов
+      const response = await bonusCodeService.createBonusCodes(payload);
+
+      // Add codes to existing codes list
+      setCodes((prevCodes) => [...prevCodes, ...response.data.codes]);
+      // Remove saved codes from generated codes
+      const savedCodeIds = new Set(response.data.codes.map((c) => c.code));
       setGeneratedCodes((prev) =>
-        prev.filter((item) => item.code !== codeData.code)
+        prev.filter((code) => !savedCodeIds.has(code.code))
       );
     } catch (error) {
-      console.error("Полная ошибка:", error);
+      console.error("Error saving codes:", error);
       alert(
-        `Ошибка при сохранении кода: ${
-          error.response?.data?.error || error.message
-        }`
+        `Error saving codes: ${error.response?.data?.error || error.message}`
       );
     }
   };
   const handleSaveCode = async () => {
     try {
       if (!shortInviteCodes) {
-        // For regular invite codes, generate and save codes
+        // For regular invite codes, generate and save codes in bulk
         const newCodes = Array(parseInt(codeCount))
           .fill()
           .map(() => ({
@@ -195,10 +221,7 @@ const BonusCodeManagement = () => {
             createdAt: new Date().toISOString(),
           }));
         setGeneratedCodes([...generatedCodes, ...newCodes]);
-        // Save each generated code
-        for (const codeData of newCodes) {
-          await saveCode(codeData);
-        }
+        await saveCode(newCodes);
       } else {
         // For short invite codes
         const max_uses = isLimited
