@@ -43,6 +43,7 @@ const BonusManagement = () => {
     const fetchBonuses = async () => {
       try {
         const response = await bonusService.getAllBonuses();
+        console.log(response.data);
         setBonuses(response.data);
       } catch (error) {
         console.error("Error fetching bonuses:", error);
