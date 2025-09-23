@@ -93,6 +93,20 @@ const BonusManagement = () => {
       style={{ display: hasEditPermission ? "block" : "none" }}
     >
       <h2>Управление бонусами</h2>
+      <NavLink
+        to="/bonus-code-management"
+        style={{ marginBottom: "20px", display: "block" }}
+      >
+        <button
+          className={styles.editButton}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+          }}
+        >
+          Создать бонус
+        </button>
+      </NavLink>
       <div className={styles.bonusList}>
         {bonuses.map((bonus) => (
           <div key={bonus.id} className={styles.bonusItem}>
