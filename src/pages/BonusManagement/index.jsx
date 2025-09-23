@@ -9,21 +9,7 @@ const BonusManagement = () => {
   const [bonuses, setBonuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasEditPermission, setHasEditPermission] = useState(true);
-  const [stats, setStats] = useState(null);
-  useEffect(() => {
-    if (bonuses.length > 0) {
-      const statsData = bonuses.reduce((acc, bonus) => {
-        return {
-          total: (parseInt(acc.total) || 0) + parseInt(bonus.total_codes || 0),
-          used: (parseInt(acc.used) || 0) + parseInt(bonus.used_codes || 0),
-          remaining:
-            (parseInt(acc.remaining) || 0) + parseInt(bonus.unused_codes || 0),
-        };
-      }, {});
-      setStats(statsData);
-      console.log(statsData);
-    }
-  }, [bonuses]);
+
   // Check permissionssыc
   //   useEffect(() => {
   //     const checkPermissions = async () => {
@@ -143,7 +129,8 @@ const BonusManagement = () => {
             <div style={{ color: "black", marginBottom: "10px" }}>
               <p>Количество инвайт кодов</p>
               <p>
-                {stats?.total || 0}/{stats?.used || 0}/{stats?.remaining || 0}
+                {bonus.total_codes || 0}/{bonus.used_codes || 0}/
+                {bonus.unused_codes || 0}{" "}
               </p>
               <p>создано/использовано/осталось</p>
             </div>
