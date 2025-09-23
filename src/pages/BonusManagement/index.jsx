@@ -93,7 +93,6 @@ const BonusManagement = () => {
       style={{ display: hasEditPermission ? "block" : "none" }}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        {" "}
         <h2>Управление бонусами</h2>
         <NavLink
           to="/bonus-code-management"
