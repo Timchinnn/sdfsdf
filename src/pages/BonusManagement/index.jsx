@@ -13,8 +13,14 @@ const BonusManagement = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get("/bonus-codes/stats");
-        setStats(response.data);
+        const response = await bonusService.getAllBonuses();
+        const bonuses = response.data;
+        const stats = {
+          total: bonuses.length,
+          used: bonuses.filter((bonus) => bonus.is_used).length,
+          remaining: bonuses.filter((bonus) => !bonus.is_used).length,
+        };
+        setStats(stats);
       } catch (error) {
         console.error("Error fetching bonus code stats:", error);
       }
