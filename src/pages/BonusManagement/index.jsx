@@ -85,7 +85,7 @@ const BonusManagement = () => {
     }
   };
   if (loading) {
-    return <div>Loadinsg...</div>;
+    return <div>Loadinsаg...</div>;
   }
   return (
     <div
