@@ -105,18 +105,7 @@ const BonusCodeManagement = () => {
     fetchCodes();
   }, []);
   // Генерация нового кода
-  const generateBonusCode = () => {
-    const newCodes = Array(parseInt(codeCount))
-      .fill()
-      .map(() => ({
-        code: Math.random().toString(36).substring(7).toUpperCase(),
-        rewards,
-        name: codeName,
-        expiresAt,
-        createdAt: new Date().toISOString(),
-      }));
-    setGeneratedCodes([...generatedCodes, ...newCodes]);
-  };
+
   // Копирование кода в буфер обмена
   const copyToClipboard = (code) => {
     navigator.clipboard.writeText(code);
