@@ -16,9 +16,9 @@ const BonusManagement = () => {
         const response = await bonusService.getAllBonuses();
         const bonuses = response.data;
         const stats = {
-          total: bonuses.length,
-          used: bonuses.filter((bonus) => bonus.is_used).length,
-          remaining: bonuses.filter((bonus) => !bonus.is_used).length,
+          total: bonuses.total_codes,
+          used: bonuses.used_codes,
+          remaining: bonuses.unused_codes,
         };
         setStats(stats);
       } catch (error) {
