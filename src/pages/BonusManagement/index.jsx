@@ -120,6 +120,26 @@ const BonusManagement = () => {
                 <p>{bonus.description || "Без описания"}</p>
                 <p>Создан:</p>
                 <p>{new Date(bonus.created_at).toLocaleDateString()}</p>
+                {bonus.rewards &&
+                  bonus.rewards.map((rewardStr, index) => {
+                    try {
+                      const reward = JSON.parse(rewardStr);
+                      return (
+                        <div key={index}>
+                          <p>Награды:</p>
+                          {reward.coins > 0 && <p>Монеты: {reward.coins}</p>}
+                          {reward.experience > 0 && (
+                            <p>Опыт: {reward.experience}</p>
+                          )}
+                          {reward.energy > 0 && <p>Энергия: {reward.energy}</p>}
+                          {reward.cardId && <p>Карта ID: {reward.cardId}</p>}
+                        </div>
+                      );
+                    } catch (e) {
+                      console.error("Error parsing reward:", e);
+                      return null;
+                    }
+                  })}
               </div>
               <div className={styles.borderDesc}>
                 <p>Заметки: </p>
