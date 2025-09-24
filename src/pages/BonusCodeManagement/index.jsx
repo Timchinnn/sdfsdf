@@ -12,7 +12,7 @@ const BonusCodeManagement = () => {
   const [shortInviteCodes, setShortInviteCodes] = useState(false); // Add state for trackingd
   const { id } = useParams();
   const [bonusStatus, setBonusStatus] = useState(null);
-  const [endDate, setEndDate] = useState(""); // Add state for end date
+  const [endDate, setEndDate] = useState(new Date().toISOString().slice(0, 16));
 
   const [description, setDescription] = useState("");
   const [adminNotes, setAdminNotes] = useState("");
