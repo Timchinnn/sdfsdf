@@ -511,18 +511,20 @@ const BonusCodeManagement = () => {
           </div>
         </div>
         <div>
-          <div className={styles.rewardItem}>
-            <input
-              type="checkbox"
-              checked={!shortInviteCodes}
-              onChange={(e) => {
-                setShortInviteCodes(false);
-                setIsMultiUse(false);
-                setIsLimited(false);
-              }}
-            />
-            <h3>Обычные инвайт коды</h3>
-          </div>
+          {!id && (
+            <div className={styles.rewardItem}>
+              <input
+                type="checkbox"
+                checked={!shortInviteCodes}
+                onChange={(e) => {
+                  setShortInviteCodes(false);
+                  setIsMultiUse(false);
+                  setIsLimited(false);
+                }}
+              />
+              <h3>Обычные инвайт коды</h3>
+            </div>
+          )}
           {!id && (
             <div className={styles.inputGroup}>
               <label>Количество кодов:</label>
