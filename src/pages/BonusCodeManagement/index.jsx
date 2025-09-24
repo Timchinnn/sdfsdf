@@ -643,7 +643,8 @@ const BonusCodeManagement = () => {
       <div>
         {bonusStatus !== null && !bonusStatus && (
           <button
-            className={styles.activateButton}
+            className={styles.chooseCard}
+            style={{ width: "184px", height: "47px" }}
             onClick={handleActivateBonus}
           >
             Активировать бонус
