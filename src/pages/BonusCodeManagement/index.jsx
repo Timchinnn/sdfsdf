@@ -115,6 +115,7 @@ const BonusCodeManagement = () => {
       try {
         const response = await bonusCodeService.getAllBonusCodes(id);
         setCodes(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке кодов:", error);
       }
