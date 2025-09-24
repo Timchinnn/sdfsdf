@@ -283,7 +283,7 @@ const BonusCodeManagement = () => {
         energy: 0,
         cardId: "",
       });
-      setExpiresAt("");
+      // setExpiresAt("");
       alert("Код успешно сохранен");
     } catch (error) {
       console.error("Error saving code:", error);
@@ -654,12 +654,6 @@ const BonusCodeManagement = () => {
                 </div>
               )}
             </div>
-            <label style={{ marginBottom: "14px" }}>Срок действия:</label>
-            <input
-              type="datetime-local"
-              value={expiresAt}
-              onChange={(e) => setExpiresAt(e.target.value)}
-            />
           </div>
         )}
       </div>
