@@ -331,6 +331,16 @@ const BonusCodeManagement = () => {
               className={styles.textarea}
             />
           </div>
+          <div className={styles.inputGroup}>
+            <label style={{ marginBottom: "14px" }}>
+              Срок окончания (дата и время):
+            </label>
+            <input
+              type="datetime-local"
+              value={expiresAt}
+              onChange={(e) => setExpiresAt(e.target.value)}
+            />
+          </div>
 
           <div className={styles.rewardsSection}>
             <h4>Награды</h4>
@@ -357,6 +367,7 @@ const BonusCodeManagement = () => {
                   disabled={!rewards.coins}
                 />
               </div>
+
               <div className={styles.rewardItem}>
                 <input
                   type="checkbox"
