@@ -12,6 +12,7 @@ const BonusCodeManagement = () => {
   const [shortInviteCodes, setShortInviteCodes] = useState(false); // Add state for trackingd
   const { id } = useParams();
   const [bonusStatus, setBonusStatus] = useState(null);
+  const [endDate, setEndDate] = useState(""); // Add state for end date
 
   const [description, setDescription] = useState("");
   const [adminNotes, setAdminNotes] = useState("");
@@ -179,9 +180,7 @@ const BonusCodeManagement = () => {
           reward_value: null,
           reward_card_id: null,
           max_uses: 1,
-          expires_at: codeData.expires_at
-            ? new Date(codeData.expires_at).toISOString()
-            : null,
+          expires_at: endDate || null,
           rewards: JSON.stringify(codeData.rewards),
         })),
       };
@@ -242,7 +241,7 @@ const BonusCodeManagement = () => {
             description: description,
             note: adminNotes,
             rewards,
-            expires_at: expiresAt,
+            expires_at: endDate || null,
             createdAt: new Date().toISOString(),
           }));
         setGeneratedCodes([...generatedCodes, ...newCodes]);
@@ -273,7 +272,7 @@ const BonusCodeManagement = () => {
             rewards.coins || rewards.experience || rewards.energy || null,
           reward_card_id: rewards.cardId || null,
           max_uses: max_uses,
-          expires_at: expiresAt || null,
+          expires_at: endDate || null,
           rewards: JSON.stringify(rewards),
         };
         await bonusCodeService.createBonusCode(payload);
@@ -335,13 +334,12 @@ const BonusCodeManagement = () => {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label style={{ marginBottom: "14px" }}>
-              Срок окончания (дата и время):
-            </label>
+            <label>Дата окончания:</label>
             <input
               type="datetime-local"
-              value={expiresAt}
-              onChange={(e) => setExpiresAt(e.target.value)}
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              placeholder="Выберите дату окончания"
             />
           </div>
 
@@ -657,12 +655,6 @@ const BonusCodeManagement = () => {
                 </div>
               )}
             </div>
-            <label style={{ marginBottom: "14px" }}>Срок действия:</label>
-            <input
-              type="datetime-local"
-              value={expiresAt}
-              onChange={(e) => setExpiresAt(e.target.value)}
-            />
           </div>
         )}
       </div>
