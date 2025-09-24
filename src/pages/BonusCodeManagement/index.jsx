@@ -11,6 +11,7 @@ import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
   const [shortInviteCodes, setShortInviteCodes] = useState(false); // Add state for trackingd
   const { id } = useParams();
+  const [bonusStatus, setBonusStatus] = useState(null);
 
   const [description, setDescription] = useState("");
   const [adminNotes, setAdminNotes] = useState("");
@@ -28,6 +29,19 @@ const BonusCodeManagement = () => {
   const [availableCards, setAvailableCards] = useState([]); // Добавляем состояние для списка карт
   const [hasEditPermission, setHasEditPermission] = useState(false);
   // Check permissionsd
+  useEffect(() => {
+    const fetchBonusStatus = async () => {
+      try {
+        const response = await axios.get(`/bonuses/${id}/status`);
+        setBonusStatus(response.data.is_active);
+      } catch (err) {
+        console.error("Error fetching bonus status:", err);
+      }
+    };
+    if (id) {
+      fetchBonusStatus();
+    }
+  }, [id]);
   useEffect(() => {
     const checkPermissions = async () => {
       try {
@@ -115,6 +129,16 @@ const BonusCodeManagement = () => {
     alert("Код скопирован в буфер обмена");
   };
   // Сохранение кода
+  const handleActivateBonus = async () => {
+    try {
+      const response = await axios.put(`/bonuses/${id}/activate`, {
+        end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      });
+      setBonusStatus(true);
+    } catch (err) {
+      console.error("Error activating bonus:", err);
+    }
+  };
   const handleDelete = async (id) => {
     try {
       await bonusCodeService.deleteBonusCode(id);
@@ -617,6 +641,14 @@ const BonusCodeManagement = () => {
         )}
       </div>
       <div>
+        {bonusStatus !== null && !bonusStatus && (
+          <button
+            className={styles.activateButton}
+            onClick={handleActivateBonus}
+          >
+            Активировать бонус
+          </button>
+        )}
         <button
           className={styles.chooseCard}
           style={{ width: "184px", height: "47px" }}
