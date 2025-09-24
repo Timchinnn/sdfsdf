@@ -63,6 +63,33 @@ const BonusCodeManagement = () => {
     };
     checkPermissions();
   }, []);
+  useEffect(() => {
+    const fetchBonusInfo = async () => {
+      if (id) {
+        try {
+          const response = await axios.get(`/bonuses/${id}/info`);
+          const bonusData = response.data;
+
+          setCodeName(bonusData.name || "");
+          setDescription(bonusData.description || "");
+          setAdminNotes(bonusData.note || "");
+          setEndDate(
+            bonusData.end_date
+              ? new Date(bonusData.end_date).toISOString().slice(0, 16)
+              : ""
+          );
+
+          if (bonusData.rewards) {
+            const rewards = JSON.parse(bonusData.rewards);
+            setRewards(rewards);
+          }
+        } catch (error) {
+          console.error("Ошибка при получении информации о бонусе:", error);
+        }
+      }
+    };
+    fetchBonusInfo();
+  }, [id]);
   const [rewards, setRewards] = useState({
     coins: 0,
     experience: 0,
