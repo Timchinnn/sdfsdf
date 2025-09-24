@@ -11,6 +11,9 @@ import right from "assets/img/right.png";
 const BonusCodeManagement = () => {
   const [shortInviteCodes, setShortInviteCodes] = useState(false); // Add state for trackingd
   const { id } = useParams();
+
+  const [description, setDescription] = useState("");
+  const [adminNotes, setAdminNotes] = useState("");
   const [isMultiUse, setIsMultiUse] = useState(false);
   const [isLimited, setIsLimited] = useState(false);
   const history = useHistory();
@@ -205,6 +208,8 @@ const BonusCodeManagement = () => {
           .map(() => ({
             code: Math.random().toString(36).substring(7).toUpperCase(),
             name: codeName,
+            description: description,
+            note: adminNotes,
             rewards,
             expiresAt,
             createdAt: new Date().toISOString(),
@@ -221,6 +226,8 @@ const BonusCodeManagement = () => {
         const payload = {
           code: codeName,
           name: codeName,
+          description: description,
+          note: adminNotes,
           reward_type:
             rewards.coins > 0
               ? "coins"
@@ -276,6 +283,24 @@ const BonusCodeManagement = () => {
               value={codeName}
               onChange={(e) => setCodeName(e.target.value)}
               placeholder="Введите название кода"
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Описание:</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Введите описание бонус-кода"
+              className={styles.textarea}
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Заметки администратора:</label>
+            <textarea
+              value={adminNotes}
+              onChange={(e) => setAdminNotes(e.target.value)}
+              placeholder="Внутренние заметки (видны только администраторам)"
+              className={styles.textarea}
             />
           </div>
 
