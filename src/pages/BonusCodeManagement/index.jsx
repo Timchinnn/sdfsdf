@@ -227,7 +227,7 @@ const BonusCodeManagement = () => {
     }
   };
   const handleSaveCode = async () => {
-    console.log(expiresAt);
+    console.log(endDate);
     try {
       if (!shortInviteCodes) {
         // For regular invite codes, generate and save codes in bulk
