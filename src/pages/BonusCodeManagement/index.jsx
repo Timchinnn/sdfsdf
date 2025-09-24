@@ -263,7 +263,7 @@ const BonusCodeManagement = () => {
           description: description,
           note: adminNotes,
           end_date: endDate ? new Date(endDate).toISOString() : null,
-          rewards: JSON.stringify(rewards),
+          rewards: rewards,
         };
 
         await axios.put(`/bonuses/${id}/update-info`, payload);
