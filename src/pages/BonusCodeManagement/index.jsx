@@ -179,7 +179,9 @@ const BonusCodeManagement = () => {
           reward_value: null,
           reward_card_id: null,
           max_uses: 1,
-          expires_at: expiresAt ? new Date(expiresAt).toISOString() : null,
+          expires_at: codeData.expires_at
+            ? new Date(codeData.expires_at).toISOString()
+            : null,
           rewards: JSON.stringify(codeData.rewards),
         })),
       };
