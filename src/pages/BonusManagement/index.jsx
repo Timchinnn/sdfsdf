@@ -17,7 +17,7 @@ const BonusManagement = () => {
       setCardNames((prev) => ({ ...prev, [cardId]: response.data.title }));
     } catch (err) {
       console.error("Error fetching card name:", err);
-      return cardId; // Fallback to ID if fetch fails
+      return cardId; // Fallback to ID if fetch failsв
     }
   };
   // Check permissionssыc
