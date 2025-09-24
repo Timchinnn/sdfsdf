@@ -85,10 +85,19 @@ const BonusManagement = () => {
     }
   };
   useEffect(() => {
-    if (reward.cardId && !cardNames[reward.cardId]) {
-      getCardName(reward.cardId);
-    }
-  }, [reward.cardId]);
+    bonuses.forEach((bonus) => {
+      if (bonus.rewards) {
+        try {
+          const reward = JSON.parse(bonus.rewards[0]);
+          if (reward.cardId && !cardNames[reward.cardId]) {
+            getCardName(reward.cardId);
+          }
+        } catch (e) {
+          console.error("Error parsing reward:", e);
+        }
+      }
+    });
+  }, [bonuses, cardNames]);
   if (loading) {
     return <div>Loadinsаg...</div>;
   }
