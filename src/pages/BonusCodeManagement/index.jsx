@@ -97,6 +97,7 @@ const BonusCodeManagement = () => {
     cardId: "",
   });
   const [codeName, setCodeName] = useState("");
+  const [codeName1, setCodeName1] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
   const downloadCodesAsTxt = () => {
     const codesToDownload = id ? codes : generatedCodes;
@@ -292,7 +293,7 @@ const BonusCodeManagement = () => {
             ? 1000000
             : 1;
           const payload = {
-            code: codeName,
+            code: codeName1,
             name: codeName,
             description: description,
             note: adminNotes,
@@ -317,6 +318,7 @@ const BonusCodeManagement = () => {
         }
         // Clear form after successful save
         setCodeName("");
+        setCodeName1("");
         setRewards({
           coins: 0,
           experience: 0,
@@ -633,8 +635,8 @@ const BonusCodeManagement = () => {
               <label>Короткий инвайт код:</label>
               <input
                 type="text"
-                value={codeName}
-                onChange={(e) => setCodeName(e.target.value)}
+                value={codeName1}
+                onChange={(e) => setCodeName1(e.target.value)}
                 disabled={!shortInviteCodes}
                 placeholder="Введите короткий инвайт код"
               />
