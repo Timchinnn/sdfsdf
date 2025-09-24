@@ -9,7 +9,17 @@ const BonusManagement = () => {
   const [bonuses, setBonuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasEditPermission, setHasEditPermission] = useState(true);
-
+  const [cardNames, setCardNames] = useState({});
+  // Add function to fetch card name
+  const getCardName = async (cardId) => {
+    try {
+      const response = await axios.get(`/cards/${cardId}`);
+      setCardNames((prev) => ({ ...prev, [cardId]: response.data.title }));
+    } catch (err) {
+      console.error("Error fetching card name:", err);
+      return cardId; // Fallback to ID if fetch fails
+    }
+  };
   // Check permissionssыc
   //   useEffect(() => {
   //     const checkPermissions = async () => {
@@ -74,6 +84,11 @@ const BonusManagement = () => {
       console.error("Error deleting bonus:", error);
     }
   };
+  useEffect(() => {
+    if (reward.cardId && !cardNames[reward.cardId]) {
+      getCardName(reward.cardId);
+    }
+  }, [reward.cardId]);
   if (loading) {
     return <div>Loadinsаg...</div>;
   }
@@ -133,7 +148,11 @@ const BonusManagement = () => {
                             <p>Опыт: {reward.experience}</p>
                           )}
                           {reward.energy > 0 && <p>Энергия: {reward.energy}</p>}
-                          {reward.cardId && <p>Карта ID: {reward.cardId}</p>}
+                          {reward.cardId && (
+                            <p>
+                              Карта: {cardNames[reward.cardId] || "Загрузка..."}
+                            </p>
+                          )}
                         </div>
                       );
                     } catch (e) {
