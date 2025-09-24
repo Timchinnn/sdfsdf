@@ -256,62 +256,76 @@ const BonusCodeManagement = () => {
   const handleSaveCode = async () => {
     console.log(endDate);
     try {
-      if (!shortInviteCodes) {
-        // For regular invite codes, generate and save codes in bulk
-        const newCodes = Array(parseInt(codeCount))
-          .fill()
-          .map(() => ({
-            code: Math.random().toString(36).substring(7).toUpperCase(),
-            name: codeName,
-            description: description,
-            note: adminNotes,
-            rewards,
-            expires_at: endDate ? new Date(endDate).toISOString() : null,
-            createdAt: new Date().toISOString(),
-          }));
-        setGeneratedCodes([...generatedCodes, ...newCodes]);
-        await saveCode(newCodes);
-      } else {
-        // For short invite codes
-        const max_uses = isLimited
-          ? parseInt(codeCount)
-          : isMultiUse
-          ? 1000000
-          : 1;
+      if (id) {
+        // Update existing bonus code
         const payload = {
-          code: codeName,
           name: codeName,
           description: description,
           note: adminNotes,
-          reward_type:
-            rewards.coins > 0
-              ? "coins"
-              : rewards.experience > 0
-              ? "experience"
-              : rewards.energy > 0
-              ? "energy"
-              : rewards.cardId
-              ? "card"
-              : null,
-          reward_value:
-            rewards.coins || rewards.experience || rewards.energy || null,
-          reward_card_id: rewards.cardId || null,
-          max_uses: max_uses,
-          expires_at: endDate ? new Date(endDate).toISOString() : null,
+          end_date: endDate ? new Date(endDate).toISOString() : null,
           rewards: JSON.stringify(rewards),
         };
-        await bonusCodeService.createBonusCode(payload);
+
+        await axios.put(`/bonuses/${id}/update-info`, payload);
+        alert("Бонус код успешно обновлен");
+      } else {
+        if (!shortInviteCodes) {
+          // For regular invite codes, generate and save codes in bulk
+          const newCodes = Array(parseInt(codeCount))
+            .fill()
+            .map(() => ({
+              code: Math.random().toString(36).substring(7).toUpperCase(),
+              name: codeName,
+              description: description,
+              note: adminNotes,
+              rewards,
+              expires_at: endDate ? new Date(endDate).toISOString() : null,
+              createdAt: new Date().toISOString(),
+            }));
+          setGeneratedCodes([...generatedCodes, ...newCodes]);
+          await saveCode(newCodes);
+        } else {
+          // For short invite codes
+          const max_uses = isLimited
+            ? parseInt(codeCount)
+            : isMultiUse
+            ? 1000000
+            : 1;
+          const payload = {
+            code: codeName,
+            name: codeName,
+            description: description,
+            note: adminNotes,
+            reward_type:
+              rewards.coins > 0
+                ? "coins"
+                : rewards.experience > 0
+                ? "experience"
+                : rewards.energy > 0
+                ? "energy"
+                : rewards.cardId
+                ? "card"
+                : null,
+            reward_value:
+              rewards.coins || rewards.experience || rewards.energy || null,
+            reward_card_id: rewards.cardId || null,
+            max_uses: max_uses,
+            expires_at: endDate ? new Date(endDate).toISOString() : null,
+            rewards: JSON.stringify(rewards),
+          };
+          await bonusCodeService.createBonusCode(payload);
+        }
+        // Clear form after successful save
+        setCodeName("");
+        setRewards({
+          coins: 0,
+          experience: 0,
+          energy: 0,
+          cardId: "",
+        });
+        setExpiresAt("");
+        alert("Код успешно сохранен");
       }
-      // Clear form after successful save
-      setCodeName("");
-      setRewards({
-        coins: 0,
-        experience: 0,
-        energy: 0,
-        cardId: "",
-      });
-      setExpiresAt("");
-      alert("Код успешно сохранен");
     } catch (error) {
       console.error("Error saving code:", error);
       alert(
