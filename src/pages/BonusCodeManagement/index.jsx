@@ -543,17 +543,25 @@ const BonusCodeManagement = () => {
               >
                 Сгенерировать коды
               </button>
-              {generatedCodes.length > 0 ||
-                (id && (
-                  <button
-                    onClick={downloadCodesAsTxt}
-                    className={styles.generateButton}
-                    style={{ marginTop: "10px" }}
-                  >
-                    Скачать коды в TXT
-                  </button>
-                ))}
+              {generatedCodes.length > 0 && (
+                <button
+                  onClick={downloadCodesAsTxt}
+                  className={styles.generateButton}
+                  style={{ marginTop: "10px" }}
+                >
+                  Скачать коды в TXT
+                </button>
+              )}
             </>
+          )}
+          {id && (
+            <button
+              className={styles.chooseCard}
+              style={{ width: "184px", height: "47px", marginLeft: "10px" }}
+              onClick={downloadCodesAsTxt}
+            >
+              Скачать коды в TXT
+            </button>
           )}
         </div>
         {!id && (
