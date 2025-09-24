@@ -180,13 +180,12 @@ const BonusCodeManagement = () => {
           reward_value: null,
           reward_card_id: null,
           max_uses: 1,
-          expires_at: endDate || null,
+          expires_at: endDate ? new Date(endDate).toISOString() : null,
           rewards: JSON.stringify(codeData.rewards),
         })),
       };
       console.log(payload);
       // Set reward type and value based on first code's rewards
-      // (assuming all codes in batch have same rewards)
       if (codes[0].rewards.coins > 0) {
         payload.codes = payload.codes.map((code) => ({
           ...code,
@@ -213,7 +212,6 @@ const BonusCodeManagement = () => {
         }));
       }
       const response = await bonusCodeService.createBonusCodes(payload);
-
       // Add codes to existing codes list
       setCodes((prevCodes) => [...prevCodes, ...response.data.codes]);
       // Remove saved codes from generated codes
@@ -241,7 +239,7 @@ const BonusCodeManagement = () => {
             description: description,
             note: adminNotes,
             rewards,
-            expires_at: endDate || null,
+            expires_at: endDate ? new Date(endDate).toISOString() : null,
             createdAt: new Date().toISOString(),
           }));
         setGeneratedCodes([...generatedCodes, ...newCodes]);
@@ -272,7 +270,7 @@ const BonusCodeManagement = () => {
             rewards.coins || rewards.experience || rewards.energy || null,
           reward_card_id: rewards.cardId || null,
           max_uses: max_uses,
-          expires_at: endDate || null,
+          expires_at: endDate ? new Date(endDate).toISOString() : null,
           rewards: JSON.stringify(rewards),
         };
         await bonusCodeService.createBonusCode(payload);
