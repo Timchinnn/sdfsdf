@@ -158,6 +158,7 @@ const BonusCodeManagement = () => {
           rewards: JSON.stringify(codeData.rewards),
         })),
       };
+      console.log(payload);
       // Set reward type and value based on first code's rewards
       // (assuming all codes in batch have same rewards)
       if (codes[0].rewards.coins > 0) {
