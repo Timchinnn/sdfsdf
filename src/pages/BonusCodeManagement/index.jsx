@@ -239,7 +239,7 @@ const BonusCodeManagement = () => {
             description: description,
             note: adminNotes,
             rewards,
-            expiresAt,
+            expires_at: expiresAt,
             createdAt: new Date().toISOString(),
           }));
         setGeneratedCodes([...generatedCodes, ...newCodes]);
