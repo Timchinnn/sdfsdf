@@ -148,6 +148,8 @@ const BonusCodeManagement = () => {
         codes: codes.map((codeData) => ({
           code: codeData.code,
           name: codeData.name,
+          description: description,
+          note: adminNotes,
           reward_type: null,
           reward_value: null,
           reward_card_id: null,
@@ -519,7 +521,7 @@ const BonusCodeManagement = () => {
                 <button
                   onClick={downloadCodesAsTxt}
                   className={styles.generateButton}
-                  style={{ marginLeft: "10px" }}
+                  style={{ marginTop: "10px" }}
                 >
                   Скачать коды в TXT
                 </button>
