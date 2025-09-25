@@ -69,6 +69,7 @@ const BonusCodeManagement = () => {
         try {
           const response = await axios.get(`/bonuses/${id}/info`);
           const bonusData = response.data;
+          console.log(bonusData);
 
           setCodeName(bonusData.name || "");
           setDescription(bonusData.description || "");
