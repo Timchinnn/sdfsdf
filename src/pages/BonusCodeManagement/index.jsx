@@ -389,6 +389,7 @@ const BonusCodeManagement = () => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              width: "29vw",
             }}
           >
             <label>Дата окончания:</label>
