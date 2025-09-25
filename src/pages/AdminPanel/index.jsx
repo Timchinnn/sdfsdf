@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import styles from "./AdminPanel.module.css";
 import routeAdmin from "./route";
 import { NavLink } from "react-router-dom";
@@ -11,11 +11,11 @@ const AdminPanel = () => {
   const [username, setUsername] = useState("");
 
   const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem('adminAuthenticated') === 'true'
+    localStorage.getItem("adminAuthenticated") === "true"
   );
-    const [newCards, setNewCards] = useState([]);
+  const [newCards, setNewCards] = useState([]);
 
-    const [newUsers, setNewUsers] = useState([]);
+  const [newUsers, setNewUsers] = useState([]);
   useEffect(() => {
     fetchNewUsers();
     fetchNewCards();
@@ -26,12 +26,12 @@ const AdminPanel = () => {
   //       const testData = {
   //         name: "Test Moderator",
   //         password: "test123",
-  //         email: "test@example.com", 
+  //         email: "test@example.com",
   //         telegram_login: "@testmod",
   //         description: "Test moderator account"
   //       };
   //       const response = await axios.post("/moderators", testData);
-        
+
   //       if (response.status === 201) {
   //         console.log("Test moderator created successfully:", response.data);
   //       }
@@ -41,41 +41,40 @@ const AdminPanel = () => {
   //   };
   //   testCreateModerator();
   // }, []);
- const fetchNewUsers = async () => {
+  const fetchNewUsers = async () => {
     try {
-      const response = await axios.get('/admin/new-users');
+      const response = await axios.get("/admin/new-users");
       setNewUsers(response.data);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
-      console.error('Ошибка при получении новых пользователей:', error);
+      console.error("Ошибка при получении новых пользователей:", error);
     }
   };
-    const fetchNewCards = async () => {
+  const fetchNewCards = async () => {
     try {
-      const response = await axios.get('/admin/new-cards');
+      const response = await axios.get("/admin/new-cards");
       setNewCards(response.data);
-            console.log(response.data)
-
+      console.log(response.data);
     } catch (error) {
-      console.error('Ошибка при получении новых карт:', error);
+      console.error("Ошибка при получении новых карт:", error);
     }
   };
-const handleLogin = async () => {
-  try {
-    const response = await axios.post('/moderators/login', {
-      username: username,
-      password: password
-    });
-    setIsAuthenticated(true);
-    localStorage.setItem('adminAuthenticated', 'true');
-    localStorage.setItem('adminUsername', username); // Store username in localStorage
-  } catch (error) {
-    alert("Неверный логин или пароль");
-  }
-};
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("/moderators/login", {
+        username: username,
+        password: password,
+      });
+      setIsAuthenticated(true);
+      localStorage.setItem("adminAuthenticated", "true");
+      localStorage.setItem("adminUsername", username); // Store username in localStorage
+    } catch (error) {
+      alert("Неверный логин или пароль");
+    }
+  };
   if (!isAuthenticated) {
     return (
-   <div className={styles.contents}>
+      <div className={styles.contents}>
         <div className={styles.loginContainer}>
           <input
             type="text"
@@ -96,7 +95,6 @@ const handleLogin = async () => {
           </button>
         </div>
       </div>
-  
     );
   }
   return (
@@ -116,43 +114,48 @@ const handleLogin = async () => {
             </div>
           </NavLink>
         </div>
-    <div className={styles.mainContent}>
-        <div className={styles.content}>
-          <p>Новые пользователи за последние 24 часа ({newUsers.length})</p>
-
-        </div>
-      </div>
-             <div className={styles.mainContent}>
+        <div className={styles.mainContent}>
           <div className={styles.content}>
-            <p>Открытые карты за последние 24 часа ({newCards.length})</p>
-
+            <p>Новые пользователи за последние 24 часа ({newUsers.length})</p>
           </div>
         </div>
-                <div className={styles.mainContent}>
+        <div className={styles.mainContent}>
+          <div className={styles.content}>
+            <p>Открытые карты за последние 24 часа ({newCards.length})</p>
+          </div>
+        </div>
+        <div className={styles.mainContent}>
           <NavLink to="/users-list">
             <div className={styles.content}>
               <p>Список пользователей</p>
             </div>
           </NavLink>
         </div>
-                        <div className={styles.mainContent}>
+        <div className={styles.mainContent}>
           <NavLink to="/adsmanagement">
             <div className={styles.content}>
               <p>Управление рекламой</p>
             </div>
           </NavLink>
         </div>
-                        <div className={styles.mainContent}>
+        <div className={styles.mainContent}>
           <NavLink to="/moderators">
             <div className={styles.content}>
               <p>Управление модераторами</p>
             </div>
           </NavLink>
         </div>
-          <div className={styles.mainContent}>
+        <div className={styles.mainContent}>
           <NavLink to="/referral-system">
             <div className={styles.content}>
               <p>Реферальная система</p>
+            </div>
+          </NavLink>
+        </div>
+        <div className={styles.mainContent}>
+          <NavLink to="/bonusmanagement">
+            <div className={styles.content}>
+              <p>Бонус Коды</p>
             </div>
           </NavLink>
         </div>

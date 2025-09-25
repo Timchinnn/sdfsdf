@@ -18,22 +18,40 @@ const CardManagement = () => {
   const [setsSearchQuery, setSetsSearchQuery] = useState("");
   const [hasEditPermission, setHasEditPermission] = useState(false);
   const [hasDeletePermission, setHasDeletePermission] = useState(false);
-    const [hasSetEditPermission, setHasSetEditPermission] = useState(false);
+  const [hasSetEditPermission, setHasSetEditPermission] = useState(false);
 
   useEffect(() => {
     const checkPermissions = async () => {
       try {
-        const adminUsername = localStorage.getItem('adminUsername');
-                  console.log(adminUsername)
+        const adminUsername = localStorage.getItem("adminUsername");
+        console.log(adminUsername);
 
         if (adminUsername) {
-          const response = await axios.get(`/moderators/permissions/${adminUsername}`);
-          console.log(response.data)
-                    setHasSetEditPermission(response.data.permissions.some(p => p.permission_name === 'Добавление и редактирование сета'));
+          const response = await axios.get(
+            `/moderators/permissions/${adminUsername}`
+          );
+          console.log(response.data);
+          setHasSetEditPermission(
+            response.data.permissions.some(
+              (p) => p.permission_name === "Добавление и редактирование сета"
+            )
+          );
 
- setHasEditPermission(response.data.permissions.some(p => p.permission_name === 'Добавление и редактирование карт' ));
-          setHasDeletePermission(response.data.permissions.some(p => p.permission_name === 'Добавление и редактирование карт' ));
-          setHasDeletePermission(response.data.permissions.some(p => p.permission_name === 'Добавление и редактирование карт' ));
+          setHasEditPermission(
+            response.data.permissions.some(
+              (p) => p.permission_name === "Добавление и редактирование карт"
+            )
+          );
+          setHasDeletePermission(
+            response.data.permissions.some(
+              (p) => p.permission_name === "Добавление и редактирование карт"
+            )
+          );
+          setHasDeletePermission(
+            response.data.permissions.some(
+              (p) => p.permission_name === "Добавление и редактирование карт"
+            )
+          );
         }
       } catch (error) {
         console.error("Error checking permissions:", error);
@@ -108,14 +126,17 @@ const CardManagement = () => {
                   <p>{card.description}</p>{" "}
                 </div>
 
-                <NavLink to={routeAddEditCard(card.id)} style={{ display: hasEditPermission ? 'block' : 'none' }}>
+                <NavLink
+                  to={routeAddEditCard(card.id)}
+                  style={{ display: hasEditPermission ? "block" : "none" }}
+                >
                   <button>Редактировать</button>
                 </NavLink>
                 <button
-                  style={{ 
-                    background: "red", 
+                  style={{
+                    background: "red",
                     marginTop: "10px",
-                    display: hasDeletePermission ? 'block' : 'none' 
+                    display: hasDeletePermission ? "block" : "none",
                   }}
                   onClick={async () => {
                     if (!hasDeletePermission) return;
@@ -157,7 +178,13 @@ const CardManagement = () => {
             </button>
           </div>{" "}
           <div>
-            <NavLink to={routeAddEditCard()} style={{ width: "40%", display: hasEditPermission ? 'block' : 'none' }}>
+            <NavLink
+              to={routeAddEditCard()}
+              style={{
+                width: "40%",
+                display: hasEditPermission ? "block" : "none",
+              }}
+            >
               <button
                 className={styles.addCard}
                 style={{
@@ -207,14 +234,17 @@ const CardManagement = () => {
                   <p>{set.description}</p>
                 </div>
 
-    <NavLink to={routeAddEditDeck(set.id)} style={{ display: hasSetEditPermission ? 'block' : 'none' }}>
+                <NavLink
+                  to={routeAddEditDeck(set.id)}
+                  style={{ display: hasSetEditPermission ? "block" : "none" }}
+                >
                   <button>Редактировать</button>
                 </NavLink>
                 <button
-                  style={{ 
-                    background: "red", 
+                  style={{
+                    background: "red",
                     marginTop: "10px",
-                    display: hasSetEditPermission ? 'block' : 'none'
+                    display: hasSetEditPermission ? "block" : "none",
                   }}
                   onClick={async () => {
                     if (!hasSetEditPermission) return;
@@ -256,7 +286,13 @@ const CardManagement = () => {
             </button>
           </div>{" "}
           <div>
-            <NavLink to={routeAddEditDeck()} style={{ width: "40%", display: hasSetEditPermission ? 'block' : 'none' }}>
+            <NavLink
+              to={routeAddEditDeck()}
+              style={{
+                width: "40%",
+                display: hasSetEditPermission ? "block" : "none",
+              }}
+            >
               <button
                 className={styles.addCard}
                 style={{
@@ -304,14 +340,17 @@ const CardManagement = () => {
                   <h3>{set.name}</h3>
                   <p>{set.description}</p>
                 </div>
-                    <NavLink to={routeAddEditCityDeck(set.id)} style={{ display: hasSetEditPermission ? 'block' : 'none' }}>
+                <NavLink
+                  to={routeAddEditCityDeck(set.id)}
+                  style={{ display: hasSetEditPermission ? "block" : "none" }}
+                >
                   <button>Редактировать</button>
                 </NavLink>
                 <button
-                  style={{ 
-                    background: "red", 
+                  style={{
+                    background: "red",
                     marginTop: "10px",
-                    display: hasSetEditPermission ? 'block' : 'none'
+                    display: hasSetEditPermission ? "block" : "none",
                   }}
                   onClick={async () => {
                     if (!hasSetEditPermission) return;
@@ -353,7 +392,13 @@ const CardManagement = () => {
             </button>
           </div>
           <div>
-          <NavLink to={routeAddEditCityDeck()} style={{ width: "40%", display: hasSetEditPermission ? 'block' : 'none' }}>
+            <NavLink
+              to={routeAddEditCityDeck()}
+              style={{
+                width: "40%",
+                display: hasSetEditPermission ? "block" : "none",
+              }}
+            >
               <button
                 className={styles.addCard}
                 style={{
@@ -431,7 +476,7 @@ const CardManagement = () => {
           </div>
         </div>
       </div> */}
-      <div className={styles.mainContent}>
+      {/* <div className={styles.mainContent}>
         <h2>Бонус коды</h2>
         <div className={styles.settings}>
           <div>
@@ -452,7 +497,7 @@ const CardManagement = () => {
             </NavLink>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
