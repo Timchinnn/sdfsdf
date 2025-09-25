@@ -391,7 +391,7 @@ const BonusCodeManagement = () => {
               onChange={(e) => setEndDate(e.target.value)}
               placeholder="Выберите дату окончания"
             />
-            <p className={styles.daysRemaining}>
+            <p className={styles.daysRemaining} style={{ marginTop: "7px" }}>
               {startDate && endDate
                 ? `Осталось дней: ${Math.ceil(
                     (new Date(endDate) - new Date(startDate)) /
