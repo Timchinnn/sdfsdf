@@ -144,6 +144,19 @@ const BonusManagement = () => {
                 <p>{bonus.description || "Без описания"}</p>
                 <p>Создан:</p>
                 <p>{new Date(bonus.created_at).toLocaleDateString()}</p>
+                {bonus.start_date && bonus.end_date && (
+                  <>
+                    <p>Длительность:</p>
+                    <p>
+                      {Math.ceil(
+                        (new Date(bonus.end_date) -
+                          new Date(bonus.start_date)) /
+                          (1000 * 60 * 60 * 24)
+                      )}{" "}
+                      дней
+                    </p>
+                  </>
+                )}
                 {bonus.rewards &&
                   bonus.rewards[0] &&
                   (() => {
