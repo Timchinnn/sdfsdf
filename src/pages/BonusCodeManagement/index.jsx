@@ -13,6 +13,9 @@ const BonusCodeManagement = () => {
   const { id } = useParams();
   const [bonusStatus, setBonusStatus] = useState(null);
   const [endDate, setEndDate] = useState(new Date().toISOString().slice(0, 16));
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().slice(0, 16)
+  );
 
   const [description, setDescription] = useState("");
   const [adminNotes, setAdminNotes] = useState("");
@@ -76,6 +79,11 @@ const BonusCodeManagement = () => {
           setAdminNotes(bonusData.note || "");
           setEndDate(
             bonusData.end_date
+              ? new Date(bonusData.end_date).toISOString().slice(0, 16)
+              : ""
+          );
+          setStartDate(
+            bonusData.start_date
               ? new Date(bonusData.end_date).toISOString().slice(0, 16)
               : ""
           );
@@ -383,6 +391,14 @@ const BonusCodeManagement = () => {
               onChange={(e) => setEndDate(e.target.value)}
               placeholder="Выберите дату окончания"
             />
+            <p className={styles.daysRemaining}>
+              {startDate && endDate
+                ? `Осталось дней: ${Math.ceil(
+                    (new Date(endDate) - new Date(startDate)) /
+                      (1000 * 60 * 60 * 24)
+                  )}`
+                : ""}
+            </p>
           </div>
 
           <div className={styles.rewardsSection}>
