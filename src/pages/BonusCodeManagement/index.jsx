@@ -726,6 +726,22 @@ const BonusCodeManagement = () => {
             Активировать бонус
           </button>
         )}
+        {bonusStatus !== null && bonusStatus && (
+          <button
+            className={styles.chooseCard}
+            style={{ width: "184px", height: "47px", marginLeft: "10px" }}
+            onClick={async () => {
+              try {
+                const response = await axios.put(`/bonuses/${id}/deactivate`);
+                setBonusStatus(false);
+              } catch (err) {
+                console.error("Error deactivating bonus:", err);
+              }
+            }}
+          >
+            Деактивировать бонус
+          </button>
+        )}
         <button
           className={styles.chooseCard}
           style={{ width: "184px", height: "47px" }}
