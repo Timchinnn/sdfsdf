@@ -383,7 +383,14 @@ const BonusCodeManagement = () => {
               className={styles.textarea}
             />
           </div>
-          <div className={styles.inputGroup}>
+          <div
+            className={styles.inputGroup}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <label>Дата окончания:</label>
             <input
               type="datetime-local"
