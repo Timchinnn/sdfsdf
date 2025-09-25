@@ -212,7 +212,7 @@
 .sectionMain {
   display: flex;
   justify-content: space-between;
-  width: 113vh;
+  /* width: 113vh; */
 }
 .textarea {
   width: 100%;
