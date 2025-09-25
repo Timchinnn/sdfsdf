@@ -84,7 +84,7 @@ const BonusCodeManagement = () => {
           );
           setStartDate(
             bonusData.start_date
-              ? new Date(bonusData.end_date).toISOString().slice(0, 16)
+              ? new Date(bonusData.start_date).toISOString().slice(0, 16)
               : ""
           );
 
