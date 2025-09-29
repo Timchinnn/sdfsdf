@@ -76,5 +76,5 @@
 }
 .borderDesc p {
   margin: 5px 0;
-  word-break: break-word; /* Разрешаем перенос внутри слов если нужно */
+  word-break: break-word; /* Разрешаем перенос внутри слов если dнужно */
 }
