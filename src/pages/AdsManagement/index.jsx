@@ -19,6 +19,7 @@ const AdsManagement = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   // const [rewards, setRewards] = useState([]);
   const [referralLevels, setReferralLevels] = useState([]); // Состояние для реферальных уровней
+  const [link, setLink] = useState("");
 
   const [selectedRewardTypes, setSelectedRewardTypes] = useState({
     coins: false,
@@ -32,17 +33,22 @@ const AdsManagement = () => {
     energy: "",
     experience: "",
   });
-  const [hasAdsManagementPermission, setHasAdsManagementPermission] = useState(false);
+  const [hasAdsManagementPermission, setHasAdsManagementPermission] =
+    useState(false);
 
   useEffect(() => {
     const checkPermissions = async () => {
       try {
-        const adminUsername = localStorage.getItem('adminUsername');
+        const adminUsername = localStorage.getItem("adminUsername");
         if (adminUsername) {
-          const response = await axios.get(`/moderators/permissions/${adminUsername}`);
-          setHasAdsManagementPermission(response.data.permissions.some(
-            p => p.permission_name === 'Добавление и редактирование заданий'
-          ));
+          const response = await axios.get(
+            `/moderators/permissions/${adminUsername}`
+          );
+          setHasAdsManagementPermission(
+            response.data.permissions.some(
+              (p) => p.permission_name === "Добавление и редактирование заданий"
+            )
+          );
         }
       } catch (error) {
         console.error("Error checking permissions:", error);
@@ -50,16 +56,16 @@ const AdsManagement = () => {
     };
     checkPermissions();
   }, []);
- useEffect(() => {
+  useEffect(() => {
     fetchAds();
     fetchCards();
     fetchReferralLevels();
   }, []);
   const fetchReferralLevels = async () => {
     try {
-      const response = await axios.get('/referral-levels');
+      const response = await axios.get("/referral-levels");
       setReferralLevels(response.data);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching referral levels:", error);
     }
@@ -95,12 +101,13 @@ const AdsManagement = () => {
       setSelectedImage(file);
     }
   };
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    
+    formData.append("link", link);
+
     // Добавляем награды в formData
     if (selectedRewardTypes.coins) {
       formData.append("reward_type", "coins");
@@ -122,7 +129,7 @@ const handleSubmit = async (e) => {
       formData.append("reward_type", "referral_level");
       formData.append("required_referrals", rewardValues.referral_level);
     }
-    
+
     if (selectedImage) {
       formData.append("image", selectedImage);
     }
@@ -132,19 +139,21 @@ const handleSubmit = async (e) => {
       // Очищаем форму
       setTitle("");
       setDescription("");
+      setLink("");
+
       setSelectedRewardTypes({
         coins: false,
         card: false,
         energy: false,
         experience: false,
-        referral_level: false
+        referral_level: false,
       });
       setRewardValues({
         coins: "",
         card: "",
         energy: "",
         experience: "",
-        referral_level: ""
+        referral_level: "",
       });
       setSelectedImage(null);
     } catch (error) {
@@ -200,7 +209,10 @@ const handleSubmit = async (e) => {
     }
   };
   return (
-    <div className={styles.container} style={{ display: hasAdsManagementPermission ? 'block' : 'none' }}>
+    <div
+      className={styles.container}
+      style={{ display: hasAdsManagementPermission ? "block" : "none" }}
+    >
       <h2>Управление рекламой</h2>
 
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -212,37 +224,50 @@ const handleSubmit = async (e) => {
             onChange={(e) => setTitle(e.target.value)}
             required
           />
+          <div className={styles.formGroup}>
+            <label>Ссылка:</label>
+            <input
+              type="url"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              placeholder="https://example.com"
+              className={styles.inputField}
+            />
+          </div>
         </div>
-                   <div className={styles.rewardItem}>
-              <input
-                type="checkbox"
-                checked={selectedRewardTypes.referral_level}
-                onChange={(e) =>
-                  setSelectedRewardTypes({
-                    ...selectedRewardTypes,
-                    referral_level: e.target.checked,
-                  })
-                }
-              />
-              <label>Уровень рефералки:</label>
-              <select
-                value={rewardValues.referral_level}
-                onChange={(e) =>
-                  setRewardValues({
-                    ...rewardValues,
-                    referral_level: e.target.value,
-                  })
-                }
-                disabled={!selectedRewardTypes.referral_level}
+        <div className={styles.rewardItem}>
+          <input
+            type="checkbox"
+            checked={selectedRewardTypes.referral_level}
+            onChange={(e) =>
+              setSelectedRewardTypes({
+                ...selectedRewardTypes,
+                referral_level: e.target.checked,
+              })
+            }
+          />
+          <label>Уровень рефералки:</label>
+          <select
+            value={rewardValues.referral_level}
+            onChange={(e) =>
+              setRewardValues({
+                ...rewardValues,
+                referral_level: e.target.value,
+              })
+            }
+            disabled={!selectedRewardTypes.referral_level}
+          >
+            <option value="">Выберите уровень</option>
+            {referralLevels.map((level) => (
+              <option
+                key={level.friends_required}
+                value={level.friends_required}
               >
-                <option value="">Выберите уровень</option>
-                {referralLevels.map((level) => (
-                  <option key={level.friends_required} value={level.friends_required}>
-                    {level.name} ({level.friends_required} друзей)
-                  </option>
-                ))}
-              </select>
-            </div>
+                {level.name} ({level.friends_required} друзей)
+              </option>
+            ))}
+          </select>
+        </div>
         <div className={styles.formGroup}>
           <label>Описание:</label>
           <textarea
