@@ -44,103 +44,107 @@ const TasksPage = () => {
 
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
-    const [referralTasks, setReferralTasks] = useState([]);
+  const [referralTasks, setReferralTasks] = useState([]);
   const [userReferrals, setUserReferrals] = useState(0);
-const [translations, setTranslations] = useState({
-     sets: "Сет",
-     tasks: "Задания", 
-     bonus: "Бонус",
-     level: "Уровень города",
-     mayor: "/ Мэр",
-     rewardReceived: "Награда получена!",
-     rewardForAd: "Вы получили награду за просмотр рекламы!",
-     excellent: "Отлично!",
-     error: "Ошибка",
-     rewardError: "Не удалось получить награду. Попробуйте позже.",
-     taskRewards: "Награды за задания",
-     subscribeToTelegram: "Подписаться на телеграм канал https://t.me/zoomayor",
-     start: "Начать",
-     watch: "Смотреть",
-     taskTitle: "", // Will be translated dynamically
-     taskDescription: "" // Will be translated dynamically
-   });
+  const [translations, setTranslations] = useState({
+    sets: "Сет",
+    tasks: "Задания",
+    bonus: "Бонус",
+    level: "Уровень города",
+    mayor: "/ Мэр",
+    rewardReceived: "Награда получена!",
+    rewardForAd: "Вы получили награду за просмотр рекламы!",
+    excellent: "Отлично!",
+    error: "Ошибка",
+    rewardError: "Не удалось получить награду. Попробуйте позже.",
+    taskRewards: "Награды за задания",
+    subscribeToTelegram: "Подписаться на телеграм канал https://t.me/zoomayor",
+    start: "Начать",
+    watch: "Смотреть",
+    taskTitle: "", // Will be translated dynamically
+    taskDescription: "", // Will be translated dynamically
+  });
   // Get language from Redux store
-useEffect(() => {
-  const fetchReferralTasks = async () => {
-    try {
-      const tg = window.Telegram.WebApp;
-      if (tg?.initDataUnsafe?.user?.id) {
-        const response = await axios.get(`/user/${tg.initDataUnsafe.user.id}/referral-tasks`);
-        console.log(response.data);
-        setReferralTasks(response.data);
+  useEffect(() => {
+    const fetchReferralTasks = async () => {
+      try {
+        const tg = window.Telegram.WebApp;
+        if (tg?.initDataUnsafe?.user?.id) {
+          const response = await axios.get(
+            `/user/${tg.initDataUnsafe.user.id}/referral-tasks`
+          );
+          console.log(response.data);
+          setReferralTasks(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching referral tasks:", error);
       }
-    } catch (error) {
-      console.error('Error fetching referral tasks:', error);
-    }
-  };
-  fetchReferralTasks();
-}, []);
+    };
+    fetchReferralTasks();
+  }, []);
   const handleReferralReward = async (task) => {
     const tg = window.Telegram.WebApp;
     if (!tg?.initDataUnsafe?.user?.id) return;
     try {
       if (userReferrals >= task.friends_required) {
         const response = await processReward(tg.initDataUnsafe.user.id, null, {
-          type: 'referral',
-          task_id: task.id
+          type: "referral",
+          task_id: task.id,
         });
         if (response.success) {
           tg.showPopup({
             title: translations.rewardReceived,
             message: translations.rewardForAd,
-            buttons: [{ type: "ok", text: translations.excellent }]
+            buttons: [{ type: "ok", text: translations.excellent }],
           });
         }
       }
     } catch (error) {
-      console.error('Error processing referral reward:', error);
+      console.error("Error processing referral reward:", error);
       tg.showPopup({
         title: translations.error,
         message: translations.rewardError,
-        buttons: [{ type: "ok" }]
+        buttons: [{ type: "ok" }],
       });
     }
   };
   const language = useSelector((state) => state.language);
-useEffect(() => {
+  useEffect(() => {
     if (language === "ru") {
       setTranslations({
-         sets: "Сет",
-         tasks: "Задания", 
-         bonus: "Бонус",
-         level: "Уровень города",
-         mayor: "/ Мэр",
+        sets: "Сет",
+        tasks: "Задания",
+        bonus: "Бонус",
+        level: "Уровень города",
+        mayor: "/ Мэр",
         rewardReceived: "Награда получена!",
         rewardForAd: "Вы получили награду за просмотр рекламы!",
         excellent: "Отлично!",
         error: "Ошибка",
         rewardError: "Не удалось получить награду. Попробуйте позже.",
         taskRewards: "Награды за задания",
-        subscribeToTelegram: "Подписаться на телеграм канал https://t.me/zoomayor",
+        subscribeToTelegram:
+          "Подписаться на телеграм канал https://t.me/zoomayor",
         start: "Начать",
-        watch: "Смотреть"
+        watch: "Смотреть",
       });
     } else if (language === "en") {
       setTranslations({
-         sets: "Set",
-         tasks: "Tasks",
-         bonus: "Bonus",
-         level: "City Level", 
-         mayor: "/ Mayor",
+        sets: "Set",
+        tasks: "Tasks",
+        bonus: "Bonus",
+        level: "City Level",
+        mayor: "/ Mayor",
         rewardReceived: "Reward received!",
         rewardForAd: "You received a reward for watching the ad!",
         excellent: "Excellent!",
         error: "Error",
         rewardError: "Failed to receive reward. Please try again later.",
         taskRewards: "Task Rewards",
-        subscribeToTelegram: "Subscribe to Telegram channel https://t.me/zoomayor",
+        subscribeToTelegram:
+          "Subscribe to Telegram channel https://t.me/zoomayor",
         start: "Start",
-        watch: "Watch"
+        watch: "Watch",
       });
     } else if (language === "it") {
       setTranslations({
@@ -155,9 +159,10 @@ useEffect(() => {
         error: "Errore",
         rewardError: "Impossibile ricevere il premio. Riprova più tardi.",
         taskRewards: "Premi per le attività",
-        subscribeToTelegram: "Iscriviti al canale Telegram https://t.me/zoomayor",
+        subscribeToTelegram:
+          "Iscriviti al canale Telegram https://t.me/zoomayor",
         start: "Inizia",
-        watch: "Guarda"
+        watch: "Guarda",
       });
     } else if (language === "es") {
       setTranslations({
@@ -170,11 +175,13 @@ useEffect(() => {
         rewardForAd: "¡Has recibido una recompensa por ver el anuncio!",
         excellent: "¡Excelente!",
         error: "Error",
-        rewardError: "No se pudo recibir la recompensa. Por favor, inténtalo más tarde.",
+        rewardError:
+          "No se pudo recibir la recompensa. Por favor, inténtalo más tarde.",
         taskRewards: "Recompensas de tareas",
-        subscribeToTelegram: "Suscríbete al canal de Telegram https://t.me/zoomayor",
+        subscribeToTelegram:
+          "Suscríbete al canal de Telegram https://t.me/zoomayor",
         start: "Comenzar",
-        watch: "Ver"
+        watch: "Ver",
       });
     } else if (language === "de") {
       setTranslations({
@@ -184,32 +191,35 @@ useEffect(() => {
         level: "Stadtlevel",
         mayor: "/ Bürgermeister",
         rewardReceived: "Belohnung erhalten!",
-        rewardForAd: "Sie haben eine Belohnung für das Ansehen der Werbung erhalten!",
+        rewardForAd:
+          "Sie haben eine Belohnung für das Ansehen der Werbung erhalten!",
         excellent: "Ausgezeichnet!",
         error: "Fehler",
-        rewardError: "Belohnung konnte nicht empfangen werden. Bitte versuchen Sie es später erneut.",
+        rewardError:
+          "Belohnung konnte nicht empfangen werden. Bitte versuchen Sie es später erneut.",
         taskRewards: "Aufgabenbelohnungen",
-        subscribeToTelegram: "Abonniere den Telegram-Kanal https://t.me/zoomayor",
+        subscribeToTelegram:
+          "Abonniere den Telegram-Kanal https://t.me/zoomayor",
         start: "Starten",
-        watch: "Ansehen"
+        watch: "Ansehen",
       });
     }
   }, [language]);
   // Получаем username из Telegram API
-//   useEffect(() => {
-//   const translateTaskContent = async () => {
-//     if (task?.title && task?.description) {
-//       const translatedTitle = await translateText(task.title, language);
-//       const translatedDesc = await translateText(task.description, language);
-//       setTranslations(prev => ({
-//         ...prev,
-//         taskTitle: translatedTitle,
-//         taskDescription: translatedDesc
-//       }));
-//     }
-//   };
-//   translateTaskContent();
-// }, [task, language]);
+  //   useEffect(() => {
+  //   const translateTaskContent = async () => {
+  //     if (task?.title && task?.description) {
+  //       const translatedTitle = await translateText(task.title, language);
+  //       const translatedDesc = await translateText(task.description, language);
+  //       setTranslations(prev => ({
+  //         ...prev,
+  //         taskTitle: translatedTitle,
+  //         taskDescription: translatedDesc
+  //       }));
+  //     }
+  //   };
+  //   translateTaskContent();
+  // }, [task, language]);
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -306,7 +316,7 @@ useEffect(() => {
     const fetchAds = async () => {
       try {
         const response = await adsService.getAllAds();
-        console.log(response.data)
+        console.log(response.data);
         setAds(response.data);
       } catch (error) {
         console.error("Ошибка при загрузке рекламы:", error);
@@ -338,7 +348,7 @@ useEffect(() => {
   }, []);
   const [translations1, setTranslations1] = useState({});
   const [isTranslating, setIsTranslating] = useState(false);
-  
+
   useEffect(() => {
     const translateAdContent = async () => {
       if (ads.length > 0) {
@@ -346,7 +356,10 @@ useEffect(() => {
         const translatedContent = {};
         for (const ad of ads) {
           translatedContent[ad.id] = await translateText(ad.title, language);
-          translatedContent[`${ad.id}_desc`] = await translateText(ad.description, language);
+          translatedContent[`${ad.id}_desc`] = await translateText(
+            ad.description,
+            language
+          );
         }
         setTranslations1(translatedContent);
         setIsTranslating(false);
@@ -378,8 +391,7 @@ useEffect(() => {
       adsLoaded &&
       adControllerLoaded &&
       usernameLoaded &&
-            !isTranslating
-
+      !isTranslating
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
@@ -475,7 +487,7 @@ useEffect(() => {
                 <div className="tasks-head">
                   <div className="section-content">
                     <h2 className="section-content__title">
-                        {translations.taskRewards}
+                      {translations.taskRewards}
                     </h2>
                   </div>
                 </div>
@@ -492,7 +504,7 @@ useEffect(() => {
                         </div>
                         <div className="tasks-list__content">
                           <h3 className="tasks-list__title">
-                              {translations.subscribeToTelegram}
+                            {translations.subscribeToTelegram}
                           </h3>
                           <ul className="friends-params f-center">
                             <li className="friends-params__item f-center">
@@ -514,115 +526,136 @@ useEffect(() => {
                           window.open("https://t.me/zoomayor", "_blank")
                         }
                       >
-                                                {translations.start}
-
+                        {translations.start}
                       </button>
                     </div>
                   </li>
-                  {ads.filter(ad => !ad.required_referrals || ad.required_referrals === 0).map((ad) => (
-                    <li key={ad.id} className="tasks-list__item">
+                  {ads
+                    .filter(
+                      (ad) =>
+                        !ad.required_referrals || ad.required_referrals === 0
+                    )
+                    .map((ad) => (
+                      <li key={ad.id} className="tasks-list__item">
+                        <div className="tasks-list__card block-style">
+                          <div className="tasks-list__wrap f-center">
+                            <div
+                              className="tasks-list__image"
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <img
+                                src={`https://api.zoomayor.io${ad.image_url}`}
+                                alt={ad.name}
+                                style={{ height: "73%", borderRadius: "4px" }}
+                              />
+                            </div>
+                            <div className="tasks-list__content">
+                              <h3 className="tasks-list__title">
+                                {translations1[ad.id] || ad.title}
+                              </h3>
+                              <p>
+                                {translations1[`${ad.id}_desc`] ||
+                                  ad.description}
+                              </p>
+                              <ul className="friends-params f-center">
+                                {ad.reward_value && (
+                                  <li className="friends-params__item f-center">
+                                    <img src={CoinIcon} alt="" />
+                                    {ad.reward_value}
+                                  </li>
+                                )}
+                                {ad.reward_energy && (
+                                  <li className="friends-params__item f-center">
+                                    <span role="img" aria-label="energy">
+                                      ⚡
+                                    </span>
+                                    {ad.reward_energy}
+                                  </li>
+                                )}
+                                {ad.reward_experience && (
+                                  <li className="friends-params__item f-center">
+                                    <img src={StarIcon} alt="" />
+                                    {ad.reward_experience} EXP
+                                  </li>
+                                )}
+                              </ul>
+                            </div>
+                          </div>
+                          {ad.link ? (
+                            <button
+                              type="button"
+                              className="tasks-list__btn"
+                              style={{ marginTop: "0" }}
+                              onClick={() => window.open(ad.link, "_blank")}
+                            >
+                              {translations.watch}
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="tasks-list__btn"
+                              style={{ marginTop: "0" }}
+                              onClick={() => showRewardedAd(ad.id)}
+                            >
+                              {translations.watch}
+                            </button>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  {referralTasks?.tasks?.map((task) => (
+                    <li key={task.id} className="tasks-list__item">
                       <div className="tasks-list__card block-style">
                         <div className="tasks-list__wrap f-center">
-                          <div
-                            className="tasks-list__image"
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
+                          <div className="tasks-list__image">
                             <img
                               src={
-                                ad.image_url
-                                  ? `https://api.zoomayor.io${ad.image_url}`
-                                  : DefaultImg
+                                `https://api.zoomayor.io${task.image_url}` ||
+                                DefaultImgTG
                               }
                               alt=""
-                              style={{ height: "73%", borderRadius: "4px" }}
+                              style={{ height: "73%" }}
                             />
                           </div>
                           <div className="tasks-list__content">
-                            <h3 className="tasks-list__title">{translations1[ad.id] || ad.title}</h3>
-                            <p>{translations1[`${ad.id}_desc`] || ad.description}</p>
+                            <h3 className="tasks-list__title">{task.title}</h3>
+                            <p>{task.description}</p>
                             <ul className="friends-params f-center">
-                              {ad.reward_value > 0 && (
-                                <li className="friends-params__item f-center">
-                                  <img src={CoinIcon} alt="" />
-                                  {ad.reward_value}
-                                </li>
-                              )}
-                              {ad.reward_experience > 0 && (
+                              {task.reward_experience > 0 && (
                                 <li className="friends-params__item f-center">
                                   <img src={StarIcon} alt="" />
-                                  {ad.reward_experience} EXP
+                                  {task.reward_experience} EXP
                                 </li>
                               )}
-                              {ad.reward_energy > 0 && (
+
+                              {task.reward_value > 0 && (
                                 <li className="friends-params__item f-center">
-                                  <span role="img" aria-label="energy">
-                                    ⚡
-                                  </span>
-                                  {ad.reward_energy}
+                                  <img src={CoinIcon} alt="" />
+                                  {task.reward_value}
                                 </li>
                               )}
-                              {/* {ad.reward_card_id && (
-                                <li className="friends-params__item f-center">
-                                  <span role="img" aria-label="card">
-                                    🎴
-                                  </span>
-                                  Карта
-                                </li>
-                              )} */}
                             </ul>
                           </div>
                         </div>
                         <button
                           type="button"
-                          className="tasks-list__btn"
-                          style={{ marginTop: "0" }}
-                          onClick={() => showRewardedAd(ad.id)}
+                          className={`tasks-list__btn ${
+                            task.referral_count >= task.required_referrals
+                              ? "tasks-list__btn_done"
+                              : ""
+                          }`}
+                          onClick={() => handleReferralReward(task)}
+                          disabled={
+                            task.referral_count < task.required_referrals
+                          }
                         >
-                                                    {translations.watch}
-
+                          {task.referral_count >= task.required_referrals
+                            ? translations.collect
+                            : `${task.referral_count}/${task.required_referrals}`}
                         </button>
                       </div>
                     </li>
                   ))}
-    {referralTasks?.tasks?.map((task) => (
-  <li key={task.id} className="tasks-list__item">
-    <div className="tasks-list__card block-style">
-      <div className="tasks-list__wrap f-center">
-        <div className="tasks-list__image">
-          <img src={`https://api.zoomayor.io${task.image_url}`|| DefaultImgTG} alt="" style={{ height: "73%" }} />
-        </div>
-        <div className="tasks-list__content">
-          <h3 className="tasks-list__title">{task.title}</h3>
-          <p>{task.description}</p>
-          <ul className="friends-params f-center">
-                 {task.reward_experience > 0 && (
-
-            <li className="friends-params__item f-center">
-              <img src={StarIcon} alt="" />
-              {task.reward_experience} EXP
-            </li>            )}
-
-     {task.reward_value > 0 && (
-              <li className="friends-params__item f-center">
-                <img src={CoinIcon} alt="" />
-                {task.reward_value}
-              </li>
-            )}
-          </ul>
-        </div>
-      </div>
-      <button
-        type="button"
-        className={`tasks-list__btn ${task.referral_count >= task.required_referrals ? 'tasks-list__btn_done' : ''}`}
-        onClick={() => handleReferralReward(task)}
-        disabled={task.referral_count < task.required_referrals}
-      >
-        {task.referral_count >= task.required_referrals ? translations.collect : `${task.referral_count}/${task.required_referrals}`}
-      </button>
-    </div>
-  </li>
-))}
-  
                 </ul>
               </div>
             </>
