@@ -588,7 +588,7 @@ const TasksPage = () => {
                               style={{ marginTop: "0" }}
                               onClick={() => window.open(ad.link, "_blank")}
                             >
-                              {translations.watch}
+                              {translations.start}
                             </button>
                           ) : (
                             <button
