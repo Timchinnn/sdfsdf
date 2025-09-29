@@ -16,6 +16,7 @@ const BonusCodeManagement = () => {
   const [startDate, setStartDate] = useState(
     new Date().toISOString().slice(0, 16)
   );
+  const [cardName, setCardName] = useState("");
 
   const [description, setDescription] = useState("");
   const [adminNotes, setAdminNotes] = useState("");
@@ -91,6 +92,9 @@ const BonusCodeManagement = () => {
           if (bonusData.rewards) {
             const rewards = JSON.parse(bonusData.rewards);
             setRewards(rewards);
+            if (rewards.cardId) {
+              await fetchCardDetails(rewards.cardId);
+            }
           }
         } catch (error) {
           console.error("Ошибка при получении информации о бонусе:", error);
@@ -108,6 +112,15 @@ const BonusCodeManagement = () => {
   const [codeName, setCodeName] = useState("");
   const [codeName1, setCodeName1] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
+  const fetchCardDetails = async (cardId) => {
+    try {
+      const response = await axios.get(`/cards/${cardId}`);
+      setSelectedCard(response.data);
+      setCardName(response.data.title);
+    } catch (error) {
+      console.error("Error fetching card details:", error);
+    }
+  };
   const downloadCodesAsTxt = () => {
     const codesToDownload = id ? codes : generatedCodes;
     if (codesToDownload.length === 0) {
@@ -487,15 +500,18 @@ const BonusCodeManagement = () => {
               <div className={styles.rewardItem}>
                 <input
                   type="checkbox"
-                  checked={activeRewards.card}
+                  checked={rewards.cardId !== ""}
                   onChange={(e) =>
-                    setActiveRewards({
-                      ...activeRewards,
-                      card: e.target.checked,
+                    setRewards({
+                      ...rewards,
+                      cardId: e.target.checked
+                        ? rewards.cardId !== ""
+                          ? rewards.cardId
+                          : ""
+                        : "",
                     })
                   }
                 />
-                <label>Карта:</label>
                 <div className={styles.mainContent}>
                   {selectedCard ? (
                     <div className={styles.cardItem}>
@@ -531,7 +547,6 @@ const BonusCodeManagement = () => {
                   )}
                 </div>
               </div>
-
               {showAddCards && !selectedCard && (
                 <div>
                   <h3>Выберите карту:</h3>
