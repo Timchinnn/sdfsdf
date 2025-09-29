@@ -94,7 +94,7 @@ const AdsManagement = () => {
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        // 5MB
+        // 5MBы
         alert("Размер файла не должен превышать 5MB");
         return;
       }
