@@ -487,15 +487,18 @@ const BonusCodeManagement = () => {
               <div className={styles.rewardItem}>
                 <input
                   type="checkbox"
-                  checked={activeRewards.card}
+                  checked={rewards.cardId !== ""}
                   onChange={(e) =>
-                    setActiveRewards({
-                      ...activeRewards,
-                      card: e.target.checked,
+                    setRewards({
+                      ...rewards,
+                      cardId: e.target.checked
+                        ? rewards.cardId !== ""
+                          ? rewards.cardId
+                          : ""
+                        : "",
                     })
                   }
                 />
-                <label>Карта:</label>
                 <div className={styles.mainContent}>
                   {selectedCard ? (
                     <div className={styles.cardItem}>

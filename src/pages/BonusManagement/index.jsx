@@ -31,7 +31,7 @@ const BonusManagement = () => {
   //             p => p.permission_name === 'Добавление и редактирование бонусов'
   //           ));
   //         }
-  //       } catch (error) {e
+  //       } catch (error) {
   //         console.error("Error checking permissions:", error);
   //       }
   //     };
