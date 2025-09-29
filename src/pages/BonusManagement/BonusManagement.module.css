@@ -65,8 +65,16 @@
   cursor: pointer;
 }
 .borderDesc {
-  box-shadow: 0 2px 3px black;
-  padding: 17px;
-  border-radius: 17px;
-  width: 260px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px 0;
+  word-wrap: break-word; /* Добавляем перенос слов */
+  overflow-wrap: break-word; /* Дополнительное свойство для поддержки в разных браузерах */
+  white-space: pre-wrap; /* Сохраняем переносы строк и пробелы */
+  max-width: 100%; /* Ограничиваем максимальную ширину */
+}
+.borderDesc p {
+  margin: 5px 0;
+  word-break: break-word; /* Разрешаем перенос внутри слов если нужно */
 }
