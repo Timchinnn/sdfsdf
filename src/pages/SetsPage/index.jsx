@@ -6,6 +6,7 @@ import { userInitService, userCardsService } from "services/api";
 import MobileNav from "components/MobileNav";
 import { useSelector } from "react-redux";
 import axios from "../../axios-controller";
+import QuestionMarkImg from "assets/img/question-mark.png";
 
 // Импортируем необходимые локальные изображения
 import Avatar from "assets/img/avatar.png";
