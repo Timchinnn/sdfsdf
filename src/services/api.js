@@ -160,7 +160,7 @@ export const cardSetsService = {
 };
 export const cardLotsService = {
   addCardToSet: (setId, cardId) =>
-    axios.post(`/card-sets/${setId}/cards`, { cardId }),
+    axios.post(`/card-lots/${setId}/cards`, { cardId }),
   deleteCardSet: (setId) => axios.delete(`/card-lots/${setId}`),
 
   getSetCards: (setId) => axios.get(`/card-lots/${setId}/cards`),
