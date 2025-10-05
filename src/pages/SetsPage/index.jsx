@@ -5,6 +5,7 @@ import Spinner from "components/Spinner";
 import { userInitService } from "services/api";
 import MobileNav from "components/MobileNav";
 import { useSelector } from "react-redux";
+import axios from "../../axios-controller";
 
 // Импортируем необходимые локальные изображения
 import Avatar from "assets/img/avatar.png";
