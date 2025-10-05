@@ -22,6 +22,7 @@ const SetsPage = () => {
   const [coins, setCoins] = useState(0);
   const [telegramId, setTelegramId] = useState(null);
   const [lot, setLot] = useState(null);
+  const [userCards, setUserCards] = useState(null);
   const [lotCards, setLotCards] = useState([]);
   const [lotLoaded, setLotLoaded] = useState(false);
   const [level, setLevel] = useState("");
@@ -49,6 +50,15 @@ const SetsPage = () => {
   useEffect(() => {
     const fetchLotData = async () => {
       try {
+        if (telegramId) {
+          const response = await userCardsService.getUserCards(telegramId);
+          // Filter out money and energy cards
+          const filteredCards = response.data.filter(
+            (card) =>
+              !card.title.match(/^Бонус \d+/) && card.type !== "energy_boost"
+          );
+          setUserCards(filteredCards);
+        }
         // Получаем информацию о лоте
         const lotResponse = await axios.get("/card-lots");
         if (lotResponse.data && lotResponse.data.length > 0) {
@@ -64,7 +74,7 @@ const SetsPage = () => {
           }
           console.log(currentLot);
           console.log(cardsResponse.data);
-          console.log();
+          console.log(filteredCards);
         }
       } catch (error) {
         console.error("Ошибка при загрузке данных лота:", error);
