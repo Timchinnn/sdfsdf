@@ -268,7 +268,6 @@ const AddEditLot = () => {
     <div
       className={styles.contents}
       style={{
-        width: "40%",
         display: cardLots.length > 0 && !id ? "none" : "",
       }}
     >
