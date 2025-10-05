@@ -360,44 +360,64 @@ const SetsPage = () => {
                         padding: "16px",
                       }}
                     >
-                      {userCards.map((card) => (
-                        <div
-                          key={card.id}
-                          style={{
-                            position: "relative",
-                            width: "100%",
-                          }}
-                        >
-                          <img
-                            src={`https://api.zoomayor.io${card.image}`}
-                            alt={card.title}
-                            style={{
-                              width: "100%",
-                              height: "auto",
-                              borderRadius: "8px",
-                            }}
-                          />
-                          {userCards.filter((c) => c.id === card.id).length >
-                            1 && (
-                            <span
-                              className="card-count"
+                      {userCards
+                        .reduce((uniqueCards, card) => {
+                          // Skip bonus and energy boost cards
+                          if (
+                            card.title.match(/^Бонус \d+/) ||
+                            card.type === "energy_boost"
+                          ) {
+                            return uniqueCards;
+                          }
+
+                          // Find existing card in accumulator
+                          const existingCard = uniqueCards.find(
+                            (c) => c.id === card.id
+                          );
+
+                          if (existingCard) {
+                            // Increment count for existing card
+                            existingCard.count = (existingCard.count || 1) + 1;
+                            return uniqueCards;
+                          } else {
+                            // Add new card with count 1
+                            return [...uniqueCards, { ...card, count: 1 }];
+                          }
+                        }, [])
+                        .map((card) => (
+                          <div
+                            key={card.id}
+                            style={{ position: "relative", width: "100%" }}
+                          >
+                            <img
+                              src={`https://api.zoomayor.io${card.image}`}
+                              alt={card.title}
                               style={{
-                                position: "absolute",
-                                top: "2px",
-                                right: "2px",
-                                background: "rgba(0, 0, 0, 0.7)",
-                                color: "white",
-                                padding: "4px 8px",
-                                borderRadius: "12px",
-                                fontSize: "14px",
-                                fontWeight: "500",
+                                width: "100%",
+                                height: "auto",
+                                borderRadius: "8px",
                               }}
-                            >
-                              {userCards.filter((c) => c.id === card.id).length}
-                            </span>
-                          )}
-                        </div>
-                      ))}
+                            />
+                            {card.count > 1 && (
+                              <span
+                                className="card-count"
+                                style={{
+                                  position: "absolute",
+                                  top: "2px",
+                                  right: "2px",
+                                  background: "rgba(0, 0, 0, 0.7)",
+                                  color: "white",
+                                  padding: "4px 8px",
+                                  borderRadius: "12px",
+                                  fontSize: "14px",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {card.count}
+                              </span>
+                            )}
+                          </div>
+                        ))}
                     </div>
                   </div>
                 </div>
