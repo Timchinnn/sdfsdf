@@ -45,7 +45,7 @@ const SetsPage = () => {
     mayor: "/ Мэр",
     comingSoon: "Скоро",
   });
-  // Get language from Redux storeы
+  // Get language from Redux store
   const language = useSelector((state) => state.language);
   useEffect(() => {
     const fetchLotData = async () => {
