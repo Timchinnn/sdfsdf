@@ -36,11 +36,25 @@ const AddEditLot = () => {
   const [cardsInSet, setCardsInSet] = useState(new Set());
   const [showAddCards, setShowAddCards] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [cardLots, setCardLots] = useState([]);
 
   const [pendingChanges, setPendingChanges] = useState({
     addedCards: new Set(),
     removedCards: new Set(),
   });
+  useEffect(() => {
+    const fetchCardLots = async () => {
+      try {
+        const response = await axios.get("/card-lots");
+
+        console.log(response.data);
+        setCardLots(response.data);
+      } catch (error) {
+        console.error("Error fetching card sets:", error);
+      }
+    };
+    fetchCardLots();
+  }, []);
   useEffect(() => {
     const fetchSetData = async () => {
       if (id) {
@@ -250,7 +264,13 @@ const AddEditLot = () => {
     }
   };
   return (
-    <div className={styles.contents}>
+    <div
+      className={styles.contents}
+      style={{
+        width: "40%",
+        display: cardLots.length > 0 && !id ? "none" : "block",
+      }}
+    >
       <div className={styles.content}>
         <div>
           {" "}

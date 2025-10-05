@@ -422,7 +422,12 @@ const CardManagement = () => {
               to={routeAddEditLot()}
               style={{
                 width: "40%",
-                display: hasSetEditPermission ? "block" : "none",
+                display:
+                  cardLots.length > 0
+                    ? "none"
+                    : hasSetEditPermission
+                    ? "block"
+                    : "none",
               }}
             >
               <button
