@@ -19,9 +19,14 @@ import AddEditCard, {
 import AddEditCardBack, {
   routeAddEditCardBack as routeAddEditCardBackPage,
 } from "pages/AddEditCardBack";
+
 import AddEditDeck, {
   routeAddEditDeck as routeAddEditDeckPage,
 } from "pages/AddEditDeck";
+import AddEditLot, {
+  routeAddEditLot as routeAddEditLotPage,
+} from "pages/AddEditLot";
+
 import AddEditCityDeck, {
   routeAddEditCityDeck as routeAddEditCityDeckPage,
 } from "pages/AddEditCityDeck";
@@ -98,6 +103,7 @@ const AppContent = () => {
             path="/addEditDeck/:id"
             component={AddEditDeck}
           />
+          <ProtectedRoute exact path="/addEditLot/:id" component={AddEditLot} />
           <ProtectedRoute
             exact
             path="/addEditCityDeck/:id"
@@ -118,6 +124,11 @@ const AppContent = () => {
             exact
             path={routeAddEditDeckPage()}
             component={AddEditDeck}
+          />
+          <ProtectedRoute
+            exact
+            path={routeAddEditLotPage()}
+            component={AddEditLot}
           />
           <ProtectedRoute
             exact

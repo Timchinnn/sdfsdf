@@ -1,0 +1,226 @@
+.mainContent {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 16px;
+  scrollbar-width: none;
+  white-space: nowrap;
+  align-items: center;
+}
+.mainContent img {
+  border-style: none;
+  height: 342px;
+  object-fit: cover;
+}
+.mainContent button {
+  align-items: center;
+  background: green;
+  border-radius: 5px;
+  color: #fff;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  width: 100%;
+}
+.cardItem {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  height: 372px;
+  overflow: hidden;
+  text-align: center;
+  width: 178px;
+}
+
+.saveButton {
+  align-items: center;
+  background: green;
+  border-radius: 5px;
+  color: #fff;
+  display: flex;
+  height: 45px;
+  justify-content: center;
+  margin-top: 20px;
+  width: 200px;
+}
+.save {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 20px;
+}
+.contents {
+  background: white;
+  width: 100vw;
+  height: 100vh;
+  color: black;
+  overflow-y: auto;
+}
+.content {
+  background: #dcdcdc;
+  border-radius: 5px;
+  margin: 10px;
+  overflow-y: auto;
+  padding: 14px 0 14px 14px;
+  height: 97%;
+  display: flex;
+}
+.cardItem img {
+  height: 284px;
+  object-fit: cover;
+  width: 99%;
+  border-radius: 8px;
+}
+.cardItemImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cardInfo {
+  background: #fff;
+  border-radius: 8px;
+  flex-direction: column;
+  min-height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.whiteBox {
+  background-color: #fff;
+  height: 370px;
+  width: 200px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.whiteBoxImg {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 169px;
+  text-align: center;
+}
+.searchContainer {
+  align-items: center;
+  display: flex;
+  margin: -5px;
+  width: 60%;
+}
+.searchInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px !important;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.searchButton {
+  padding: 8px 16px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.searchButton:hover {
+  background: darkgreen;
+}
+.arrow {
+  height: 64px !important;
+}
+@media (max-width: 999px) {
+  .arrow {
+    height: 25px !important;
+  }
+}
+.inputContainer {
+  display: flex;
+  margin-right: 10px;
+}
+.inputContainer input {
+  /* margin-top: 39px; */
+  border-radius: 10px !important;
+  padding: 10px;
+  width: 265px;
+}
+.title {
+  font-size: 22px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+.describedCard {
+  width: 265px;
+  height: 120px;
+  border-radius: 10px !important;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+/* ... существующие стили */
+.autocompleteContainer {
+  position: relative;
+  width: 100%;
+}
+.suggestionsList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+.suggestionItem {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.suggestionItem:hover {
+  background: #f5f5f5;
+}
+.rewardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.rewardItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rewardItem input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  /* Стили для кастомизации чекбокса */
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid #ccc;
+  border-radius: 50%; /* делаем круглым */
+  outline: none;
+  position: relative;
+}
+.rewardItem input[type="checkbox"]:checked {
+  border-color: green;
+}
+.rewardItem input[type="checkbox"]:checked::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: green;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+.rewardItem input[type="text"] {
+  margin-left: 10px;
+}
+.rewardItem input[type="text"]:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
