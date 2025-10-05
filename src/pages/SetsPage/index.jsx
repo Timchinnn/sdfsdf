@@ -56,7 +56,9 @@ const SetsPage = () => {
   useEffect(() => {
     const fetchLotData = async () => {
       try {
-        const response = await userCardsService.getUserCards(telegramId);
+        const tg = window.Telegram.WebApp;
+
+        const response = await userCardsService.getUserCards(tg);
         // Filter out money and energy cards
         const filteredCards = response.data.filter(
           (card) =>
