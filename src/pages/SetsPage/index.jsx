@@ -19,6 +19,8 @@ const SetsPage = () => {
   const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
+  const [telegramId, setTelegramId] = useState(null);
+
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
@@ -30,66 +32,71 @@ const SetsPage = () => {
   const [usernameLoaded, setUsernameLoaded] = useState(false);
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
+
   const [translations, setTranslations] = useState({
+    sets: "Сет",
+    tasks: "Задания",
+    bonus: "Бонус",
+    level: "Уровень города",
+    mayor: "/ Мэр",
+    comingSoon: "Скоро",
+  });
+  // Get language from Redux store
+  const language = useSelector((state) => state.language);
+  useEffect(() => {
+    const tg = window.Telegram.WebApp;
+    if (tg?.initDataUnsafe?.user?.id) {
+      setTelegramId(tg.initDataUnsafe.user.id);
+    }
+  }, []);
+  useEffect(() => {
+    if (language === "ru") {
+      setTranslations({
         sets: "Сет",
-        tasks: "Задания", 
+        tasks: "Задания",
         bonus: "Бонус",
         level: "Уровень города",
         mayor: "/ Мэр",
         comingSoon: "Скоро",
-
       });
-      // Get language from Redux store
-      const language = useSelector((state) => state.language);
-      
-useEffect(() => {
-          if (language === "ru") {
-            setTranslations({
-                    sets: "Сет",
-                    tasks: "Задания", 
-                    bonus: "Бонус",
-                    level: "Уровень города",
-                    mayor: "/ Мэр",
-                    comingSoon: "Скоро",
-            });
-          } else if (language === "en") {
-            setTranslations({
-              sets: "Set",
-              tasks: "Tasks",
-              bonus: "Bonus",
-              level: "City Level", 
-              mayor: "/ Mayor",
-              comingSoon: "Coming Soon",
-            });
-          } else if (language === "it") {
-            setTranslations({
-              sets: "Set",
-              tasks: "Compiti",
-              bonus: "Bonus",
-              level: "Livello città",
-              mayor: "/ Sindaco", 
-              comingSoon: "Prossimamente",
-            });
-          } else if (language === "es") {
-            setTranslations({
-              sets: "Conjunto",
-              tasks: "Tareas",
-              bonus: "Bono",
-              level: "Nivel de ciudad",
-              mayor: "/ Alcalde",
-              comingSoon: "Próximamente",
-            });
-          } else if (language === "de") {
-            setTranslations({
-              sets: "Set",
-              tasks: "Aufgaben",
-              bonus: "Bonus", 
-              level: "Stadtlevel",
-              mayor: "/ Bürgermeister",
-              comingSoon: "Demnächst",
-            });
-          }
-        }, [language]);
+    } else if (language === "en") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Tasks",
+        bonus: "Bonus",
+        level: "City Level",
+        mayor: "/ Mayor",
+        comingSoon: "Coming Soon",
+      });
+    } else if (language === "it") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Compiti",
+        bonus: "Bonus",
+        level: "Livello città",
+        mayor: "/ Sindaco",
+        comingSoon: "Prossimamente",
+      });
+    } else if (language === "es") {
+      setTranslations({
+        sets: "Conjunto",
+        tasks: "Tareas",
+        bonus: "Bono",
+        level: "Nivel de ciudad",
+        mayor: "/ Alcalde",
+        comingSoon: "Próximamente",
+      });
+    } else if (language === "de") {
+      setTranslations({
+        sets: "Set",
+        tasks: "Aufgaben",
+        bonus: "Bonus",
+        level: "Stadtlevel",
+        mayor: "/ Bürgermeister",
+        comingSoon: "Demnächst",
+      });
+    }
+  }, [language]);
   // Получаем username из Telegram API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -220,20 +227,23 @@ useEffect(() => {
                 taskImg={taskImg}
                 bonusImg={bonusImg}
                 username={username}
-                                                                translations={translations}
-
+                translations={translations}
               />
-              <div
-                className="block-style"
-                style={{
-                  textAlign: "center",
-                  padding: "20px",
-                  marginTop: "6px",
-                }}
-              >
-                                {translations.comingSoon}
+              {telegramId === 6243418179 ? (
+                <div></div>
+              ) : (
+                <div
+                  className="block-style"
+                  style={{
+                    textAlign: "center",
+                    padding: "20px",
+                    marginTop: "6px",
+                  }}
+                >
+                  {translations.comingSoon}
+                </div>
+              )}
 
-              </div>
               {/* Здесь будет остальной контент после раскомментирования */}
             </>
           )}
