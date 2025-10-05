@@ -58,6 +58,7 @@ const SetsPage = () => {
               !card.title.match(/^Бонус \d+/) && card.type !== "energy_boost"
           );
           setUserCards(filteredCards);
+          console.log(filteredCards);
         }
         // Получаем информацию о лоте
         const lotResponse = await axios.get("/card-lots");
@@ -74,7 +75,6 @@ const SetsPage = () => {
           }
           console.log(currentLot);
           console.log(cardsResponse.data);
-          console.log(filteredCards);
         }
       } catch (error) {
         console.error("Ошибка при загрузке данных лота:", error);
