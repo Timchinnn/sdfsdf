@@ -185,6 +185,10 @@ const AddEditLot = () => {
   };
   const handleSave = async () => {
     try {
+      if (pendingChanges.addedCards.size < 3) {
+        alert("Необходимо добавить минимум 3 карты");
+        return;
+      }
       if (id) {
         const activeRewardsList = rewards.filter(
           (reward) => activeRewards[reward.type]
