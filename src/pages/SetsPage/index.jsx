@@ -288,6 +288,11 @@ const SetsPage = () => {
               />
               {telegramId === 6243418179 ? (
                 <div>
+                  <div style={{ display: "flex" }}>
+                    <img src={QuestionMarkImg} alt="" />
+                    <img src={QuestionMarkImg} alt="" />
+                    <img src={QuestionMarkImg} alt="" />
+                  </div>
                   <div className="shop-block__nav f-center-jcsb">
                     <div className="shop-block__search">
                       <div className="shop-block__search-icon">
