@@ -17,6 +17,8 @@ const taskImg = "https://image.tw1.ru/image/vopros.webp";
 const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
 const SetsPage = () => {
   // Состояния для данных пользователя
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
@@ -255,6 +257,10 @@ const SetsPage = () => {
     usernameLoaded,
     lotLoaded, // Добавляем в зависимости
   ]);
+  const handleSearch = (e) => {};
+  const handleOpenFilter = () => {
+    document.documentElement.classList.add("fixed");
+  };
   return (
     <section className="sets">
       <div className="container">
