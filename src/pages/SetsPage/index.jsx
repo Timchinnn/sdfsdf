@@ -56,16 +56,15 @@ const SetsPage = () => {
   useEffect(() => {
     const fetchLotData = async () => {
       try {
-        if (telegramId) {
-          const response = await userCardsService.getUserCards(telegramId);
-          // Filter out money and energy cards
-          const filteredCards = response.data.filter(
-            (card) =>
-              !card.title.match(/^Бонус \d+/) && card.type !== "energy_boost"
-          );
-          setUserCards(filteredCards);
-          console.log(filteredCards);
-        }
+        const response = await userCardsService.getUserCards(telegramId);
+        // Filter out money and energy cards
+        const filteredCards = response.data.filter(
+          (card) =>
+            !card.title.match(/^Бонус \d+/) && card.type !== "energy_boost"
+        );
+        setUserCards(filteredCards);
+        console.log(filteredCards);
+
         // Получаем информацию о лоте
         const lotResponse = await axios.get("/card-lots");
         if (lotResponse.data && lotResponse.data.length > 0) {
