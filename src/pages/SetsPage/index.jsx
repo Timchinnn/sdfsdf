@@ -48,6 +48,12 @@ const SetsPage = () => {
   // Get language from Redux store
   const language = useSelector((state) => state.language);
   useEffect(() => {
+    const tg = window.Telegram.WebApp;
+    if (tg?.initDataUnsafe?.user?.id) {
+      setTelegramId(tg.initDataUnsafe.user.id);
+    }
+  }, []);
+  useEffect(() => {
     const fetchLotData = async () => {
       try {
         if (telegramId) {
@@ -83,12 +89,7 @@ const SetsPage = () => {
     };
     fetchLotData();
   }, []);
-  useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    if (tg?.initDataUnsafe?.user?.id) {
-      setTelegramId(tg.initDataUnsafe.user.id);
-    }
-  }, []);
+
   useEffect(() => {
     if (language === "ru") {
       setTranslations({
