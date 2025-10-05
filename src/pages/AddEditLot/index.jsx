@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./AddEditLot.module.css";
 import { useParams, useHistory } from "react-router-dom";
-import { cardsService, cardSetsService } from "services/api";
+import { cardsService, cardLotsService } from "services/api";
 import routeAddEditLot from "./route";
 import addimg from "assets/img/addimg.png";
 import left from "assets/img/left.png";
@@ -45,7 +45,7 @@ const AddEditLot = () => {
     const fetchSetData = async () => {
       if (id) {
         try {
-          const response = await cardSetsService.getSetRewards(id);
+          const response = await cardLotsService.getSetRewards(id);
           const data = response.data;
 
           // Устанавливаем базовые данные набора
@@ -98,7 +98,7 @@ const AddEditLot = () => {
     const fetchExistingCards = async () => {
       if (id) {
         try {
-          const response = await cardSetsService.getSetCards(id);
+          const response = await cardLotsService.getSetCards(id);
           setExistingCards(response.data);
         } catch (error) {
           console.error("Error fetching existing cards:", error);
@@ -148,28 +148,7 @@ const AddEditLot = () => {
       removedCards: prev.removedCards.add(cardId),
     }));
   };
-  // const handleSave = async () => {
-  //   try {
-  //     // Удаление карт
-  //     for (const cardId of pendingChanges.removedCards) {
-  //       await cardSetsService.removeCardFromSet(id, cardId);
-  //     }
 
-  //     // Добавление новых карт
-  //     for (const cardId of pendingChanges.addedCards) {
-  //       await cardSetsService.addCardToSet(id, cardId);
-  //     }
-
-  //     const response = await cardSetsService.getSetCards(id);
-  //     setExistingCards(response.data);
-  //     setPendingChanges({
-  //       addedCards: new Set(),
-  //       removedCards: new Set(),
-  //     });
-  //   } catch (error) {
-  //     console.error("Error saving changes:", error);
-  //   }
-  // };
   const handleCardRewardChange = async (e) => {
     const value = e.target.value;
     setCardReward(value);
@@ -198,7 +177,7 @@ const AddEditLot = () => {
           (reward) => activeRewards[reward.type]
         );
         // Update existing set
-        await cardSetsService.updateSetRewards(id, {
+        await cardLotsService.updateSetRewards(id, {
           title: name,
           description: description,
           set_type: "citizen", // Add set_type
@@ -214,11 +193,11 @@ const AddEditLot = () => {
         });
         // Remove cards
         for (const cardId of pendingChanges.removedCards) {
-          await cardSetsService.removeCardFromSet(id, cardId);
+          await cardLotsService.removeCardFromSet(id, cardId);
         }
         // Add new cards
         for (const cardId of pendingChanges.addedCards) {
-          await cardSetsService.addCardToSet(id, cardId);
+          await cardLotsService.addCardToSet(id, cardId);
         }
       } else {
         // Validate required fields
@@ -233,7 +212,7 @@ const AddEditLot = () => {
         }
 
         // Create new set
-        const response = await cardSetsService.createCardSet({
+        const response = await cardLotsService.createCardSet({
           title: name,
           description: description,
           rewards: rewards.map((reward) => ({
@@ -248,7 +227,7 @@ const AddEditLot = () => {
         // Add cards to new set
         if (response && response.data && response.data.setId) {
           const promises = Array.from(cardsInSet).map((cardId) =>
-            cardSetsService.addCardToSet(response.data.setId, cardId)
+            cardLotsService.addCardToSet(response.data.setId, cardId)
           );
           await Promise.all(promises);
         } else {

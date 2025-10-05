@@ -158,6 +158,35 @@ export const cardSetsService = {
 
   // Проверка завершения набора
 };
+export const cardLotsService = {
+  addCardToSet: (setId, cardId) =>
+    axios.post(`/card-sets/${setId}/cards`, { cardId }),
+  deleteCardSet: (setId) => axios.delete(`/card-lots/${setId}`),
+
+  getSetCards: (setId) => axios.get(`/card-lots/${setId}/cards`),
+  removeCardFromSet: (setId, cardId) =>
+    axios.delete(`/card-lots/${setId}/cards/${cardId}`),
+  getAllCardSets: () => axios.get("/card-lots"),
+  getSetRewards: (setId) => axios.get(`/card-lots/${setId}/rewards`),
+  updateSetRewards: (setId, data) => axios.put(`/card-lots/${setId}`, data),
+  createCardSet: (data) => {
+    const formattedRewards = data.rewards.map((reward) => ({
+      reward_type: reward.type,
+      reward_value: reward.value || 0, // Устанавливаем значение по умолчанию 0
+    }));
+    return axios.post("/card-lots", {
+      title: data.title,
+      description: data.description,
+      set_type: data.set_type || "citizen", // Use provided set_type or default to "citizen"
+
+      rewards: formattedRewards,
+    });
+  }, // Получение карт конкретного набора
+  checkSetCompletion: (setId, telegram_id) =>
+    axios.get(`/card-lots/${setId}/check-completion/${telegram_id}`),
+
+  // Проверка завершения набора
+};
 export const tasksService = {
   getAllTasks: () => axios.get("/tasks"),
 };
