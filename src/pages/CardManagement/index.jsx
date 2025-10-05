@@ -343,7 +343,7 @@ const CardManagement = () => {
                 </div>
 
                 <NavLink
-                  to={routeAddEditDeck(set.id)}
+                  to={routeAddEditLot(set.id)}
                   style={{ display: hasSetEditPermission ? "block" : "none" }}
                 >
                   <button>Редактировать</button>
@@ -395,7 +395,7 @@ const CardManagement = () => {
           </div>{" "}
           <div>
             <NavLink
-              to={routeAddEditDeck()}
+              to={routeAddEditLot()}
               style={{
                 width: "40%",
                 display: hasSetEditPermission ? "block" : "none",
