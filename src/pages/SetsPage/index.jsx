@@ -58,7 +58,9 @@ const SetsPage = () => {
       try {
         const tg = window.Telegram.WebApp;
 
-        const response = await userCardsService.getUserCards(tg);
+        const response = await userCardsService.getUserCards(
+          tg.initDataUnsafe.user.id
+        );
         // Filter out money and energy cards
         const filteredCards = response.data.filter(
           (card) =>
