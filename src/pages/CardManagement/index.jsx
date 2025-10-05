@@ -103,6 +103,7 @@ const CardManagement = () => {
             return { ...set, cards: cardsResponse.data };
           })
         );
+        console.log(setsWithCards);
         setCardLots(setsWithCards);
       } catch (error) {
         console.error("Error fetching card sets:", error);
