@@ -351,6 +351,55 @@ const SetsPage = () => {
                       </svg>
                     </div>
                   </div>
+                  <div>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(4, 1fr)",
+                        gap: "16px",
+                        padding: "16px",
+                      }}
+                    >
+                      {userCards.map((card) => (
+                        <div
+                          key={card.id}
+                          style={{
+                            position: "relative",
+                            width: "100%",
+                          }}
+                        >
+                          <img
+                            src={`https://api.zoomayor.io${card.image}`}
+                            alt={card.title}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                              borderRadius: "8px",
+                            }}
+                          />
+                          {userCards.filter((c) => c.id === card.id).length >
+                            1 && (
+                            <span
+                              className="card-count"
+                              style={{
+                                position: "absolute",
+                                top: "2px",
+                                right: "2px",
+                                background: "rgba(0, 0, 0, 0.7)",
+                                color: "white",
+                                padding: "4px 8px",
+                                borderRadius: "12px",
+                                fontSize: "14px",
+                                fontWeight: "500",
+                              }}
+                            >
+                              {userCards.filter((c) => c.id === card.id).length}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div
