@@ -6,6 +6,7 @@ import routeAddEditLot from "./route";
 import addimg from "assets/img/addimg.png";
 import left from "assets/img/left.png";
 import right from "assets/img/right.png";
+import axios from "../../axios-controller";
 
 const AddEditLot = () => {
   const { id } = useParams();
