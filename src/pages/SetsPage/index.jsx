@@ -20,7 +20,9 @@ const SetsPage = () => {
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
   const [telegramId, setTelegramId] = useState(null);
-
+  const [lot, setLot] = useState(null);
+  const [lotCards, setLotCards] = useState([]);
+  const [lotLoaded, setLotLoaded] = useState(false);
   const [level, setLevel] = useState("");
   const [currentExp, setCurrentExp] = useState(0);
   const [expForNextLevel, setExpForNextLevel] = useState(1000);
@@ -43,6 +45,33 @@ const SetsPage = () => {
   });
   // Get language from Redux store
   const language = useSelector((state) => state.language);
+  useEffect(() => {
+    const fetchLotData = async () => {
+      try {
+        // Получаем информацию о лоте
+        const lotResponse = await axios.get("/card-lots");
+        if (lotResponse.data && lotResponse.data.length > 0) {
+          const currentLot = lotResponse.data[0]; // Берем первый лот
+          setLot(currentLot);
+
+          // Получаем карты для лота
+          const cardsResponse = await axios.get(
+            `/card-lots/${currentLot.id}/cards`
+          );
+          if (cardsResponse.data) {
+            setLotCards(cardsResponse.data);
+          }
+          console.log(currentLot);
+          console.log(cardsResponse.data);
+          console.log();
+        }
+      } catch (error) {
+        console.error("Ошибка при загрузке данных лота:", error);
+      }
+      setLotLoaded(true);
+    };
+    fetchLotData();
+  }, []);
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     if (tg?.initDataUnsafe?.user?.id) {
@@ -195,7 +224,8 @@ const SetsPage = () => {
       userPhotoLoaded &&
       userCoinsLoaded &&
       userLevelLoaded &&
-      usernameLoaded
+      usernameLoaded &&
+      lotLoaded // Добавляем проверку загрузки лота
     ) {
       // Добавляем небольшую задержку для плавности
       const timer = setTimeout(() => {
@@ -203,7 +233,13 @@ const SetsPage = () => {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [userPhotoLoaded, userCoinsLoaded, userLevelLoaded, usernameLoaded]);
+  }, [
+    userPhotoLoaded,
+    userCoinsLoaded,
+    userLevelLoaded,
+    usernameLoaded,
+    lotLoaded, // Добавляем в зависимости
+  ]);
   return (
     <section className="sets">
       <div className="container">
