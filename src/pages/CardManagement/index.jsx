@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import styles from "./CardManagement.module.css";
 import routeCardManagement from "./route";
 import { cardsService } from "services/api";
-import { cardBackService, cardSetsService } from "services/api";
+import {
+  cardBackService,
+  cardSetsService,
+  cardLotsService,
+} from "services/api";
 import { NavLink } from "react-router-dom";
 import { routeAddEditCard } from "pages/AddEditCard";
 import { routeAddEditDeck } from "pages/AddEditDeck";
@@ -15,6 +19,7 @@ const CardManagement = () => {
   const [cardBacks, setCardBacks] = useState([]);
   const [cards, setCards] = useState([]);
   const [cardSets, setCardSets] = useState([]);
+  const [cardLots, setCardLots] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [setsSearchQuery, setSetsSearchQuery] = useState("");
   const [hasEditPermission, setHasEditPermission] = useState(false);
@@ -87,6 +92,23 @@ const CardManagement = () => {
       }
     };
     fetchCardSets();
+  }, []);
+  useEffect(() => {
+    const fetchCardLots = async () => {
+      try {
+        const response = await axios.get("/card-lots");
+        const setsWithCards = await Promise.all(
+          response.data.map(async (set) => {
+            const cardsResponse = await cardLotsService.getSetCards(set.id);
+            return { ...set, cards: cardsResponse.data };
+          })
+        );
+        setCardLots(setsWithCards);
+      } catch (error) {
+        console.error("Error fetching card sets:", error);
+      }
+    };
+    fetchCardLots();
   }, []);
   useEffect(() => {
     const fetchCards = async () => {
@@ -314,7 +336,7 @@ const CardManagement = () => {
       <div className={styles.mainContent}>
         <h2>Сет</h2>
         <div className={styles.cardsList}>
-          {cardSets
+          {cardLots
             .filter(
               (set) =>
                 set.name
@@ -325,11 +347,11 @@ const CardManagement = () => {
             .map((set) => (
               <div key={set.id} className={styles.cardItem}>
                 <div className={styles.cardItemImg}>
-                  {cardSets.find((cs) => cs.id === set.id)?.cards?.[0]
+                  {cardLots.find((cs) => cs.id === set.id)?.cards?.[0]
                     ?.image ? (
                     <img
                       src={`https://api.zoomayor.io${
-                        cardSets.find((cs) => cs.id === set.id).cards[0].image
+                        cardLots.find((cs) => cs.id === set.id).cards[0].image
                       }`}
                       alt={set.name}
                     />
@@ -358,8 +380,8 @@ const CardManagement = () => {
                   onClick={async () => {
                     if (!hasSetEditPermission) return;
                     try {
-                      await cardSetsService.deleteCardSet(set.id);
-                      setCardSets(cardSets.filter((cs) => cs.id !== set.id));
+                      await cardLotsService.deleteCardSet(set.id);
+                      setCardLots(cardLots.filter((cs) => cs.id !== set.id));
                     } catch (error) {
                       console.error("Error deleting card set:", error);
                     }
