@@ -118,19 +118,17 @@ const AddEditLot = () => {
     };
     fetchCards();
   }, []);
-
   const handleAddCardToSet = (cardId) => {
+    // Check if already at max limit of 3 cards
+    if (cardsInSet.size >= 3) {
+      alert("Максимальное количество карт в наборе - 3");
+      return;
+    }
+
     setPendingChanges((prev) => ({
       ...prev,
       addedCards: prev.addedCards.add(cardId),
     }));
-
-    // Добавляем карточку также в existingCards
-    // const cardToAdd = cards.find((card) => card.id === cardId);
-    // if (cardToAdd) {
-    //   setExistingCards((prev) => [...prev, cardToAdd]);
-    // }
-
     setCardsInSet((prev) => new Set([...prev, cardId]));
   };
 
