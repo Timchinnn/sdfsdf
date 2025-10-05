@@ -343,7 +343,7 @@ const CardManagement = () => {
                 set.name
                   .toLowerCase()
                   .includes(setsSearchQuery.toLowerCase()) &&
-                set.set_type === "citizen"
+                set.lot_type === "citizen"
             )
             .map((set) => (
               <div key={set.id} className={styles.cardItem}>
