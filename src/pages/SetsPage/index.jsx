@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import routeSets from "./routes";
 import MainSection from "components/MainSection";
 import Spinner from "components/Spinner";
-import { userInitService } from "services/api";
+import { userInitService, userCardsService } from "services/api";
 import MobileNav from "components/MobileNav";
 import { useSelector } from "react-redux";
 import axios from "../../axios-controller";
