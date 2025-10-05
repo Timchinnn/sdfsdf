@@ -6,7 +6,7 @@ import { cardBackService, cardSetsService } from "services/api";
 import { NavLink } from "react-router-dom";
 import { routeAddEditCard } from "pages/AddEditCard";
 import { routeAddEditDeck } from "pages/AddEditDeck";
-import { routeAddEditLot } from "pages/AddEditDeck";
+import { routeAddEditLot } from "pages/AddEditLot";
 import { routeAddEditCityDeck } from "pages/AddEditCityDeck";
 import { routeAddEditCardBack } from "pages/AddEditCardBack";
 // import { routeAddEditDeck } from "pages/AddEditCard";
