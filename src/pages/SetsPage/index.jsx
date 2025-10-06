@@ -318,10 +318,10 @@ const SetsPage = () => {
       } else {
         // Если ответ неверный, добавляем анимацию ошибки
         if (cardElement) {
-          cardElement.classList.add(styles.incorrectCard);
+          cardElement.classList.add("incorrectCard");
           // По окончании анимации удаляем класс
           setTimeout(() => {
-            cardElement.classList.remove(styles.incorrectCard);
+            cardElement.classList.remove("incorrectCard");
           }, 500);
         }
         window.Telegram.WebApp.showPopup({
