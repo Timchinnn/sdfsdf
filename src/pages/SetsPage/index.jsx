@@ -263,21 +263,26 @@ const SetsPage = () => {
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
-
-    const filtered = userCards.filter((card) =>
-      card.title.toLowerCase().includes(searchValue.toLowerCase())
-    );
+    const filtered = userCards.filter((card) => {
+      const titleMatch = card.title
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
+      const chanceMatch = card.chance && !isNaN(parseFloat(card.chance));
+      return titleMatch && chanceMatch;
+    });
     setFilteredItems(filtered);
   };
   const handleSort = (direction) => {
     setSortDirection(direction);
-    const sorted = [...filteredItems].sort((a, b) => {
-      if (direction === "asc") {
-        return parseFloat(a.chance) - parseFloat(b.chance);
-      } else {
-        return parseFloat(b.chance) - parseFloat(a.chance);
-      }
-    });
+    const sorted = [...userCards]
+      .filter((card) => card.chance && !isNaN(parseFloat(card.chance)))
+      .sort((a, b) => {
+        if (direction === "asc") {
+          return parseFloat(a.chance) - parseFloat(b.chance);
+        } else {
+          return parseFloat(b.chance) - parseFloat(a.chance);
+        }
+      });
     setFilteredItems(sorted);
   };
   const handleOpenFilter = () => {
