@@ -315,10 +315,13 @@ const SetsPage = () => {
         if (cardElement) {
           const cardImage = cardElement;
           console.log(cardImage);
-          console.log(cardId);
 
           if (cardImage) {
-            cardImage.src = `https://api.zoomayor.io${cardId.image}`;
+            // Update card display
+            const userCard = userCards.find((card) => card.id === cardId);
+            if (userCard) {
+              cardImage.src = `https://api.zoomayor.io${userCard.image}`;
+            }
           }
         }
         // Если ответ верный, переходим на следующий индекс
