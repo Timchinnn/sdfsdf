@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import routeSets from "./routes";
 import MainSection from "components/MainSection";
 import Spinner from "components/Spinner";
@@ -19,7 +19,8 @@ const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
 const SetsPage = () => {
   // Состояния для данных пользователя
   const [searchTerm, setSearchTerm] = useState("");
-
+  const filterRef = useRef(null);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [userAvatar, setUserAvatar] = useState(null);
   const [hourlyIncome, setHourlyIncome] = useState(0);
   const [coins, setCoins] = useState(0);
