@@ -54,6 +54,20 @@ const SetsPage = () => {
     mayor: "/ Мэр",
     comingSoon: "Скоро",
   });
+  const [incorrectGuess, setIncorrectGuess] = useState(false);
+  // Добавляем стили для анимации
+  const incorrectGuessStyle = {
+    animation: incorrectGuess ? "shake 0.5s ease-in-out" : "none",
+    border: incorrectGuess ? "2px solid red" : "none",
+  };
+  // Добавляем CSS анимацию
+  const styles = {
+    "@keyframes shake": {
+      "0%, 100%": { transform: "translateX(0)" },
+      "25%": { transform: "translateX(-10px)" },
+      "75%": { transform: "translateX(10px)" },
+    },
+  };
   // Get language from Redux store
   const language = useSelector((state) => state.language);
   useEffect(() => {
@@ -314,13 +328,10 @@ const SetsPage = () => {
         });
       } else {
         // If guessed incorrectly - add animation class
-        if (cardElement) {
-          cardElement.classList.add(styles.incorrectCard);
-          // Remove class after animation completes
-          setTimeout(() => {
-            cardElement.classList.remove(styles.incorrectCard);
-          }, 500);
-        }
+        setIncorrectGuess(true);
+        setTimeout(() => {
+          setIncorrectGuess(false);
+        }, 500);
         window.Telegram.WebApp.showPopup({
           title: "Неверно",
           message: "Попробуйте еще раз",
@@ -369,10 +380,9 @@ const SetsPage = () => {
                         data-card-index={index}
                         style={{
                           height: "135px",
-                          border:
-                            currentGuessIndex === index
-                              ? "2px solid green"
-                              : "none",
+
+                          ...questionMarkStyle,
+                          ...(incorrectGuess ? incorrectGuessStyle : {}),
                         }}
                       />
                     ))}
