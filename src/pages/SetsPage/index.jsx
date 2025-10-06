@@ -372,10 +372,6 @@ const SetsPage = () => {
                         data-card-index={index}
                         style={{
                           height: "135px",
-                          border:
-                            currentGuessIndex === index
-                              ? "2px solid green"
-                              : "none",
                         }}
                       />
                     ))}
