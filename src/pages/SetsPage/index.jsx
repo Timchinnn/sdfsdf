@@ -314,6 +314,8 @@ const SetsPage = () => {
         console.log(cardElement);
         if (cardElement) {
           const cardImage = cardElement.querySelector("img");
+          console.log(cardImage);
+
           if (cardImage) {
             cardImage.src = `https://api.zoomayor.io${response.data.card.image}`;
           }
