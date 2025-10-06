@@ -315,6 +315,7 @@ const SetsPage = () => {
         if (cardElement) {
           const cardImage = cardElement;
           console.log(cardImage);
+          console.log(cardId);
 
           if (cardImage) {
             cardImage.src = `https://api.zoomayor.io${cardId.image}`;
