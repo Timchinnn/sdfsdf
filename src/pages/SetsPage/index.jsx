@@ -303,9 +303,12 @@ const SetsPage = () => {
         selectedCardId: cardId,
         position: currentGuessIndex,
       });
-      const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+      // Используем селектор по data-card-index, чтобы найти нужный элемент (карточку с вопросительным знаком)
+      const cardElement = document.querySelector(
+        `[data-card-index="${currentGuessIndex}"]`
+      );
       if (response.data.correct) {
-        // If guessed correctly
+        // Если ответ верный, переходим на следующий индекс
         setCurrentGuessIndex((prev) => prev + 1);
         window.Telegram.WebApp.showPopup({
           title: "Успех!",
@@ -313,22 +316,22 @@ const SetsPage = () => {
           buttons: [{ type: "ok" }],
         });
       } else {
-        // If guessed incorrectly - add animation class
+        // Если ответ неверный, добавляем анимацию ошибки
         if (cardElement) {
           cardElement.classList.add(styles.incorrectCard);
-          // Remove class after animation completes
+          // По окончании анимации удаляем класс
           setTimeout(() => {
             cardElement.classList.remove(styles.incorrectCard);
           }, 500);
         }
         window.Telegram.WebApp.showPopup({
           title: "Неверно",
-          message: "Попробуйте еще раз",
+          message: "Попробуйте ещё раз",
           buttons: [{ type: "ok" }],
         });
       }
     } catch (error) {
-      console.error("Error guessing card:", error);
+      console.error("Ошибка при угадывании карты:", error);
     }
   };
   return (
