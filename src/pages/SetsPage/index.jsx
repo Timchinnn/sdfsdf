@@ -276,14 +276,14 @@ const SetsPage = () => {
     setSortDirection(direction);
     const sorted = [...userCards]
       .filter((card) => {
-        // Only include cards that have a valid chance value
+        // Фильтруем только карты с валидным значением chance
         const chance = parseFloat(card.chance);
-        console.log(chance);
         return !isNaN(chance) && chance > 0;
       })
       .sort((a, b) => {
         const chanceA = parseFloat(a.chance) || 0;
         const chanceB = parseFloat(b.chance) || 0;
+        // Сортируем по возрастанию или убыванию в зависимости от direction
         return direction === "asc" ? chanceA - chanceB : chanceB - chanceA;
       });
     setFilteredItems(sorted);
