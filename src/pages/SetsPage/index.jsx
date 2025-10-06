@@ -258,7 +258,9 @@ const SetsPage = () => {
     usernameLoaded,
     lotLoaded, // Добавляем в зависимости
   ]);
-  const handleSearch = (e) => {};
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
   const handleOpenFilter = () => {
     document.documentElement.classList.add("fixed");
   };
@@ -361,26 +363,30 @@ const SetsPage = () => {
                       }}
                     >
                       {userCards
-                        .reduce((uniqueCards, card) => {
-                          // Skip bonus and energy boost cards
+                        .filter((card) => {
+                          // Пропускаем карты с бонусами и энергией
                           if (
                             card.title.match(/^Бонус \d+/) ||
                             card.type === "energy_boost"
                           ) {
-                            return uniqueCards;
+                            return false;
                           }
-
-                          // Find existing card in accumulator
+                          // Фильтруем по поисковому запросу
+                          return card.title
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase());
+                        })
+                        .reduce((uniqueCards, card) => {
+                          // Находим существующую карту в аккумуляторе
                           const existingCard = uniqueCards.find(
                             (c) => c.id === card.id
                           );
-
                           if (existingCard) {
-                            // Increment count for existing card
+                            // Увеличиваем счетчик для существующей карты
                             existingCard.count = (existingCard.count || 1) + 1;
                             return uniqueCards;
                           } else {
-                            // Add new card with count 1
+                            // Добавляем новую карту со счетчиком 1
                             return [...uniqueCards, { ...card, count: 1 }];
                           }
                         }, [])
