@@ -374,10 +374,11 @@ const SetsPage = () => {
                         className="question-mark-img"
                         style={{
                           height: "135px",
-                          border:
-                            currentGuessIndex === index
-                              ? "2px solid green"
-                              : "none",
+                          border: response.data.correct
+                            ? "2px solid green"
+                            : currentGuessIndex === index
+                            ? "2px solid red"
+                            : "none",
                         }}
                       />
                     ))}
