@@ -313,12 +313,7 @@ const SetsPage = () => {
         );
         console.log(cardElement);
         if (cardElement) {
-          const cardImage = cardElement.querySelector("img");
-          console.log(cardImage);
-
-          if (cardImage) {
-            cardImage.src = `https://api.zoomayor.io${response.data.card.image}`;
-          }
+          cardElement.src = `https://api.zoomayor.io${response.data.card.image}`;
         }
         // Если ответ верный, переходим на следующий индекс
         setCurrentGuessIndex((prev) => prev + 1);
