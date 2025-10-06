@@ -311,6 +311,7 @@ const SetsPage = () => {
         const cardElement = document.querySelector(
           `[data-card-index="${currentGuessIndex}"]`
         );
+        console.log(cardElement);
         if (cardElement) {
           const cardImage = cardElement.querySelector("img");
           if (cardImage) {
