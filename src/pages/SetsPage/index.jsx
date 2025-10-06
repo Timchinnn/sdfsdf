@@ -317,7 +317,7 @@ const SetsPage = () => {
           console.log(cardImage);
 
           if (cardImage) {
-            cardImage.src = `https://api.zoomayor.io${response.data.card.image}`;
+            cardImage.src = `https://api.zoomayor.io${cardId.image}`;
           }
         }
         // Если ответ верный, переходим на следующий индекс
