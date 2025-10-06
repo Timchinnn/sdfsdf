@@ -261,7 +261,24 @@ const SetsPage = () => {
     lotLoaded, // Добавляем в зависимости
   ]);
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+    const searchValue = e.target.value;
+    setSearchTerm(searchValue);
+
+    const filtered = userCards.filter((card) =>
+      card.title.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredItems(filtered);
+  };
+  const handleSort = (direction) => {
+    setSortDirection(direction);
+    const sorted = [...filteredItems].sort((a, b) => {
+      if (direction === "asc") {
+        return parseFloat(a.chance) - parseFloat(b.chance);
+      } else {
+        return parseFloat(b.chance) - parseFloat(a.chance);
+      }
+    });
+    setFilteredItems(sorted);
   };
   const handleOpenFilter = () => {
     document.documentElement.classList.add("fixed");
@@ -464,10 +481,7 @@ const SetsPage = () => {
                 }`}
                 onClick={() => {
                   setSortDirection("asc");
-                  const sorted = [...userCards].sort(
-                    (a, b) => parseFloat(a.chance) - parseFloat(b.chance)
-                  );
-                  setFilteredItems(sorted);
+                  handleSort("asc");
                 }}
               >
                 По возрастанию
@@ -478,10 +492,7 @@ const SetsPage = () => {
                 }`}
                 onClick={() => {
                   setSortDirection("desc");
-                  const sorted = [...userCards].sort(
-                    (a, b) => parseFloat(b.chance) - parseFloat(a.chance)
-                  );
-                  setFilteredItems(sorted);
+                  handleSort("desc");
                 }}
               >
                 По убыванию
