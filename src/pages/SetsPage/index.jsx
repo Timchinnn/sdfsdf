@@ -67,7 +67,7 @@ const SetsPage = () => {
         // Filter out money and energy cards
         const filteredCards = response.data.filter(
           (card) =>
-            !card.title.match(/^Бонус \d+/) && card.type !== "energy_boost"
+            !card.title.match(/^Монеты \d+/) && card.type !== "energy_boost"
         );
         setUserCards(filteredCards);
         console.log(filteredCards);
