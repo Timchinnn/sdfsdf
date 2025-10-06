@@ -298,23 +298,28 @@ const SetsPage = () => {
   };
   const handleUserCardSelect = async (cardId) => {
     try {
-      console.log(currentGuessIndex);
-      // Отправляем на сервер ID выбранной карты и индекс угадываемой карты
       const response = await axios.post("/guess-card", {
         selectedCardId: cardId,
         position: currentGuessIndex,
       });
+      const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
       if (response.data.correct) {
-        // Если угадали правильно
+        // If guessed correctly
         setCurrentGuessIndex((prev) => prev + 1);
-        // Показываем сообщение об успехе
         window.Telegram.WebApp.showPopup({
           title: "Успех!",
           message: "Вы правильно угадали карту!",
           buttons: [{ type: "ok" }],
         });
       } else {
-        // Если не угадали
+        // If guessed incorrectly - add animation class
+        if (cardElement) {
+          cardElement.classList.add(styles.incorrectCard);
+          // Remove class after animation completes
+          setTimeout(() => {
+            cardElement.classList.remove(styles.incorrectCard);
+          }, 500);
+        }
         window.Telegram.WebApp.showPopup({
           title: "Неверно",
           message: "Попробуйте еще раз",
@@ -360,22 +365,19 @@ const SetsPage = () => {
                         key={index}
                         src={QuestionMarkImg}
                         alt=""
+                        className={styles.cardImage}
+                        data-card-index={index}
                         style={{
                           height: "135px",
                           border:
                             currentGuessIndex === index
                               ? "2px solid green"
-                              : "2px solid red",
-                          boxShadow:
-                            currentGuessIndex === index
-                              ? "0 0 10px green"
-                              : "0 0 10px red",
-                          transition: "all 0.3s ease",
-                          borderRadius: "8px",
+                              : "none",
                         }}
                       />
                     ))}
                   </div>
+
                   <div className="shop-block__nav f-center-jcsb">
                     <div className="shop-block__search">
                       <div className="shop-block__search-icon">

@@ -1,14 +1,32 @@
-
+@keyframes incorrectGuess {
+  0% {
+    border: 2px solid red;
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    border: none;
+    transform: translateX(0);
+  }
+}
+.incorrectCard {
+  animation: incorrectGuess 0.5s ease;
+}
 // sets
 
 .sets {
-    .city-list__title {
-        align-items: flex-start;
-        .friends-params {
-            margin-top: 8px;
-        }
+  .city-list__title {
+    align-items: flex-start;
+    .friends-params {
+      margin-top: 8px;
     }
-    .city-list__more {
-        margin-top: 5px;
-    }
+  }
+  .city-list__more {
+    margin-top: 5px;
+  }
 }
