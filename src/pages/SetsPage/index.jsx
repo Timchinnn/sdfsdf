@@ -308,7 +308,13 @@ const SetsPage = () => {
         `[data-card-index="${currentGuessIndex}"]`
       );
       if (response.data.correct) {
-        // Если ответ верный, переходим на следующий индекс
+        // Update the image to show the correct card
+        if (cardElement) {
+          const cardImage = document.createElement("img");
+          cardImage.src = `https://api.zoomayor.io${selectedUserCard.image}`;
+          cardImage.style.height = "135px";
+          cardElement.replaceWith(cardImage);
+        }
         setCurrentGuessIndex((prev) => prev + 1);
         window.Telegram.WebApp.showPopup({
           title: "Успех!",
