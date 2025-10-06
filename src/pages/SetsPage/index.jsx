@@ -286,6 +286,7 @@ const SetsPage = () => {
         const chanceB = parseFloat(b.chance) || 0;
         return direction === "asc" ? chanceA - chanceB : chanceB - chanceA;
       });
+    console.log(sorted);
     setFilteredItems(sorted);
   };
   const handleOpenFilter = () => {
