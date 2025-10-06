@@ -300,6 +300,9 @@ const SetsPage = () => {
   const handleUserCardSelect = async (cardId) => {
     try {
       const tg = window.Telegram.WebApp;
+      setUserCards((prevCards) =>
+        prevCards.filter((card) => card.id !== cardId)
+      );
 
       const response = await axios.post("/guess-card", {
         selectedCardId: cardId,
