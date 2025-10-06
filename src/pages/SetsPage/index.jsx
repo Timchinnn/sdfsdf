@@ -275,21 +275,19 @@ const SetsPage = () => {
   const handleSort = (direction) => {
     setSortDirection(direction);
     if (!userCards) return;
-    // Сначала применяем фильтрацию по поисковому запросу
-    const filtered = userCards.filter((card) => {
-      const titleMatch = card.title
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const chanceMatch = card.chance && !isNaN(parseFloat(card.chance));
-      return titleMatch && chanceMatch;
-    });
-    // Затем сортируем отфильтрованные карты
-    const sorted = [...filtered].sort((a, b) => {
-      const chanceA = parseFloat(a.chance) || 0;
-      const chanceB = parseFloat(b.chance) || 0;
-      return direction === "asc" ? chanceA - chanceB : chanceB - chanceA;
-    });
-    setFilteredItems(sorted);
+
+    const sorted = [...userCards]
+      .filter((card) => {
+        const chance = parseFloat(card.chance);
+        return !isNaN(chance) && chance > 0;
+      })
+      .sort((a, b) => {
+        const chanceA = parseFloat(a.chance) || 0;
+        const chanceB = parseFloat(b.chance) || 0;
+        return direction === "asc" ? chanceA - chanceB : chanceB - chanceA;
+      });
+    console.log(sorted);
+    setUserCards(sorted);
   };
   const handleOpenFilter = () => {
     document.documentElement.classList.add("fixed");
