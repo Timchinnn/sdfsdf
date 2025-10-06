@@ -7,7 +7,7 @@ import MobileNav from "components/MobileNav";
 import { useSelector } from "react-redux";
 import axios from "../../axios-controller";
 import QuestionMarkImg from "assets/img/question-mark.png";
-import "./styles.scss";
+import styles from "./styles.scss";
 
 // Импортируем необходимые локальные изображенияk
 import Avatar from "assets/img/avatar.png";
@@ -366,7 +366,6 @@ const SetsPage = () => {
                         key={index}
                         src={QuestionMarkImg}
                         alt=""
-                        className={styles.cardImage}
                         data-card-index={index}
                         style={{
                           height: "135px",
