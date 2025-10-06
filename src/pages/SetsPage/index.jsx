@@ -378,7 +378,11 @@ const SetsPage = () => {
               {telegramId === 6243418179 ? (
                 <div>
                   <div
-                    style={{ display: "flex", justifyContent: "space-around" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-around",
+                      marginBottom: "10px",
+                    }}
                   >
                     {[0, 1, 2].map((index) => (
                       <img
