@@ -7,8 +7,9 @@ import MobileNav from "components/MobileNav";
 import { useSelector } from "react-redux";
 import axios from "../../axios-controller";
 import QuestionMarkImg from "assets/img/question-mark.png";
+import styles from "./styles.scss";
 
-// Импортируем необходимые локальные изображенияd
+// Импортируем необходимые локальные изображенияk
 import Avatar from "assets/img/avatar.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import MoneyIcon from "assets/img/money-icon.svg";
@@ -298,31 +299,39 @@ const SetsPage = () => {
   };
   const handleUserCardSelect = async (cardId) => {
     try {
-      console.log(currentGuessIndex);
-      // Отправляем на сервер ID выбранной карты и индекс угадываемой карты
       const response = await axios.post("/guess-card", {
         selectedCardId: cardId,
         position: currentGuessIndex,
       });
+      // Используем селектор по data-card-index, чтобы найти нужный элемент (карточку с вопросительным знаком)
+      const cardElement = document.querySelector(
+        `[data-card-index="${currentGuessIndex}"]`
+      );
       if (response.data.correct) {
-        // Если угадали правильно
+        // Если ответ верный, переходим на следующий индекс
         setCurrentGuessIndex((prev) => prev + 1);
-        // Показываем сообщение об успехе
         window.Telegram.WebApp.showPopup({
           title: "Успех!",
           message: "Вы правильно угадали карту!",
           buttons: [{ type: "ok" }],
         });
       } else {
-        // Если не угадали
-        window.Telegram.WebApp.showPopup({
-          title: "Неверно",
-          message: "Попробуйте еще раз",
-          buttons: [{ type: "ok" }],
-        });
+        // Если ответ неверный, добавляем анимацию ошибки
+        if (cardElement) {
+          cardElement.classList.add("incorrectCard");
+          // По окончании анимации удаляем класс
+          setTimeout(() => {
+            cardElement.classList.remove("incorrectCard");
+          }, 800);
+        }
+        // window.Telegram.WebApp.showPopup({
+        //   title: "Неверно",
+        //   message: "Попробуйте ещё раз",
+        //   buttons: [{ type: "ok" }],
+        // });
       }
     } catch (error) {
-      console.error("Error guessing card:", error);
+      console.error("Ошибка при угадывании карты:", error);
     }
   };
   return (
@@ -360,16 +369,14 @@ const SetsPage = () => {
                         key={index}
                         src={QuestionMarkImg}
                         alt=""
+                        data-card-index={index}
                         style={{
                           height: "135px",
-                          border:
-                            currentGuessIndex === index
-                              ? "2px solid green"
-                              : "none",
                         }}
                       />
                     ))}
                   </div>
+
                   <div className="shop-block__nav f-center-jcsb">
                     <div className="shop-block__search">
                       <div className="shop-block__search-icon">
