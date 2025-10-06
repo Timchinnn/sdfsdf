@@ -381,7 +381,7 @@ const SetsPage = () => {
                     style={{
                       display: "flex",
                       justifyContent: "space-around",
-                      marginBottom: "10px",
+                      marginTop: "10px",
                     }}
                   >
                     {[0, 1, 2].map((index) => (
