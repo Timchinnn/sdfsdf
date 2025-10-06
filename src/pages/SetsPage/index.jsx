@@ -298,6 +298,7 @@ const SetsPage = () => {
   };
   const handleUserCardSelect = async (cardId) => {
     try {
+      console.log(currentGuessIndex);
       // Отправляем на сервер ID выбранной карты и индекс угадываемой карты
       const response = await axios.post("/guess-card", {
         selectedCardId: cardId,
