@@ -39,7 +39,8 @@ const SetsPage = () => {
   const [usernameLoaded, setUsernameLoaded] = useState(false);
   // Состояние для спиннера
   const [showSpinner, setShowSpinner] = useState(true);
-
+  const [sortDirection, setSortDirection] = useState(null);
+  const [activePopupFilter, setActivePopupFilter] = useState(false);
   const [translations, setTranslations] = useState({
     sets: "Сет",
     tasks: "Задания",
@@ -263,6 +264,7 @@ const SetsPage = () => {
   };
   const handleOpenFilter = () => {
     document.documentElement.classList.add("fixed");
+    setActivePopupFilter(true);
   };
   return (
     <section className="sets">
@@ -446,6 +448,56 @@ const SetsPage = () => {
         </div>
       </div>
       <MobileNav />
+      <div
+        ref={filterRef}
+        className={`modal shop-filter ${activePopupFilter && "show"}`}
+      >
+        <div className="modal-wrapper">
+          <h3 className="modal-title">Фильтр</h3>
+          <div className="modal-filter__type">
+            <h3 className="modal-title">Редкость</h3>
+            <div className="modal-filter__buttons">
+              <button
+                className={`modal-btn-choose ${
+                  sortDirection === "asc" ? "active" : ""
+                }`}
+                onClick={() => {
+                  setSortDirection("asc");
+                  const sorted = [...userCards].sort(
+                    (a, b) => parseFloat(a.chance) - parseFloat(b.chance)
+                  );
+                  setFilteredItems(sorted);
+                }}
+              >
+                По возрастанию
+              </button>
+              <button
+                className={`modal-btn-choose ${
+                  sortDirection === "desc" ? "active" : ""
+                }`}
+                onClick={() => {
+                  setSortDirection("desc");
+                  const sorted = [...userCards].sort(
+                    (a, b) => parseFloat(b.chance) - parseFloat(a.chance)
+                  );
+                  setFilteredItems(sorted);
+                }}
+              >
+                По убыванию
+              </button>
+            </div>
+          </div>
+          <div className="modal-nav">
+            <button
+              type="button"
+              className="modal-btn"
+              onClick={() => setActivePopupFilter(false)}
+            >
+              Закрыть
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
