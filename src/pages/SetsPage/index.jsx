@@ -299,9 +299,12 @@ const SetsPage = () => {
   };
   const handleUserCardSelect = async (cardId) => {
     try {
+      const tg = window.Telegram.WebApp;
+
       const response = await axios.post("/guess-card", {
         selectedCardId: cardId,
         position: currentGuessIndex,
+        userId: tg?.initDataUnsafe?.user?.id,
       });
       // Используем селектор по data-card-index, чтобы найти нужный элемент (карточку с вопросительным знаком)
       const cardElement = document.querySelector(
