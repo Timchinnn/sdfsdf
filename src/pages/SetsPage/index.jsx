@@ -313,7 +313,7 @@ const SetsPage = () => {
         );
         console.log(cardElement);
         if (cardElement) {
-          const cardImage = cardElement.querySelector("img");
+          const cardImage = cardElement;
           console.log(cardImage);
 
           if (cardImage) {
