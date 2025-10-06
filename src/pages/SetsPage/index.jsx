@@ -308,13 +308,16 @@ const SetsPage = () => {
         `[data-card-index="${currentGuessIndex}"]`
       );
       if (response.data.correct) {
-        // Update the image to show the correct card
+        const cardElement = document.querySelector(
+          `[data-card-index="${currentGuessIndex}"]`
+        );
         if (cardElement) {
-          const cardImage = document.createElement("img");
-          cardImage.src = `https://api.zoomayor.io${selectedUserCard.image}`;
-          cardImage.style.height = "135px";
-          cardElement.replaceWith(cardImage);
+          const cardImage = cardElement.querySelector("img");
+          if (cardImage) {
+            cardImage.src = `https://api.zoomayor.io${response.data.card.image}`;
+          }
         }
+        // Если ответ верный, переходим на следующий индекс
         setCurrentGuessIndex((prev) => prev + 1);
         window.Telegram.WebApp.showPopup({
           title: "Успех!",
