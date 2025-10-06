@@ -9,7 +9,7 @@ import axios from "../../axios-controller";
 import QuestionMarkImg from "assets/img/question-mark.png";
 import "./styles.scss";
 
-// Импортируем необходимые локальные изображения
+// Импортируем необходимые локальные изображенияk
 import Avatar from "assets/img/avatar.png";
 import TimeIcon from "assets/img/time-icon.svg";
 import MoneyIcon from "assets/img/money-icon.svg";
