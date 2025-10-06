@@ -18,6 +18,9 @@ const taskImg = "https://image.tw1.ru/image/vopros.webp";
 const bonusImg = "https://image.tw1.ru/image/sunduk.webp";
 const SetsPage = () => {
   // Состояния для данных пользователя
+  const [selectedUserCard, setSelectedUserCard] = useState(null); // Выбранная карта пользователя
+  const [currentGuessIndex, setCurrentGuessIndex] = useState(0); // Индекс текущей угадываемой карты
+  // Функция инициализации скрытых карт
   const [searchTerm, setSearchTerm] = useState("");
   const filterRef = useRef(null);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -293,6 +296,34 @@ const SetsPage = () => {
     document.documentElement.classList.add("fixed");
     setActivePopupFilter(true);
   };
+  const handleUserCardSelect = async (cardId) => {
+    try {
+      // Отправляем на сервер ID выбранной карты и индекс угадываемой карты
+      const response = await axios.post("/guess-card", {
+        selectedCardId: cardId,
+        position: currentGuessIndex,
+      });
+      if (response.data.correct) {
+        // Если угадали правильно
+        setCurrentGuessIndex((prev) => prev + 1);
+        // Показываем сообщение об успехе
+        window.Telegram.WebApp.showPopup({
+          title: "Успех!",
+          message: "Вы правильно угадали карту!",
+          buttons: [{ type: "ok" }],
+        });
+      } else {
+        // Если не угадали
+        window.Telegram.WebApp.showPopup({
+          title: "Неверно",
+          message: "Попробуйте еще раз",
+          buttons: [{ type: "ok" }],
+        });
+      }
+    } catch (error) {
+      console.error("Error guessing card:", error);
+    }
+  };
   return (
     <section className="sets">
       <div className="container">
@@ -323,21 +354,20 @@ const SetsPage = () => {
                   <div
                     style={{ display: "flex", justifyContent: "space-around" }}
                   >
-                    <img
-                      src={QuestionMarkImg}
-                      alt=""
-                      style={{ height: "135px" }}
-                    />
-                    <img
-                      src={QuestionMarkImg}
-                      alt=""
-                      style={{ height: "135px" }}
-                    />
-                    <img
-                      src={QuestionMarkImg}
-                      alt=""
-                      style={{ height: "135px" }}
-                    />
+                    {[0, 1, 2].map((index) => (
+                      <img
+                        key={index}
+                        src={QuestionMarkImg}
+                        alt=""
+                        style={{
+                          height: "135px",
+                          border:
+                            currentGuessIndex === index
+                              ? "2px solid green"
+                              : "none",
+                        }}
+                      />
+                    ))}
                   </div>
                   <div className="shop-block__nav f-center-jcsb">
                     <div className="shop-block__search">
@@ -422,7 +452,12 @@ const SetsPage = () => {
                         .map((card) => (
                           <div
                             key={card.id}
-                            style={{ position: "relative", width: "100%" }}
+                            style={{
+                              position: "relative",
+                              width: "100%",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handleUserCardSelect(card.id)}
                           >
                             <img
                               src={`https://api.zoomayor.io${card.image}`}
