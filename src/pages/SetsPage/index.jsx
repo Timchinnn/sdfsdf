@@ -307,17 +307,6 @@ const SetsPage = () => {
       if (response.data.correct) {
         // Если угадали правильно
         setCurrentGuessIndex((prev) => prev + 1);
-
-        // Получаем карту из userCards по cardId
-        const selectedCard = userCards.find((card) => card.id === cardId);
-
-        // Заменяем QuestionMarkImg на изображение выбранной карты
-        const cardImages = document.querySelectorAll(".question-mark-img");
-        if (cardImages[currentGuessIndex]) {
-          cardImages[
-            currentGuessIndex
-          ].src = `https://api.zoomayor.io${selectedCard.image}`;
-        }
         // Показываем сообщение об успехе
         window.Telegram.WebApp.showPopup({
           title: "Успех!",
@@ -371,14 +360,18 @@ const SetsPage = () => {
                         key={index}
                         src={QuestionMarkImg}
                         alt=""
-                        className="question-mark-img"
                         style={{
                           height: "135px",
-                          border: response.data.correct
-                            ? "2px solid green"
-                            : currentGuessIndex === index
-                            ? "2px solid red"
-                            : "none",
+                          border:
+                            currentGuessIndex === index
+                              ? "2px solid green"
+                              : "2px solid red",
+                          boxShadow:
+                            currentGuessIndex === index
+                              ? "0 0 10px green"
+                              : "0 0 10px red",
+                          transition: "all 0.3s ease",
+                          borderRadius: "8px",
                         }}
                       />
                     ))}
