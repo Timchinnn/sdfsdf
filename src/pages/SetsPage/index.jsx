@@ -346,38 +346,43 @@ const SetsPage = () => {
             );
             console.log("Check completion response:", response12.data);
             // Format rewards message
-            const rewardsMessage = response12.data.rewards.reduce(
-              async (messagePromise, reward) => {
-                const message = await messagePromise;
-                if (reward.value > 0) {
+            const getCardName = async (cardId) => {
+              try {
+                const response = await axios.get(`/cards/${cardId}`);
+                return response.data.title;
+              } catch (error) {
+                console.error("Error fetching card name:", error);
+                return cardId; // Возвращаем ID если не удалось получить название
+              }
+            };
+            const formatRewardsMessage = async (rewards) => {
+              let message = "";
+              for (const reward of rewards) {
+                if (reward.type === "card") {
+                  const cardName = await getCardName(reward.value);
+                  message += `\nКарта: ${cardName}`;
+                } else {
                   switch (reward.type) {
                     case "experience":
-                      return message + `\nОпыт: ${reward.value}`;
+                      message += `\nОпыт: ${reward.value}`;
+                      break;
                     case "hourly_income":
-                      return message + `\nДоход в час: ${reward.value}`;
+                      message += `\nДоход в час: ${reward.value}`;
+                      break;
                     case "coins":
-                      return message + `\nМонеты: ${reward.value}`;
-                    case "card":
-                      try {
-                        const cardResponse = await axios.get(
-                          `/cards/${reward.value}`
-                        );
-                        return message + `\nКарта: ${cardResponse.data.title}`;
-                      } catch (error) {
-                        console.error("Error fetching card name:", error);
-                        return message + `\nКарта: ${reward.value}`;
-                      }
+                      message += `\nМонеты: ${reward.value}`;
+                      break;
                     default:
-                      return message;
+                      break;
                   }
                 }
-                return message;
               }
-            );
+              return message;
+            };
             // Show popup with rewards
             window.Telegram.WebApp.showPopup({
               title: "Награда получена!",
-              message: `Вы получили:${rewardsMessage}`,
+              message: `Вы получили:${formatRewardsMessage}`,
               buttons: [{ type: "ok" }],
             });
             setSelectedUserCard(null);
