@@ -342,16 +342,16 @@ const SetsPage = () => {
             const tg = window.Telegram.WebApp;
             const telegram_id = tg.initDataUnsafe?.user?.id;
             const response12 = await axios.get(
-              `/card-lots/${setId}/check-completion/${telegram_id}`
+              `/card-lots/${lot.id}/check-completion/${telegram_id}`
             );
-            console.log("Check completion response:", response.data);
+            console.log("Check completion response:", response12.data);
             setSelectedUserCard(null);
             setCurrentGuessIndex(0);
             const cardElements = document.querySelectorAll("[data-card-index]");
             cardElements.forEach((element) => {
               element.src = QuestionMarkImg;
             });
-            // Refetch lot data to reset the game state
+            // Refetch lot data to reset the game sимtate
             fetchLotData();
           } catch (error) {
             console.error("Error claiming set reward:", error);
