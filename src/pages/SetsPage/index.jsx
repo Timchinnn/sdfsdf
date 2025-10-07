@@ -300,15 +300,6 @@ const SetsPage = () => {
   const handleUserCardSelect = async (cardId) => {
     try {
       const tg = window.Telegram.WebApp;
-      setUserCards((prevCards) => {
-        const cardIndex = prevCards.findIndex((card) => card.id === cardId);
-        return cardIndex >= 0
-          ? [
-              ...prevCards.slice(0, cardIndex),
-              ...prevCards.slice(cardIndex + 1),
-            ]
-          : prevCards;
-      });
 
       const response = await axios.post("/guess-card", {
         selectedCardId: cardId,
@@ -320,6 +311,15 @@ const SetsPage = () => {
         `[data-card-index="${currentGuessIndex}"]`
       );
       if (response.data.correct) {
+        setUserCards((prevCards) => {
+          const cardIndex = prevCards.findIndex((card) => card.id === cardId);
+          return cardIndex >= 0
+            ? [
+                ...prevCards.slice(0, cardIndex),
+                ...prevCards.slice(cardIndex + 1),
+              ]
+            : prevCards;
+        });
         const cardElement = document.querySelector(
           `[data-card-index="${currentGuessIndex}"]`
         );
