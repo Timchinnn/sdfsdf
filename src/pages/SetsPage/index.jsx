@@ -362,7 +362,7 @@ const SetsPage = () => {
                           reward.value
                         );
                         console.log(cardResponse);
-                        return `\nКарта: ${cardResponse.data.name}`;
+                        return `\nКарта: ${cardResponse.data.title}`;
                       } catch (error) {
                         return `\nКарта: ${reward.value}`;
                       }
