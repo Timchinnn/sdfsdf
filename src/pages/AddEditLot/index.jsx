@@ -295,6 +295,17 @@ const AddEditLot = () => {
             />
             {cards
               .filter((card) => cardsInSet.has(card.id))
+              .sort((a, b) => {
+                // Maintain order from existingCards if editing
+                if (id) {
+                  const aIndex = existingCards.findIndex((c) => c.id === a.id);
+                  const bIndex = existingCards.findIndex((c) => c.id === b.id);
+                  if (aIndex !== -1 && bIndex !== -1) {
+                    return aIndex - bIndex;
+                  }
+                }
+                return 0;
+              })
               .slice(currentSetIndex, currentSetIndex + 3)
               .map((card) => (
                 <div key={card.id} className={styles.cardItem}>
