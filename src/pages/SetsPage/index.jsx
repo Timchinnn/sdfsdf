@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import routeSets from "./routes";
 import MainSection from "components/MainSection";
 import Spinner from "components/Spinner";
-import { userInitService, userCardsService } from "services/api";
+import { userInitService, userCardsService, cardsService } from "services/api";
 import MobileNav from "components/MobileNav";
 import { useSelector } from "react-redux";
 import axios from "../../axios-controller";
@@ -358,7 +358,9 @@ const SetsPage = () => {
                       return `\nМонеты: ${reward.value}`;
                     case "card":
                       try {
-                        const cardResponse = await getCard(reward.value);
+                        const cardResponse = await cardsService.getCard(
+                          reward.value
+                        );
                         return `\nКарта: ${cardResponse.data.name}`;
                       } catch (error) {
                         return `\nКарта: ${reward.value}`;
