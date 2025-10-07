@@ -327,7 +327,6 @@ const SetsPage = () => {
         if (cardElement) {
           const cardImage = cardElement;
           console.log(cardImage);
-
           if (cardImage) {
             // Update card display
             const userCard = userCards.find((card) => card.id === cardId);
@@ -336,7 +335,19 @@ const SetsPage = () => {
             }
           }
         }
-        // Если ответ верный, переходим на следующий индекс
+        // If currentGuessIndex is 2 and guess is correct, claim set reward
+        if (currentGuessIndex === 2) {
+          try {
+            const tg = window.Telegram.WebApp;
+            const telegram_id = tg.initDataUnsafe?.user?.id;
+            await axios.get(
+              `/card-lots/${lot.id}/check-completion/${telegram_id}`
+            );
+          } catch (error) {
+            console.error("Error claiming set reward:", error);
+          }
+        }
+        // Increment guess index
         setCurrentGuessIndex((prev) => prev + 1);
         window.Telegram.WebApp.showPopup({
           title: "Успех!",
