@@ -345,9 +345,6 @@ const SetsPage = () => {
             );
             setSelectedUserCard(null);
             setCurrentGuessIndex(0);
-            setOpenedCards({});
-            setIsFlipped(false);
-            setActiveIndex(null);
             // Refetch lot data to reset the game state
             fetchLotData();
           } catch (error) {
