@@ -366,6 +366,8 @@ const AddEditLot = () => {
                   .filter(
                     (card) =>
                       !cardsInSet.has(card.id) &&
+                      !card.title.match(/^Монеты \d+/) && // Exclude coin cards
+                      card.type !== "energy_boost" && // Exclude energy cards
                       card.title
                         .toLowerCase()
                         .includes(searchQuery.toLowerCase())
