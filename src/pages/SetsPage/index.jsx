@@ -351,7 +351,7 @@ const SetsPage = () => {
             cardElements.forEach((element) => {
               element.src = QuestionMarkImg;
             });
-            // Refetch lot data to reset the game state
+            // Refetch lot data to reset the game sимtate
             fetchLotData();
           } catch (error) {
             console.error("Error claiming set reward:", error);
