@@ -361,6 +361,7 @@ const SetsPage = () => {
                         const cardResponse = await cardsService.getCard(
                           reward.value
                         );
+                        console.log(cardResponse);
                         return `\nКарта: ${cardResponse.data.name}`;
                       } catch (error) {
                         return `\nКарта: ${reward.value}`;
