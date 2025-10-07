@@ -345,6 +345,11 @@ const SetsPage = () => {
             );
             setSelectedUserCard(null);
             setCurrentGuessIndex(0);
+            const cardElements = document.querySelectorAll("[data-card-index]");
+            cardElements.forEach((element) => {
+              element.src = QuestionMarkImg;
+            });
+
             // Refetch lot data to reset the game state
             fetchLotData();
           } catch (error) {
