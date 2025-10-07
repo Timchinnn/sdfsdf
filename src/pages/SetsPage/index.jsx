@@ -347,7 +347,8 @@ const SetsPage = () => {
             console.log("Check completion response:", response12.data);
             // Format rewards message
             const rewardsMessage = response12.data.rewards.reduce(
-              (message, reward) => {
+              async (messagePromise, reward) => {
+                const message = await messagePromise;
                 if (reward.value > 0) {
                   switch (reward.type) {
                     case "experience":
@@ -357,14 +358,22 @@ const SetsPage = () => {
                     case "coins":
                       return message + `\nМонеты: ${reward.value}`;
                     case "card":
-                      return message + `\nКарта: ${reward.value}`;
+                      try {
+                        const cardResponse = await axios.get(
+                          `/cards/${reward.value}`
+                        );
+                        return message + `\nКарта: ${cardResponse.data.title}`;
+                      } catch (error) {
+                        console.error("Error fetching card name:", error);
+                        return message + `\nКарта: ${reward.value}`;
+                      }
                     default:
                       return message;
                   }
                 }
                 return message;
               },
-              ""
+              Promise.resolve("")
             );
             // Show popup with rewards
             window.Telegram.WebApp.showPopup({
