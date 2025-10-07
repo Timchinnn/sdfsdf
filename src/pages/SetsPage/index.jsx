@@ -306,7 +306,7 @@ const SetsPage = () => {
         position: currentGuessIndex,
         userId: tg?.initDataUnsafe?.user?.id,
       });
-      // Используем селектор по data-card-index, чтобы найти нужный элемент (карточку с вопросительным знаком)
+      // Используем селектор по data-card-index, чтобы навйти нважный элемент (карточку с вопросительным знаком)
       const cardElement = document.querySelector(
         `[data-card-index="${currentGuessIndex}"]`
       );
