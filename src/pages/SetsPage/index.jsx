@@ -335,7 +335,8 @@ const SetsPage = () => {
             }
           }
         }
-        // If currentGuessIndex is 2 and guess is correct, claim set reward
+
+        // Проверяем завершение сета до увеличения индекса
         if (currentGuessIndex === 2) {
           try {
             const tg = window.Telegram.WebApp;
@@ -349,20 +350,15 @@ const SetsPage = () => {
             cardElements.forEach((element) => {
               element.src = QuestionMarkImg;
             });
-
             // Refetch lot data to reset the game state
             fetchLotData();
           } catch (error) {
             console.error("Error claiming set reward:", error);
           }
+        } else {
+          // Увеличиваем индекс только если сет не завершен
+          setCurrentGuessIndex((prev) => prev + 1);
         }
-        // Increment guess index
-        setCurrentGuessIndex((prev) => prev + 1);
-        window.Telegram.WebApp.showPopup({
-          title: "Успех!",
-          message: "Вы правильно угадали карту!",
-          buttons: [{ type: "ok" }],
-        });
       } else {
         // Если ответ неверный, добавляем анимацию ошибки
         if (cardElement) {
