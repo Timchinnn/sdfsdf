@@ -345,6 +345,33 @@ const SetsPage = () => {
               `/card-lots/${lot.id}/check-completion/${telegram_id}`
             );
             console.log("Check completion response:", response12.data);
+            // Format rewards message
+            const rewardsMessage = response12.data.rewards.reduce(
+              (message, reward) => {
+                if (reward.value > 0) {
+                  switch (reward.type) {
+                    case "experience":
+                      return message + `\nОпыт: ${reward.value}`;
+                    case "hourly_income":
+                      return message + `\nДоход в час: ${reward.value}`;
+                    case "coins":
+                      return message + `\nМонеты: ${reward.value}`;
+                    case "card":
+                      return message + `\nКарта: ${reward.value}`;
+                    default:
+                      return message;
+                  }
+                }
+                return message;
+              },
+              ""
+            );
+            // Show popup with rewards
+            window.Telegram.WebApp.showPopup({
+              title: "Награда получена!",
+              message: `Вы получили:${rewardsMessage}`,
+              buttons: [{ type: "ok" }],
+            });
             setSelectedUserCard(null);
             setCurrentGuessIndex(0);
             const cardElements = document.querySelectorAll("[data-card-index]");
