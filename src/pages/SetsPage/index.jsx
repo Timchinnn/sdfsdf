@@ -374,7 +374,7 @@ const SetsPage = () => {
               }),
               ""
             );
-            // Show popup with rewards
+            // Show popup with rewardsы
             window.Telegram.WebApp.showPopup({
               title: "Награда получена!",
               message: `Вы получили:${rewardsMessage}`,
