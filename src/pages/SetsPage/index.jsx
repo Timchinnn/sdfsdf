@@ -341,9 +341,10 @@ const SetsPage = () => {
           try {
             const tg = window.Telegram.WebApp;
             const telegram_id = tg.initDataUnsafe?.user?.id;
-            await axios.get(
-              `/card-lots/${lot.id}/check-completion/${telegram_id}`
+            const response12 = await axios.get(
+              `/card-lots/${setId}/check-completion/${telegram_id}`
             );
+            console.log("Check completion response:", response12.data);
             setSelectedUserCard(null);
             setCurrentGuessIndex(0);
             const cardElements = document.querySelectorAll("[data-card-index]");
