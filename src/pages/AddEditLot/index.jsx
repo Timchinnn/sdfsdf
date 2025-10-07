@@ -187,7 +187,8 @@ const AddEditLot = () => {
   const handleSave = async () => {
     try {
       console.log(pendingChanges.addedCards);
-      if (pendingChanges.addedCards.size < 3) {
+      const totalCards = id ? cardsInSet.size : pendingChanges.addedCards.size;
+      if (totalCards < 3) {
         alert("Необходимо добавить минимум 3 карты");
         return;
       }
