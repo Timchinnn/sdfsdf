@@ -344,14 +344,14 @@ const SetsPage = () => {
             const response12 = await axios.get(
               `/card-lots/${setId}/check-completion/${telegram_id}`
             );
-            console.log("Check completion response:", response12.data);
+            console.log("Check completion response:", response.data);
             setSelectedUserCard(null);
             setCurrentGuessIndex(0);
             const cardElements = document.querySelectorAll("[data-card-index]");
             cardElements.forEach((element) => {
               element.src = QuestionMarkImg;
             });
-            // Refetch lot data to reset the game sимtate
+            // Refetch lot data to reset the game state
             fetchLotData();
           } catch (error) {
             console.error("Error claiming set reward:", error);
