@@ -346,26 +346,31 @@ const SetsPage = () => {
             );
             console.log("Check completion response:", response12.data);
             // Format rewards message
-            const rewardsMessage = response12.data.rewards.reduce(
-              (message, reward) => {
+            const rewardsMessages = await Promise.all(
+              response12.data.rewards.map(async (reward) => {
                 if (reward.value > 0) {
                   switch (reward.type) {
                     case "experience":
-                      return message + `\nОпыт: ${reward.value}`;
+                      return `\nОпыт: ${reward.value}`;
                     case "hourly_income":
-                      return message + `\nДоход в час: ${reward.value}`;
+                      return `\nДоход в час: ${reward.value}`;
                     case "coins":
-                      return message + `\nМонеты: ${reward.value}`;
+                      return `\nМонеты: ${reward.value}`;
                     case "card":
-                      return message + `\nКарта: ${reward.value}`;
+                      try {
+                        const cardResponse = await getCard(reward.value);
+                        return `\nКарта: ${cardResponse.data.name}`;
+                      } catch (error) {
+                        return `\nКарта: ${reward.value}`;
+                      }
                     default:
-                      return message;
+                      return "";
                   }
                 }
-                return message;
-              },
-              ""
+                return "";
+              })
             );
+            const rewardsMessage = rewardsMessages.join("");
             // Show popup with rewards
             window.Telegram.WebApp.showPopup({
               title: "Награда получена!",
