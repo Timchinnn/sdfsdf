@@ -62,43 +62,43 @@ const SetsPage = () => {
       setTelegramId(tg.initDataUnsafe.user.id);
     }
   }, []);
-  useEffect(() => {
-    const fetchLotData = async () => {
-      try {
-        const tg = window.Telegram.WebApp;
+  const fetchLotData = async () => {
+    try {
+      const tg = window.Telegram.WebApp;
 
-        const response = await userCardsService.getUserCards(
-          tg.initDataUnsafe.user.id
+      const response = await userCardsService.getUserCards(
+        tg.initDataUnsafe.user.id
+      );
+      // Filter out money and energy cards
+      const filteredCards = response.data.filter(
+        (card) =>
+          !card.title.match(/^Монеты \d+/) && card.type !== "energy_boost"
+      );
+      setUserCards(filteredCards);
+      console.log(filteredCards);
+
+      // Получаем информацию о лоте
+      const lotResponse = await axios.get("/card-lots");
+      if (lotResponse.data && lotResponse.data.length > 0) {
+        const currentLot = lotResponse.data[0]; // Берем первый лот
+        setLot(currentLot);
+
+        // Получаем карты для лота
+        const cardsResponse = await axios.get(
+          `/card-lots/${currentLot.id}/cards`
         );
-        // Filter out money and energy cards
-        const filteredCards = response.data.filter(
-          (card) =>
-            !card.title.match(/^Монеты \d+/) && card.type !== "energy_boost"
-        );
-        setUserCards(filteredCards);
-        console.log(filteredCards);
-
-        // Получаем информацию о лоте
-        const lotResponse = await axios.get("/card-lots");
-        if (lotResponse.data && lotResponse.data.length > 0) {
-          const currentLot = lotResponse.data[0]; // Берем первый лот
-          setLot(currentLot);
-
-          // Получаем карты для лота
-          const cardsResponse = await axios.get(
-            `/card-lots/${currentLot.id}/cards`
-          );
-          if (cardsResponse.data) {
-            setLotCards(cardsResponse.data);
-          }
-          console.log(currentLot);
-          console.log(cardsResponse.data);
+        if (cardsResponse.data) {
+          setLotCards(cardsResponse.data);
         }
-      } catch (error) {
-        console.error("Ошибка при загрузке данных лота:", error);
+        console.log(currentLot);
+        console.log(cardsResponse.data);
       }
-      setLotLoaded(true);
-    };
+    } catch (error) {
+      console.error("Ошибка при загрузке данных лота:", error);
+    }
+    setLotLoaded(true);
+  };
+  useEffect(() => {
     fetchLotData();
   }, []);
 
@@ -343,6 +343,13 @@ const SetsPage = () => {
             await axios.get(
               `/card-lots/${lot.id}/check-completion/${telegram_id}`
             );
+            setSelectedUserCard(null);
+            setCurrentGuessIndex(0);
+            setOpenedCards({});
+            setIsFlipped(false);
+            setActiveIndex(null);
+            // Refetch lot data to reset the game state
+            fetchLotData();
           } catch (error) {
             console.error("Error claiming set reward:", error);
           }
@@ -566,9 +573,10 @@ const SetsPage = () => {
         className={`modal shop-filter ${activePopupFilter && "show"}`}
       >
         <div className="modal-wrapper">
-          <h3 className="modal-title">Фильтр</h3>
+          <h3 className="modal-title" style={{ marginBottom: "10px" }}>
+            Фильтр
+          </h3>
           <div className="modal-filter__type">
-            <h3 className="modal-title">Редкость</h3>
             <div className="modal-filter__buttons">
               <button
                 className={`modal-btn-choose ${
