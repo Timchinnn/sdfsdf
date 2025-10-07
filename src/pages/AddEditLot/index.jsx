@@ -366,7 +366,6 @@ const AddEditLot = () => {
                   .filter(
                     (card) =>
                       !cardsInSet.has(card.id) &&
-                      card.type === "citizen" &&
                       card.title
                         .toLowerCase()
                         .includes(searchQuery.toLowerCase())
