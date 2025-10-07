@@ -372,8 +372,7 @@ const SetsPage = () => {
                   }
                 }
                 return message;
-              },
-              Promise.resolve("")
+              }
             );
             // Show popup with rewards
             window.Telegram.WebApp.showPopup({
